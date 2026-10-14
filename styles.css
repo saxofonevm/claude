@@ -14,7 +14,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --fundo: #12151d;
     --superficie: #1c2130;
     --texto: #eceef3;
@@ -27,6 +27,20 @@
     --perigo: #e0756c;
     color-scheme: dark;
   }
+}
+
+:root[data-theme="dark"] {
+  --fundo: #12151d;
+  --superficie: #1c2130;
+  --texto: #eceef3;
+  --mudo: #9aa0b0;
+  --borda: #2c3244;
+  --primaria: #d9a441;
+  --destaque: #d9a441;
+  --destaque-suave: #3a3222;
+  --ok: #5cc196;
+  --perigo: #e0756c;
+  color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -42,14 +56,20 @@ body {
 }
 
 .topo {
-  position: sticky; top: 0; z-index: 5;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
   background: var(--fundo);
-  padding: calc(12px + env(safe-area-inset-top)) 16px 8px;
+  padding-block: 12px 8px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
 .topo h1 { margin: 0; font-size: 1.35rem; letter-spacing: .02em; display: flex; align-items: baseline; gap: 8px; }
 .topo h1 small { font-size: .78rem; font-weight: 500; color: var(--mudo); letter-spacing: 0; }
 
-main { max-width: 640px; margin: 0 auto; padding: 0 16px 16px; }
+main {
+  max-width: 640px; margin: 0 auto; padding-block: 0 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
 
 h2 { font-size: 1.1rem; margin: 0 0 8px; }
 h3 { font-size: 1rem; margin: 0 0 6px; }
