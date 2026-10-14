@@ -2,7 +2,7 @@
   "use strict";
 
   const CHAVE = "cma.v1";
-  const AVALIACOES = ["😣", "😕", "🙂", "😄", "🤩"];
+  const AVALIACOES = ["Difícil", "Regular", "Boa", "Muito boa", "Excelente"];
   const DIAS_CURTOS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
   const ANDAMENTOS = [
     [40, "Grave"], [60, "Largo"], [66, "Larghetto"], [76, "Adagio"], [108, "Andante"],
@@ -69,8 +69,8 @@
   const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const limitar = (v, min, max) => Math.min(max, Math.max(min, v));
   const nomeAndamento = bpm => ANDAMENTOS.find(([max]) => bpm < max)[1];
-  const corRaiz = raiz => `--c1:${escapar(raiz.cor || "#7c3aed")};--c2:${escapar(raiz.cor2 || raiz.cor || "#c084fc")}`;
-  const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const corRaiz = raiz => `--c1:${escapar(raiz.cor || "#d4a24c")};--c2:${escapar(raiz.cor2 || raiz.cor || "#e9c27a")}`;
+  const dois = n => String(n).padStart(2, "0");
 
   function escapar(texto) {
     return String(texto ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -86,11 +86,13 @@
     return Math.round((deISO(iso) - deISO(hojeISO())) / 864e5);
   }
 
+  const maiuscula = t => t.charAt(0).toUpperCase() + t.slice(1);
+
   function formatarData(iso) {
     const dias = diasAte(iso);
     if (dias === 0) return "Hoje";
     if (dias === -1) return "Ontem";
-    return deISO(iso).toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "short" });
+    return maiuscula(deISO(iso).toLocaleDateString("pt-BR", { weekday: "short", day: "2-digit", month: "short" }));
   }
 
   function formatarMinutos(min) {
@@ -147,36 +149,6 @@
     return new Promise(ok => dlgConf.addEventListener("close", () => ok(dlgConf.returnValue === "sim"), { once: true }));
   }
 
-  // ---------- Confete ----------
-
-  function confete() {
-    if (semMovimento()) return;
-    const canvas = $("#confete");
-    const ctx = canvas.getContext("2d");
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
-    ctx.scale(dpr, dpr);
-    const cores = ["#fbbf24", "#f97316", "#e11d48", "#7c3aed", "#2563eb", "#10b981", "#2dd4bf"];
-    const pecas = Array.from({ length: 90 }, () => ({
-      x: innerWidth / 2 + (Math.random() - 0.5) * 80, y: innerHeight * 0.45,
-      vx: (Math.random() - 0.5) * 12, vy: -Math.random() * 13 - 5,
-      r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.4,
-      w: 6 + Math.random() * 6, h: 4 + Math.random() * 4, cor: cores[Math.floor(Math.random() * cores.length)]
-    }));
-    const inicio = performance.now();
-    canvas.hidden = false;
-    (function quadro(t) {
-      ctx.clearRect(0, 0, innerWidth, innerHeight);
-      for (const p of pecas) {
-        p.vy += 0.35; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
-        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
-        ctx.fillStyle = p.cor; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
-      }
-      if (t - inicio < 2200) requestAnimationFrame(quadro);
-      else { ctx.clearRect(0, 0, innerWidth, innerHeight); canvas.hidden = true; }
-    })(inicio);
-  }
-
   // ---------- Progresso e prazos ----------
 
   const feito = exId => !!estado.feitos[exId];
@@ -219,7 +191,7 @@
     else delete estado.prazos[inp.dataset.prazo];
     salvar();
     renderTela();
-    avisar(inp.value ? "Prazo definido. Você consegue!" : "Prazo removido.");
+    avisar(inp.value ? "Prazo definido." : "Prazo removido.");
   });
 
   document.addEventListener("click", ev => {
@@ -306,48 +278,35 @@
     return dias;
   }
 
-  // A árvore do CMA: cada raiz se colore conforme o progresso do aluno
+  // Diagrama das raízes: cada linha se preenche conforme o progresso do aluno
   function arvoreSVG() {
     const n = RAIZES.length || 1;
-    const larg = 340, chao = 120;
+    const larg = 340, chao = 64;
     const pontas = RAIZES.map((_, i) => {
       const t = n === 1 ? 0.5 : i / (n - 1);
-      return { x: 26 + t * (larg - 52), y: 190 + Math.sin(t * Math.PI) * 26 };
+      return { x: 26 + t * (larg - 52), y: 150 + Math.sin(t * Math.PI) * 18 };
     });
-    const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
-    const pctTotal = TOTAL_EXERCICIOS ? totalFeitos / TOTAL_EXERCICIOS : 0;
-    const frutos = [[150, 46], [196, 52], [128, 74], [214, 78], [172, 30], [160, 82], [188, 70], [138, 52], [206, 36], [176, 58], [118, 62], [226, 60]];
-    const nFrutos = Math.round(pctTotal * frutos.length);
-
     const raizes = RAIZES.map((raiz, i) => {
       const { x, y } = pontas[i];
-      const d = `M170 ${chao + 2} C170 ${chao + 40}, ${x} ${y - 70}, ${x} ${y}`;
+      const d = `M170 ${chao} C170 ${chao + 46}, ${x} ${y - 64}, ${x} ${y}`;
       const p = progressoRaiz(raiz);
       return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída">
         <path d="${d}" class="raiz-base"/>
-        <path d="${d}" pathLength="100" class="raiz-cor" stroke="${escapar(raiz.cor2 || raiz.cor)}" stroke-dasharray="${p.pct} 100"/>
-        <circle cx="${x}" cy="${y}" r="14" fill="${p.feitos ? escapar(raiz.cor) : "rgba(255,255,255,.12)"}" stroke="${escapar(raiz.cor2 || raiz.cor)}" stroke-width="2.5"/>
-        <text x="${x}" y="${y + 5}" text-anchor="middle">${p.completa ? "✓" : i + 1}</text>
+        <path d="${d}" pathLength="100" class="raiz-cor" stroke="${escapar(raiz.cor)}" stroke-dasharray="${p.pct} 100"/>
+        <circle cx="${x}" cy="${y}" r="${p.completa ? 6 : 4.5}" fill="${p.feitos ? escapar(raiz.cor) : "var(--bg)"}" stroke="${escapar(raiz.cor)}" stroke-width="1.5"/>
+        <text x="${x}" y="${y + 22}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
+        <text x="${x}" y="${y + 35}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
       </a>`;
     }).join("");
-
-    return `<svg viewBox="0 0 ${larg} 232" role="img" aria-label="Sua árvore CMA">
-      <defs>
-        <radialGradient id="copa" cx="50%" cy="40%" r="60%">
-          <stop offset="0" stop-color="#6ee7b7"/><stop offset="1" stop-color="#059669"/>
-        </radialGradient>
-        <linearGradient id="solo" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#3b1d0e" stop-opacity=".55"/><stop offset="1" stop-color="#3b1d0e" stop-opacity="0"/>
-        </linearGradient>
-      </defs>
-      <rect x="0" y="${chao}" width="${larg}" height="${232 - chao}" fill="url(#solo)" rx="18"/>
-      <path d="M0 ${chao}H${larg}" stroke="#a16207" stroke-opacity=".6" stroke-width="2"/>
-      <path d="M160 ${chao + 2}c2-14 1-30-2-44h24c-3 14-4 30-2 44z" fill="#a0632e"/>
-      <g opacity="${(0.55 + pctTotal * 0.45).toFixed(2)}" fill="url(#copa)">
-        <circle cx="170" cy="56" r="40"/><circle cx="130" cy="70" r="28"/><circle cx="210" cy="70" r="28"/>
-        <circle cx="148" cy="38" r="24"/><circle cx="194" cy="38" r="24"/>
+    const marcas = Array.from({ length: 17 }, (_, i) => `<path d="M${10 + i * 20} ${chao}v4"/>`).join("");
+    return `<svg viewBox="0 0 ${larg} 214" role="img" aria-label="Diagrama do seu percurso nas raízes">
+      <g class="tronco">
+        <path d="M170 ${chao}V22"/>
+        <ellipse cx="163" cy="22" rx="8" ry="6" transform="rotate(-20 163 22)" class="cabeca-nota"/>
+        <path d="M170 22c5 8 14 10 14 20"/>
       </g>
-      ${frutos.slice(0, nFrutos).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#fbbf24" stroke="#fff7" stroke-width="1.5"/>`).join("")}
+      <path d="M0 ${chao}H${larg}" class="horizonte"/>
+      <g class="marcas">${marcas}</g>
       ${raizes}
     </svg>`;
   }
@@ -355,17 +314,19 @@
   function renderInicio() {
     const hora = new Date().getHours();
     const cumprimento = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
-    $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}!` : `${cumprimento}!`;
+    $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}.` : `${cumprimento}.`;
+    $("#hero-data").textContent = maiuscula(new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }));
     const diaDoAno = Math.floor(deISO(hojeISO()) / 864e5);
     $("#frase-dia").textContent = FRASES[diaDoAno % FRASES.length];
 
     const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
     const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
     $("#arvore").innerHTML = arvoreSVG();
+    $("#percurso-pct").textContent = `${pctTotal}%`;
     $("#arvore-legenda").textContent = pctTotal === 0
-      ? "Sua árvore está pronta para crescer. Cada exercício concluído dá cor a uma raiz."
-      : pctTotal === 100 ? "Árvore completa! Você percorreu todas as raízes do CMA. 🏆"
-      : `Sua árvore está ${pctTotal}% formada. Toque em uma raiz para continuar.`;
+      ? "Cada exercício concluído aprofunda uma raiz. Comece pela Escuta."
+      : pctTotal === 100 ? "Percurso completo. Todas as raízes do CMA foram trabalhadas."
+      : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos. Toque em uma raiz para abri-la.`;
 
     const prox = proximoExercicio();
     const cont = $("#continuar");
@@ -374,7 +335,7 @@
       cont.setAttribute("style", corRaiz(prox.raiz));
       cont.innerHTML = `<span class="continuar-ilus">${ilustracao(prox.raiz.icone)}</span>
         <span class="continuar-texto">
-          <span class="continuar-rotulo">Continue de onde parou</span>
+          <span class="continuar-rotulo">Continuar</span>
           <strong>${escapar(prox.ex.titulo)}</strong>
           <span>${escapar(prox.raiz.titulo)} · ${escapar(prox.ram.titulo)}</span>
         </span>
@@ -382,7 +343,7 @@
     } else {
       cont.href = "#/raizes";
       cont.removeAttribute("style");
-      cont.innerHTML = `<span class="continuar-texto"><span class="continuar-rotulo">Parabéns!</span><strong>Você concluiu todos os exercícios.</strong><span>Revise as raízes e fale com o professor sobre os próximos passos.</span></span>`;
+      cont.innerHTML = `<span class="continuar-texto"><span class="continuar-rotulo">Percurso completo</span><strong>Todos os exercícios concluídos.</strong><span>Revise as raízes e combine os próximos passos com o professor.</span></span>`;
     }
 
     const mapa = minutosPorDia();
@@ -394,7 +355,7 @@
       const iso = dataISO(d);
       const min = mapa[iso] || 0;
       totalSemana += min;
-      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}">${DIAS_CURTOS[i]}<div class="dia-ponto" title="${min} min">${min ? icone("check") : ""}</div></div>`;
+      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}"><div class="dia-ponto" title="${min} min"><span style="height:${Math.min(100, Math.round((min / Math.max(5, estado.metaSemanal / 7)) * 100))}%"></span></div>${DIAS_CURTOS[i]}</div>`;
     }
     $("#semana").innerHTML = html;
 
@@ -404,7 +365,7 @@
 
     const pct = Math.min(100, Math.round((totalSemana / estado.metaSemanal) * 100));
     $("#meta-barra").style.width = pct + "%";
-    $("#meta-texto").textContent = `${totalSemana} / ${estado.metaSemanal} min` + (pct >= 100 ? " 🎉" : "");
+    $("#meta-texto").textContent = `${totalSemana} / ${estado.metaSemanal} min` + (pct >= 100 ? " · meta batida" : "");
 
     const prazos = proximosPrazos().slice(0, 5);
     $("#prazos-vazio").hidden = prazos.length > 0;
@@ -427,12 +388,12 @@
       const p = progressoRaiz(raiz);
       return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
-        <span class="raiz-num">Raiz ${i + 1}</span>
+        <span class="raiz-num">${dois(i + 1)}</span>
         <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
         <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
         <span class="raiz-rodape">
           <span class="barra clara"><span class="barra-preenchida" style="width:${p.pct}%"></span></span>
-          <span class="raiz-contagem">${p.completa ? "Completa ✓" : `${p.feitos}/${p.total}`}</span>
+          <span class="raiz-contagem">${p.completa ? "Completa" : `${p.feitos}/${p.total}`}</span>
         </span>
         ${seloPrazo("r:" + raiz.id, p.completa)}
       </a>`;
@@ -484,9 +445,9 @@
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
-        <p class="banda-sobre">Raiz ${indice + 1} de ${RAIZES.length}</p>
+        <p class="banda-sobre">Raiz ${dois(indice + 1)} / ${dois(RAIZES.length)}</p>
         <h1>${escapar(raiz.titulo)}</h1>
-        ${raiz.frase ? `<p class="banda-frase">“${escapar(raiz.frase)}”</p>` : ""}
+        ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
       </header>
 
       <div class="corpo">
@@ -507,7 +468,7 @@
 
         <h2 class="secao">Ramificações</h2>
         ${(raiz.ramificacoes || []).map((ram, j) => `<section class="cartao ramificacao">
-          <p class="ram-num">Ramificação ${j + 1}</p>
+          <p class="ram-num">Ramificação ${dois(j + 1)}</p>
           <h3>${escapar(ram.titulo)}</h3>
           ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
           <div class="exercicios">
@@ -551,7 +512,7 @@
         </div>
         ${progride ? `<div class="barra grossa"><div class="barra-preenchida" style="width:${pct}%"></div></div>` : ""}
         <p class="dica">${progride
-          ? "Comece devagar e suba de pouco em pouco. Só aumente quando estiver limpo e relaxado. A velocidade é consequência!"
+          ? "Comece devagar e suba de pouco em pouco. Só aumente quando estiver limpo e relaxado: a velocidade é consequência."
           : `Mantenha ${alvo} bpm com calma, ouvindo cada detalhe do som.`}</p>
         <form class="andamento-form" id="form-andamento">
           <label>Meu andamento atual
@@ -569,7 +530,7 @@
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
         <p class="banda-sobre">${escapar(ram.titulo)}</p>
         <h1>${escapar(ex.titulo)}</h1>
-        ${concluido ? `<span class="selo ok grande">${icone("check")}Concluído em ${escapar(deISO(concluido).toLocaleDateString("pt-BR"))}</span>` : ""}
+        ${concluido ? `<span class="selo ok">${icone("check")}Concluído em ${escapar(deISO(concluido).toLocaleDateString("pt-BR"))}</span>` : ""}
       </header>
 
       <div class="corpo">
@@ -606,8 +567,7 @@
       } else {
         estado.feitos[id] = hojeISO();
         const raiz = EXERCICIO[id].raiz;
-        confete();
-        avisar(progressoRaiz(raiz).completa ? `Raiz ${raiz.titulo} completa! 🏆` : "Exercício concluído! Mandou bem 👏");
+        avisar(progressoRaiz(raiz).completa ? `Raiz ${raiz.titulo} completa.` : "Exercício concluído.");
       }
       salvar(); renderTela();
     }
@@ -632,8 +592,7 @@
     salvar();
     if (rotaAtual.tela === "ex") renderTela();
     if (ex.andamento && estado.andamentos[exId] >= ex.andamento.alvo && anterior < ex.andamento.alvo) {
-      confete();
-      avisar("Andamento alvo alcançado! 🎯");
+      avisar("Andamento alvo alcançado.");
     } else {
       avisar(`Andamento salvo: ${estado.andamentos[exId]} bpm`);
     }
@@ -747,7 +706,7 @@
     const minutosHoje = (minutosPorDia()[hojeISO()] || 0) + total / 60;
     const pct = Math.min(100, (minutosHoje / metaDia) * 100);
     $("#timer-anel").style.strokeDasharray = `${pct.toFixed(1)} 100`;
-    $("#timer-rotulo").textContent = pct >= 100 ? "meta do dia ✓" : `meta: ${metaDia} min/dia`;
+    $("#timer-rotulo").textContent = pct >= 100 ? "meta do dia cumprida" : `meta do dia · ${metaDia} min`;
 
     const rodando = !!t.inicio;
     const temTempo = rodando || t.acumulado > 0;
@@ -756,7 +715,7 @@
     $("#timer-iniciar").hidden = rodando;
     $("#timer-pausar").hidden = !rodando;
     $("#timer-finalizar").hidden = !temTempo;
-    $("#timer-dica").textContent = rodando ? "Foco total! Respire fundo e aproveite o estudo."
+    $("#timer-dica").textContent = rodando ? "Em andamento. Respire e mantenha o foco."
       : temTempo ? "Pausado. Continue quando quiser ou finalize para registrar."
       : "Ligue o cronômetro e registre sua prática ao terminar.";
 
@@ -808,7 +767,8 @@
 
   function renderAvaliacao() {
     $("#s-avaliacao").innerHTML = AVALIACOES.map((e, i) =>
-      `<button type="button" data-v="${i + 1}" class="${edicao.avaliacao === i + 1 ? "ativo" : ""}" aria-label="Nota ${i + 1} de 5">${e}</button>`).join("");
+      `<button type="button" data-v="${i + 1}" class="${edicao.avaliacao >= i + 1 ? "ativo" : ""}" aria-label="${i + 1} de 5: ${e}">${i + 1}</button>`).join("");
+    $("#s-avaliacao-texto").textContent = edicao.avaliacao ? `· ${AVALIACOES[edicao.avaliacao - 1]}` : "";
   }
   $("#s-avaliacao").addEventListener("click", ev => {
     const b = ev.target.closest("button");
@@ -860,7 +820,7 @@
     salvar();
     renderTela();
     renderTimer();
-    avisar(edicao.id ? "Prática atualizada." : "Prática registrada! Constância é tudo 🎷");
+    avisar(edicao.id ? "Prática atualizada." : "Prática registrada.");
   });
 
   $("#btn-registrar").addEventListener("click", () => abrirSessao(null));
@@ -878,10 +838,11 @@
         ${raiz ? `<span class="mini-ilus">${ilustracao(raiz.icone)}</span>` : `<span class="mini-ilus neutra">${icone("nota")}</span>`}
         <div class="sessao-corpo">
           <div class="sessao-topo">
-            <span class="sessao-data">${escapar(formatarData(s.data))}${s.avaliacao ? " " + AVALIACOES[s.avaliacao - 1] : ""}</span>
+            <span class="sessao-data">${escapar(formatarData(s.data))}</span>
             <span class="sessao-min">${formatarMinutos(s.minutos)}</span>
           </div>
           <div class="sessao-sub">${raiz ? escapar(raiz.titulo) : "Prática geral"}${ex ? ` · ${escapar(ex.titulo)}` : ""}</div>
+          ${s.avaliacao ? `<div class="sessao-nota" aria-label="Avaliação ${s.avaliacao} de 5">${AVALIACOES.map((_, i) => `<span class="${i < s.avaliacao ? "on" : ""}"></span>`).join("")}<em>${escapar(AVALIACOES[s.avaliacao - 1])}</em></div>` : ""}
           ${s.notas ? `<p class="sessao-notas">${escapar(s.notas)}</p>` : ""}
           <div class="sessao-acoes">
             <button class="link-acao" data-editar="${escapar(s.id)}">Editar</button>

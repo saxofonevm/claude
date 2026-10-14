@@ -5,13 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CMA</title>
   <meta name="description" content="CMA — Consciência Musical Aplicada">
-  <meta name="theme-color" content="#1e1048">
+  <meta name="theme-color" content="#0e0e11">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -22,15 +22,21 @@
         <div class="hero-topo">
           <span class="marca">CMA</span>
           <span class="marca-sub">Consciência Musical Aplicada</span>
+          <span class="hero-data" id="hero-data"></span>
         </div>
-        <h1 class="hero-saudacao" id="saudacao">Bora tocar?</h1>
+        <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
         <figure class="frase-dia">
-          <span data-icone="aspas"></span>
           <blockquote id="frase-dia"></blockquote>
           <figcaption>Frase do dia</figcaption>
         </figure>
-        <div class="arvore" id="arvore"></div>
-        <p class="arvore-legenda" id="arvore-legenda"></p>
+        <div class="percurso">
+          <div class="percurso-topo">
+            <span class="rotulo">Seu percurso</span>
+            <span class="percurso-pct" id="percurso-pct">0%</span>
+          </div>
+          <div class="arvore" id="arvore"></div>
+          <p class="arvore-legenda" id="arvore-legenda"></p>
+        </div>
       </header>
 
       <div class="conteudo-inicio">
@@ -44,11 +50,11 @@
             </svg>
             <div class="timer-centro">
               <div class="timer-visor" id="timer-visor">00:00</div>
-              <div class="timer-rotulo" id="timer-rotulo">meta de hoje</div>
+              <div class="timer-rotulo" id="timer-rotulo">meta do dia</div>
             </div>
           </div>
           <div class="timer-lado">
-            <h2>Hora de estudar</h2>
+            <span class="rotulo">Sessão de estudo</span>
             <p class="mudo" id="timer-dica">Ligue o cronômetro e registre sua prática ao terminar.</p>
             <div class="timer-botoes">
               <button class="btn primario" id="timer-iniciar" data-icone="play">Começar</button>
@@ -60,15 +66,15 @@
         </div>
 
         <div class="stats">
-          <div class="stat fogo"><span data-icone="fogo"></span><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo">dias seguidos</span></div>
-          <div class="stat tempo"><span data-icone="relogio"></span><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo">min na semana</span></div>
-          <div class="stat trofeu"><span data-icone="trofeu"></span><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo">exercícios</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span>dias seguidos</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo"><span data-icone="relogio"></span>min na semana</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
         </div>
 
         <div class="cartao">
           <div class="cartao-topo"><h2><span data-icone="calendario"></span>Próximos prazos</h2></div>
           <ul class="lista-prazos" id="lista-prazos"></ul>
-          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo ainda. Abra uma raiz ou exercício e escolha a sua data. Ter um prazo ajuda a manter o foco!</p>
+          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra uma raiz ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
         </div>
 
         <div class="cartao">
@@ -87,9 +93,9 @@
     <!-- RAÍZES -->
     <section id="tela-raizes" class="tela">
       <header class="cabecalho">
-        <p class="sobretitulo">Sua jornada</p>
-        <h1>As 6 raízes do CMA</h1>
-        <p class="mudo">Toda árvore forte nasce de raízes profundas. Siga na ordem, no seu ritmo: cada raiz prepara o terreno para a próxima.</p>
+        <p class="sobretitulo">O método</p>
+        <h1>As seis raízes</h1>
+        <p class="mudo">Toda árvore forte nasce de raízes profundas. Siga na ordem e no seu ritmo: cada raiz prepara o terreno para a próxima.</p>
       </header>
       <div class="grade-raizes" id="lista-raizes"></div>
     </section>
@@ -116,7 +122,7 @@
       <ul class="lista" id="lista-sessoes"></ul>
       <div class="vazio" id="diario-vazio">
         <span data-icone="diario"></span>
-        <p><strong>Seu diário está esperando a primeira página.</strong></p>
+        <p><strong>Nenhuma prática registrada.</strong></p>
         <p class="mudo">Use o cronômetro na tela inicial ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
       </div>
     </section>
@@ -176,7 +182,7 @@
         <select id="s-exercicio"><option value="">— nenhum —</option></select>
       </label>
       <div class="campo">
-        <span class="campo-rotulo">Como foi?</span>
+        <span class="campo-rotulo">Como foi a sessão? <span class="mudo" id="s-avaliacao-texto"></span></span>
         <div class="avaliacao" id="s-avaliacao"></div>
       </div>
       <label>Anotações
@@ -230,8 +236,6 @@
       <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
     </div>
   </dialog>
-
-  <canvas id="confete" aria-hidden="true"></canvas>
 
   <script src="icones.js"></script>
   <script src="conteudo.js"></script>
