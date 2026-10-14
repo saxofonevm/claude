@@ -67,6 +67,8 @@ window.ICONES = {
     aspas: `<path d="M5 17.5c0-4 1.3-7.3 4.5-9.5M13.5 17.5c0-4 1.3-7.3 4.5-9.5" /><circle cx="7" cy="15.5" r="2.5" fill="currentColor"/><circle cx="15.5" cy="15.5" r="2.5" fill="currentColor"/>`,
     youtube: `<rect x="2.5" y="5.5" width="19" height="13" rx="4"/><path d="M10.2 9.4v5.2l4.4-2.6z" fill="currentColor"/>`,
     pdf: `<path d="M6 2.8h8.5L19 7.3v13.9H6z"/><path d="M14 2.8v5h5"/><path d="M9 13h6M9 16.5h4"/>`,
+    livro: `<path d="M12 6.5C10 5 7.2 4.5 3.5 4.8v13.4c3.7-.3 6.5.2 8.5 1.8 2-1.6 4.8-2.1 8.5-1.8V4.8C16.8 4.5 14 5 12 6.5z"/><path d="M12 6.5V20"/>`,
+    busca: `<circle cx="10.5" cy="10.5" r="6"/><path d="M15 15l5 5"/>`,
     pasta: `<path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.2h8.5A1.5 1.5 0 0 1 21 8.7V18a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18z"/>`,
     externo: `<path d="M14 4.5h5.5V10M19.5 4.5L11 13M18 14v4.5a1 1 0 0 1-1 1H5.5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1H10"/>`,
     nota: `<path d="M9 18V5.5l10-2V16"/><circle cx="6.5" cy="18" r="2.5" fill="currentColor"/><circle cx="16.5" cy="16" r="2.5" fill="currentColor"/>`,

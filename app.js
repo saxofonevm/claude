@@ -25,6 +25,21 @@
   }
   const exerciciosDaRaiz = raiz => (raiz.ramificacoes || []).flatMap(r => r.exercicios || []);
   const TOTAL_EXERCICIOS = Object.keys(EXERCICIO).length;
+  const RAMO = {};       // id → { ram, raiz }
+  for (const raiz of RAIZES) for (const ram of raiz.ramificacoes || []) RAMO[ram.id] = { ram, raiz };
+
+  // ---------- Métodos (metodos.js) ----------
+
+  const MET = window.CMA_METODOS || {};
+  const LIVROS = MET.livros || {};
+  const PASTAS = { raiz: {}, ramificacao: {}, ...(MET.pastas || {}) };
+  const INDICACOES = (MET.indicacoes || [])
+    .filter(i => LIVROS[i[0]] && RAMO[i[3]])
+    .map(([livro, onde, assunto, ramo]) => ({ livro, onde, assunto, ramo }));
+  const indicacoesDoRamo = id => INDICACOES.filter(i => i.ramo === id);
+  const urlArquivo = id => id ? `https://drive.google.com/file/d/${encodeURIComponent(id)}/view` : null;
+  const urlPasta = id => id ? `https://drive.google.com/drive/folders/${encodeURIComponent(id)}` : null;
+  const nomeLivro = l => l.autor ? `${l.autor} · ${l.titulo}` : l.titulo;
 
   // ---------- Estado e armazenamento ----------
 
@@ -234,16 +249,17 @@
 
   function lerRota() {
     const [, tela = "inicio", id = null] = location.hash.replace(/^#/, "").split("/");
-    const validas = ["inicio", "raizes", "raiz", "ex", "diario", "ajustes"];
+    const validas = ["inicio", "raizes", "raiz", "ex", "metodos", "metodo", "diario", "ajustes"];
     rotaAtual = validas.includes(tela) ? { tela, id: id && decodeURIComponent(id) } : { tela: "inicio", id: null };
     if (rotaAtual.tela === "raiz" && !RAIZ[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "ex" && !EXERCICIO[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
+    if (rotaAtual.tela === "metodo" && !LIVROS[rotaAtual.id]) rotaAtual = { tela: "metodos", id: null };
   }
 
   function mostrarTela() {
-    const telaId = rotaAtual.tela === "ex" ? "exercicio" : rotaAtual.tela;
+    const telaId = { ex: "exercicio", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === `tela-${telaId}`));
-    const aba = ["raiz", "ex"].includes(rotaAtual.tela) ? "raizes" : rotaAtual.tela;
+    const aba = { raiz: "raizes", ex: "raizes", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".abas a").forEach(a => a.classList.toggle("ativa", a.dataset.aba === aba));
   }
 
@@ -253,6 +269,8 @@
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
       case "ex": renderExercicio(rotaAtual.id); break;
+      case "metodos": renderMetodos(); break;
+      case "metodo": renderMetodo(rotaAtual.id); break;
       case "diario": renderDiario(); break;
       case "ajustes": renderAjustes(); break;
     }
@@ -428,21 +446,144 @@
       </a>`).join("")}</div></div>`;
   }
 
-  function htmlDrive(drive) {
-    const pasta = drive && urlSegura(drive.pasta);
-    const arquivos = ((drive && drive.arquivos) || []).map(a => ({ ...a, href: urlSegura(a.url) })).filter(a => a.href);
-    const cabeca = `<h2>${icone("pdf")}Métodos e PDFs</h2>`;
-    if (!pasta && !arquivos.length) {
+  // Lista "página tal → assunto". mostrarRamo: true = "Raiz › Ramificação", "ramo" = só a ramificação.
+  function htmlIndicacoes(lista, { mostrarRamo = false, mostrarLivro = true } = {}) {
+    return `<ul class="indicacoes">${lista.map(i => {
+      const livro = LIVROS[i.livro];
+      const href = urlSegura(urlArquivo(livro.arquivo));
+      const ramo = RAMO[i.ramo];
+      const legenda = [mostrarLivro ? nomeLivro(livro) : "", mostrarRamo === "ramo" ? ramo.ram.titulo : mostrarRamo ? `${ramo.raiz.titulo} › ${ramo.ram.titulo}` : ""].filter(Boolean).join(" — ");
+      const miolo = `<span class="ind-onde">${escapar(i.onde)}</span>
+        <span class="ind-texto"><strong>${escapar(i.assunto)}</strong>${legenda ? `<span>${escapar(legenda)}</span>` : ""}</span>
+        ${href ? icone("externo", "ind-seta") : ""}`;
+      return `<li>${href ? `<a class="indicacao" href="${escapar(href)}" target="_blank" rel="noopener">${miolo}</a>` : `<div class="indicacao">${miolo}</div>`}</li>`;
+    }).join("")}</ul>`;
+  }
+
+  // Mesma lista, agrupada por método: o nome do método abre o PDF, cada linha diz "onde → assunto".
+  function htmlIndicacoesPorLivro(lista) {
+    const grupos = new Map();
+    for (const i of lista) {
+      if (!grupos.has(i.livro)) grupos.set(i.livro, []);
+      grupos.get(i.livro).push(i);
+    }
+    return [...grupos].map(([chave, itens]) => {
+      const l = LIVROS[chave];
+      const href = urlSegura(urlArquivo(l.arquivo));
+      const nome = `${icone("pdf")}<span>${escapar(l.titulo)}${l.autor ? `<small>${escapar(l.autor)}</small>` : ""}</span>`;
+      return `<div class="ind-grupo">
+        ${href ? `<a class="ind-livro" href="${escapar(href)}" target="_blank" rel="noopener">${nome}${icone("externo", "material-seta")}</a>` : `<div class="ind-livro">${nome}</div>`}
+        <ul class="ind-linhas">${itens.map(i => `<li><span class="ind-onde">${escapar(i.onde)}</span><span>${escapar(i.assunto)}</span></li>`).join("")}</ul>
+      </div>`;
+    }).join("");
+  }
+
+  function htmlNosMetodos(ramId, aberto) {
+    const lista = indicacoesDoRamo(ramId);
+    const pasta = urlSegura(urlPasta(PASTAS.ramificacao[ramId]));
+    if (!lista.length && !pasta) return "";
+    const livros = new Set(lista.map(i => i.livro)).size;
+    return `<details class="nos-metodos"${aberto ? " open" : ""}>
+      <summary>${icone("livro")}<span><strong>Nos métodos</strong><span class="mudo">${lista.length
+        ? `${lista.length} ${lista.length === 1 ? "indicação" : "indicações"} em ${livros} ${livros === 1 ? "método" : "métodos"}`
+        : "Materiais na pasta do Drive"}</span></span>${icone("seta", "nos-seta")}</summary>
+      ${lista.length ? `<p class="dica">Toque no nome do método para abrir o PDF e vá direto à página ou ao exercício indicado.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
+      ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta ramificação no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
+    </details>`;
+  }
+
+  function htmlDrive(raiz) {
+    const pasta = urlSegura(urlPasta(PASTAS.raiz[raiz.id]));
+    const ramos = new Set((raiz.ramificacoes || []).map(r => r.id));
+    const contagem = {};
+    for (const i of INDICACOES) if (ramos.has(i.ramo)) contagem[i.livro] = (contagem[i.livro] || 0) + 1;
+    const livros = Object.keys(contagem).sort((a, b) => contagem[b] - contagem[a]);
+    const cabeca = `<h2>${icone("livro")}Métodos desta raiz</h2>`;
+    if (!livros.length && !pasta) {
       return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos desta raiz serão publicados em breve pelo professor.</p></div>`;
     }
     return `<div class="cartao drive">${cabeca}
-      ${arquivos.map(a => `<a class="material" href="${escapar(a.href)}" target="_blank" rel="noopener">
-        ${icone("pdf")}<span>${escapar(a.titulo || "Arquivo")}</span>${icone("externo", "material-seta")}
-      </a>`).join("")}
+      ${livros.length ? `<p class="mudo">Em cada ramificação abaixo, abra “Nos métodos” para ver a página exata de cada assunto.</p>
+      <div class="livros-chips">${livros.map(k => `<a class="livro-chip" href="#/metodo/${encodeURIComponent(k)}">
+        <strong>${escapar(LIVROS[k].autor || LIVROS[k].titulo)}</strong><span>${escapar(LIVROS[k].autor ? LIVROS[k].titulo : "")}</span><em>${contagem[k]}</em>
+      </a>`).join("")}</div>` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">
-        ${icone("pasta")}<span>Abrir pasta no Google Drive</span>${icone("externo", "material-seta")}
+        ${icone("pasta")}<span>Abrir a pasta desta raiz no Drive</span>${icone("externo", "material-seta")}
       </a>` : ""}
     </div>`;
+  }
+
+  // ---------- Biblioteca de métodos ----------
+
+  let buscaMetodos = "";
+  const semAcento = t => String(t).normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+
+  function renderMetodos() {
+    const chaves = Object.keys(LIVROS);
+    const contagem = k => INDICACOES.filter(i => i.livro === k).length;
+    $("#metodos-conteudo").innerHTML = `
+      <header class="cabecalho">
+        <p class="sobretitulo">Biblioteca</p>
+        <h1>Métodos</h1>
+        <p class="mudo">Cada método tem muitos assuntos. Aqui você vê em que página está cada um e em qual raiz ele se encaixa.</p>
+      </header>
+      <div class="corpo-metodos">
+        <label class="busca">${icone("busca")}<input type="search" id="busca-metodos" placeholder="Buscar assunto: staccato, terças, trinado…" value="${escapar(buscaMetodos)}" autocomplete="off"></label>
+        <div id="busca-resultado"></div>
+        <div class="lista-livros" id="lista-livros">${chaves.map(k => {
+          const l = LIVROS[k];
+          return `<a class="livro" href="#/metodo/${encodeURIComponent(k)}">
+            <span class="livro-ic">${icone("livro")}</span>
+            <span class="livro-texto"><strong>${escapar(l.titulo)}</strong><span>${escapar(l.autor || "Material de apoio")}</span></span>
+            <span class="livro-qtd">${contagem(k)}<small>assuntos</small></span>
+          </a>`;
+        }).join("")}</div>
+        <p class="vazio-mini">Os PDFs abrem no Google Drive. Se aparecer “Acesso negado”, entre com o e-mail que você passou ao professor.</p>
+      </div>`;
+    aplicarBusca();
+  }
+
+  function aplicarBusca() {
+    const termo = semAcento(buscaMetodos.trim());
+    const alvo = $("#busca-resultado"), livros = $("#lista-livros");
+    if (!alvo) return;
+    if (termo.length < 2) { alvo.innerHTML = ""; livros.hidden = false; return; }
+    const achados = INDICACOES.filter(i => {
+      const l = LIVROS[i.livro], r = RAMO[i.ramo];
+      return semAcento(`${i.assunto} ${l.titulo} ${l.autor} ${r.ram.titulo} ${r.raiz.titulo}`).includes(termo);
+    });
+    livros.hidden = true;
+    alvo.innerHTML = achados.length
+      ? `<p class="mudo">${achados.length} ${achados.length === 1 ? "resultado" : "resultados"}</p>${htmlIndicacoes(achados, { mostrarRamo: true })}`
+      : `<p class="vazio-mini">Nada encontrado para “${escapar(buscaMetodos.trim())}”.</p>`;
+  }
+
+  $("#metodos-conteudo").addEventListener("input", ev => {
+    if (ev.target.id !== "busca-metodos") return;
+    buscaMetodos = ev.target.value;
+    aplicarBusca();
+  });
+
+  function renderMetodo(chave) {
+    const l = LIVROS[chave];
+    const href = urlSegura(urlArquivo(l.arquivo));
+    const lista = INDICACOES.filter(i => i.livro === chave);
+    const porRaiz = RAIZES.map(raiz => ({ raiz, itens: lista.filter(i => RAMO[i.ramo].raiz === raiz) })).filter(g => g.itens.length);
+    $("#metodos-conteudo").innerHTML = `<article>
+      <header class="cabecalho">
+        <a class="btn-voltar" href="#/metodos">${icone("voltar")}Métodos</a>
+        <p class="sobretitulo">${escapar(l.autor || "Material de apoio")}</p>
+        <h1>${escapar(l.titulo)}</h1>
+        ${l.nota ? `<p class="mudo">${escapar(l.nota)}</p>` : ""}
+      </header>
+      <div class="corpo-metodos">
+        ${href ? `<a class="btn primario largo" href="${escapar(href)}" target="_blank" rel="noopener">${icone("pdf")}Abrir o PDF</a>` : ""}
+        ${porRaiz.map(({ raiz, itens }) => `<section class="cartao grupo-raiz" style="${corRaiz(raiz)}">
+          <a class="grupo-topo" href="#/raiz/${encodeURIComponent(raiz.id)}"><span class="mini-ilus">${ilustracao(raiz.icone)}</span><h2>${escapar(raiz.titulo)}</h2>${icone("seta")}</a>
+          ${htmlIndicacoes(itens, { mostrarLivro: false, mostrarRamo: "ramo" })}
+        </section>`).join("")}
+      </div>
+    </article>`;
   }
 
   function anel(pct, rotulo) {
@@ -482,7 +623,7 @@
           </div>
         </div>
 
-        ${htmlDrive(raiz.drive)}
+        ${htmlDrive(raiz)}
 
         <h2 class="secao">Ramificações</h2>
         ${(raiz.ramificacoes || []).map((ram, j) => `<section class="cartao ramificacao">
@@ -498,6 +639,7 @@
             </a>`).join("")}
           </div>
           ${htmlReferencias(ram.referencias)}
+          ${htmlNosMetodos(ram.id, false)}
         </section>`).join("")}
 
         ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">
@@ -560,6 +702,12 @@
         ${andamento}
 
         ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
+
+        ${indicacoesDoRamo(ram.id).length ? `<div class="cartao">
+          <h2>${icone("livro")}Onde estudar nos métodos</h2>
+          <p class="dica">Assuntos de “${escapar(ram.titulo)}”. Toque no nome do método para abrir o PDF e vá à página ou ao exercício indicado.</p>
+          ${htmlIndicacoesPorLivro(indicacoesDoRamo(ram.id))}
+        </div>` : ""}
 
         <div class="cartao">
           ${campoPrazo("e:" + id, "Meu prazo para este exercício")}

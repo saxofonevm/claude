@@ -26,6 +26,8 @@ funciona offline. Os dados de cada aluno ficam salvos no próprio aparelho.
 
 Todo o conteúdo fica em **`conteudo.js`**: raízes, ramificações, exercícios, cores, ícones, frases do dia e o "por que importa" de cada raiz. As instruções estão no topo do arquivo.
 
+Os métodos em PDF ficam em **`metodos.js`**: cada indicação diz o método, a página (ou o número do exercício), o assunto e a ramificação onde ele entra. O app mostra isso em cada ramificação ("Nos métodos"), em cada exercício e na aba **Métodos**, que tem busca por assunto. Os PDFs abrem no Google Drive, então o aluno precisa ter acesso pelo e-mail dele.
+
 > ⚠️ O conteúdo atual é um **rascunho** para revisão.
 > Não mude o `id` de um exercício já publicado: ele guarda o progresso dos alunos.
 
@@ -35,7 +37,7 @@ Todo o conteúdo fica em **`conteudo.js`**: raízes, ramificações, exercícios
    `1 Escuta`, `2 Figuras Rítmicas`, `3 Estudos Melódicos`, `4 Articulações`, `5 Dinâmicas`, `6 Ornamentos`
 2. Coloque os PDFs em cada subpasta
 3. Compartilhe a pasta **CMA** como **"Qualquer pessoa com o link: Leitor"**, senão os alunos não conseguem abrir
-4. Peça ao Claude para atualizar os links no app (campo `drive` de cada raiz em `conteudo.js`)
+4. Peça ao Claude para atualizar os links no app (`pastas` e `livros` em `metodos.js`)
 
 ## Como publicar (gratuito, com GitHub Pages)
 
@@ -60,7 +62,8 @@ E abra `http://localhost:8000`.
 
 | Arquivo | Para que serve |
 |---|---|
-| `conteudo.js` | Raízes, ramificações, exercícios, referências e links do Drive (edite aqui) |
+| `conteudo.js` | Raízes, ramificações, exercícios e referências (edite aqui) |
+| `metodos.js` | Biblioteca de métodos: página/exercício → assunto → ramificação, e pastas do Drive |
 | `icones.js` | Ícones e ilustrações das raízes (SVG) |
 | `index.html` | Estrutura das telas |
 | `app.js` | Funcionamento do app (prazos, metrônomo, diário) |

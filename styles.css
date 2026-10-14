@@ -65,7 +65,7 @@ main { max-width: 720px; margin: 0 auto; }
 }
 .sobretitulo { color: var(--brass); }
 
-.conteudo-inicio, .cabecalho, .grade-raizes, .corpo, #lista-sessoes, #diario-vazio, .ajustes-corpo {
+.conteudo-inicio, .cabecalho, .grade-raizes, .corpo, #lista-sessoes, #diario-vazio, .ajustes-corpo, .corpo-metodos {
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
@@ -352,6 +352,84 @@ main { max-width: 720px; margin: 0 auto; }
 .material > span { flex: 1; min-width: 0; }
 .material-seta { color: var(--muted); }
 
+/* ---------- Nos métodos: "página tal → assunto" ---------- */
+.nos-metodos { margin-top: 6px; border: 1px solid var(--line); border-radius: var(--raio-sm); background: color-mix(in srgb, var(--c1, var(--brass)) 6%, transparent); }
+.nos-metodos > summary {
+  list-style: none; cursor: pointer; display: flex; align-items: center; gap: 10px; padding: 12px; min-height: 48px;
+}
+.nos-metodos > summary::-webkit-details-marker { display: none; }
+.nos-metodos > summary .ic { color: var(--c1, var(--brass)); }
+.nos-metodos > summary > span { flex: 1; display: flex; flex-direction: column; }
+.nos-metodos > summary .mudo { font-size: .8rem; }
+.nos-seta { color: var(--muted); transition: transform .2s; }
+.nos-metodos[open] .nos-seta { transform: rotate(90deg); }
+.nos-metodos > :not(summary) { margin: 0 12px 12px; }
+.nos-metodos .material { background: var(--surface); }
+
+.indicacoes { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.indicacao {
+  display: grid; grid-template-columns: minmax(78px, max-content) 1fr auto; align-items: center; gap: 12px;
+  padding: 10px 12px; border-radius: 10px; background: var(--surface-2); border: 1px solid var(--line);
+  color: inherit; text-decoration: none;
+}
+a.indicacao:hover { border-color: var(--c1, var(--brass)); }
+.ind-onde {
+  font-family: var(--f-display); font-stretch: 85%; font-weight: 700; font-size: .82rem; line-height: 1.2;
+  color: var(--on-brass); background: var(--latao); padding: 5px 8px; border-radius: 7px; max-width: 12ch; text-align: center;
+}
+.ind-texto { display: flex; flex-direction: column; min-width: 0; }
+.ind-texto strong { font-weight: 600; font-size: .92rem; line-height: 1.3; }
+.ind-texto span { font-size: .76rem; color: var(--muted); margin-top: 2px; }
+.ind-seta { width: 16px; height: 16px; color: var(--muted); }
+
+.ind-grupo + .ind-grupo { margin-top: 12px; }
+.ind-livro {
+  display: flex; align-items: center; gap: 8px; padding: 8px 0; color: var(--text); text-decoration: none; font-weight: 600; font-size: .9rem;
+}
+.ind-livro > span { flex: 1; min-width: 0; }
+.ind-livro > span small { display: block; font-weight: 500; font-size: .74rem; color: var(--muted); }
+.ind-livro .ic { color: var(--c1, var(--brass)); }
+.ind-livro .material-seta { color: var(--muted); width: 16px; height: 16px; }
+.ind-linhas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+.ind-linhas li { display: grid; grid-template-columns: minmax(72px, max-content) 1fr; gap: 10px; align-items: center; font-size: .88rem; line-height: 1.3; padding: 4px 0; }
+.ind-linhas .ind-onde { font-size: .76rem; padding: 4px 7px; }
+
+.livros-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.livro-chip {
+  display: inline-flex; align-items: baseline; gap: 6px; padding: 7px 10px; border-radius: 999px;
+  border: 1px solid var(--line); background: var(--surface-2); color: inherit; text-decoration: none; font-size: .82rem;
+}
+.livro-chip:hover { border-color: var(--c1, var(--brass)); }
+.livro-chip span { color: var(--muted); max-width: 18ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.livro-chip em { font-style: normal; font-weight: 700; color: var(--c1, var(--brass)); }
+
+/* ---------- Biblioteca de métodos ---------- */
+.corpo-metodos { display: flex; flex-direction: column; gap: 12px; padding-bottom: 12px; }
+.busca {
+  display: flex; align-items: center; gap: 10px; padding: 0 14px; min-height: 50px;
+  border-radius: var(--raio-sm); border: 1px solid var(--line); background: var(--surface);
+}
+.busca:focus-within { border-color: var(--brass); }
+.busca .ic { color: var(--muted); }
+.busca input { flex: 1; min-width: 0; font: inherit; color: var(--text); background: none; border: 0; outline: none; padding: 12px 0; }
+.lista-livros { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 8px; }
+.livro {
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: var(--raio-sm);
+  background: var(--surface); border: 1px solid var(--line); color: inherit; text-decoration: none;
+}
+.livro:hover { border-color: var(--brass); }
+.livro-ic { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 10px; color: var(--brass-soft); background: color-mix(in srgb, var(--brass) 14%, transparent); flex: none; }
+.livro-texto { flex: 1; display: flex; flex-direction: column; min-width: 0; }
+.livro-texto strong { font-weight: 600; line-height: 1.25; }
+.livro-texto span { font-size: .8rem; color: var(--muted); }
+.livro-qtd { display: flex; flex-direction: column; align-items: flex-end; font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; color: var(--brass-soft); }
+.livro-qtd small { font-family: var(--f-body); font-weight: 500; font-size: .66rem; color: var(--muted); }
+.grupo-raiz { gap: 10px; border-top: 2px solid color-mix(in srgb, var(--c1) 60%, transparent); }
+.grupo-topo { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; }
+.grupo-topo h2 { flex: 1; margin: 0; }
+.grupo-topo > .ic { color: var(--muted); }
+#tela-metodos .btn-voltar { align-self: flex-start; }
+
 .ramificacao { gap: 8px; }
 .ram-num {
   align-self: flex-start; font-family: var(--f-display); font-stretch: 85%; font-size: .7rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
@@ -501,7 +579,7 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 /* ---------- Navegação inferior ---------- */
 .abas {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   background: color-mix(in srgb, var(--bg) 88%, transparent);
   backdrop-filter: blur(16px);
   border-top: 1px solid var(--line);
