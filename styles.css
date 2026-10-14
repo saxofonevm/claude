@@ -22,6 +22,7 @@
   --f-display: "Archivo", "Arial Narrow", system-ui, sans-serif;
   --f-body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --f-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --raio: 16px;
   --raio-sm: 10px;
   color-scheme: dark;
@@ -130,7 +131,7 @@ main { max-width: 720px; margin: 0 auto; }
 .hero-data { margin-left: auto; font-size: .78rem; color: var(--muted); }
 .hero-saudacao { font-size: 2.6rem; }
 .frase-dia { margin: 0; border-left: 2px solid var(--brass); padding: 2px 0 2px 16px; }
-.frase-dia blockquote { margin: 0; font-family: var(--f-serif); font-style: italic; font-size: 1.5rem; line-height: 1.2; max-width: 30ch; }
+.frase-dia blockquote { margin: 0; font-family: var(--f-body); font-weight: 600; font-size: 1.25rem; line-height: 1.35; max-width: 32ch; }
 .frase-dia figcaption { font-size: .7rem; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); margin-top: 8px; }
 
 .percurso { display: flex; flex-direction: column; gap: 6px; }
@@ -172,23 +173,39 @@ main { max-width: 720px; margin: 0 auto; }
 .continuar-texto span:last-child { font-size: .85rem; color: rgb(255 255 255 / .72); }
 .continuar-seta { width: 22px; height: 22px; color: #fff; }
 
-/* Cronômetro */
+/* Cronômetro digital */
 .timer {
-  flex-direction: row; align-items: center; gap: 20px; flex-wrap: wrap;
-  background: radial-gradient(70% 90% at 0% 50%, rgb(212 162 76 / .12), transparent 70%), var(--surface);
+  gap: 14px;
+  background: radial-gradient(80% 100% at 50% 0%, rgb(212 162 76 / .12), transparent 70%), var(--surface);
 }
-.timer-anel { position: relative; width: 128px; height: 128px; flex: none; margin-inline: auto; }
-.timer-anel svg, .anel svg { width: 100%; height: 100%; transform: rotate(-90deg); }
-.anel-fundo { fill: none; stroke: var(--surface-2); stroke-width: 4; }
-.anel-fundo { stroke-width: 6; }
+.timer-topo { display: flex; justify-content: space-between; align-items: center; }
+.timer-estado {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--f-mono); font-size: .72rem; font-weight: 500; text-transform: uppercase; letter-spacing: .1em; color: var(--muted);
+}
+.timer-estado::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--faint); }
+.timer.rodando .timer-estado { color: var(--danger); }
+.timer.rodando .timer-estado::before { background: var(--danger); box-shadow: 0 0 8px var(--danger); }
+.timer-visor {
+  font-family: var(--f-mono); font-weight: 700; font-size: clamp(3.4rem, 17vw, 4.6rem);
+  line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; text-align: center;
+  padding-block: 14px; border-radius: var(--raio-sm);
+  background: #0a0a0d; border: 1px solid var(--line);
+  color: var(--text);
+}
+.timer.rodando .timer-visor { color: var(--brass-soft); text-shadow: 0 0 18px rgb(212 162 76 / .45); }
+.timer.rodando .dois-pontos { animation: piscar 1s steps(1) infinite; }
+@keyframes piscar { 50% { opacity: .2; } }
+@media (prefers-reduced-motion: reduce) { .timer.rodando .dois-pontos { animation: none; } }
+.timer-meta { display: flex; align-items: center; gap: 12px; }
+.timer-meta .barra { flex: 1; }
+.timer-rotulo { font-size: .78rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.timer-botoes { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.timer-botoes .btn.suave { margin-left: auto; }
+
+.anel-fundo { fill: none; stroke: var(--surface-2); stroke-width: 6; }
 .anel-valor { fill: none; stroke: var(--brass); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 0 100; transition: stroke-dasharray .6s ease; filter: drop-shadow(0 0 4px rgb(212 162 76 / .7)); }
-.timer-centro { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-.timer-visor { font-family: var(--f-display); font-stretch: 75%; font-size: 2.3rem; font-weight: 700; font-variant-numeric: tabular-nums; line-height: 1; }
-.timer.rodando .timer-visor { color: var(--brass); }
-.timer-rotulo { font-size: .66rem; color: var(--muted); margin-top: 6px; text-transform: uppercase; letter-spacing: .1em; }
-.timer-lado { flex: 1; min-width: 190px; display: flex; flex-direction: column; gap: 10px; }
-.timer-botoes { display: flex; gap: 8px; flex-wrap: wrap; }
-.timer-lado .btn.suave { align-self: flex-start; }
+.anel svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 
 /* Estatísticas */
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }

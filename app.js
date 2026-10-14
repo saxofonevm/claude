@@ -717,18 +717,20 @@
     const t = timer();
     const total = Math.floor(timerMs() / 1000);
     const h = Math.floor(total / 3600), m = Math.floor((total % 3600) / 60), s = total % 60;
-    $("#timer-visor").textContent = h ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+    const sep = `<span class="dois-pontos">:</span>`;
+    $("#timer-visor").innerHTML = (h ? `${pad(h)}${sep}` : "") + `${pad(m)}${sep}${pad(s)}`;
 
-    // O anel mostra o quanto falta para a meta do dia (meta semanal ÷ 7)
+    // A barra mostra o quanto falta para a meta do dia (meta semanal ÷ 7)
     const metaDia = Math.max(5, Math.round(estado.metaSemanal / 7));
     const minutosHoje = (minutosPorDia()[hojeISO()] || 0) + total / 60;
     const pct = Math.min(100, (minutosHoje / metaDia) * 100);
-    $("#timer-anel").style.strokeDasharray = `${pct.toFixed(1)} 100`;
-    $("#timer-rotulo").textContent = pct >= 100 ? "meta do dia cumprida" : `meta do dia · ${metaDia} min`;
+    $("#timer-meta-barra").style.width = `${pct.toFixed(1)}%`;
+    $("#timer-rotulo").textContent = pct >= 100 ? "Meta do dia cumprida" : `${Math.floor(minutosHoje)} de ${metaDia} min hoje`;
 
     const rodando = !!t.inicio;
     const temTempo = rodando || t.acumulado > 0;
     $("#cartao-timer").classList.toggle("rodando", rodando);
+    $("#timer-estado").textContent = rodando ? "Gravando" : temTempo ? "Pausado" : "Parado";
     $("#timer-iniciar").lastChild.textContent = temTempo ? "Continuar" : "Começar";
     $("#timer-iniciar").hidden = rodando;
     $("#timer-pausar").hidden = !rodando;
