@@ -1,45 +1,47 @@
-# 🎷 Sax Estudo
+# 🎷 CMA — Consciência Musical Aplicada
 
-App para os alunos de saxofone acompanharem a prática e seguirem as lições.
+App de estudo de saxofone organizado em **raízes**. Cada raiz tem suas
+**ramificações**, com exercícios, referências e prazos definidos pelo aluno.
 Funciona no navegador do celular, pode ser instalado na tela inicial e
 funciona offline. Os dados de cada aluno ficam salvos no próprio aparelho.
 
+## As 6 raízes
+
+1. 🎧 **Escuta**: referências de saxofonistas, estilos e setup
+2. 🥁 **Figuras Rítmicas**: codificar as rítmicas dentro dos gêneros musicais
+3. 🎼 **Estudos Melódicos**: músicas, escalas, intervalos e arpejos (cantarolar → fatiar → devagar → acelerar)
+4. 👅 **Articulações**: conhecer e aplicar no momento certo
+5. 🌊 **Dinâmicas**: transmitir a emoção da música
+6. 🍒 **Ornamentos**: a cereja do bolo
+
 ## O que o aluno pode fazer
 
-- **Início**: cronômetro de prática, minutos na semana, dias seguidos e meta semanal
-- **Diário**: registrar cada sessão (data, minutos, o que praticou, como foi, anotações), editar e apagar
-- **Lições**: lições por nível (Iniciante, Intermediário, Avançado) com objetivos,
-  exercícios e materiais; o aluno marca como concluída
-- **Ajustes**: nome, meta semanal e backup (exportar/importar) para trocar de celular
+- **Início**: cronômetro de prática, metrônomo, próximos prazos (com aviso de atrasados), meta semanal e sequência de dias
+- **Raízes**: progresso de cada raiz, ramificações, exercícios, referências (abrem no YouTube) e PDFs do Drive
+- **Exercício**: passo a passo, prazo escolhido pelo aluno, andamento atual × alvo e metrônomo
+- **Diário**: registro de cada prática ligado à raiz e ao exercício
+- **Ajustes**: nome, meta semanal e backup (exportar/importar)
 
-## Como editar as lições (professor)
+## Como editar o conteúdo (professor)
 
-Todo o conteúdo fica no arquivo **`licoes.js`**. Para adicionar uma lição, copie
-um bloco `{ ... }` existente, cole no final da lista e altere os textos.
-As instruções estão no topo do próprio arquivo.
+Todo o conteúdo fica em **`conteudo.js`**. As instruções estão no topo do arquivo.
 
-Para adicionar vídeos ou partituras, preencha `materiais`:
+> ⚠️ O conteúdo atual é um **rascunho** para revisão.
+> Não mude o `id` de um exercício já publicado: ele guarda o progresso dos alunos.
 
-```js
-materiais: [
-  { tipo: "video", titulo: "Demonstração da escala", url: "https://www.youtube.com/watch?v=..." },
-  { tipo: "partitura", titulo: "Exercício em PDF", url: "materiais/escala-do.pdf" }
-]
-```
+## Métodos em PDF (Google Drive)
 
-Arquivos (PDF, MP3, imagens) podem ser colocados na pasta `materiais/`.
-
-> Não mude o `id` de uma lição já publicada — é ele que guarda o progresso dos alunos.
-
-Depois de alterar o conteúdo, os alunos recebem a versão nova na próxima vez
-que abrirem o app (com internet).
+1. No Drive, crie a pasta **CMA** com uma subpasta para cada raiz:
+   `1 Escuta`, `2 Figuras Rítmicas`, `3 Estudos Melódicos`, `4 Articulações`, `5 Dinâmicas`, `6 Ornamentos`
+2. Coloque os PDFs em cada subpasta
+3. Compartilhe a pasta **CMA** como **"Qualquer pessoa com o link: Leitor"**, senão os alunos não conseguem abrir
+4. Peça ao Claude para atualizar os links no app (campo `drive` de cada raiz em `conteudo.js`)
 
 ## Como publicar (gratuito, com GitHub Pages)
 
 1. No GitHub, abra o repositório → **Settings** → **Pages**
 2. Em *Source*, escolha **Deploy from a branch**, selecione a branch e a pasta `/ (root)` e salve
-3. Em alguns minutos o endereço aparece no topo da página (ex.: `https://SEU-USUARIO.github.io/claude/`)
-4. Envie esse link aos alunos
+3. Em alguns minutos o endereço aparece no topo da página. Envie esse link aos alunos
 
 ### Instalar no celular
 
@@ -58,9 +60,9 @@ E abra `http://localhost:8000`.
 
 | Arquivo | Para que serve |
 |---|---|
-| `licoes.js` | Conteúdo das lições (edite aqui) |
+| `conteudo.js` | Raízes, ramificações, exercícios, referências e links do Drive (edite aqui) |
 | `index.html` | Estrutura das telas |
-| `app.js` | Funcionamento do app |
+| `app.js` | Funcionamento do app (prazos, metrônomo, diário) |
 | `styles.css` | Visual (cores, tamanhos) |
 | `sw.js` | Funcionamento offline |
 | `manifest.webmanifest`, `icons/` | Nome e ícone ao instalar no celular |

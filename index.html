@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Sax Estudo</title>
-  <meta name="description" content="Diário de prática e lições de saxofone">
+  <title>CMA</title>
+  <meta name="description" content="CMA — Consciência Musical Aplicada">
   <meta name="theme-color" content="#1f2a44">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
@@ -13,12 +13,12 @@
 </head>
 <body>
   <header class="topo">
-    <h1 id="titulo">Sax Estudo</h1>
+    <h1>CMA <small>Consciência Musical Aplicada</small></h1>
   </header>
 
   <main>
     <!-- INÍCIO -->
-    <section id="tela-inicio" class="tela ativa">
+    <section id="tela-inicio" class="tela">
       <p class="saudacao" id="saudacao"></p>
 
       <div class="cartao timer">
@@ -28,12 +28,19 @@
           <button class="btn" id="timer-pausar" hidden>Pausar</button>
           <button class="btn perigo" id="timer-finalizar" hidden>Finalizar</button>
         </div>
+        <button class="link-acao" id="btn-metronomo-inicio">🎵 Abrir metrônomo</button>
       </div>
 
       <div class="stats">
         <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo">min nesta semana</span></div>
         <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo">dias seguidos</span></div>
-        <div class="stat"><span class="stat-valor" id="stat-licoes">0</span><span class="stat-rotulo">lições concluídas</span></div>
+        <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo">exercícios feitos</span></div>
+      </div>
+
+      <div class="cartao">
+        <div class="cartao-topo"><h2>Próximos prazos</h2></div>
+        <ul class="lista-prazos" id="lista-prazos"></ul>
+        <p class="mudo" id="prazos-vazio">Você ainda não definiu prazos. Abra uma raiz ou um exercício e escolha sua data.</p>
       </div>
 
       <div class="cartao">
@@ -48,6 +55,25 @@
       <button class="btn largo" id="btn-registrar">+ Registrar prática manualmente</button>
     </section>
 
+    <!-- RAÍZES -->
+    <section id="tela-raizes" class="tela">
+      <h2>As raízes</h2>
+      <p class="mudo">Seis raízes, cada uma com suas ramificações. Siga na ordem, no seu ritmo.</p>
+      <div id="lista-raizes"></div>
+    </section>
+
+    <!-- RAIZ (detalhe) -->
+    <section id="tela-raiz" class="tela">
+      <a class="btn-voltar" href="#/raizes">‹ Raízes</a>
+      <div id="raiz-conteudo"></div>
+    </section>
+
+    <!-- EXERCÍCIO (detalhe) -->
+    <section id="tela-exercicio" class="tela">
+      <a class="btn-voltar" id="exercicio-voltar" href="#/raizes">‹ Voltar</a>
+      <div id="exercicio-conteudo"></div>
+    </section>
+
     <!-- DIÁRIO -->
     <section id="tela-diario" class="tela">
       <div class="cartao-topo">
@@ -56,18 +82,6 @@
       </div>
       <ul class="lista" id="lista-sessoes"></ul>
       <p class="vazio" id="diario-vazio">Nenhuma prática registrada ainda. Use o cronômetro na tela inicial ou toque em “+ Novo”.</p>
-    </section>
-
-    <!-- LIÇÕES -->
-    <section id="tela-licoes" class="tela">
-      <div class="filtros" id="filtros-nivel"></div>
-      <div id="lista-licoes"></div>
-    </section>
-
-    <!-- LIÇÃO (detalhe) -->
-    <section id="tela-licao" class="tela">
-      <button class="btn-voltar" id="licao-voltar">‹ Lições</button>
-      <div id="licao-conteudo"></div>
     </section>
 
     <!-- AJUSTES -->
@@ -95,13 +109,13 @@
   </main>
 
   <nav class="abas">
-    <button data-tela="inicio" class="ativa"><span aria-hidden="true">🎷</span>Início</button>
-    <button data-tela="diario"><span aria-hidden="true">📓</span>Diário</button>
-    <button data-tela="licoes"><span aria-hidden="true">📚</span>Lições</button>
-    <button data-tela="ajustes"><span aria-hidden="true">⚙️</span>Ajustes</button>
+    <a href="#/inicio" data-aba="inicio"><span aria-hidden="true">🎷</span>Início</a>
+    <a href="#/raizes" data-aba="raizes"><span aria-hidden="true">🌳</span>Raízes</a>
+    <a href="#/diario" data-aba="diario"><span aria-hidden="true">📓</span>Diário</a>
+    <a href="#/ajustes" data-aba="ajustes"><span aria-hidden="true">⚙️</span>Ajustes</a>
   </nav>
 
-  <!-- Modal de registro de prática -->
+  <!-- Registro de prática -->
   <dialog id="dlg-sessao">
     <form method="dialog" class="form" id="form-sessao">
       <h2 id="dlg-titulo">Registrar prática</h2>
@@ -113,12 +127,11 @@
           <input type="number" id="s-minutos" min="1" max="600" required>
         </label>
       </div>
-      <fieldset>
-        <legend>O que você praticou?</legend>
-        <div class="chips" id="s-categorias"></div>
-      </fieldset>
-      <label>Lição relacionada
-        <select id="s-licao"><option value="">— nenhuma —</option></select>
+      <label>Raiz
+        <select id="s-raiz"><option value="">— geral —</option></select>
+      </label>
+      <label>Exercício
+        <select id="s-exercicio"><option value="">— nenhum —</option></select>
       </label>
       <label>Como foi?
         <div class="avaliacao" id="s-avaliacao"></div>
@@ -133,7 +146,36 @@
     </form>
   </dialog>
 
-  <script src="licoes.js"></script>
+  <!-- Metrônomo -->
+  <dialog id="dlg-metronomo">
+    <div class="metronomo">
+      <div class="cartao-topo">
+        <h2>Metrônomo</h2>
+        <button class="link-acao" id="met-fechar">Fechar</button>
+      </div>
+      <div class="met-pulsos" id="met-pulsos"></div>
+      <div class="met-bpm"><span id="met-bpm">80</span><small>bpm</small></div>
+      <input type="range" id="met-slider" min="30" max="240" step="1" aria-label="Andamento">
+      <div class="met-ajustes">
+        <button class="btn" data-delta="-5">−5</button>
+        <button class="btn" data-delta="-1">−1</button>
+        <button class="btn" data-delta="1">+1</button>
+        <button class="btn" data-delta="5">+5</button>
+      </div>
+      <label class="met-compasso">Tempos por compasso
+        <select id="met-compasso">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+      <button class="btn primario largo" id="met-tocar">▶ Tocar</button>
+      <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
+    </div>
+  </dialog>
+
+  <script src="conteudo.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

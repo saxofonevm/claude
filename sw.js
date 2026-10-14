@@ -1,13 +1,13 @@
 // Service worker: permite usar o app offline.
 // Estratégia "stale-while-revalidate": abre na hora com a cópia salva e
 // busca a versão nova em segundo plano (aparece na próxima abertura).
-const CACHE = "sax-estudo-v1";
+const CACHE = "cma-v1";
 const ARQUIVOS = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
-  "licoes.js",
+  "conteudo.js",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",

@@ -1,7 +1,7 @@
 {
-  "name": "Sax Estudo",
-  "short_name": "Sax Estudo",
-  "description": "Diário de prática e lições de saxofone",
+  "name": "CMA — Consciência Musical Aplicada",
+  "short_name": "CMA",
+  "description": "Consciência Musical Aplicada: raízes de estudo do saxofone",
   "lang": "pt-BR",
   "start_url": "./",
   "scope": "./",
