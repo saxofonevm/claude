@@ -278,35 +278,53 @@
     return dias;
   }
 
-  // Diagrama das raízes: cada linha se preenche conforme o progresso do aluno
+  // Diagrama do percurso: um saxofone de onde nascem as raízes.
+  // Cada raiz se preenche com a sua cor conforme o progresso do aluno.
   function arvoreSVG() {
     const n = RAIZES.length || 1;
-    const larg = 340, chao = 64;
+    const larg = 340, origem = { x: 170, y: 160 };
     const pontas = RAIZES.map((_, i) => {
       const t = n === 1 ? 0.5 : i / (n - 1);
-      return { x: 26 + t * (larg - 52), y: 150 + Math.sin(t * Math.PI) * 18 };
+      return { x: 36 + t * (larg - 72), y: 262 + Math.sin(t * Math.PI) * 20 };
     });
     const raizes = RAIZES.map((raiz, i) => {
       const { x, y } = pontas[i];
-      const d = `M170 ${chao} C170 ${chao + 46}, ${x} ${y - 64}, ${x} ${y}`;
+      const d = `M${origem.x} ${origem.y} C${origem.x} ${origem.y + 50}, ${x} ${y - 70}, ${x} ${y}`;
       const p = progressoRaiz(raiz);
-      return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída">
+      return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída" style="color:${escapar(raiz.cor)}">
         <path d="${d}" class="raiz-base"/>
-        <path d="${d}" pathLength="100" class="raiz-cor" stroke="${escapar(raiz.cor)}" stroke-dasharray="${p.pct} 100"/>
-        <circle cx="${x}" cy="${y}" r="${p.completa ? 6 : 4.5}" fill="${p.feitos ? escapar(raiz.cor) : "var(--bg)"}" stroke="${escapar(raiz.cor)}" stroke-width="1.5"/>
-        <text x="${x}" y="${y + 22}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
-        <text x="${x}" y="${y + 35}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
+        ${p.pct ? `<path d="${d}" pathLength="100" class="raiz-cor" stroke-dasharray="${p.pct} 100"/>` : ""}
+        <circle cx="${x}" cy="${y}" r="7" class="${p.feitos ? "no cheio" : "no"}"/>
+        <text x="${x}" y="${y + 24}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
+        <text x="${x}" y="${y + 38}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
       </a>`;
     }).join("");
-    const marcas = Array.from({ length: 17 }, (_, i) => `<path d="M${10 + i * 20} ${chao}v4"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 214" role="img" aria-label="Diagrama do seu percurso nas raízes">
-      <g class="tronco">
-        <path d="M170 ${chao}V22"/>
-        <ellipse cx="163" cy="22" rx="8" ry="6" transform="rotate(-20 163 22)" class="cabeca-nota"/>
-        <path d="M170 22c5 8 14 10 14 20"/>
+    const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
+      .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
+    return `<svg viewBox="0 0 ${larg} 330" role="img" aria-label="Seu percurso: um saxofone e as seis raízes do CMA">
+      <defs>
+        <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>
+        </linearGradient>
+        <radialGradient id="brilho-sax" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#d4a24c" stop-opacity=".35"/><stop offset="1" stop-color="#d4a24c" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="166" cy="96" r="96" fill="url(#brilho-sax)"/>
+      <g class="sax" fill="none" stroke-linecap="round">
+        <path d="M162 52C162 36 146 26 128 30" stroke="url(#latao)" stroke-width="6"/>
+        <path d="M128 30L113 35.5" stroke="#18181d" stroke-width="8.5"/>
+        <path d="M126 27.5l3 6.5" stroke="#f6d58b" stroke-width="2.2"/>
+        <path d="M162 52C160 86 152 112 152 132" stroke="url(#latao)" stroke-width="15"/>
+        <path d="M152 132C152 164 189 164 189 134" stroke="url(#latao)" stroke-width="19"/>
+        <path d="M189 134C190 116 193 101 198 90" stroke="url(#latao)" stroke-width="22"/>
+        <path d="M163 56l-11 70" stroke="#fff3cf" stroke-opacity=".45" stroke-width="2"/>
+        <ellipse cx="202" cy="82" rx="20" ry="8.5" transform="rotate(-18 202 82)" fill="url(#latao)"/>
+        <ellipse cx="202.5" cy="81.5" rx="14.5" ry="5" transform="rotate(-18 202.5 81.5)" fill="#2a1d09"/>
+        ${chaves}
+        <circle cx="186" cy="120" r="3.6" class="sax-chave"/>
+        <path d="M168 60c6 4 6 12 4 18" stroke="#b7863a" stroke-width="2"/>
       </g>
-      <path d="M0 ${chao}H${larg}" class="horizonte"/>
-      <g class="marcas">${marcas}</g>
       ${raizes}
     </svg>`;
   }
