@@ -15,17 +15,37 @@
  *                 { titulo, detalhe, url }   abre o link informado.
  *   - Exercício com "andamento": { inicial, alvo } mostra o metrônomo e o
  *     acompanhamento de BPM (estudo devagar, crescendo aos poucos).
+ *   - "icone": um destes desenhos: escuta, ritmo, melodia, articulacao,
+ *     dinamica, ornamentos.  "cor" e "cor2" formam o degradê da raiz.
+ *   - "frase": frase de destaque da raiz. "porQue": explica por que ela importa.
  *   - "drive": links dos PDFs/pastas do Google Drive desta raiz.
  *     O arquivo precisa estar compartilhado como "Qualquer pessoa com o link".
  */
 window.CMA = {
+  // Frases que aparecem na tela inicial (uma por dia).
+  frases: [
+    "Pouco todo dia vence muito de vez em quando.",
+    "Estude com leveza: tensão não toca bem.",
+    "Ouvir é o primeiro passo de qualquer grande músico.",
+    "Devagar e limpo hoje, rápido e seguro amanhã.",
+    "Toda frase difícil é feita de pedaços fáceis.",
+    "Cante antes de tocar: se você consegue cantar, consegue tocar.",
+    "Errar estudando é aprender. Errar sem perceber é repetir.",
+    "Seu som é a sua assinatura. Cuide dele em cada nota longa.",
+    "Música é emoção organizada no tempo.",
+    "Constância transforma exercício em música."
+  ],
+
   raizes: [
     // ───────────────────────────── 1. ESCUTA ─────────────────────────────
     {
       id: "escuta",
       titulo: "Escuta",
-      icone: "🎧",
-      cor: "#4f7cac",
+      icone: "escuta",
+      cor: "#2563eb",
+      cor2: "#38bdf8",
+      frase: "Quem aprende a ouvir, aprende a tocar.",
+      porQue: "O ouvido é o primeiro instrumento do músico. Quando você sabe exatamente qual som quer, seu corpo encontra o caminho para produzi-lo. Ouvir com atenção treina o gosto, o estilo e a memória musical.",
       resumo: "Referências que inspiram: saxofonistas, estilos e setup.",
       descricao: "Tudo começa pelo ouvido. Antes de tocar, o aluno conhece a sonoridade que quer alcançar: ouve os grandes saxofonistas, compara timbres e entende como o setup (boquilha, palheta, abraçadeira) influencia o som.",
       drive: { pasta: null, arquivos: [] },
@@ -114,8 +134,11 @@ window.CMA = {
     {
       id: "ritmo",
       titulo: "Figuras Rítmicas",
-      icone: "🥁",
-      cor: "#c0703a",
+      icone: "ritmo",
+      cor: "#f97316",
+      cor2: "#fbbf24",
+      frase: "A nota certa no tempo errado ainda é a nota errada.",
+      porQue: "O ritmo é a base de toda música. Quem entende as figuras rítmicas lê com mais facilidade, toca junto com outros músicos com segurança e consegue tocar qualquer gênero com o balanço certo.",
       resumo: "Codificar as rítmicas dentro dos gêneros musicais.",
       descricao: "O aluno aprende a reconhecer, ler e reproduzir as figuras rítmicas típicas de cada gênero. O caminho é sempre: ouvir a referência → bater/cantar o ritmo → escrever (codificar) → tocar no sax.",
       drive: { pasta: null, arquivos: [] },
@@ -216,8 +239,11 @@ window.CMA = {
     {
       id: "melodia",
       titulo: "Estudos Melódicos",
-      icone: "🎼",
-      cor: "#3f8f6b",
+      icone: "melodia",
+      cor: "#059669",
+      cor2: "#34d399",
+      frase: "Devagar se vai longe: o andamento lento é onde o som nasce.",
+      porQue: "Escalas, intervalos e arpejos são o vocabulário da música. Estudar devagar, cantando e fatiando as frases, grava o caminho certo nos dedos e no ouvido, e a velocidade vem como consequência.",
       resumo: "Músicas, escalas, intervalos e arpejos, com leveza e devagar.",
       descricao: "O aluno entende a importância de estudar e aplicar o estudo melódico. Método: cantarolar a frase → fatiar em pedaços pequenos → tocar devagar → aumentar o andamento gradativamente até o alvo.",
       drive: { pasta: null, arquivos: [] },
@@ -330,8 +356,11 @@ window.CMA = {
     {
       id: "articulacao",
       titulo: "Articulações",
-      icone: "👅",
-      cor: "#8a5aa8",
+      icone: "articulacao",
+      cor: "#7c3aed",
+      cor2: "#c084fc",
+      frase: "Cada nota tem começo, meio e fim. Cuide dos três.",
+      porQue: "A articulação é a pronúncia da música. A mesma melodia muda completamente de caráter quando ligada ou destacada. Saber escolher a articulação certa é o que faz o seu som falar o idioma de cada estilo.",
       resumo: "Conhecer e aplicar as articulações no momento certo.",
       descricao: "Articulação é a forma de começar, ligar e terminar as notas. O aluno aprende cada tipo e, principalmente, quando usar cada um de acordo com o estilo da música.",
       drive: { pasta: null, arquivos: [] },
@@ -399,8 +428,11 @@ window.CMA = {
     {
       id: "dinamica",
       titulo: "Dinâmicas",
-      icone: "🌊",
-      cor: "#2f8c9a",
+      icone: "dinamica",
+      cor: "#0891b2",
+      cor2: "#2dd4bf",
+      frase: "Dinâmica é a forma de a música respirar.",
+      porQue: "Sem dinâmica, a música fica plana, como uma fala sem emoção. Controlar o volume do pianíssimo ao fortíssimo permite contar uma história e emocionar quem escuta.",
       resumo: "Transmitir a emoção da música com as intensidades.",
       descricao: "Dinâmica é a variação de intensidade (do pianíssimo ao fortíssimo). O aluno aprende a controlar o som em todas as intensidades e aplica as dinâmicas nas músicas para transmitir a emoção que cada uma pede.",
       drive: { pasta: null, arquivos: [] },
@@ -467,8 +499,11 @@ window.CMA = {
     {
       id: "ornamentos",
       titulo: "Ornamentos",
-      icone: "🍒",
-      cor: "#b5485d",
+      icone: "ornamentos",
+      cor: "#e11d48",
+      cor2: "#fb7185",
+      frase: "O ornamento é o tempero: na medida certa, transforma a música.",
+      porQue: "Os ornamentos são a cereja do bolo. Eles dão personalidade e elegância à interpretação. Usados com bom gosto, mostram maturidade musical e deixam o seu jeito de tocar único.",
       resumo: "A cereja do bolo: os mais diversos ornamentos.",
       descricao: "Os ornamentos dão personalidade à interpretação. O aluno aprende cada ornamento, entende em que estilo ele aparece e o aplica com bom gosto nas músicas.",
       drive: { pasta: null, arquivos: [] },

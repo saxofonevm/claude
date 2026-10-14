@@ -4,11 +4,17 @@
   const CHAVE = "cma.v1";
   const AVALIACOES = ["😣", "😕", "🙂", "😄", "🤩"];
   const DIAS_CURTOS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
-  const ICONES_MATERIAL = { video: "▶️", partitura: "🎼", audio: "🎧", pdf: "📄", pasta: "📁", link: "🔗" };
+  const ANDAMENTOS = [
+    [40, "Grave"], [60, "Largo"], [66, "Larghetto"], [76, "Adagio"], [108, "Andante"],
+    [120, "Moderato"], [156, "Allegro"], [176, "Vivace"], [200, "Presto"], [Infinity, "Prestissimo"]
+  ];
+  const { icone, ilustracao } = window;
 
   // ---------- Conteúdo (conteudo.js) ----------
 
-  const RAIZES = (window.CMA && Array.isArray(window.CMA.raizes)) ? window.CMA.raizes : [];
+  const CMA = window.CMA || {};
+  const RAIZES = Array.isArray(CMA.raizes) ? CMA.raizes : [];
+  const FRASES = Array.isArray(CMA.frases) && CMA.frases.length ? CMA.frases : ["Bora tocar?"];
   const RAIZ = {};       // id → raiz
   const EXERCICIO = {};  // id → { ex, ram, raiz }
   for (const raiz of RAIZES) {
@@ -62,6 +68,9 @@
   const hojeISO = () => dataISO(new Date());
   const novoId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
   const limitar = (v, min, max) => Math.min(max, Math.max(min, v));
+  const nomeAndamento = bpm => ANDAMENTOS.find(([max]) => bpm < max)[1];
+  const corRaiz = raiz => `--c1:${escapar(raiz.cor || "#7c3aed")};--c2:${escapar(raiz.cor2 || raiz.cor || "#c084fc")}`;
+  const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   function escapar(texto) {
     return String(texto ?? "").replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -74,8 +83,7 @@
   }
 
   function diasAte(iso) {
-    const hoje = deISO(hojeISO());
-    return Math.round((deISO(iso) - hoje) / 864e5);
+    return Math.round((deISO(iso) - deISO(hojeISO())) / 864e5);
   }
 
   function formatarData(iso) {
@@ -105,6 +113,14 @@
     return null;
   }
 
+  function hidratarIcones(raiz = document) {
+    raiz.querySelectorAll("[data-icone]").forEach(el => {
+      if (el.dataset.iconePronto) return;
+      el.insertAdjacentHTML("afterbegin", icone(el.dataset.icone));
+      el.dataset.iconePronto = "1";
+    });
+  }
+
   let avisoTimeout;
   function avisar(msg) {
     let el = $(".aviso");
@@ -120,6 +136,47 @@
     avisoTimeout = setTimeout(() => { el.hidden = true; }, 2600);
   }
 
+  // Janela de confirmação própria (funciona em qualquer navegador)
+  const dlgConf = $("#dlg-confirmar");
+  function confirmar(titulo, texto, rotuloSim = "Confirmar") {
+    $("#conf-titulo").textContent = titulo;
+    $("#conf-texto").textContent = texto;
+    $("#conf-sim").textContent = rotuloSim;
+    dlgConf.returnValue = "";
+    dlgConf.showModal();
+    return new Promise(ok => dlgConf.addEventListener("close", () => ok(dlgConf.returnValue === "sim"), { once: true }));
+  }
+
+  // ---------- Confete ----------
+
+  function confete() {
+    if (semMovimento()) return;
+    const canvas = $("#confete");
+    const ctx = canvas.getContext("2d");
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = innerWidth * dpr; canvas.height = innerHeight * dpr;
+    ctx.scale(dpr, dpr);
+    const cores = ["#fbbf24", "#f97316", "#e11d48", "#7c3aed", "#2563eb", "#10b981", "#2dd4bf"];
+    const pecas = Array.from({ length: 90 }, () => ({
+      x: innerWidth / 2 + (Math.random() - 0.5) * 80, y: innerHeight * 0.45,
+      vx: (Math.random() - 0.5) * 12, vy: -Math.random() * 13 - 5,
+      r: Math.random() * Math.PI, vr: (Math.random() - 0.5) * 0.4,
+      w: 6 + Math.random() * 6, h: 4 + Math.random() * 4, cor: cores[Math.floor(Math.random() * cores.length)]
+    }));
+    const inicio = performance.now();
+    canvas.hidden = false;
+    (function quadro(t) {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (const p of pecas) {
+        p.vy += 0.35; p.vx *= 0.99; p.x += p.vx; p.y += p.vy; p.r += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r);
+        ctx.fillStyle = p.cor; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      }
+      if (t - inicio < 2200) requestAnimationFrame(quadro);
+      else { ctx.clearRect(0, 0, innerWidth, innerHeight); canvas.hidden = true; }
+    })(inicio);
+  }
+
   // ---------- Progresso e prazos ----------
 
   const feito = exId => !!estado.feitos[exId];
@@ -127,7 +184,7 @@
   function progressoRaiz(raiz) {
     const exs = exerciciosDaRaiz(raiz);
     const feitos = exs.filter(e => feito(e.id)).length;
-    return { feitos, total: exs.length, pct: exs.length ? Math.round((feitos / exs.length) * 100) : 0 };
+    return { feitos, total: exs.length, pct: exs.length ? Math.round((feitos / exs.length) * 100) : 0, completa: exs.length > 0 && feitos === exs.length };
   }
 
   function statusPrazo(iso, concluido) {
@@ -147,10 +204,10 @@
   }
 
   function campoPrazo(chave, rotulo) {
-    return `<label class="campo-prazo">${escapar(rotulo)}
+    return `<label class="campo-prazo">${icone("calendario")}<span>${escapar(rotulo)}</span>
       <span class="campo-prazo-linha">
         <input type="date" data-prazo="${escapar(chave)}" value="${escapar(estado.prazos[chave] || "")}">
-        ${estado.prazos[chave] ? `<button class="link-acao" data-limpar-prazo="${escapar(chave)}">Remover</button>` : ""}
+        ${estado.prazos[chave] ? `<button type="button" class="link-acao" data-limpar-prazo="${escapar(chave)}">Remover</button>` : ""}
       </span>
     </label>`;
   }
@@ -162,7 +219,7 @@
     else delete estado.prazos[inp.dataset.prazo];
     salvar();
     renderTela();
-    avisar(inp.value ? "Prazo definido." : "Prazo removido.");
+    avisar(inp.value ? "Prazo definido. Você consegue!" : "Prazo removido.");
   });
 
   document.addEventListener("click", ev => {
@@ -179,14 +236,24 @@
       const [tipo, id] = [chave.slice(0, 1), chave.slice(2)];
       if (tipo === "r" && RAIZ[id]) {
         const p = progressoRaiz(RAIZ[id]);
-        if (p.total && p.feitos === p.total) continue;
-        itens.push({ iso, titulo: RAIZ[id].titulo, contexto: `Raiz · ${p.feitos}/${p.total} exercícios`, href: `#/raiz/${id}`, icone: RAIZ[id].icone });
+        if (p.completa) continue;
+        itens.push({ iso, raiz: RAIZ[id], titulo: RAIZ[id].titulo, contexto: `Raiz · ${p.feitos}/${p.total} exercícios`, href: `#/raiz/${id}` });
       } else if (tipo === "e" && EXERCICIO[id] && !feito(id)) {
         const { ex, raiz } = EXERCICIO[id];
-        itens.push({ iso, titulo: ex.titulo, contexto: raiz.titulo, href: `#/ex/${id}`, icone: raiz.icone });
+        itens.push({ iso, raiz, titulo: ex.titulo, contexto: raiz.titulo, href: `#/ex/${id}` });
       }
     }
     return itens.sort((a, b) => a.iso.localeCompare(b.iso));
+  }
+
+  function proximoExercicio() {
+    for (const raiz of RAIZES) {
+      for (const ram of raiz.ramificacoes || []) {
+        const ex = (ram.exercicios || []).find(e => !feito(e.id));
+        if (ex) return { ex, ram, raiz };
+      }
+    }
+    return null;
   }
 
   // ---------- Navegação (rotas por #hash) ----------
@@ -239,10 +306,84 @@
     return dias;
   }
 
+  // A árvore do CMA: cada raiz se colore conforme o progresso do aluno
+  function arvoreSVG() {
+    const n = RAIZES.length || 1;
+    const larg = 340, chao = 120;
+    const pontas = RAIZES.map((_, i) => {
+      const t = n === 1 ? 0.5 : i / (n - 1);
+      return { x: 26 + t * (larg - 52), y: 190 + Math.sin(t * Math.PI) * 26 };
+    });
+    const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
+    const pctTotal = TOTAL_EXERCICIOS ? totalFeitos / TOTAL_EXERCICIOS : 0;
+    const frutos = [[150, 46], [196, 52], [128, 74], [214, 78], [172, 30], [160, 82], [188, 70], [138, 52], [206, 36], [176, 58], [118, 62], [226, 60]];
+    const nFrutos = Math.round(pctTotal * frutos.length);
+
+    const raizes = RAIZES.map((raiz, i) => {
+      const { x, y } = pontas[i];
+      const d = `M170 ${chao + 2} C170 ${chao + 40}, ${x} ${y - 70}, ${x} ${y}`;
+      const p = progressoRaiz(raiz);
+      return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída">
+        <path d="${d}" class="raiz-base"/>
+        <path d="${d}" pathLength="100" class="raiz-cor" stroke="${escapar(raiz.cor2 || raiz.cor)}" stroke-dasharray="${p.pct} 100"/>
+        <circle cx="${x}" cy="${y}" r="14" fill="${p.feitos ? escapar(raiz.cor) : "rgba(255,255,255,.12)"}" stroke="${escapar(raiz.cor2 || raiz.cor)}" stroke-width="2.5"/>
+        <text x="${x}" y="${y + 5}" text-anchor="middle">${p.completa ? "✓" : i + 1}</text>
+      </a>`;
+    }).join("");
+
+    return `<svg viewBox="0 0 ${larg} 232" role="img" aria-label="Sua árvore CMA">
+      <defs>
+        <radialGradient id="copa" cx="50%" cy="40%" r="60%">
+          <stop offset="0" stop-color="#6ee7b7"/><stop offset="1" stop-color="#059669"/>
+        </radialGradient>
+        <linearGradient id="solo" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#3b1d0e" stop-opacity=".55"/><stop offset="1" stop-color="#3b1d0e" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      <rect x="0" y="${chao}" width="${larg}" height="${232 - chao}" fill="url(#solo)" rx="18"/>
+      <path d="M0 ${chao}H${larg}" stroke="#a16207" stroke-opacity=".6" stroke-width="2"/>
+      <path d="M160 ${chao + 2}c2-14 1-30-2-44h24c-3 14-4 30-2 44z" fill="#a0632e"/>
+      <g opacity="${(0.55 + pctTotal * 0.45).toFixed(2)}" fill="url(#copa)">
+        <circle cx="170" cy="56" r="40"/><circle cx="130" cy="70" r="28"/><circle cx="210" cy="70" r="28"/>
+        <circle cx="148" cy="38" r="24"/><circle cx="194" cy="38" r="24"/>
+      </g>
+      ${frutos.slice(0, nFrutos).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="5" fill="#fbbf24" stroke="#fff7" stroke-width="1.5"/>`).join("")}
+      ${raizes}
+    </svg>`;
+  }
+
   function renderInicio() {
     const hora = new Date().getHours();
     const cumprimento = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
-    $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}! Bora tocar?` : `${cumprimento}! Bora tocar?`;
+    $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}!` : `${cumprimento}!`;
+    const diaDoAno = Math.floor(deISO(hojeISO()) / 864e5);
+    $("#frase-dia").textContent = FRASES[diaDoAno % FRASES.length];
+
+    const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
+    const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
+    $("#arvore").innerHTML = arvoreSVG();
+    $("#arvore-legenda").textContent = pctTotal === 0
+      ? "Sua árvore está pronta para crescer. Cada exercício concluído dá cor a uma raiz."
+      : pctTotal === 100 ? "Árvore completa! Você percorreu todas as raízes do CMA. 🏆"
+      : `Sua árvore está ${pctTotal}% formada. Toque em uma raiz para continuar.`;
+
+    const prox = proximoExercicio();
+    const cont = $("#continuar");
+    if (prox) {
+      cont.href = `#/ex/${encodeURIComponent(prox.ex.id)}`;
+      cont.setAttribute("style", corRaiz(prox.raiz));
+      cont.innerHTML = `<span class="continuar-ilus">${ilustracao(prox.raiz.icone)}</span>
+        <span class="continuar-texto">
+          <span class="continuar-rotulo">Continue de onde parou</span>
+          <strong>${escapar(prox.ex.titulo)}</strong>
+          <span>${escapar(prox.raiz.titulo)} · ${escapar(prox.ram.titulo)}</span>
+        </span>
+        ${icone("seta", "continuar-seta")}`;
+    } else {
+      cont.href = "#/raizes";
+      cont.removeAttribute("style");
+      cont.innerHTML = `<span class="continuar-texto"><span class="continuar-rotulo">Parabéns!</span><strong>Você concluiu todos os exercícios.</strong><span>Revise as raízes e fale com o professor sobre os próximos passos.</span></span>`;
+    }
 
     const mapa = minutosPorDia();
     const inicioSemana = segunda(new Date());
@@ -253,28 +394,30 @@
       const iso = dataISO(d);
       const min = mapa[iso] || 0;
       totalSemana += min;
-      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}">${DIAS_CURTOS[i]}<div class="dia-ponto" title="${min} min">${min ? "✓" : ""}</div></div>`;
+      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}">${DIAS_CURTOS[i]}<div class="dia-ponto" title="${min} min">${min ? icone("check") : ""}</div></div>`;
     }
     $("#semana").innerHTML = html;
 
     $("#stat-semana").textContent = totalSemana;
     $("#stat-sequencia").textContent = calcularSequencia(mapa);
-    $("#stat-exercicios").textContent = `${Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length}/${TOTAL_EXERCICIOS}`;
+    $("#stat-exercicios").textContent = `${totalFeitos}/${TOTAL_EXERCICIOS}`;
 
     const pct = Math.min(100, Math.round((totalSemana / estado.metaSemanal) * 100));
     $("#meta-barra").style.width = pct + "%";
     $("#meta-texto").textContent = `${totalSemana} / ${estado.metaSemanal} min` + (pct >= 100 ? " 🎉" : "");
 
-    const prazos = proximosPrazos().slice(0, 6);
+    const prazos = proximosPrazos().slice(0, 5);
     $("#prazos-vazio").hidden = prazos.length > 0;
     $("#lista-prazos").innerHTML = prazos.map(p => {
       const s = statusPrazo(p.iso, false);
-      return `<li><a class="prazo-item" href="${p.href}">
-        <span class="prazo-icone" aria-hidden="true">${p.icone || ""}</span>
+      return `<li><a class="prazo-item" href="${p.href}" style="${corRaiz(p.raiz)}">
+        <span class="mini-ilus">${ilustracao(p.raiz.icone)}</span>
         <span class="prazo-texto"><strong>${escapar(p.titulo)}</strong><span class="mudo">${escapar(p.contexto)} · ${escapar(deISO(p.iso).toLocaleDateString("pt-BR"))}</span></span>
         <span class="selo ${s.classe}">${escapar(s.texto)}</span>
       </a></li>`;
     }).join("");
+
+    renderTimer();
   }
 
   // ---------- Raízes ----------
@@ -282,17 +425,16 @@
   function renderRaizes() {
     $("#lista-raizes").innerHTML = RAIZES.map((raiz, i) => {
       const p = progressoRaiz(raiz);
-      return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="--cor:${escapar(raiz.cor || "var(--destaque)")}">
-        <span class="raiz-num">${i + 1}</span>
-        <span class="raiz-corpo">
-          <span class="raiz-titulo">${raiz.icone ? escapar(raiz.icone) + " " : ""}${escapar(raiz.titulo)}</span>
-          <span class="mudo">${escapar(raiz.resumo)}</span>
-          <span class="raiz-rodape">
-            <span class="barra fina"><span class="barra-preenchida" style="width:${p.pct}%"></span></span>
-            <span class="mudo">${p.feitos}/${p.total}</span>
-            ${seloPrazo("r:" + raiz.id, p.total > 0 && p.feitos === p.total)}
-          </span>
+      return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
+        <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
+        <span class="raiz-num">Raiz ${i + 1}</span>
+        <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
+        <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
+        <span class="raiz-rodape">
+          <span class="barra clara"><span class="barra-preenchida" style="width:${p.pct}%"></span></span>
+          <span class="raiz-contagem">${p.completa ? "Completa ✓" : `${p.feitos}/${p.total}`}</span>
         </span>
+        ${seloPrazo("r:" + raiz.id, p.completa)}
       </a>`;
     }).join("") || `<p class="vazio">Nenhuma raiz publicada ainda.</p>`;
   }
@@ -300,61 +442,91 @@
   function htmlReferencias(refs) {
     const validas = (refs || []).map(r => ({ ...r, href: urlReferencia(r) })).filter(r => r.href);
     if (!validas.length) return "";
-    return `<div class="referencias"><h4>Referências</h4>${validas.map(r =>
-      `<a class="material" href="${escapar(r.href)}" target="_blank" rel="noopener">
-        <span aria-hidden="true">${r.busca && !r.url ? "▶️" : ICONES_MATERIAL[r.tipo] || ICONES_MATERIAL.link}</span>
-        <span><strong>${escapar(r.titulo)}</strong>${r.detalhe ? `<span class="mudo">${escapar(r.detalhe)}</span>` : ""}</span>
-        <span aria-hidden="true">↗</span>
-      </a>`).join("")}</div>`;
+    return `<div class="referencias"><h4>${icone("nota")}Ouça as referências</h4><div class="ref-grade">${validas.map(r =>
+      `<a class="ref" href="${escapar(r.href)}" target="_blank" rel="noopener">
+        ${icone(r.busca && !r.url ? "youtube" : "externo", "ref-ic")}
+        <span class="ref-texto"><strong>${escapar(r.titulo)}</strong>${r.detalhe ? `<span>${escapar(r.detalhe)}</span>` : ""}</span>
+      </a>`).join("")}</div></div>`;
   }
 
   function htmlDrive(drive) {
-    const pasta = drive && urlSegura(drive.pasta || "");
+    const pasta = drive && urlSegura(drive.pasta);
     const arquivos = ((drive && drive.arquivos) || []).map(a => ({ ...a, href: urlSegura(a.url) })).filter(a => a.href);
+    const cabeca = `<h2>${icone("pdf")}Métodos e PDFs</h2>`;
     if (!pasta && !arquivos.length) {
-      return `<div class="cartao"><h3>📁 Métodos e PDFs</h3><p class="mudo">Os materiais desta raiz serão publicados em breve pelo professor.</p></div>`;
+      return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos desta raiz serão publicados em breve pelo professor.</p></div>`;
     }
-    return `<div class="cartao"><h3>📁 Métodos e PDFs</h3>
+    return `<div class="cartao drive">${cabeca}
       ${arquivos.map(a => `<a class="material" href="${escapar(a.href)}" target="_blank" rel="noopener">
-        <span aria-hidden="true">${ICONES_MATERIAL[a.tipo] || ICONES_MATERIAL.pdf}</span><span>${escapar(a.titulo || "Arquivo")}</span><span aria-hidden="true">↗</span>
+        ${icone("pdf")}<span>${escapar(a.titulo || "Arquivo")}</span>${icone("externo", "material-seta")}
       </a>`).join("")}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">
-        <span aria-hidden="true">${ICONES_MATERIAL.pasta}</span><span>Abrir pasta no Google Drive</span><span aria-hidden="true">↗</span>
+        ${icone("pasta")}<span>Abrir pasta no Google Drive</span>${icone("externo", "material-seta")}
       </a>` : ""}
+    </div>`;
+  }
+
+  function anel(pct, rotulo) {
+    return `<div class="anel">
+      <svg viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="anel-fundo" cx="60" cy="60" r="50"/>
+        <circle class="anel-valor" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="${pct} 100"/>
+      </svg>
+      <span class="anel-texto"><strong>${pct}%</strong><small>${escapar(rotulo)}</small></span>
     </div>`;
   }
 
   function renderRaiz(raiz) {
     const indice = RAIZES.indexOf(raiz);
     const p = progressoRaiz(raiz);
-    $("#raiz-conteudo").innerHTML = `<article class="detalhe" style="--cor:${escapar(raiz.cor || "var(--destaque)")}">
-      <p class="sobretitulo">Raiz ${indice + 1} de ${RAIZES.length}</p>
-      <h2 class="detalhe-titulo">${raiz.icone ? escapar(raiz.icone) + " " : ""}${escapar(raiz.titulo)}</h2>
-      <p>${escapar(raiz.descricao || raiz.resumo)}</p>
+    const proxima = RAIZES[indice + 1];
+    $("#raiz-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
+      <header class="banda">
+        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
+        <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
+        <p class="banda-sobre">Raiz ${indice + 1} de ${RAIZES.length}</p>
+        <h1>${escapar(raiz.titulo)}</h1>
+        ${raiz.frase ? `<p class="banda-frase">“${escapar(raiz.frase)}”</p>` : ""}
+      </header>
 
-      <div class="cartao">
-        <div class="cartao-topo"><h3>Seu progresso</h3><span class="mudo">${p.feitos}/${p.total} exercícios</span></div>
-        <div class="barra"><div class="barra-preenchida cor-raiz" style="width:${p.pct}%"></div></div>
-        ${campoPrazo("r:" + raiz.id, "Meu prazo para concluir esta raiz")}
-        ${seloPrazo("r:" + raiz.id, p.total > 0 && p.feitos === p.total)}
+      <div class="corpo">
+        <div class="cartao por-que">
+          <h2>${icone("lampada")}Por que esta raiz importa</h2>
+          <p>${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
+        </div>
+
+        <div class="cartao progresso-raiz">
+          ${anel(p.pct, `${p.feitos} de ${p.total}`)}
+          <div class="progresso-lado">
+            ${campoPrazo("r:" + raiz.id, "Meu prazo para esta raiz")}
+            ${seloPrazo("r:" + raiz.id, p.completa)}
+          </div>
+        </div>
+
+        ${htmlDrive(raiz.drive)}
+
+        <h2 class="secao">Ramificações</h2>
+        ${(raiz.ramificacoes || []).map((ram, j) => `<section class="cartao ramificacao">
+          <p class="ram-num">Ramificação ${j + 1}</p>
+          <h3>${escapar(ram.titulo)}</h3>
+          ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
+          <div class="exercicios">
+            ${(ram.exercicios || []).map(ex => `<a class="exercicio-item ${feito(ex.id) ? "feito" : ""}" href="#/ex/${encodeURIComponent(ex.id)}">
+              <span class="check">${feito(ex.id) ? icone("check") : ""}</span>
+              <span class="exercicio-nome"><strong>${escapar(ex.titulo)}</strong>${ex.andamento ? `<span class="mudo">${icone("metronomo")}${ex.andamento.inicial} → ${ex.andamento.alvo} bpm</span>` : ""}</span>
+              ${seloPrazo("e:" + ex.id, feito(ex.id))}
+              ${icone("seta", "seta")}
+            </a>`).join("")}
+          </div>
+          ${htmlReferencias(ram.referencias)}
+        </section>`).join("")}
+
+        ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">
+          <span class="mini-ilus">${ilustracao(proxima.icone)}</span>
+          <span><span class="mudo">Próxima raiz</span><strong>${escapar(proxima.titulo)}</strong></span>
+          ${icone("seta")}
+        </a>` : ""}
       </div>
-
-      ${htmlDrive(raiz.drive)}
-
-      <h3 class="secao">Ramificações</h3>
-      ${(raiz.ramificacoes || []).map(ram => `<section class="cartao ramificacao">
-        <h3>${escapar(ram.titulo)}</h3>
-        ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
-        ${(ram.exercicios || []).map(ex => `<a class="exercicio-item ${feito(ex.id) ? "feito" : ""}" href="#/ex/${encodeURIComponent(ex.id)}">
-          <span class="check" aria-hidden="true">${feito(ex.id) ? "✓" : ""}</span>
-          <span class="exercicio-nome">${escapar(ex.titulo)}${ex.andamento ? ` <span class="mudo">· ${ex.andamento.inicial}→${ex.andamento.alvo} bpm</span>` : ""}</span>
-          ${seloPrazo("e:" + ex.id, feito(ex.id))}
-          <span class="seta" aria-hidden="true">›</span>
-        </a>`).join("")}
-        ${htmlReferencias(ram.referencias)}
-      </section>`).join("")}
-
-      ${RAIZES[indice + 1] ? `<a class="btn largo" href="#/raiz/${encodeURIComponent(RAIZES[indice + 1].id)}">Próxima raiz: ${escapar(RAIZES[indice + 1].titulo)} ›</a>` : ""}
     </article>`;
   }
 
@@ -362,67 +534,85 @@
 
   function renderExercicio(id) {
     const { ex, ram, raiz } = EXERCICIO[id];
-    $("#exercicio-voltar").href = `#/raiz/${encodeURIComponent(raiz.id)}`;
-    $("#exercicio-voltar").textContent = `‹ ${raiz.titulo}`;
     const concluido = estado.feitos[id];
 
     let andamento = "";
     if (ex.andamento) {
       const { inicial, alvo } = ex.andamento;
       const atual = estado.andamentos[id] || inicial;
-      const pct = alvo > inicial ? limitar(Math.round(((atual - inicial) / (alvo - inicial)) * 100), 0, 100) : 100;
-      andamento = `<div class="cartao">
-        <div class="cartao-topo"><h3>Andamento</h3><span class="mudo">${inicial} → ${alvo} bpm</span></div>
-        <p class="mudo">${alvo > inicial
-          ? "Comece devagar e suba aos poucos. Só aumente quando estiver limpo e relaxado."
-          : `Mantenha o andamento em ${alvo} bpm com calma e controle.`}</p>
-        ${alvo > inicial ? `<div class="andamento-linha">
-          <span class="andamento-atual"><strong>${atual}</strong> bpm</span>
-          <span class="barra"><span class="barra-preenchida cor-raiz" style="width:${pct}%"></span></span>
-          <span class="mudo">${alvo}</span>
-        </div>` : ""}
+      const progride = alvo > inicial;
+      const pct = progride ? limitar(Math.round(((atual - inicial) / (alvo - inicial)) * 100), 0, 100) : 100;
+      andamento = `<div class="cartao andamento">
+        <h2>${icone("metronomo")}Andamento</h2>
+        <div class="velocimetro">
+          <div><span class="vel-rotulo">Início</span><strong>${inicial}</strong><span class="vel-nome">${nomeAndamento(inicial)}</span></div>
+          <div class="vel-atual"><span class="vel-rotulo">Você está em</span><strong>${atual}</strong><span class="vel-nome">${nomeAndamento(atual)}</span></div>
+          <div><span class="vel-rotulo">Alvo</span><strong>${alvo}</strong><span class="vel-nome">${nomeAndamento(alvo)}</span></div>
+        </div>
+        ${progride ? `<div class="barra grossa"><div class="barra-preenchida" style="width:${pct}%"></div></div>` : ""}
+        <p class="dica">${progride
+          ? "Comece devagar e suba de pouco em pouco. Só aumente quando estiver limpo e relaxado. A velocidade é consequência!"
+          : `Mantenha ${alvo} bpm com calma, ouvindo cada detalhe do som.`}</p>
         <form class="andamento-form" id="form-andamento">
           <label>Meu andamento atual
             <input type="number" id="inp-andamento" min="20" max="300" value="${atual}" required>
           </label>
           <button class="btn" type="submit">Salvar</button>
         </form>
-        <button class="btn primario largo" id="ex-metronomo">🎵 Metrônomo a ${atual} bpm</button>
+        <button class="btn primario largo" id="ex-metronomo">${icone("metronomo")}Abrir metrônomo a ${atual} bpm</button>
       </div>`;
     }
 
-    $("#exercicio-conteudo").innerHTML = `<article class="detalhe" style="--cor:${escapar(raiz.cor || "var(--destaque)")}">
-      <p class="sobretitulo">${escapar(raiz.icone || "")} ${escapar(raiz.titulo)} · ${escapar(ram.titulo)}</p>
-      <h2 class="detalhe-titulo">${escapar(ex.titulo)}</h2>
+    $("#exercicio-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
+      <header class="banda compacta">
+        <a class="btn-voltar" href="#/raiz/${encodeURIComponent(raiz.id)}">${icone("voltar")}${escapar(raiz.titulo)}</a>
+        <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
+        <p class="banda-sobre">${escapar(ram.titulo)}</p>
+        <h1>${escapar(ex.titulo)}</h1>
+        ${concluido ? `<span class="selo ok grande">${icone("check")}Concluído em ${escapar(deISO(concluido).toLocaleDateString("pt-BR"))}</span>` : ""}
+      </header>
 
-      ${ex.passos?.length ? `<div class="cartao"><h3>Como fazer</h3><ol class="passos">${ex.passos.map(p => `<li>${escapar(p)}</li>`).join("")}</ol></div>` : ""}
+      <div class="corpo">
+        ${ex.passos?.length ? `<div class="cartao">
+          <h2>${icone("nota")}Como fazer</h2>
+          <ol class="passos">${ex.passos.map(p => `<li><span>${escapar(p)}</span></li>`).join("")}</ol>
+        </div>` : ""}
 
-      ${andamento}
+        ${andamento}
 
-      ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
+        ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
 
-      <div class="cartao">
-        ${campoPrazo("e:" + id, "Meu prazo para este exercício")}
-        ${seloPrazo("e:" + id, !!concluido)}
+        <div class="cartao">
+          ${campoPrazo("e:" + id, "Meu prazo para este exercício")}
+          ${seloPrazo("e:" + id, !!concluido)}
+        </div>
+
+        <div class="acoes-exercicio">
+          <button class="btn largo ${concluido ? "" : "primario"}" id="ex-concluir">${icone("check")}${concluido ? "Desmarcar como concluído" : "Concluí este exercício"}</button>
+          <button class="btn largo" id="ex-praticar">${icone("diario")}Registrar prática</button>
+        </div>
       </div>
-
-      <div class="linha-botoes">
-        <button class="btn" id="ex-praticar">Registrar prática</button>
-        <button class="btn ${concluido ? "" : "primario"}" id="ex-concluir">${concluido ? "✓ Concluído" : "Marcar como concluído"}</button>
-      </div>
-      ${concluido ? `<p class="mudo direita">Concluído em ${escapar(deISO(concluido).toLocaleDateString("pt-BR"))}</p>` : ""}
     </article>`;
   }
 
-  $("#exercicio-conteudo").addEventListener("click", ev => {
+  $("#exercicio-conteudo").addEventListener("click", async ev => {
     const id = rotaAtual.id;
-    if (ev.target.id === "ex-concluir") {
-      if (estado.feitos[id]) delete estado.feitos[id];
-      else { estado.feitos[id] = hojeISO(); avisar("Exercício concluído! 👏"); }
+    const alvo = ev.target.closest("button");
+    if (!alvo) return;
+    if (alvo.id === "ex-concluir") {
+      if (estado.feitos[id]) {
+        if (!(await confirmar("Desmarcar exercício?", "Ele volta a aparecer como pendente.", "Desmarcar"))) return;
+        delete estado.feitos[id];
+      } else {
+        estado.feitos[id] = hojeISO();
+        const raiz = EXERCICIO[id].raiz;
+        confete();
+        avisar(progressoRaiz(raiz).completa ? `Raiz ${raiz.titulo} completa! 🏆` : "Exercício concluído! Mandou bem 👏");
+      }
       salvar(); renderTela();
     }
-    if (ev.target.id === "ex-praticar") abrirSessao(null, { raizId: EXERCICIO[id].raiz.id, exercicioId: id });
-    if (ev.target.id === "ex-metronomo") {
+    if (alvo.id === "ex-praticar") abrirSessao(null, { raizId: EXERCICIO[id].raiz.id, exercicioId: id });
+    if (alvo.id === "ex-metronomo") {
       const ex = EXERCICIO[id].ex;
       abrirMetronomo(estado.andamentos[id] || ex.andamento.inicial, id);
     }
@@ -437,12 +627,16 @@
   function salvarAndamento(exId, bpm) {
     const ex = EXERCICIO[exId]?.ex;
     if (!ex || !bpm) return;
+    const anterior = estado.andamentos[exId] || ex.andamento?.inicial || 0;
     estado.andamentos[exId] = limitar(Math.round(bpm), 20, 300);
     salvar();
     if (rotaAtual.tela === "ex") renderTela();
-    avisar(ex.andamento && estado.andamentos[exId] >= ex.andamento.alvo
-      ? "Andamento alvo alcançado! 🎯"
-      : `Andamento salvo: ${estado.andamentos[exId]} bpm`);
+    if (ex.andamento && estado.andamentos[exId] >= ex.andamento.alvo && anterior < ex.andamento.alvo) {
+      confete();
+      avisar("Andamento alvo alcançado! 🎯");
+    } else {
+      avisar(`Andamento salvo: ${estado.andamentos[exId]} bpm`);
+    }
   }
 
   // ---------- Metrônomo ----------
@@ -453,9 +647,10 @@
   function renderMetronomo() {
     const { bpm, compasso } = estado.metronomo;
     $("#met-bpm").textContent = bpm;
+    $("#met-nome").textContent = nomeAndamento(bpm);
     $("#met-slider").value = bpm;
     $("#met-compasso").value = String(compasso);
-    $("#met-tocar").textContent = met.tocando ? "■ Parar" : "▶ Tocar";
+    $("#met-tocar").innerHTML = met.tocando ? `${icone("stop")}Parar` : `${icone("play")}Tocar`;
     $("#met-salvar-bpm").hidden = !met.exId;
     $("#met-pulsos").innerHTML = Array.from({ length: compasso }, (_, i) => `<span class="pulso${i === 0 ? " forte" : ""}"></span>`).join("");
   }
@@ -471,6 +666,7 @@
     estado.metronomo.bpm = limitar(Math.round(bpm), 30, 240);
     salvar();
     $("#met-bpm").textContent = estado.metronomo.bpm;
+    $("#met-nome").textContent = nomeAndamento(estado.metronomo.bpm);
     $("#met-slider").value = estado.metronomo.bpm;
   }
 
@@ -517,7 +713,7 @@
     met.tocando = false;
     clearInterval(met.intervalo);
     document.querySelectorAll("#met-pulsos .pulso").forEach(p => p.classList.remove("ativo"));
-    $("#met-tocar").textContent = "▶ Tocar";
+    $("#met-tocar").innerHTML = `${icone("play")}Tocar`;
   }
 
   $("#met-tocar").addEventListener("click", () => (met.tocando ? pararMetronomo() : tocarMetronomo()));
@@ -546,13 +742,23 @@
     const h = Math.floor(total / 3600), m = Math.floor((total % 3600) / 60), s = total % 60;
     $("#timer-visor").textContent = h ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 
+    // O anel mostra o quanto falta para a meta do dia (meta semanal ÷ 7)
+    const metaDia = Math.max(5, Math.round(estado.metaSemanal / 7));
+    const minutosHoje = (minutosPorDia()[hojeISO()] || 0) + total / 60;
+    const pct = Math.min(100, (minutosHoje / metaDia) * 100);
+    $("#timer-anel").style.strokeDasharray = `${pct.toFixed(1)} 100`;
+    $("#timer-rotulo").textContent = pct >= 100 ? "meta do dia ✓" : `meta: ${metaDia} min/dia`;
+
     const rodando = !!t.inicio;
     const temTempo = rodando || t.acumulado > 0;
-    $(".timer").classList.toggle("rodando", rodando);
+    $("#cartao-timer").classList.toggle("rodando", rodando);
+    $("#timer-iniciar").lastChild.textContent = temTempo ? "Continuar" : "Começar";
     $("#timer-iniciar").hidden = rodando;
-    $("#timer-iniciar").textContent = temTempo ? "Continuar" : "Começar a praticar";
     $("#timer-pausar").hidden = !rodando;
     $("#timer-finalizar").hidden = !temTempo;
+    $("#timer-dica").textContent = rodando ? "Foco total! Respire fundo e aproveite o estudo."
+      : temTempo ? "Pausado. Continue quando quiser ou finalize para registrar."
+      : "Ligue o cronômetro e registre sua prática ao terminar.";
 
     clearInterval(tick);
     if (rodando) tick = setInterval(renderTimer, 1000);
@@ -629,9 +835,10 @@
     dlg.showModal();
   }
 
-  dlg.addEventListener("close", () => {
+  dlg.addEventListener("close", async () => {
     if (dlg.returnValue !== "salvar") {
-      if (edicao.doTimer && timer().acumulado > 0 && confirm("Descartar o tempo do cronômetro?")) {
+      if (edicao.doTimer && timer().acumulado > 0 &&
+          await confirmar("Descartar o tempo?", "O tempo marcado no cronômetro será zerado sem registrar a prática.", "Descartar")) {
         zerarTimer(); salvar(); renderTimer();
       }
       return;
@@ -653,7 +860,7 @@
     salvar();
     renderTela();
     renderTimer();
-    avisar(edicao.id ? "Prática atualizada." : "Prática registrada! 🎷");
+    avisar(edicao.id ? "Prática atualizada." : "Prática registrada! Constância é tudo 🎷");
   });
 
   $("#btn-registrar").addEventListener("click", () => abrirSessao(null));
@@ -667,29 +874,29 @@
     $("#lista-sessoes").innerHTML = ordenadas.map(s => {
       const raiz = RAIZ[s.raizId];
       const ex = EXERCICIO[s.exercicioId]?.ex;
-      const tags = [];
-      if (raiz) tags.push(`${raiz.icone || ""} ${raiz.titulo}`.trim());
-      if (ex) tags.push(ex.titulo);
-      return `<li class="sessao">
-        <div class="sessao-topo">
-          <span class="sessao-data">${escapar(formatarData(s.data))}${s.avaliacao ? " " + AVALIACOES[s.avaliacao - 1] : ""}</span>
-          <span class="sessao-min">${formatarMinutos(s.minutos)}</span>
-        </div>
-        ${tags.length ? `<div class="tags">${tags.map(t => `<span class="tag">${escapar(t)}</span>`).join("")}</div>` : ""}
-        ${s.notas ? `<p class="sessao-notas">${escapar(s.notas)}</p>` : ""}
-        <div class="sessao-acoes">
-          <button class="link-acao" data-editar="${escapar(s.id)}">Editar</button>
-          <button class="link-acao" data-apagar="${escapar(s.id)}">Apagar</button>
+      return `<li class="sessao" ${raiz ? `style="${corRaiz(raiz)}"` : ""}>
+        ${raiz ? `<span class="mini-ilus">${ilustracao(raiz.icone)}</span>` : `<span class="mini-ilus neutra">${icone("nota")}</span>`}
+        <div class="sessao-corpo">
+          <div class="sessao-topo">
+            <span class="sessao-data">${escapar(formatarData(s.data))}${s.avaliacao ? " " + AVALIACOES[s.avaliacao - 1] : ""}</span>
+            <span class="sessao-min">${formatarMinutos(s.minutos)}</span>
+          </div>
+          <div class="sessao-sub">${raiz ? escapar(raiz.titulo) : "Prática geral"}${ex ? ` · ${escapar(ex.titulo)}` : ""}</div>
+          ${s.notas ? `<p class="sessao-notas">${escapar(s.notas)}</p>` : ""}
+          <div class="sessao-acoes">
+            <button class="link-acao" data-editar="${escapar(s.id)}">Editar</button>
+            <button class="link-acao" data-apagar="${escapar(s.id)}">Apagar</button>
+          </div>
         </div>
       </li>`;
     }).join("");
   }
 
-  $("#lista-sessoes").addEventListener("click", ev => {
+  $("#lista-sessoes").addEventListener("click", async ev => {
     const editar = ev.target.closest("[data-editar]");
     const apagar = ev.target.closest("[data-apagar]");
     if (editar) abrirSessao(editar.dataset.editar);
-    if (apagar && confirm("Apagar esta prática?")) {
+    if (apagar && await confirmar("Apagar esta prática?", "Ela será removida do seu diário.", "Apagar")) {
       estado.sessoes = estado.sessoes.filter(s => s.id !== apagar.dataset.apagar);
       salvar(); renderTela();
     }
@@ -726,7 +933,7 @@
     try {
       const dados = JSON.parse(await arquivo.text());
       if (!Array.isArray(dados.sessoes)) throw new Error("formato");
-      if (!confirm("Substituir os dados deste aparelho pelo backup?")) return;
+      if (!(await confirmar("Importar backup?", "Os dados deste aparelho serão substituídos pelos do arquivo.", "Importar"))) return;
       estado = { ...estadoPadrao(), ...dados };
       salvar(); renderTela(); renderTimer();
       avisar("Backup importado.");
@@ -737,6 +944,7 @@
 
   // ---------- Inicialização ----------
 
+  hidratarIcones();
   lerRota();
   mostrarTela();
   renderTela();

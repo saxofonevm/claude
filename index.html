@@ -5,88 +5,129 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CMA</title>
   <meta name="description" content="CMA — Consciência Musical Aplicada">
-  <meta name="theme-color" content="#1f2a44">
+  <meta name="theme-color" content="#1e1048">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header class="topo">
-    <h1>CMA <small>Consciência Musical Aplicada</small></h1>
-  </header>
-
   <main>
     <!-- INÍCIO -->
     <section id="tela-inicio" class="tela">
-      <p class="saudacao" id="saudacao"></p>
-
-      <div class="cartao timer">
-        <div class="timer-visor" id="timer-visor">00:00</div>
-        <div class="timer-botoes">
-          <button class="btn primario" id="timer-iniciar">Começar a praticar</button>
-          <button class="btn" id="timer-pausar" hidden>Pausar</button>
-          <button class="btn perigo" id="timer-finalizar" hidden>Finalizar</button>
+      <header class="hero">
+        <div class="hero-topo">
+          <span class="marca">CMA</span>
+          <span class="marca-sub">Consciência Musical Aplicada</span>
         </div>
-        <button class="link-acao" id="btn-metronomo-inicio">🎵 Abrir metrônomo</button>
-      </div>
+        <h1 class="hero-saudacao" id="saudacao">Bora tocar?</h1>
+        <figure class="frase-dia">
+          <span data-icone="aspas"></span>
+          <blockquote id="frase-dia"></blockquote>
+          <figcaption>Frase do dia</figcaption>
+        </figure>
+        <div class="arvore" id="arvore"></div>
+        <p class="arvore-legenda" id="arvore-legenda"></p>
+      </header>
 
-      <div class="stats">
-        <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo">min nesta semana</span></div>
-        <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo">dias seguidos</span></div>
-        <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo">exercícios feitos</span></div>
-      </div>
+      <div class="conteudo-inicio">
+        <a class="continuar" id="continuar" href="#/raizes"></a>
 
-      <div class="cartao">
-        <div class="cartao-topo"><h2>Próximos prazos</h2></div>
-        <ul class="lista-prazos" id="lista-prazos"></ul>
-        <p class="mudo" id="prazos-vazio">Você ainda não definiu prazos. Abra uma raiz ou um exercício e escolha sua data.</p>
-      </div>
-
-      <div class="cartao">
-        <div class="cartao-topo">
-          <h2>Meta semanal</h2>
-          <span class="mudo" id="meta-texto"></span>
+        <div class="cartao timer" id="cartao-timer">
+          <div class="timer-anel">
+            <svg viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="anel-fundo" cx="60" cy="60" r="52"/>
+              <circle class="anel-valor" id="timer-anel" cx="60" cy="60" r="52" pathLength="100"/>
+            </svg>
+            <div class="timer-centro">
+              <div class="timer-visor" id="timer-visor">00:00</div>
+              <div class="timer-rotulo" id="timer-rotulo">meta de hoje</div>
+            </div>
+          </div>
+          <div class="timer-lado">
+            <h2>Hora de estudar</h2>
+            <p class="mudo" id="timer-dica">Ligue o cronômetro e registre sua prática ao terminar.</p>
+            <div class="timer-botoes">
+              <button class="btn primario" id="timer-iniciar" data-icone="play">Começar</button>
+              <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
+              <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
+            </div>
+            <button class="btn suave" id="btn-metronomo-inicio" data-icone="metronomo">Metrônomo</button>
+          </div>
         </div>
-        <div class="barra"><div class="barra-preenchida" id="meta-barra"></div></div>
-        <div class="semana" id="semana"></div>
-      </div>
 
-      <button class="btn largo" id="btn-registrar">+ Registrar prática manualmente</button>
+        <div class="stats">
+          <div class="stat fogo"><span data-icone="fogo"></span><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo">dias seguidos</span></div>
+          <div class="stat tempo"><span data-icone="relogio"></span><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo">min na semana</span></div>
+          <div class="stat trofeu"><span data-icone="trofeu"></span><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo">exercícios</span></div>
+        </div>
+
+        <div class="cartao">
+          <div class="cartao-topo"><h2><span data-icone="calendario"></span>Próximos prazos</h2></div>
+          <ul class="lista-prazos" id="lista-prazos"></ul>
+          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo ainda. Abra uma raiz ou exercício e escolha a sua data. Ter um prazo ajuda a manter o foco!</p>
+        </div>
+
+        <div class="cartao">
+          <div class="cartao-topo">
+            <h2><span data-icone="alvo"></span>Meta semanal</h2>
+            <span class="mudo" id="meta-texto"></span>
+          </div>
+          <div class="barra grossa"><div class="barra-preenchida arco" id="meta-barra"></div></div>
+          <div class="semana" id="semana"></div>
+        </div>
+
+        <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
+      </div>
     </section>
 
     <!-- RAÍZES -->
     <section id="tela-raizes" class="tela">
-      <h2>As raízes</h2>
-      <p class="mudo">Seis raízes, cada uma com suas ramificações. Siga na ordem, no seu ritmo.</p>
-      <div id="lista-raizes"></div>
+      <header class="cabecalho">
+        <p class="sobretitulo">Sua jornada</p>
+        <h1>As 6 raízes do CMA</h1>
+        <p class="mudo">Toda árvore forte nasce de raízes profundas. Siga na ordem, no seu ritmo: cada raiz prepara o terreno para a próxima.</p>
+      </header>
+      <div class="grade-raizes" id="lista-raizes"></div>
     </section>
 
     <!-- RAIZ (detalhe) -->
     <section id="tela-raiz" class="tela">
-      <a class="btn-voltar" href="#/raizes">‹ Raízes</a>
       <div id="raiz-conteudo"></div>
     </section>
 
     <!-- EXERCÍCIO (detalhe) -->
     <section id="tela-exercicio" class="tela">
-      <a class="btn-voltar" id="exercicio-voltar" href="#/raizes">‹ Voltar</a>
       <div id="exercicio-conteudo"></div>
     </section>
 
     <!-- DIÁRIO -->
     <section id="tela-diario" class="tela">
-      <div class="cartao-topo">
-        <h2>Diário de prática</h2>
-        <button class="btn pequeno" id="btn-registrar-2">+ Novo</button>
-      </div>
+      <header class="cabecalho linha-cabecalho">
+        <div>
+          <p class="sobretitulo">Seu histórico</p>
+          <h1>Diário de prática</h1>
+        </div>
+        <button class="btn primario pequeno" id="btn-registrar-2" data-icone="mais">Novo</button>
+      </header>
       <ul class="lista" id="lista-sessoes"></ul>
-      <p class="vazio" id="diario-vazio">Nenhuma prática registrada ainda. Use o cronômetro na tela inicial ou toque em “+ Novo”.</p>
+      <div class="vazio" id="diario-vazio">
+        <span data-icone="diario"></span>
+        <p><strong>Seu diário está esperando a primeira página.</strong></p>
+        <p class="mudo">Use o cronômetro na tela inicial ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
+      </div>
     </section>
 
     <!-- AJUSTES -->
     <section id="tela-ajustes" class="tela">
-      <h2>Ajustes</h2>
+      <header class="cabecalho">
+        <p class="sobretitulo">Personalize</p>
+        <h1>Ajustes</h1>
+      </header>
+      <div class="ajustes-corpo">
       <form class="cartao form" id="form-ajustes">
         <label>Seu nome
           <input type="text" id="aj-nome" maxlength="40" placeholder="Ex.: Ana">
@@ -98,21 +139,22 @@
       </form>
 
       <div class="cartao">
-        <h3>Backup</h3>
+        <h2>Backup</h2>
         <p class="mudo">Seus dados ficam só neste aparelho. Exporte um backup para não perder nada ao trocar de celular.</p>
         <div class="linha-botoes">
           <button class="btn" id="btn-exportar">Exportar</button>
           <label class="btn">Importar<input type="file" id="inp-importar" accept="application/json" hidden></label>
         </div>
       </div>
+      </div>
     </section>
   </main>
 
   <nav class="abas">
-    <a href="#/inicio" data-aba="inicio"><span aria-hidden="true">🎷</span>Início</a>
-    <a href="#/raizes" data-aba="raizes"><span aria-hidden="true">🌳</span>Raízes</a>
-    <a href="#/diario" data-aba="diario"><span aria-hidden="true">📓</span>Diário</a>
-    <a href="#/ajustes" data-aba="ajustes"><span aria-hidden="true">⚙️</span>Ajustes</a>
+    <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
+    <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Raízes</a>
+    <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
+    <a href="#/ajustes" data-aba="ajustes"><span data-icone="ajustes"></span>Ajustes</a>
   </nav>
 
   <!-- Registro de prática -->
@@ -133,15 +175,28 @@
       <label>Exercício
         <select id="s-exercicio"><option value="">— nenhum —</option></select>
       </label>
-      <label>Como foi?
+      <div class="campo">
+        <span class="campo-rotulo">Como foi?</span>
         <div class="avaliacao" id="s-avaliacao"></div>
-      </label>
+      </div>
       <label>Anotações
         <textarea id="s-notas" rows="3" maxlength="1000" placeholder="O que deu certo? O que precisa melhorar?"></textarea>
       </label>
       <div class="linha-botoes">
         <button class="btn" value="cancelar" formnovalidate>Cancelar</button>
         <button class="btn primario" value="salvar" id="s-salvar">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirmação -->
+  <dialog id="dlg-confirmar">
+    <form method="dialog" class="form">
+      <h2 id="conf-titulo">Tem certeza?</h2>
+      <p class="mudo" id="conf-texto"></p>
+      <div class="linha-botoes">
+        <button class="btn" value="nao" id="conf-nao">Cancelar</button>
+        <button class="btn primario" value="sim" id="conf-sim">Confirmar</button>
       </div>
     </form>
   </dialog>
@@ -155,6 +210,7 @@
       </div>
       <div class="met-pulsos" id="met-pulsos"></div>
       <div class="met-bpm"><span id="met-bpm">80</span><small>bpm</small></div>
+      <p class="met-nome" id="met-nome"></p>
       <input type="range" id="met-slider" min="30" max="240" step="1" aria-label="Andamento">
       <div class="met-ajustes">
         <button class="btn" data-delta="-5">−5</button>
@@ -170,11 +226,14 @@
           <option value="6">6</option>
         </select>
       </label>
-      <button class="btn primario largo" id="met-tocar">▶ Tocar</button>
+      <button class="btn primario largo" id="met-tocar">Tocar</button>
       <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
     </div>
   </dialog>
 
+  <canvas id="confete" aria-hidden="true"></canvas>
+
+  <script src="icones.js"></script>
   <script src="conteudo.js"></script>
   <script src="app.js"></script>
 </body>

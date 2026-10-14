@@ -24,7 +24,7 @@ funciona offline. Os dados de cada aluno ficam salvos no próprio aparelho.
 
 ## Como editar o conteúdo (professor)
 
-Todo o conteúdo fica em **`conteudo.js`**. As instruções estão no topo do arquivo.
+Todo o conteúdo fica em **`conteudo.js`**: raízes, ramificações, exercícios, cores, ícones, frases do dia e o "por que importa" de cada raiz. As instruções estão no topo do arquivo.
 
 > ⚠️ O conteúdo atual é um **rascunho** para revisão.
 > Não mude o `id` de um exercício já publicado: ele guarda o progresso dos alunos.
@@ -61,6 +61,7 @@ E abra `http://localhost:8000`.
 | Arquivo | Para que serve |
 |---|---|
 | `conteudo.js` | Raízes, ramificações, exercícios, referências e links do Drive (edite aqui) |
+| `icones.js` | Ícones e ilustrações das raízes (SVG) |
 | `index.html` | Estrutura das telas |
 | `app.js` | Funcionamento do app (prazos, metrônomo, diário) |
 | `styles.css` | Visual (cores, tamanhos) |

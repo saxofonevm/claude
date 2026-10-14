@@ -1,12 +1,13 @@
 // Service worker: permite usar o app offline.
 // Estratégia "stale-while-revalidate": abre na hora com a cópia salva e
 // busca a versão nova em segundo plano (aparece na próxima abertura).
-const CACHE = "cma-v1";
+const CACHE = "cma-v2";
 const ARQUIVOS = [
   "./",
   "index.html",
   "styles.css",
   "app.js",
+  "icones.js",
   "conteudo.js",
   "manifest.webmanifest",
   "icons/icon.svg",
@@ -28,7 +29,9 @@ self.addEventListener("activate", ev => {
 
 self.addEventListener("fetch", ev => {
   const req = ev.request;
-  if (req.method !== "GET" || new URL(req.url).origin !== location.origin) return;
+  const url = new URL(req.url);
+  const fonte = /^fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
+  if (req.method !== "GET" || (url.origin !== location.origin && !fonte)) return;
   ev.respondWith(
     caches.open(CACHE).then(async cache => {
       const salvo = await cache.match(req, { ignoreSearch: true });
