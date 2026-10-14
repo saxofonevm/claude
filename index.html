@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sax Estudo</title>
+  <meta name="description" content="Diário de prática e lições de saxofone">
+  <meta name="theme-color" content="#1f2a44">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topo">
+    <h1 id="titulo">Sax Estudo</h1>
+  </header>
+
+  <main>
+    <!-- INÍCIO -->
+    <section id="tela-inicio" class="tela ativa">
+      <p class="saudacao" id="saudacao"></p>
+
+      <div class="cartao timer">
+        <div class="timer-visor" id="timer-visor">00:00</div>
+        <div class="timer-botoes">
+          <button class="btn primario" id="timer-iniciar">Começar a praticar</button>
+          <button class="btn" id="timer-pausar" hidden>Pausar</button>
+          <button class="btn perigo" id="timer-finalizar" hidden>Finalizar</button>
+        </div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo">min nesta semana</span></div>
+        <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo">dias seguidos</span></div>
+        <div class="stat"><span class="stat-valor" id="stat-licoes">0</span><span class="stat-rotulo">lições concluídas</span></div>
+      </div>
+
+      <div class="cartao">
+        <div class="cartao-topo">
+          <h2>Meta semanal</h2>
+          <span class="mudo" id="meta-texto"></span>
+        </div>
+        <div class="barra"><div class="barra-preenchida" id="meta-barra"></div></div>
+        <div class="semana" id="semana"></div>
+      </div>
+
+      <button class="btn largo" id="btn-registrar">+ Registrar prática manualmente</button>
+    </section>
+
+    <!-- DIÁRIO -->
+    <section id="tela-diario" class="tela">
+      <div class="cartao-topo">
+        <h2>Diário de prática</h2>
+        <button class="btn pequeno" id="btn-registrar-2">+ Novo</button>
+      </div>
+      <ul class="lista" id="lista-sessoes"></ul>
+      <p class="vazio" id="diario-vazio">Nenhuma prática registrada ainda. Use o cronômetro na tela inicial ou toque em “+ Novo”.</p>
+    </section>
+
+    <!-- LIÇÕES -->
+    <section id="tela-licoes" class="tela">
+      <div class="filtros" id="filtros-nivel"></div>
+      <div id="lista-licoes"></div>
+    </section>
+
+    <!-- LIÇÃO (detalhe) -->
+    <section id="tela-licao" class="tela">
+      <button class="btn-voltar" id="licao-voltar">‹ Lições</button>
+      <div id="licao-conteudo"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="tela-ajustes" class="tela">
+      <h2>Ajustes</h2>
+      <form class="cartao form" id="form-ajustes">
+        <label>Seu nome
+          <input type="text" id="aj-nome" maxlength="40" placeholder="Ex.: Ana">
+        </label>
+        <label>Meta semanal (minutos)
+          <input type="number" id="aj-meta" min="10" max="3000" step="10" required>
+        </label>
+        <button class="btn primario" type="submit">Salvar</button>
+      </form>
+
+      <div class="cartao">
+        <h3>Backup</h3>
+        <p class="mudo">Seus dados ficam só neste aparelho. Exporte um backup para não perder nada ao trocar de celular.</p>
+        <div class="linha-botoes">
+          <button class="btn" id="btn-exportar">Exportar</button>
+          <label class="btn">Importar<input type="file" id="inp-importar" accept="application/json" hidden></label>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="abas">
+    <button data-tela="inicio" class="ativa"><span aria-hidden="true">🎷</span>Início</button>
+    <button data-tela="diario"><span aria-hidden="true">📓</span>Diário</button>
+    <button data-tela="licoes"><span aria-hidden="true">📚</span>Lições</button>
+    <button data-tela="ajustes"><span aria-hidden="true">⚙️</span>Ajustes</button>
+  </nav>
+
+  <!-- Modal de registro de prática -->
+  <dialog id="dlg-sessao">
+    <form method="dialog" class="form" id="form-sessao">
+      <h2 id="dlg-titulo">Registrar prática</h2>
+      <div class="linha">
+        <label>Data
+          <input type="date" id="s-data" required>
+        </label>
+        <label>Minutos
+          <input type="number" id="s-minutos" min="1" max="600" required>
+        </label>
+      </div>
+      <fieldset>
+        <legend>O que você praticou?</legend>
+        <div class="chips" id="s-categorias"></div>
+      </fieldset>
+      <label>Lição relacionada
+        <select id="s-licao"><option value="">— nenhuma —</option></select>
+      </label>
+      <label>Como foi?
+        <div class="avaliacao" id="s-avaliacao"></div>
+      </label>
+      <label>Anotações
+        <textarea id="s-notas" rows="3" maxlength="1000" placeholder="O que deu certo? O que precisa melhorar?"></textarea>
+      </label>
+      <div class="linha-botoes">
+        <button class="btn" value="cancelar" formnovalidate>Cancelar</button>
+        <button class="btn primario" value="salvar" id="s-salvar">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="licoes.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
