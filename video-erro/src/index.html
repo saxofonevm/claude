@@ -1,0 +1,182 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  @font-face { font-family: "InterD"; src: local("Inter Display Black"), local("InterDisplay-Black"); font-weight: 900; }
+  html,body{margin:0;width:1080px;height:1920px;overflow:hidden;background:#07060a;font-family:"Inter Display","Inter",sans-serif}
+  #gl{position:absolute;inset:0}
+  #ui{position:absolute;inset:0;pointer-events:none}
+  .cap{text-shadow:0 6px 30px rgba(0,0,0,.85);position:absolute;left:80px;right:80px;text-align:center;color:#f4efe6;opacity:0;will-change:transform,opacity}
+  .xl{font-weight:900;font-size:190px;line-height:.95;letter-spacing:-6px}
+  .l{font-weight:900;font-size:120px;line-height:1;letter-spacing:-3px}
+  .m{font-weight:800;font-size:86px;line-height:1.08;letter-spacing:-2px}
+  .s{font-weight:600;font-size:56px;line-height:1.2;letter-spacing:-0.5px;color:#d9cfbd}
+  .gold{color:#e8b24a}
+  .red{color:#ff3b30}
+  #clip{position:absolute;left:90px;right:90px;top:560px;height:800px;border:6px dashed #e8b24a;border-radius:28px;
+        display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;color:#e8b24a;opacity:0;
+        background:rgba(10,8,6,.55);text-align:center}
+  #clip b{font-size:64px;font-weight:900;letter-spacing:-1px}
+  #clip span{font-size:40px;color:#d9cfbd;font-weight:600}
+  #flash{position:absolute;inset:0;background:#ff2a1f;mix-blend-mode:screen;opacity:0}
+  #vig{position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(0,0,0,0) 45%,rgba(0,0,0,.75) 100%)}
+  #fade{position:absolute;inset:0;background:#000;opacity:0}
+  #timer{position:absolute;left:0;right:0;top:330px;text-align:center;font-weight:900;font-size:150px;color:#e8b24a;opacity:0;font-variant-numeric:tabular-nums}
+</style></head>
+<body>
+<canvas id="gl" width="1080" height="1920"></canvas>
+<div id="ui">
+  <div id="vig"></div>
+  <div id="clip"><b>▶ CLIPE DO BRECKER</b><span>cole aqui o trecho do erro<br>(06,0s → 10,5s)</span></div>
+  <div id="timer">+1s</div>
+  <div id="caps"></div>
+  <div id="flash"></div>
+  <div id="fade"></div>
+</div>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js"}}</script>
+<script type="module">
+import * as THREE from "three";
+
+// ---------- timeline (seconds) ----------
+const CAPS = [
+  {a:0.3, b:3.0,  y:760,  html:'<div class="m">Você precisa</div><div class="xl red">ERRAR.</div>', k:'slam'},
+  {a:3.2, b:6.0,  y:620,  html:'<div class="s">Esse é</div><div class="l gold">MICHAEL<br>BRECKER</div>', k:'rise'},
+  {a:4.6, b:6.0,  y:1180, html:'<div class="m">Presta atenção.</div>', k:'rise'},
+  {a:6.0, b:10.5, y:1420, html:'<div class="s">observe…</div>', k:'fade'},
+  {a:10.5,b:14.0, y:700,  html:'<div class="s">Um dos maiores</div><div class="l">saxofonistas</div><div class="m gold">da história.</div>', k:'rise'},
+  {a:14.0,b:16.5, y:780,  html:'<div class="xl">E <span class="red">errou.</span></div>', k:'slam'},
+  {a:16.5,b:20.0, y:700,  html:'<div class="m">O que fez dele</div><div class="l gold">GIGANTE</div><div class="m">não foi nunca errar.</div>', k:'rise'},
+  {a:20.0,b:23.5, y:760,  html:'<div class="m">Foi o que ele fez no</div><div class="l gold">segundo<br>seguinte.</div>', k:'rise'},
+  {a:23.5,b:27.5, y:620,  html:'<div class="l">Trocar nota.</div>', k:'rise'},
+  {a:24.9,b:27.5, y:1000, html:'<div class="l">Errar<br>embocadura.</div>', k:'rise'},
+  {a:27.5,b:31.0, y:740,  html:'<div class="l gold">Ajustes finos</div><div class="s">que a gente vai fazendo<br>com o tempo.</div>', k:'rise'},
+  {a:31.0,b:34.0, y:760,  html:'<div class="m">Ninguém aprende</div><div class="l gold">de uma vez só.</div>', k:'rise'},
+  {a:34.0,b:37.5, y:600,  html:'<div class="l">Todos nós<br>erramos.</div>', k:'rise'},
+  {a:35.6,b:37.5, y:1060, html:'<div class="m">E vamos continuar<br><span class="red">errando.</span></div>', k:'rise'},
+  {a:37.5,b:43.0, y:660,  html:'<div class="m">A questão é o que<br>você faz</div>', k:'rise'},
+  {a:39.0,b:43.0, y:880,  html:'<div class="xl gold">DEPOIS<br>DO ERRO.</div>', k:'slam'},
+];
+const IMPACTS = [1.2, 8.5, 14.3, 39.0];   // shake / speed spikes
+const ERR_AT = 8.5;                         // the "reaction" moment
+const DURATION = 43.5;
+
+const capsEl = document.getElementById('caps');
+CAPS.forEach(c => { const d=document.createElement('div'); d.className='cap'; d.style.top=c.y+'px'; d.innerHTML=c.html; capsEl.appendChild(d); c.el=d; });
+
+const clamp=(x,a=0,b=1)=>Math.min(b,Math.max(a,x));
+const ease=x=>1-Math.pow(1-clamp(x),3);
+const eback=x=>{x=clamp(x);const c=1.9;return 1+(c+1)*Math.pow(x-1,3)+c*Math.pow(x-1,2);};
+function rand(s){let x=Math.sin(s*12.9898)*43758.5453;return x-Math.floor(x);}
+
+// ---------- three ----------
+const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('gl'), antialias:true, preserveDrawingBuffer:true});
+renderer.setSize(1080,1920,false);
+const scene = new THREE.Scene();
+scene.fog = new THREE.FogExp2(0x07060a, 0.018);
+const cam = new THREE.PerspectiveCamera(55,1080/1920,0.1,200);
+
+// particle tunnel
+const N=2200, pos=new Float32Array(N*3), base=[];
+for(let i=0;i<N;i++){const a=rand(i)*Math.PI*2, r=4+rand(i+.5)*14, z=-rand(i+.3)*120;
+  base.push([Math.cos(a)*r,Math.sin(a)*r,z]); pos.set([Math.cos(a)*r,Math.sin(a)*r,z],i*3);}
+const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+const pm=new THREE.PointsMaterial({color:0xe8b24a,size:0.09,transparent:true,opacity:.85});
+scene.add(new THREE.Points(pg,pm));
+
+// central knot that "breaks" on error and gets fine-tuned back
+const kg=new THREE.TorusKnotGeometry(2.2,.55,260,24,2,3);
+const kbase=kg.attributes.position.array.slice();
+const km=new THREE.MeshStandardMaterial({color:0xe8b24a,metalness:.9,roughness:.22,emissive:0x2a1500});
+const knot=new THREE.Mesh(kg,km); scene.add(knot);
+const wire=new THREE.Mesh(kg,new THREE.MeshBasicMaterial({color:0xffd27a,wireframe:true,transparent:true,opacity:.12}));
+knot.add(wire);
+scene.add(new THREE.AmbientLight(0xffffff,.25));
+const l1=new THREE.PointLight(0xffc56b,120,40); l1.position.set(5,6,6); scene.add(l1);
+const l2=new THREE.PointLight(0xff3b30,0,40); l2.position.set(-6,-4,4); scene.add(l2);
+
+// floating notes (sprites)
+function noteTex(ch){const c=document.createElement('canvas');c.width=c.height=256;const g=c.getContext('2d');
+  g.fillStyle='#f4efe6';g.font='200px DejaVu Sans';g.textAlign='center';g.textBaseline='middle';g.fillText(ch,128,140);
+  return new THREE.CanvasTexture(c);}
+const glyphs=['♪','♫','♩','♬'].map(noteTex), notes=[];
+for(let i=0;i<26;i++){const m=new THREE.SpriteMaterial({map:glyphs[i%4],transparent:true,opacity:0,depthWrite:false});
+  const s=new THREE.Sprite(m); s.userData={x:(rand(i+9)-.5)*12,y:(rand(i+19)-.5)*18,z:-2-rand(i+29)*10,ph:rand(i+39)*6,sp:.4+rand(i+49)};
+  s.scale.setScalar(1.1+rand(i+59)); scene.add(s); notes.push(s);}
+
+// how "broken" the knot is over time
+function chaos(t){
+  let c=0;
+  c+=Math.exp(-Math.pow((t-1.2)/0.5,2))*.6;                 // ERRAR
+  if(t>ERR_AT) c+=1.2*Math.exp(-(t-ERR_AT)*0.35)*(t<23.5?1:0); // the real error, decays slowly
+  c+=Math.exp(-Math.pow((t-14.3)/0.6,2))*.9;                // E errou
+  if(t>=23.5&&t<31) c+=.55*(1-ease((t-23.5)/7.5));          // fine adjustments
+  c+=Math.exp(-Math.pow((t-36.2)/0.7,2))*.5;                // continuar errando
+  return c;
+}
+
+function travelZ(t){ // camera forward motion, with bursts on impacts
+  let z=-t*1.6; IMPACTS.forEach(i=>{ if(t>i) z-=6*ease((t-i)/1.2); }); return z;
+}
+
+window.renderAt = function(t){
+  // captions
+  for(const c of CAPS){
+    const inn=(t-c.a)/0.45, out=(c.b-t)/0.35;
+    let o=clamp(Math.min(inn,out)), tr='';
+    if(c.k==='slam'){const s=1+ (1-eback(inn))*0.9; tr=`scale(${s})`;}
+    else if(c.k==='rise'){tr=`translateY(${(1-ease(inn))*70}px)`;}
+    c.el.style.opacity=o; c.el.style.transform=tr;
+  }
+  // shake
+  let sh=0; IMPACTS.forEach(i=>{ if(t>=i&&t<i+.5) sh+=(1-(t-i)/.5)*22; });
+  document.getElementById('ui').style.transform=`translate(${(rand(t*97)-.5)*sh}px,${(rand(t*131)-.5)*sh}px)`;
+  // error flash + glitch
+  const fe=t>=ERR_AT&&t<ERR_AT+.6 ? (1-(t-ERR_AT)/.6) : 0;
+  const ff=Math.max(fe, t>=14.3&&t<14.6?(1-(t-14.3)/.3)*.5:0);
+  document.getElementById('flash').style.opacity=(ff*(rand(Math.floor(t*30))>.3?.55:.15)).toFixed(3);
+  // clip placeholder
+  const clipO=clamp(Math.min((t-6)/.3,(10.5-t)/.3));
+  const ce=document.getElementById('clip'); ce.style.opacity=clipO;
+  ce.style.transform = fe>0 ? `translateX(${(rand(t*53)-.5)*60*fe}px) skewX(${(rand(t*71)-.5)*12*fe}deg)` : '';
+  // +1s timer
+  const tm=document.getElementById('timer'); tm.style.opacity=clamp(Math.min((t-21.2)/.25,(23.5-t)/.3));
+  tm.style.transform=`scale(${1+(1-eback((t-21.2)/.4))*.6})`;
+  // end fade
+  document.getElementById('fade').style.opacity=clamp((t-42.4)/1.0);
+
+  // 3D
+  const c=chaos(t);
+  const a=kg.attributes.position.array;
+  for(let i=0;i<a.length;i+=3){
+    const n=Math.sin(kbase[i]*3.1+t*7)*Math.cos(kbase[i+1]*2.7-t*5)*Math.sin(kbase[i+2]*3.3+t*3);
+    const k=1+n*c*0.35; a[i]=kbase[i]*k; a[i+1]=kbase[i+1]*k; a[i+2]=kbase[i+2]*k;
+  }
+  kg.attributes.position.needsUpdate=true; kg.computeVertexNormals();
+  knot.rotation.set(t*.25, t*.4, Math.sin(t*.3)*.3);
+  // knot hidden behind clip & dimmed where text is busy
+  const kv = 1 - .85*clipO;
+  knot.scale.setScalar((0.42+0.05*Math.sin(t*.8))*kv + .001);
+  knot.position.set(0, -4.6, 0);
+  km.emissive.setRGB(.16+c*.5, .08*(1-c*.5), 0);
+  l2.intensity = 140*c;
+  scene.fog.color.setRGB(.03+c*.06,.024,.04);
+  renderer.setClearColor(scene.fog.color);
+
+  const z=travelZ(t);
+  for(let i=0;i<N;i++){ let pz=((base[i][2]-z)%120); if(pz>0) pz-=120; pos[i*3+2]=pz+z+ (0); }
+  pg.attributes.position.needsUpdate=true;
+  pm.color.setRGB(.91, .7-c*.4, .29-c*.2);
+
+  // notes only during the "adjustments" passage
+  const nv=clamp(Math.min((t-23.5)/1,(31-t)/1));
+  notes.forEach((s,i)=>{const u=s.userData; s.material.opacity=nv*(.35+.4*Math.sin(t*u.sp+u.ph)**2);
+    s.position.set(u.x+Math.sin(t*u.sp+u.ph)*.6, u.y+((t*u.sp*.8)%6)-3, z+u.z+6);});
+
+  cam.position.set(Math.sin(t*.2)*.8, Math.cos(t*.17)*.6, z+9);
+  cam.lookAt(0, -1.5, z);
+  knot.position.z = z;
+  renderer.render(scene,cam);
+};
+window.DURATION = DURATION;
+window.ready = true;
+</script>
+</body></html>
