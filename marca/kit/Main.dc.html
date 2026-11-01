@@ -39,7 +39,12 @@ a{color:#12392D}a:hover{color:#1C1C1A}
         <path d="M64 314 Q300 290 536 314" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
         <path d="M56 326 Q300 372 544 326" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
       </svg>
-      <img src="{{symbol}}" alt="Símbolo bordado" style="position: absolute; left: 50%; top: 168px; height: 170px; transform: translateX(-50%)">
+      <sc-if value="{{showLogo}}" hint-placeholder-val="{{ true }}">
+        <img src="{{logo}}" alt="Logo naipe bordada" style="position: absolute; left: 50%; top: 214px; width: 236px; transform: translateX(-50%)">
+      </sc-if>
+      <sc-if value="{{showSymbol}}" hint-placeholder-val="{{ false }}">
+        <img src="{{symbol}}" alt="Símbolo bordado" style="position: absolute; left: 50%; top: 168px; height: 170px; transform: translateX(-50%)">
+      </sc-if>
     </div>
   </div>
 
@@ -50,7 +55,7 @@ a{color:#12392D}a:hover{color:#1C1C1A}
     </div>
     <div style="display: flex; flex-direction: column; gap: 6px">
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #4F534E">Detalhe</span>
-      <span style="font-size: 18px; line-height: 1.4">Sax bordado em 3D na frente, aba reta</span>
+      <span style="font-size: 18px; line-height: 1.4">{{detalhe}}</span>
     </div>
     <div style="display: flex; flex-direction: column; gap: 6px">
       <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #4F534E">Ajuste</span>
@@ -59,15 +64,17 @@ a{color:#12392D}a:hover{color:#1C1C1A}
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"cor":{"editor":"enum","options":["Ébano","Feltro","Osso"],"default":"Ébano","section":"Boné"},"$preview":{"width":1080,"height":1080}}'>
+<script type="text/x-dc" data-dc-script data-props='{"cor":{"editor":"enum","options":["Ébano","Feltro","Osso"],"default":"Ébano","section":"Boné"},"bordado":{"editor":"enum","options":["Logo","Símbolo"],"default":"Logo","section":"Boné"},"$preview":{"width":1080,"height":1080}}'>
 class Component extends DCLogic {
   renderVals() {
     const cores = {
-      'Ébano': { cap: '#1C1C1A', seam: '#000000', brim: '#141413', stitch: '#3A3A37', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b' },
-      'Feltro': { cap: '#12392D', seam: '#0A261D', brim: '#0E3026', stitch: '#2D5446', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b' },
-      'Osso': { cap: '#E2DED5', seam: '#BDB8AD', brim: '#D6D1C6', stitch: '#A9A398', symbol: '/_blob/830bbf1875558d01a83c428321831246' }
+      'Ébano': { cap: '#1C1C1A', seam: '#000000', brim: '#141413', stitch: '#3A3A37', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b', logo: '/_blob/af411b85477288918e8814f4c0264dd1' },
+      'Feltro': { cap: '#12392D', seam: '#0A261D', brim: '#0E3026', stitch: '#2D5446', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b', logo: '/_blob/af411b85477288918e8814f4c0264dd1' },
+      'Osso': { cap: '#E2DED5', seam: '#BDB8AD', brim: '#D6D1C6', stitch: '#A9A398', symbol: '/_blob/830bbf1875558d01a83c428321831246', logo: '/_blob/c0d56b7002c5a49133ad874c2c2e0ac7' }
     };
-    return cores[this.props.cor ?? 'Ébano'] || cores['Ébano'];
+    const c = cores[this.props.cor ?? 'Ébano'] || cores['Ébano'];
+    const logo = (this.props.bordado ?? 'Logo') === 'Logo';
+    return { ...c, showLogo: logo, showSymbol: !logo, detalhe: logo ? 'Logo bordada em 3D na frente, aba reta' : 'Sax bordado em 3D na frente, aba reta' };
   }
 }
 </script>
