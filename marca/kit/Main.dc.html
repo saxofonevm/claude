@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Naipe · Boné five panel</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&amp;family=IBM+Plex+Mono:wght@400;500&amp;family=Figtree:wght@400;500&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#12392D}a:hover{color:#1C1C1A}
+</style>
+</helmet>
+<div style="width: 1080px; height: 1080px; box-sizing: border-box; padding: 64px; background: #EDEBE6; color: #1C1C1A; font-family: 'Figtree', Arial, sans-serif; display: flex; flex-direction: column; gap: 24px">
+  <div style="display: flex; justify-content: space-between; align-items: center">
+    <img src="/_blob/c0d56b7002c5a49133ad874c2c2e0ac7" alt="naipe" style="height: 44px">
+    <span style="font-family: 'IBM Plex Mono', monospace; font-size: 16px; letter-spacing: 0.14em; text-transform: uppercase; color: #4F534E">Coleção 01 · Sopros</span>
+  </div>
+
+  <div style="flex-grow: 1; display: flex; align-items: center; justify-content: center">
+    <div style="position: relative; width: 760px; height: 532px">
+      <svg viewBox="0 0 600 420" width="760" height="532" role="img" aria-label="Boné five panel visto de frente">
+        <ellipse cx="300" cy="392" rx="250" ry="16" fill="#1C1C1A" opacity="0.12"></ellipse>
+        <path d="M78 300 C78 150 170 58 300 58 C430 58 522 150 522 300 Z" fill="{{cap}}"></path>
+        <path d="M78 300 C78 150 170 58 300 58 C430 58 522 150 522 300 Z" fill="none" stroke="{{seam}}" stroke-width="2"></path>
+        <path d="M186 300 C188 196 228 112 300 60" fill="none" stroke="{{seam}}" stroke-width="2.5"></path>
+        <path d="M414 300 C412 196 372 112 300 60" fill="none" stroke="{{seam}}" stroke-width="2.5"></path>
+        <path d="M198 300 C200 200 238 120 300 72" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
+        <path d="M402 300 C400 200 362 120 300 72" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
+        <path d="M120 200 C150 170 170 150 200 132" fill="none" stroke="{{seam}}" stroke-width="2"></path>
+        <path d="M480 200 C450 170 430 150 400 132" fill="none" stroke="{{seam}}" stroke-width="2"></path>
+        <circle cx="140" cy="236" r="6" fill="{{seam}}"></circle>
+        <circle cx="460" cy="236" r="6" fill="{{seam}}"></circle>
+        <ellipse cx="300" cy="60" rx="14" ry="7" fill="{{seam}}"></ellipse>
+        <path d="M52 302 Q300 274 548 302 L566 336 Q300 392 34 336 Z" fill="{{brim}}"></path>
+        <path d="M64 314 Q300 290 536 314" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
+        <path d="M56 326 Q300 372 544 326" fill="none" stroke="{{stitch}}" stroke-width="1.5" stroke-dasharray="5 5"></path>
+      </svg>
+      <img src="{{symbol}}" alt="Símbolo bordado" style="position: absolute; left: 50%; top: 168px; height: 170px; transform: translateX(-50%)">
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; border-top: 1px solid #C9C5BC; padding-top: 24px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #4F534E">Modelo</span>
+      <span style="font-family: 'Bricolage Grotesque', Arial, sans-serif; font-size: 28px; font-weight: 800; letter-spacing: -0.02em">Boné five panel</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #4F534E">Detalhe</span>
+      <span style="font-size: 18px; line-height: 1.4">Sax bordado em 3D na frente, aba reta</span>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <span style="font-family: 'IBM Plex Mono', monospace; font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; color: #4F534E">Ajuste</span>
+      <span style="font-size: 18px; line-height: 1.4">Fita com fivela de metal, tamanho único</span>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"cor":{"editor":"enum","options":["Ébano","Feltro","Osso"],"default":"Ébano","section":"Boné"},"$preview":{"width":1080,"height":1080}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const cores = {
+      'Ébano': { cap: '#1C1C1A', seam: '#000000', brim: '#141413', stitch: '#3A3A37', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b' },
+      'Feltro': { cap: '#12392D', seam: '#0A261D', brim: '#0E3026', stitch: '#2D5446', symbol: '/_blob/8c727683002d0c1e4d8cb24ca8de0a0b' },
+      'Osso': { cap: '#E2DED5', seam: '#BDB8AD', brim: '#D6D1C6', stitch: '#A9A398', symbol: '/_blob/830bbf1875558d01a83c428321831246' }
+    };
+    return cores[this.props.cor ?? 'Ébano'] || cores['Ébano'];
+  }
+}
+</script>
+</body>
+</html>
