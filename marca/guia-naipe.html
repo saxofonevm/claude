@@ -1,0 +1,266 @@
+<title>Naipe — Guia da Marca</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: uma coluna estreita de "partitura", seções separadas como compassos, com blocos de cor só onde a cor é o assunto */
+:root {
+  --osso: #EDEBE6;      /* fundo claro: papel de partitura */
+  --ebano: #151514;     /* texto e preto da marca */
+  --feltro: #2F4A3A;    /* verde feltro: mesa de cartas e estojo de instrumento */
+  --latao: #B08A3E;     /* latão dos sopros: acento raro */
+  --grafite: #5E625D;   /* texto secundário */
+  --linha: #CFCBC2;
+  --card: #F6F5F1;
+  --bg: var(--osso); --fg: var(--ebano); --muted: var(--grafite); --accent: var(--feltro);
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #121211; --fg: #EDEBE6; --muted: #A3A69F; --accent: #7FA98E; --linha: #2E2E2B; --card: #1B1B19; color-scheme: dark } }
+:root[data-theme="dark"] { --bg: #121211; --fg: #EDEBE6; --muted: #A3A69F; --accent: #7FA98E; --linha: #2E2E2B; --card: #1B1B19; color-scheme: dark }
+
+* { box-sizing: border-box }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 48px 96px; display: grid; gap: 72px }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; line-height: 1.05 }
+h2 { font-size: clamp(1.8rem, 5vw, 2.4rem); font-weight: 800; letter-spacing: -0.02em }
+h3 { font-size: 1.15rem; font-weight: 600 }
+p { margin: 0; max-width: 62ch }
+.label { font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--muted) }
+section { display: grid; gap: 24px; border-top: 1px solid var(--linha); padding-top: 28px }
+.lead { font-size: 1.15rem; color: var(--fg) }
+.muted { color: var(--muted) }
+
+/* Abertura */
+.hero { display: grid; gap: 20px }
+.wordmark { font-family: var(--display); font-weight: 800; font-size: clamp(4.5rem, 20vw, 9rem); letter-spacing: -0.05em; line-height: .85 }
+.wordmark span { color: var(--accent) }
+.def { display: grid; gap: 6px; padding-left: 16px; border-left: 2px solid var(--accent) }
+.def b { font-family: var(--display); font-size: 1.1rem }
+.tag { font-family: var(--display); font-size: clamp(1.4rem, 4vw, 1.8rem); font-weight: 600 }
+
+/* Grades */
+.grid2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px }
+.grid2 > * { min-width: 0 }
+.box { background: var(--card); border: 1px solid var(--linha); border-radius: 6px; padding: 20px; display: grid; gap: 8px; align-content: start }
+
+/* Coleções por naipe */
+.naipes { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--linha); border: 1px solid var(--linha) }
+.naipe { background: var(--bg); padding: 18px 16px; display: grid; gap: 4px }
+.naipe .n { font-family: var(--display); font-size: 1.25rem; font-weight: 600 }
+.naipe .i { font-size: .85rem; color: var(--muted) }
+
+/* É / não é */
+.eh { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--linha); border-radius: 6px; overflow: hidden }
+.eh > div { padding: 18px; display: grid; gap: 8px; align-content: start; min-width: 0 }
+.eh > div + div { border-left: 1px solid var(--linha) }
+.eh ul { margin: 0; padding-left: 18px; display: grid; gap: 4px }
+.quote { font-family: var(--display); font-size: 1.15rem; line-height: 1.35 }
+
+/* Cores */
+.cores { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px }
+.cor { border-radius: 6px; overflow: hidden; border: 1px solid var(--linha) }
+.cor .sw { height: 110px; display: flex; align-items: flex-end; padding: 10px; font-family: var(--mono); font-size: .72rem }
+.cor .info { padding: 12px; display: grid; gap: 2px; background: var(--card) }
+.cor .info b { font-family: var(--display) }
+.cor .info span { font-size: .85rem; color: var(--muted) }
+.prop { display: flex; height: 18px; border-radius: 3px; overflow: hidden }
+
+/* Tipografia */
+.tipo { display: grid; gap: 4px; padding: 20px 0; border-bottom: 1px solid var(--linha) }
+.tipo:last-child { border-bottom: 0 }
+.tipo .amostra { line-height: 1.1 }
+
+/* Logo */
+.logo-area { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px }
+.logo-area > div { aspect-ratio: 4/3; max-width: 100%; border-radius: 6px; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 2.6rem; letter-spacing: -0.05em; position: relative }
+.logo-area small { position: absolute; left: 10px; bottom: 8px; font-family: var(--mono); font-size: .65rem; font-weight: 400; letter-spacing: .08em; opacity: .7 }
+.aviso { background: var(--card); border: 1px dashed var(--accent); border-radius: 6px; padding: 14px 16px; font-size: .95rem }
+
+/* Instagram */
+.perfil { background: var(--card); border: 1px solid var(--linha); border-radius: 10px; padding: 18px; display: grid; gap: 14px; max-width: 420px }
+.perfil .top { display: flex; gap: 14px; align-items: center }
+.avatar { width: 64px; height: 64px; flex: none; border-radius: 50%; background: #151514; color: #EDEBE6; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.4rem; letter-spacing: -0.04em }
+.bio { font-size: .92rem; line-height: 1.45 }
+.feed { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; max-width: 420px }
+.post { aspect-ratio: 1; max-width: 100%; display: grid; place-items: center; text-align: center; padding: 8px; font-family: var(--display); font-weight: 600; font-size: clamp(.62rem, 2.4vw, .85rem); line-height: 1.15 }
+.p-e { background: #151514; color: #EDEBE6 } .p-o { background: #E2DFD8; color: #151514 } .p-f { background: #2F4A3A; color: #EDEBE6 } .p-l { background: #B08A3E; color: #151514 }
+.pilares { display: grid; gap: 0; border-top: 1px solid var(--linha) }
+.pilar { display: grid; grid-template-columns: 56px 1fr; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--linha) }
+.pilar .pct { font-family: var(--mono); font-variant-numeric: tabular-nums; color: var(--accent); font-weight: 500 }
+.pilar > div { min-width: 0 }
+.legenda { background: var(--card); border: 1px solid var(--linha); border-radius: 6px; padding: 16px; font-size: .95rem; display: grid; gap: 6px }
+
+/* Próximos passos */
+ol.passos { margin: 0; padding-left: 22px; display: grid; gap: 10px }
+ol.passos li::marker { font-family: var(--mono); color: var(--accent) }
+
+@media (max-width: 520px) {
+  .eh { grid-template-columns: 1fr } .eh > div + div { border-left: 0; border-top: 1px solid var(--linha) }
+}
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+</style>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="label">Guia da marca · v1 · novembro 2026</div>
+    <div class="wordmark">naipe<span>.</span></div>
+    <div class="def">
+      <b>naipe</b>
+      <span class="muted">(subst. masc.) Grupo de instrumentos da mesma família que tocam juntos numa orquestra ou banda: o naipe de metais, o naipe de cordas.</span>
+    </div>
+    <p class="tag">Encontre seu naipe.</p>
+  </header>
+
+  <section>
+    <div class="label">01 · Essência</div>
+    <h2>Roupa de quem vive música</h2>
+    <p class="lead">A Naipe faz bonés e blusas para músicos e para quem anda junto deles. Peças simples, bem feitas, com referências que quem toca reconhece de longe.</p>
+    <div class="grid2">
+      <div class="box"><span class="label">Propósito</span><p>Vestir a música como identidade: mostrar de que lado do palco, ou da plateia, você está.</p></div>
+      <div class="box"><span class="label">Posicionamento</span><p>Para músicos e simpatizantes que querem estilo sem exagero, a Naipe é a marca de vestuário que transforma a linguagem da música em design minimalista.</p></div>
+      <div class="box"><span class="label">Diferencial</span><p>Conceito de estilo. Nada de estampa de guitarra em chamas: a referência musical aparece no detalhe, no nome e no acabamento.</p></div>
+      <div class="box"><span class="label">Promessa</span><p>Você veste e se sente parte do grupo. Todo mundo tem um naipe.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">02 · Conceito</div>
+    <h2>Cada coleção é um naipe</h2>
+    <p>O nome já carrega a ideia: pessoas diferentes tocando juntas. As linhas de produto podem seguir os naipes da música, o que dá nome às peças e conversa direto com o público.</p>
+    <div class="naipes">
+      <div class="naipe"><span class="n">Cordas</span><span class="i">violão, baixo, guitarra, violino</span></div>
+      <div class="naipe"><span class="n">Sopros</span><span class="i">sax, trompete, trombone, flauta</span></div>
+      <div class="naipe"><span class="n">Percussão</span><span class="i">bateria, pandeiro, cajón</span></div>
+      <div class="naipe"><span class="n">Teclas</span><span class="i">piano, synth, órgão</span></div>
+      <div class="naipe"><span class="n">Vozes</span><span class="i">quem canta e quem canta junto</span></div>
+      <div class="naipe"><span class="n">Plateia</span><span class="i">simpatizantes: também fazem parte</span></div>
+    </div>
+    <p class="muted">Exemplo de produto: <b>Boné Naipe · Sopros</b>, preto, bordado pequeno na lateral. Etiqueta interna com “Naipe de sopros · afinado em Si♭”.</p>
+  </section>
+
+  <section>
+    <div class="label">03 · Público</div>
+    <h2>Quem veste Naipe</h2>
+    <div class="grid2">
+      <div class="box"><h3>O músico</h3><p class="muted">18 a 35 anos. Toca em banda, igreja, orquestra, estúdio ou no quarto. Quer uma roupa que represente o que ele faz sem parecer fantasia.</p></div>
+      <div class="box"><h3>O simpatizante</h3><p class="muted">Vai a show, segue artista, tem amigo músico. Gosta de cultura e quer um visual limpo com significado.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">04 · Tom de voz</div>
+    <h2>Acolhedora, com estilo e sem excesso</h2>
+    <p>A Naipe fala como o amigo da banda que te chama pra tocar junto: próximo, seguro e de poucas palavras.</p>
+    <div class="eh">
+      <div><span class="label">A Naipe é</span>
+        <ul><li>Acolhedora: todo mundo tem lugar</li><li>Direta: frases curtas</li><li>Musical: usa termos de quem toca</li><li>Confiante sem se exibir</li></ul></div>
+      <div><span class="label">A Naipe não é</span>
+        <ul><li>Elitista ou “só para profissionais”</li><li>Gritada: nada de CAIXA ALTA e !!!</li><li>Cheia de gíria forçada</li><li>Barulhenta no visual</li></ul></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><span class="label">Assim</span><p class="quote">“Novo boné do naipe de sopros. Preto, bordado discreto, pra usar do ensaio ao bar.”</p></div>
+      <div class="box"><span class="label">Assim não</span><p class="quote muted">“🔥🔥 LANÇAMENTO IMPERDÍVEL!!! CORRE QUE ACABA!!! 🔥🔥”</p></div>
+    </div>
+    <div class="box"><span class="label">Frases para usar</span>
+      <p>Encontre seu naipe · Toca junto · Do ensaio pra rua · Afinado com você · Todo mundo tem um naipe</p></div>
+  </section>
+
+  <section>
+    <div class="label">05 · Cores</div>
+    <h2>Paleta</h2>
+    <p>Base neutra para o produto e o feed respirarem. O verde feltro lembra o forro de estojo de instrumento e a mesa de cartas (naipe também é o símbolo do baralho). O latão aparece pouco, como um solo.</p>
+    <div class="cores">
+      <div class="cor"><div class="sw" style="background:#151514;color:#EDEBE6">#151514</div><div class="info"><b>Ébano</b><span>Texto, bonés e blusas principais</span></div></div>
+      <div class="cor"><div class="sw" style="background:#EDEBE6;color:#151514">#EDEBE6</div><div class="info"><b>Osso</b><span>Fundos, blusas claras</span></div></div>
+      <div class="cor"><div class="sw" style="background:#2F4A3A;color:#EDEBE6">#2F4A3A</div><div class="info"><b>Feltro</b><span>Cor de assinatura</span></div></div>
+      <div class="cor"><div class="sw" style="background:#B08A3E;color:#151514">#B08A3E</div><div class="info"><b>Latão</b><span>Detalhes e destaques</span></div></div>
+      <div class="cor"><div class="sw" style="background:#5E625D;color:#EDEBE6">#5E625D</div><div class="info"><b>Grafite</b><span>Texto de apoio</span></div></div>
+    </div>
+    <div class="label">Proporção de uso</div>
+    <div class="prop" role="img" aria-label="Ébano 45%, Osso 35%, Feltro 12%, Latão 5%, Grafite 3%">
+      <div style="width:45%;background:#151514"></div><div style="width:35%;background:#E2DFD8"></div><div style="width:12%;background:#2F4A3A"></div><div style="width:5%;background:#B08A3E"></div><div style="width:3%;background:#5E625D"></div>
+    </div>
+    <p class="muted">Ébano 45% · Osso 35% · Feltro 12% · Latão 5% · Grafite 3%</p>
+  </section>
+
+  <section>
+    <div class="label">06 · Tipografia</div>
+    <h2>Letras</h2>
+    <div>
+      <div class="tipo"><span class="label">Títulos · Bricolage Grotesque</span><span class="amostra" style="font-family:var(--display);font-weight:800;font-size:2.4rem;letter-spacing:-0.03em">Toca junto.</span><span class="muted">Peso forte, letras próximas. Para títulos, capas e frases curtas.</span></div>
+      <div class="tipo"><span class="label">Texto · Figtree</span><span class="amostra" style="font-size:1.15rem">Boné preto com bordado do naipe de sopros na lateral. Aba curva e ajuste traseiro em fivela.</span><span class="muted">Legível e amigável. Para legendas, descrições e site.</span></div>
+      <div class="tipo"><span class="label">Detalhes · IBM Plex Mono</span><span class="amostra" style="font-family:var(--mono);font-size:1rem;letter-spacing:.1em;text-transform:uppercase">Coleção 01 · Sopros · Si♭</span><span class="muted">Para etiquetas, numeração de coleção e informações técnicas.</span></div>
+    </div>
+    <p class="muted">As três são gratuitas no Google Fonts e funcionam no Canva.</p>
+  </section>
+
+  <section>
+    <div class="label">07 · Logo</div>
+    <h2>Aplicação da logo</h2>
+    <div class="aviso">Você já tem a logo. Me envie o arquivo (PNG ou SVG) para eu substituir as amostras abaixo e ajustar a paleta a ela, se for preciso.</div>
+    <div class="logo-area">
+      <div style="background:#151514;color:#EDEBE6">naipe<small>SOBRE ÉBANO</small></div>
+      <div style="background:#E2DFD8;color:#151514">naipe<small>SOBRE OSSO</small></div>
+      <div style="background:#2F4A3A;color:#EDEBE6">naipe<small>SOBRE FELTRO</small></div>
+    </div>
+    <div class="grid2">
+      <div class="box"><h3>Regras</h3><p class="muted">Deixe ao redor da logo um espaço livre da altura da letra “n”. Use só nas cores da paleta. Tamanho mínimo: 24 px de altura no digital, 1,5 cm no bordado.</p></div>
+      <div class="box"><h3>Evite</h3><p class="muted">Esticar, girar, aplicar sombra ou contorno, ou usar sobre fotos com muita informação.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">08 · Instagram</div>
+    <h2>Lançamento no Instagram</h2>
+    <div class="grid2">
+      <div class="perfil">
+        <div class="top"><div class="avatar">n.</div><div><b>@naipe</b><div class="muted" style="font-size:.85rem">Marca de roupas</div></div></div>
+        <div class="bio">Bonés e blusas para quem vive a música.<br>Encontre seu naipe.<br>Pedidos pelo direct</div>
+      </div>
+      <div style="display:grid;gap:8px;align-content:start">
+        <span class="label">Os 9 primeiros posts</span>
+        <div class="feed">
+          <div class="post p-e">naipe.</div><div class="post p-o">O que é um naipe?</div><div class="post p-f">Boné Sopros</div>
+          <div class="post p-o">Qual é o seu naipe?</div><div class="post p-l">Coleção 01</div><div class="post p-e">Bastidores da produção</div>
+          <div class="post p-f">Blusa Cordas</div><div class="post p-e">Músico usando: ensaio</div><div class="post p-o">Toca junto.</div>
+        </div>
+      </div>
+    </div>
+    <p class="muted">O @ é sugestão. Confira se está livre e, se não estiver, opções como @usenaipe, @naipe.co ou @naipe.store.</p>
+
+    <h3>Sobre o que postar</h3>
+    <div class="pilares">
+      <div class="pilar"><span class="pct">40%</span><div><b>Produto</b><p class="muted">Fotos das peças em fundo neutro e em uso: detalhe do bordado, caimento, cores.</p></div></div>
+      <div class="pilar"><span class="pct">30%</span><div><b>Comunidade</b><p class="muted">Músicos e clientes usando Naipe. Reposts, ensaios, shows, “qual é o seu naipe?”.</p></div></div>
+      <div class="pilar"><span class="pct">20%</span><div><b>Cultura musical</b><p class="muted">Curiosidades sobre instrumentos e naipes, termos de música explicados de forma simples.</p></div></div>
+      <div class="pilar"><span class="pct">10%</span><div><b>Bastidores</b><p class="muted">Como as peças são feitas, escolha de tecido, embalagem, a história da marca.</p></div></div>
+    </div>
+
+    <h3>Legenda de exemplo para o primeiro post</h3>
+    <div class="legenda">
+      <p>Numa orquestra, naipe é o grupo que toca junto. Cordas com cordas, sopros com sopros.</p>
+      <p>A Naipe nasceu pra quem vive música, no palco ou na plateia. Bonés e blusas simples, com a música no detalhe.</p>
+      <p>Em breve, a Coleção 01. Qual é o seu naipe? Conta aqui embaixo.</p>
+      <p class="muted">#naipe #musico #moda #streetwear #musicabrasileira</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">09 · Próximos passos</div>
+    <h2>Por onde seguir</h2>
+    <ol class="passos">
+      <li>Enviar a logo para ajustar este guia.</li>
+      <li>Garantir o @ no Instagram e criar o perfil com a bio acima.</li>
+      <li>Definir a Coleção 01: quais naipes entram e quantas peças (sugestão: 2 bonés e 2 blusas).</li>
+      <li>Encontrar fornecedor de bonés e de blusas e pedir amostras.</li>
+      <li>Fazer as fotos de produto e preparar os 9 primeiros posts.</li>
+      <li>Definir preços e como vender (direct, WhatsApp ou loja online).</li>
+    </ol>
+  </section>
+
+</div>
