@@ -350,7 +350,10 @@ window.CMA = {
           id: "melodia-metodo",
           titulo: "Como estudar uma frase",
           descricao: "O método CMA para qualquer melodia.",
-          referencias: [],
+          referencias: [
+            { titulo: "Stan Getz · Corcovado", detalhe: "Melodia cantável para cantarolar e fatiar", busca: "Stan Getz Corcovado" },
+            { titulo: "Sonny Rollins · St. Thomas", detalhe: "Tema curto e fácil de memorizar", busca: "Sonny Rollins St. Thomas" }
+          ],
           exercicios: [
             {
               id: "mel-01",
@@ -369,7 +372,10 @@ window.CMA = {
           id: "melodia-escalas",
           titulo: "Escalas",
           descricao: "Escalas maiores e menores em toda a extensão do instrumento.",
-          referencias: [],
+          referencias: [
+            { titulo: "Ciclo das quintas", detalhe: "A ordem das tonalidades", busca: "ciclo das quintas explicação" },
+            { titulo: "Escalas menores", detalhe: "Natural, harmônica e melódica", busca: "escala menor natural harmônica melódica explicação" }
+          ],
           exercicios: [
             {
               id: "mel-02",
@@ -390,6 +396,26 @@ window.CMA = {
                 "Cante a escala antes de tocar",
                 "Anote no diário quais tonalidades ainda estão difíceis"
               ]
+            },
+            {
+              id: "mel-07",
+              titulo: "Escalas menores (natural, harmônica e melódica)",
+              andamento: { inicial: 60, alvo: 120 },
+              passos: [
+                "Comece por Lá menor: toque a natural, depois a harmônica (7º grau elevado) e a melódica (6º e 7º graus elevados na subida)",
+                "Cante cada uma antes de tocar e perceba a diferença de cor",
+                "Repita em Mi menor e Ré menor, depois siga o ciclo das quintas"
+              ]
+            },
+            {
+              id: "mel-08",
+              titulo: "Escala cromática",
+              andamento: { inicial: 60, alvo: 120 },
+              passos: [
+                "Toque a cromática da nota mais grave à mais aguda que você alcança, em semínimas",
+                "Use os dedilhados cromáticos corretos (sem arrastar dedos) e mantenha o som igual",
+                "Depois em colcheias e semicolcheias, subindo o andamento aos poucos"
+              ]
             }
           ]
         },
@@ -397,7 +423,10 @@ window.CMA = {
           id: "melodia-intervalos",
           titulo: "Intervalos",
           descricao: "Reconhecer e tocar intervalos com afinação e controle.",
-          referencias: [],
+          referencias: [
+            { titulo: "Treino de ouvido: intervalos", detalhe: "Exercício online (musictheory.net)", url: "https://www.musictheory.net/exercises/ear-interval" },
+            { titulo: "Intervalos com músicas conhecidas", detalhe: "Associe cada intervalo a uma melodia", busca: "intervalos musicais músicas para reconhecer" }
+          ],
           exercicios: [
             {
               id: "mel-04",
@@ -415,7 +444,10 @@ window.CMA = {
           id: "melodia-arpejos",
           titulo: "Arpejos",
           descricao: "Tríades e tétrades: a base da harmonia aplicada à melodia.",
-          referencias: [],
+          referencias: [
+            { titulo: "John Coltrane · Giant Steps", detalhe: "Melodia construída com arpejos", busca: "John Coltrane Giant Steps" },
+            { titulo: "Arpejos no sax", detalhe: "Tríades e tétrades explicadas", busca: "arpejos tríades tétrades saxofone" }
+          ],
           exercicios: [
             {
               id: "mel-05",
@@ -432,8 +464,18 @@ window.CMA = {
         {
           id: "melodia-musicas",
           titulo: "Músicas",
-          descricao: "Aplicar tudo em repertório real (partituras no Drive).",
-          referencias: [],
+          descricao: "Aplicar tudo em repertório real. Músicas sugeridas por nível: 1 (iniciante), 2 (intermediário) e 3 (avançado). Partituras no Drive.",
+          referencias: [
+            { titulo: "Asa Branca", detalhe: "Nível 1 · Luiz Gonzaga", busca: "Asa Branca saxofone" },
+            { titulo: "Carinhoso", detalhe: "Nível 1 · Pixinguinha", busca: "Carinhoso Pixinguinha saxofone" },
+            { titulo: "Autumn Leaves", detalhe: "Nível 1 · Cannonball Adderley", busca: "Cannonball Adderley Autumn Leaves" },
+            { titulo: "Corcovado", detalhe: "Nível 2 · Tom Jobim", busca: "Stan Getz Corcovado" },
+            { titulo: "Blue Bossa", detalhe: "Nível 2 · Kenny Dorham", busca: "Joe Henderson Blue Bossa" },
+            { titulo: "Lamentos", detalhe: "Nível 2 · Pixinguinha", busca: "Lamentos Pixinguinha saxofone" },
+            { titulo: "Tico-Tico no Fubá", detalhe: "Nível 3 · Zequinha de Abreu", busca: "Tico-Tico no Fubá saxofone" },
+            { titulo: "Brasileirinho", detalhe: "Nível 3 · Waldir Azevedo", busca: "Brasileirinho saxofone" },
+            { titulo: "Vassourinhas", detalhe: "Nível 3 · frevo", busca: "Vassourinhas frevo saxofone" }
+          ],
           exercicios: [
             {
               id: "mel-06",
