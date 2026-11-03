@@ -53,6 +53,7 @@
     metronomo: { bpm: 80, compasso: 4 },
     desbloqueado: false,
     sax: "",
+    tema: "",
     timer: { inicio: null, acumulado: 0 }
   });
 
@@ -67,6 +68,14 @@
   }
 
   let estado = carregar();
+
+  function aplicarTema() {
+    if (estado.tema) document.documentElement.dataset.tema = estado.tema;
+    else delete document.documentElement.dataset.tema;
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute("content", estado.tema === "verde" ? "#0b2a20" : "#0e0e11");
+  }
+  aplicarTema();
 
   // ---------- Acesso (versão grátis x completa) ----------
 
@@ -412,7 +421,7 @@
     const ordem = Array.from({ length: Math.min(FRASES.length, 6) }, (_, i) => FRASES[(diaDoAno + i) % FRASES.length]);
     const bloco = ordem.map(f => `<span class="letreiro-item">${escapar(f)}</span><span class="letreiro-sep">✦</span>`).join("");
     faixa.innerHTML = bloco + bloco;
-    faixa.style.setProperty("--duracao", `${Math.max(22, ordem.join(" ").length * 0.22)}s`);
+    faixa.style.setProperty("--duracao", `${Math.max(34, ordem.join(" ").length * 0.34)}s`);
   }
 
   function atualizarLetreiroRadio() {
@@ -427,6 +436,8 @@
     faixa.innerHTML = `<span>${escapar(texto)}</span><span>${escapar(texto)}</span>`;
     const bt = $("#letreiro-radio");
     bt.classList.toggle("tocando", tocando);
+    const pl = bt.querySelector(".letreiro-radio-play");
+    if (pl) pl.innerHTML = icone(tocando ? "pause" : "play");
     bt.setAttribute("aria-label", tocando ? `Rádio CMA tocando ${radio.estacao ? radio.estacao.nome : ""}. Toque para trocar de estação` : "Rádio CMA: toque para ouvir");
   }
 
@@ -1258,6 +1269,7 @@
     $("#aj-nome").value = estado.nome;
     $("#aj-meta").value = estado.metaSemanal;
     $("#aj-sax").value = estado.sax || "";
+    $("#aj-tema").value = estado.tema || "";
     const cartao = $("#cartao-acesso");
     cartao.hidden = !ACESSO;
     if (ACESSO) {
@@ -1273,6 +1285,8 @@
     estado.nome = $("#aj-nome").value.trim();
     estado.metaSemanal = Math.max(10, Number($("#aj-meta").value) || 150);
     estado.sax = $("#aj-sax").value;
+    estado.tema = $("#aj-tema").value;
+    aplicarTema();
     salvar();
     avisar("Ajustes salvos.");
   });

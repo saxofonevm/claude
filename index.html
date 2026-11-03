@@ -20,9 +20,9 @@
     <section id="tela-inicio" class="tela">
       <header class="hero">
         <button class="letreiro-radio" id="letreiro-radio" type="button" aria-label="Rádio CMA: toque para ouvir">
-          <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
           <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
+          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
+          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
         </button>
         <div class="hero-topo">
           <span class="marca"><svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>CMA</span>
@@ -164,6 +164,12 @@
             <option value="">Mostrar todas as afinações</option>
             <option value="Mib">Alto ou barítono (Mib)</option>
             <option value="Sib">Tenor ou soprano (Sib)</option>
+          </select>
+        </label>
+        <label>Cor do app
+          <select id="aj-tema">
+            <option value="">Preto e dourado</option>
+            <option value="verde">Verde Naipe e dourado</option>
           </select>
         </label>
         <label>Meta semanal (minutos)

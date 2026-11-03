@@ -25,7 +25,22 @@
   --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --raio: 16px;
   --raio-sm: 10px;
+  --mistura: #111116;
+  --visor: #0a0a0d;
   color-scheme: dark;
+}
+
+/* Tema verde (Naipe), opcional em Ajustes */
+:root[data-tema="verde"] {
+  --bg: #0b2a20;
+  --surface: #11382b;
+  --surface-2: #184535;
+  --line: #235443;
+  --text: #eef0e9;
+  --muted: #a2b8ad;
+  --faint: #6c8a7d;
+  --mistura: #0e3125;
+  --visor: #082119;
 }
 
 * { box-sizing: border-box; }
@@ -157,7 +172,7 @@ main { max-width: 720px; margin: 0 auto; }
   display: flex; align-items: center; gap: 14px; text-decoration: none; color: inherit;
   background:
     radial-gradient(80% 120% at 100% 0%, color-mix(in srgb, var(--c2, var(--brass)) 30%, transparent), transparent 60%),
-    linear-gradient(135deg, color-mix(in srgb, var(--c1, var(--brass)) 55%, #111116), color-mix(in srgb, var(--c1, var(--brass)) 18%, #111116));
+    linear-gradient(135deg, color-mix(in srgb, var(--c1, var(--brass)) 55%, var(--mistura)), color-mix(in srgb, var(--c1, var(--brass)) 18%, var(--mistura)));
   border: 1px solid color-mix(in srgb, var(--c1, var(--brass)) 45%, transparent);
   border-radius: var(--raio); padding: 16px;
   box-shadow: 0 16px 34px -18px var(--c1, var(--brass));
@@ -192,7 +207,7 @@ main { max-width: 720px; margin: 0 auto; }
   font-family: var(--f-mono); font-weight: 700; font-size: clamp(3.4rem, 17vw, 4.6rem);
   line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; text-align: center;
   padding-block: 14px; border-radius: var(--raio-sm);
-  background: #0a0a0d; border: 1px solid var(--line);
+  background: var(--visor); border: 1px solid var(--line);
   color: var(--text);
 }
 .timer.rodando .timer-visor { color: var(--brass-soft); text-shadow: 0 0 18px rgb(212 162 76 / .45); }
@@ -215,7 +230,7 @@ main { max-width: 720px; margin: 0 auto; }
   --tom: var(--brass);
   padding: 14px 12px; display: flex; flex-direction: column; gap: 6px; border-radius: var(--raio);
   border: 1px solid color-mix(in srgb, var(--tom) 35%, transparent);
-  background: linear-gradient(160deg, color-mix(in srgb, var(--tom) 28%, #111116), #131318 80%);
+  background: linear-gradient(160deg, color-mix(in srgb, var(--tom) 28%, var(--mistura)), var(--surface) 80%);
 }
 .stat:nth-child(1) { --tom: #ee8a45; }
 .stat:nth-child(2) { --tom: #5b8def; }
@@ -275,7 +290,7 @@ main { max-width: 720px; margin: 0 auto; }
   display: flex; flex-direction: column; gap: 6px; text-decoration: none; color: #fff;
   background:
     radial-gradient(90% 110% at 100% 0%, color-mix(in srgb, var(--c2) 35%, transparent), transparent 60%),
-    linear-gradient(150deg, color-mix(in srgb, var(--c1) 70%, #0e0e11), color-mix(in srgb, var(--c1) 22%, #0e0e11) 75%);
+    linear-gradient(150deg, color-mix(in srgb, var(--c1) 70%, var(--bg)), color-mix(in srgb, var(--c1) 22%, var(--bg)) 75%);
   border: 1px solid color-mix(in srgb, var(--c1) 50%, transparent);
   border-radius: 20px; padding: 18px; min-height: 184px;
   box-shadow: 0 18px 36px -22px var(--c1);
@@ -299,7 +314,7 @@ main { max-width: 720px; margin: 0 auto; }
   position: relative; overflow: hidden;
   background:
     radial-gradient(80% 90% at 100% 0%, color-mix(in srgb, var(--c2) 40%, transparent), transparent 65%),
-    linear-gradient(170deg, color-mix(in srgb, var(--c1) 50%, #0e0e11), var(--bg) 92%);
+    linear-gradient(170deg, color-mix(in srgb, var(--c1) 50%, var(--bg)), var(--bg) 92%);
   border-bottom: 1px solid color-mix(in srgb, var(--c1) 35%, transparent);
   padding-block: 16px 28px;
   padding-left: max(18px, env(safe-area-inset-left, 0px));
@@ -511,7 +526,7 @@ a.indicacao:hover { border-color: var(--c1, var(--brass)); }
   content: counter(passo, decimal-leading-zero); flex: none; width: 34px; height: 30px; border-radius: 8px;
   display: grid; place-items: center;
   font-family: var(--f-display); font-stretch: 75%; font-weight: 700; font-size: 1rem; color: #fff;
-  background: linear-gradient(135deg, var(--c1), color-mix(in srgb, var(--c1) 45%, #0e0e11));
+  background: linear-gradient(135deg, var(--c1), color-mix(in srgb, var(--c1) 45%, var(--bg)));
 }
 .passos li span { padding-top: 3px; }
 
@@ -522,7 +537,7 @@ a.indicacao:hover { border-color: var(--c1, var(--brass)); }
 .vel-nome { font-family: var(--f-serif); font-style: italic; font-size: .95rem; color: var(--muted); }
 .velocimetro > .vel-atual {
   border-color: transparent; color: #fff;
-  background: linear-gradient(150deg, color-mix(in srgb, var(--c1) 80%, #0e0e11), color-mix(in srgb, var(--c1) 35%, #0e0e11));
+  background: linear-gradient(150deg, color-mix(in srgb, var(--c1) 80%, var(--bg)), color-mix(in srgb, var(--c1) 35%, var(--bg)));
   box-shadow: 0 10px 24px -14px var(--c1);
 }
 .vel-atual strong { font-size: 2.3rem; color: #fff; }
@@ -795,7 +810,7 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
   background: linear-gradient(90deg, rgb(212 162 76 / .22), rgb(212 162 76 / .06)); border: 1px solid rgb(212 162 76 / .45); color: var(--text); font: inherit; }
 .letreiro-radio:hover { border-color: var(--brass); }
 .letreiro-radio-janela { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
-.letreiro-radio-faixa { display: flex; width: max-content; animation: letreiro 16s linear infinite; }
+.letreiro-radio-faixa { display: flex; width: max-content; animation: letreiro 26s linear infinite; }
 .letreiro-radio-faixa span { white-space: nowrap; font-size: .84rem; font-weight: 600; padding-right: 8px; }
 .letreiro-radio-play { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); animation: pulsar 2.2s ease-in-out infinite; }
 .letreiro-radio-play .ic { width: 13px; height: 13px; }
@@ -835,3 +850,14 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
   .letreiro-radio-faixa span + span { display: none; }
   .eq i, .letreiro-radio-play, .arvore .pulso-no, .dica-toque .ic, .continuar-seta, .ind-mais .ic, .timer #timer-iniciar, .abas a .ic, .raiz-card .seta, .proxima .ic, .grupo-topo .ic { animation: none !important; }
 }
+
+
+/* Topo: marca à esquerda, data no centro, ajustes à direita */
+.hero-topo { display: grid; grid-template-columns: 1fr auto; grid-template-areas: "marca ajuste" "data data"; align-items: center; row-gap: 10px; }
+.hero-topo .marca { grid-area: marca; justify-self: start; }
+.hero-topo .marca-sub { display: none; }
+.hero-topo .hero-data { grid-area: data; justify-self: center; margin: 0; font-size: 1.08rem; font-weight: 600; letter-spacing: .01em; color: var(--text); text-align: center; }
+.hero-topo .btn-topo { grid-area: ajuste; justify-self: end; }
+/* Letreiro da rádio: play à esquerda, rádio à direita */
+.letreiro-radio-ic { flex: none; width: 30px; height: 30px; display: grid; place-items: center; color: var(--brass-soft); }
+.letreiro-radio-ic .ic { width: 22px; height: 22px; }
