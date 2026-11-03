@@ -1007,6 +1007,7 @@
     $("#met-nome").textContent = nomeAndamento(bpm);
     $("#met-slider").value = bpm;
     $("#met-compasso").value = String(compasso);
+    $("#met-som").value = estado.metronomo.som || "analogico";
     $("#met-tocar").innerHTML = met.tocando ? `${icone("stop")}Parar` : `${icone("play")}Tocar`;
     $("#met-salvar-bpm").hidden = !met.exId;
     $("#met-pulsos").innerHTML = Array.from({ length: compasso }, (_, i) => `<span class="pulso${i === 0 ? " forte" : ""}"></span>`).join("");
@@ -1027,7 +1028,44 @@
     $("#met-slider").value = estado.metronomo.bpm;
   }
 
+  // Som de metrônomo analógico: estalo de madeira (ruído curto filtrado)
+  let ruido = null;
+  function bufferRuido(ctx) {
+    if (ruido && ruido.sampleRate === ctx.sampleRate) return ruido;
+    const n = Math.floor(ctx.sampleRate * 0.06);
+    ruido = ctx.createBuffer(1, n, ctx.sampleRate);
+    const d = ruido.getChannelData(0);
+    for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 6);
+    return ruido;
+  }
+
+  function tique(tempo, forte) {
+    const ctx = met.ctx;
+    const src = ctx.createBufferSource();
+    src.buffer = bufferRuido(ctx);
+    const bp = ctx.createBiquadFilter();
+    bp.type = "bandpass";
+    bp.frequency.value = forte ? 2600 : 1700;
+    bp.Q.value = forte ? 9 : 7;
+    const g = ctx.createGain();
+    g.gain.setValueAtTime(forte ? 2.6 : 1.8, tempo);
+    g.gain.exponentialRampToValueAtTime(0.001, tempo + 0.05);
+    src.connect(bp).connect(g).connect(ctx.destination);
+    // corpo de madeira: um "toc" grave bem curto
+    const osc = ctx.createOscillator(), go = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(forte ? 900 : 620, tempo);
+    osc.frequency.exponentialRampToValueAtTime(forte ? 520 : 380, tempo + 0.03);
+    go.gain.setValueAtTime(0.0001, tempo);
+    go.gain.exponentialRampToValueAtTime(forte ? 0.5 : 0.32, tempo + 0.002);
+    go.gain.exponentialRampToValueAtTime(0.0001, tempo + 0.035);
+    osc.connect(go).connect(ctx.destination);
+    src.start(tempo); src.stop(tempo + 0.06);
+    osc.start(tempo); osc.stop(tempo + 0.04);
+  }
+
   function clique(tempo, forte) {
+    if ((estado.metronomo.som || "analogico") === "analogico") return tique(tempo, forte);
     const osc = met.ctx.createOscillator();
     const ganho = met.ctx.createGain();
     osc.frequency.value = forte ? 1600 : 1000;
@@ -1102,6 +1140,7 @@
     salvar(); renderMetronomo();
   });
   $("#met-salvar-bpm").addEventListener("click", () => salvarAndamento(met.exId, estado.metronomo.bpm));
+  $("#met-som").addEventListener("change", ev => { estado.metronomo.som = ev.target.value; salvar(); });
   $("#met-fechar").addEventListener("click", () => dlgMet.close());
   dlgMet.addEventListener("close", pararMetronomo);
   $("#btn-metronomo-inicio").addEventListener("click", () => abrirMetronomo(null));
