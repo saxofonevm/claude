@@ -23,37 +23,29 @@
           <span class="marca"><svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>CMA</span>
           <span class="marca-sub">Consciência Musical Aplicada</span>
           <span class="hero-data" id="hero-data"></span>
-          <a class="btn-ajustes" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
+          <button class="btn-topo" id="btn-radio-topo" type="button" aria-label="Rádio CMA"><span data-icone="radio"></span></button>
+          <a class="btn-topo" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
         </div>
         <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
         <figure class="frase-dia">
           <blockquote id="frase-dia"></blockquote>
           <figcaption>Frase do dia</figcaption>
         </figure>
-        <div class="percurso">
-          <div class="percurso-topo">
-            <span class="rotulo">Seu percurso</span>
-            <span class="percurso-pct" id="percurso-pct">0%</span>
-          </div>
-          <div class="arvore" id="arvore"></div>
-          <p class="arvore-legenda" id="arvore-legenda"></p>
-        </div>
       </header>
 
       <div class="conteudo-inicio">
-        <a class="continuar" id="continuar" href="#/raizes"></a>
-
-        <div class="cartao timer" id="cartao-timer">
+        <div class="cartao timer hoje" id="cartao-timer">
           <div class="timer-topo">
-            <span class="rotulo">Sessão de estudo</span>
+            <span class="rotulo">Hoje</span>
             <span class="timer-estado" id="timer-estado">Parado</span>
           </div>
+          <a class="continuar" id="continuar" href="#/raizes"></a>
           <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
           <div class="timer-meta">
             <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
             <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
           </div>
-          <p class="mudo" id="timer-dica">Ligue o cronômetro e registre sua prática ao terminar.</p>
+          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
           <div class="timer-botoes">
             <button class="btn primario" id="timer-iniciar" data-icone="play">Começar</button>
             <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
@@ -62,10 +54,21 @@
           </div>
         </div>
 
-        <div class="stats">
+        <div class="stats linha">
           <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span>dias seguidos</span></div>
           <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo"><span data-icone="relogio"></span>min na semana</span></div>
           <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
+        </div>
+
+        <div class="cartao percurso-cartao">
+          <div class="percurso">
+          <div class="percurso-topo">
+            <span class="rotulo">Seu percurso</span>
+            <span class="percurso-pct" id="percurso-pct">0%</span>
+          </div>
+          <div class="arvore" id="arvore"></div>
+          <p class="arvore-legenda" id="arvore-legenda"></p>
+        </div>
         </div>
 
         <div class="cartao">
@@ -194,6 +197,16 @@
     <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
     <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
   </nav>
+
+  <div class="comemora" id="comemora" hidden role="status" aria-live="polite">
+    <canvas id="confete" aria-hidden="true"></canvas>
+    <div class="comemora-cartao">
+      <span class="comemora-ic" id="comemora-ic"></span>
+      <strong id="comemora-titulo"></strong>
+      <span id="comemora-sub"></span>
+      <button class="btn primario" id="comemora-ok" type="button">Continuar</button>
+    </div>
+  </div>
 
   <!-- Registro de prática -->
   <dialog id="dlg-sessao">

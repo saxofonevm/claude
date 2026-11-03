@@ -38,7 +38,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
-  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   -webkit-font-smoothing: antialiased;
 }
 
@@ -78,7 +78,8 @@ main { max-width: 720px; margin: 0 auto; }
 /* ---------- Cartões e botões ---------- */
 .cartao {
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid color-mix(in srgb, var(--line) 45%, transparent);
+  box-shadow: 0 1px 0 rgb(255 255 255 / .03) inset, 0 12px 28px -22px rgb(0 0 0 / .9);
   border-radius: var(--raio);
   padding: 18px;
   display: flex; flex-direction: column; gap: 12px;
@@ -660,6 +661,39 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 .tag { font-size: .7rem; font-weight: 700; letter-spacing: .03em; padding: 3px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
 .tag.ind { border-color: transparent; background: var(--latao); color: var(--on-brass); }
 
+/* ---------- Início renovado ---------- */
+body.com-radio { padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px)); }
+body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); }
+.hero { gap: 14px; padding-block: 18px 22px; }
+.hero-topo { align-items: center; }
+.btn-topo { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px; color: var(--muted); background: none; border: 0; cursor: pointer; }
+.btn-topo:hover { color: var(--text); background: var(--surface-2); }
+.btn-topo .ic { width: 20px; height: 20px; }
+.btn-topo.ativo { color: var(--brass-soft); }
+.btn-topo + .btn-topo { margin-left: -6px; }
+.hero-data { margin-left: auto; }
+.hoje { gap: 12px; }
+.hoje .continuar { border-radius: var(--raio-sm); padding: 12px 14px; }
+.hoje .continuar-ilus .ilus { width: 30px; height: 30px; }
+.hoje .continuar-texto strong { font-size: 1.1rem; }
+.hoje .timer-visor { font-size: clamp(2.6rem, 13vw, 3.4rem); padding-block: 10px; }
+.stats.linha { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; padding: 12px 6px; border-radius: var(--raio); background: var(--surface); border: 1px solid color-mix(in srgb, var(--line) 45%, transparent); }
+.stats.linha .stat { background: none; border: 0; border-radius: 0; padding: 4px 10px; align-items: center; text-align: center; }
+.stats.linha .stat + .stat { border-left: 1px solid var(--line); }
+.stats.linha .stat-valor { font-size: 1.7rem; color: var(--tom); }
+.percurso-cartao .percurso { gap: 4px; }
+.comemora { position: fixed; inset: 0; z-index: 60; display: grid; place-items: center; padding: 24px; background: rgb(0 0 0 / .55); backdrop-filter: blur(3px); opacity: 0; transition: opacity .25s ease; }
+.comemora.visivel { opacity: 1; }
+.comemora canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.comemora-cartao { position: relative; width: min(340px, 100%); display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; padding: 26px 22px 20px; border-radius: 22px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--brass) 45%, transparent); box-shadow: 0 30px 60px -20px rgb(0 0 0 / .8), 0 0 40px -10px rgb(212 162 76 / .45); transform: scale(.9); transition: transform .35s cubic-bezier(.2, 1.4, .4, 1); }
+.comemora.visivel .comemora-cartao { transform: scale(1); }
+.comemora-ic { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); box-shadow: 0 0 30px rgb(212 162 76 / .6); margin-bottom: 4px; }
+.comemora-ic .ic { width: 30px; height: 30px; }
+.comemora-cartao strong { font-family: var(--f-display); font-stretch: 80%; font-size: 1.6rem; text-transform: uppercase; line-height: 1.05; }
+.comemora-cartao span:not(.comemora-ic) { color: var(--muted); font-size: .92rem; }
+.comemora-cartao .btn { margin-top: 10px; min-width: 160px; }
+@media (prefers-reduced-motion: reduce) { .comemora, .comemora-cartao { transition: none; } }
+
 /* ---------- Rádio ---------- */
 .radio {
   position: fixed; z-index: 10; left: 0; right: 0;
@@ -728,7 +762,7 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 .abas a.ativa::before { content: ""; position: absolute; top: -1px; left: 28%; right: 28%; height: 2px; background: var(--latao); border-radius: 0 0 2px 2px; box-shadow: 0 0 12px rgb(212 162 76 / .8); }
 
 .aviso {
-  position: fixed; left: 50%; bottom: calc(148px + env(safe-area-inset-bottom, 0px));
+  position: fixed; left: 50%; bottom: calc(92px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   background: var(--text); color: var(--bg); font-weight: 600;
   padding: 11px 18px; border-radius: 12px; font-size: .9rem; z-index: 30; text-align: center;
@@ -741,3 +775,8 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
   .hero-saudacao { font-size: 3.2rem; }
   .banda h1 { font-size: 3.2rem; }
 }
+
+/* Ajustes finos do Início renovado */
+@media (max-width: 480px) { .marca-sub { display: none; } }
+.stats.linha .stat-rotulo { flex-direction: column; gap: 3px; line-height: 1.2; }
+.stats.linha .stat-rotulo .ic { width: 15px; height: 15px; }

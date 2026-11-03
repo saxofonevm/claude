@@ -669,7 +669,7 @@
     return `<div class="anel">
       <svg viewBox="0 0 120 120" aria-hidden="true">
         <circle class="anel-fundo" cx="60" cy="60" r="50"/>
-        <circle class="anel-valor" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="${pct} 100"/>
+        <circle class="anel-valor" cx="60" cy="60" r="50" pathLength="100" stroke-dasharray="0 100" data-pct="${pct}"/>
       </svg>
       <span class="anel-texto"><strong>${pct}%</strong><small>${escapar(rotulo)}</small></span>
     </div>`;
@@ -712,7 +712,8 @@
   function renderTocar() {
     const alvo = $("#tocar-conteudo");
     const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
-      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></header>`;
+      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p>
+      <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio CMA</button></header>`;
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
         <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Método CMA completo.</p>
@@ -774,8 +775,14 @@
     </article>`;
   }
 
+  function animarAneis() {
+    requestAnimationFrame(() => requestAnimationFrame(() =>
+      document.querySelectorAll(".anel-valor[data-pct]").forEach(c => c.setAttribute("stroke-dasharray", `${c.dataset.pct} 100`))));
+  }
+
   function renderRaiz(raiz) {
     if (!liberada(raiz)) return renderRaizBloqueada(raiz);
+    setTimeout(animarAneis, 0);
     const indice = RAIZES.indexOf(raiz);
     const p = progressoRaiz(raiz);
     const proxima = RAIZES[indice + 1];
@@ -913,7 +920,8 @@
       } else {
         estado.feitos[id] = hojeISO();
         const raiz = EXERCICIO[id].raiz;
-        avisar(progressoRaiz(raiz).completa ? `Raiz ${raiz.titulo} completa.` : "Exercício concluído.");
+        if (progressoRaiz(raiz).completa) celebrar(`Raiz ${raiz.titulo} completa!`, "Todos os exercícios desta raiz foram concluídos.", "trofeu");
+        else celebrar("Exercício concluído", EXERCICIO[id].ex.titulo, "check");
       }
       salvar(); renderTela();
     }
@@ -1153,6 +1161,7 @@
       }
       return;
     }
+    const antesMetas = resumoMetas();
     const dados = {
       data: $("#s-data").value || hojeISO(),
       minutos: Math.max(1, Math.round(Number($("#s-minutos").value) || 1)),
@@ -1170,7 +1179,7 @@
     salvar();
     renderTela();
     renderTimer();
-    avisar(edicao.id ? "Prática atualizada." : "Prática registrada.");
+    if (edicao.id || !comemorarPratica(antesMetas)) avisar(edicao.id ? "Prática atualizada." : "Prática registrada.");
   });
 
   $("#btn-registrar").addEventListener("click", () => abrirSessao(null));
@@ -1283,6 +1292,11 @@
   function renderRadio() {
     const barra = $("#radio");
     if (!ESTACOES.length) { barra.hidden = true; return; }
+    const ativa = radio.tocando || radio.carregando;
+    barra.hidden = !ativa;
+    document.body.classList.toggle("com-radio", ativa);
+    const bt = $("#btn-radio-topo");
+    if (bt) bt.classList.toggle("ativo", radio.tocando);
     barra.classList.toggle("tocando", radio.tocando);
     const btn = $("#radio-play");
     btn.classList.toggle("carregando", radio.carregando);
@@ -1385,6 +1399,10 @@
   $("#radio-play").addEventListener("click", () => (radio.tocando || radio.carregando ? pausarRadio() : tocarRadio()));
   $("#radio-abrir").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
   $("#radio-mais").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
+  $("#btn-radio-topo").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
+  document.addEventListener("click", ev => {
+    if (ev.target.closest("[data-abrir-radio]")) { renderRadio(); $("#dlg-radio").showModal(); }
+  });
   $("#radio-fechar").addEventListener("click", () => $("#dlg-radio").close());
   $("#radio-lista").addEventListener("click", ev => {
     const b = ev.target.closest("[data-estacao]");
@@ -1480,6 +1498,77 @@
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(montarRelatorio())}`;
     window.open(url, "_blank", "noopener");
   });
+
+  // ---------- Comemorações ----------
+
+  const reduzMovimento = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let confeteTimer = null;
+
+  function celebrar(titulo, sub, ic = "trofeu") {
+    const el = $("#comemora");
+    $("#comemora-ic").innerHTML = icone(ic);
+    $("#comemora-titulo").textContent = titulo;
+    $("#comemora-sub").textContent = sub || "";
+    el.hidden = false;
+    requestAnimationFrame(() => el.classList.add("visivel"));
+    if (!reduzMovimento()) soltarConfete();
+    clearTimeout(confeteTimer);
+    confeteTimer = setTimeout(fecharComemoracao, 4200);
+  }
+
+  function fecharComemoracao() {
+    const el = $("#comemora");
+    el.classList.remove("visivel");
+    setTimeout(() => { el.hidden = true; }, 250);
+  }
+  $("#comemora-ok").addEventListener("click", fecharComemoracao);
+  $("#comemora").addEventListener("click", ev => { if (ev.target.id === "comemora" || ev.target.id === "confete") fecharComemoracao(); });
+
+  function soltarConfete() {
+    const cv = $("#confete"), ctx = cv.getContext && cv.getContext("2d");
+    if (!ctx) return;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    ctx.scale(dpr, dpr);
+    const cores = ["#d4a24c", "#f2d48a", "#5b8def", "#ee8a45", "#3fbf8f", "#a678f0", "#ef5f8a"];
+    const pedacos = Array.from({ length: 90 }, () => ({
+      x: innerWidth / 2 + (Math.random() - .5) * 60, y: innerHeight * .42,
+      vx: (Math.random() - .5) * 9, vy: -Math.random() * 9 - 4,
+      r: Math.random() * Math.PI, vr: (Math.random() - .5) * .3,
+      w: 6 + Math.random() * 6, h: 3 + Math.random() * 4, c: cores[(Math.random() * cores.length) | 0]
+    }));
+    const inicio = performance.now();
+    (function quadro(t) {
+      const dt = Math.min(2, (t - (quadro.u || t)) / 16); quadro.u = t;
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (const p of pedacos) {
+        p.vy += .28 * dt; p.vx *= .99; p.x += p.vx * dt; p.y += p.vy * dt; p.r += p.vr * dt;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.r); ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h); ctx.restore();
+      }
+      if (t - inicio < 2400) requestAnimationFrame(quadro); else ctx.clearRect(0, 0, innerWidth, innerHeight);
+    })(inicio);
+  }
+
+  function resumoMetas() {
+    const mapa = minutosPorDia();
+    const inicioSemana = segunda(new Date());
+    let semana = 0;
+    for (let i = 0; i < 7; i++) { const d = new Date(inicioSemana); d.setDate(d.getDate() + i); semana += mapa[dataISO(d)] || 0; }
+    return { semana, hoje: mapa[hojeISO()] || 0, sequencia: calcularSequencia(mapa) };
+  }
+
+  function comemorarPratica(antes) {
+    const depois = resumoMetas();
+    const metaDia = Math.max(5, Math.round(estado.metaSemanal / 7));
+    if (antes.semana < estado.metaSemanal && depois.semana >= estado.metaSemanal)
+      return celebrar("Meta da semana batida!", `${depois.semana} minutos de estudo nesta semana.`, "alvo");
+    const marcos = [3, 7, 14, 21, 30, 60, 100];
+    if (depois.sequencia > antes.sequencia && marcos.includes(depois.sequencia))
+      return celebrar(`${depois.sequencia} dias seguidos!`, "Constância é o que faz o som crescer.", "fogo");
+    if (antes.hoje < metaDia && depois.hoje >= metaDia)
+      return celebrar("Meta do dia cumprida", `${depois.hoje} minutos hoje. Até amanhã!`, "check");
+    return false;
+  }
 
   // ---------- Inicialização ----------
 
