@@ -148,6 +148,10 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
 .plano h3 { font-size: 1.8rem; color: var(--sobre-verde); }
 .preco { font-family: var(--f-display); font-stretch: 75%; font-weight: 800; font-size: 2rem; color: var(--ouro); }
 .preco .pendente { font-family: var(--f-corpo); font-size: 1rem; }
+.preco { font-size: 2.6rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.preco small { font-family: var(--f-corpo); font-size: 1rem; font-weight: 600; color: var(--sobre-verde-mudo); margin-left: 4px; }
+.preco .de { display: block; font-family: var(--f-corpo); font-size: .95rem; font-weight: 500; color: var(--sobre-verde-mudo); margin-bottom: 6px; }
+.preco .parcela { display: block; font-family: var(--f-corpo); font-size: .88rem; font-weight: 500; color: var(--sobre-verde-mudo); margin-top: 8px; line-height: 1.4; }
 .plano ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .plano li { display: flex; gap: 10px; color: var(--sobre-verde-mudo); font-size: .95rem; }
 .plano li::before { content: "✓"; color: var(--ouro); font-weight: 700; }
@@ -330,14 +334,14 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
       <div class="grade-planos">
         <article class="plano">
           <h3>Essencial</h3>
-          <p class="preco"><span class="pendente">[PREÇO DE FUNDADOR]</span></p>
+          <p class="preco"><span class="de">de <s>R$ 397</s> por</span>R$ 297<span class="parcela">ou em até 12x de cerca de R$ 30 · preço de fundador</span></p>
           <ul><li>As 48 aulas dos 6 módulos</li><li>App CMA completo, com a Rádio CMA</li><li>Partituras, PDFs e repertório em 3 níveis</li><li>Acesso por 12 meses</li></ul>
           <a class="botao" href="#" data-link="essencial">Quero o Essencial</a>
         </article>
         <article class="plano destaque">
           <span class="plano-selo">Com acompanhamento</span>
           <h3>Acompanhado</h3>
-          <p class="preco"><span class="pendente">[PREÇO POR MÊS]</span></p>
+          <p class="preco">R$ 97<small>/mês</small><span class="parcela">cancele quando quiser</span></p>
           <ul><li>Tudo do Essencial</li><li>O professor lê o seu relatório semanal e responde</li><li>Uma correção de gravação por mês</li><li>Aula ao vivo em grupo, uma vez por mês</li></ul>
           <a class="botao" href="#" data-link="acompanhado">Quero ser acompanhado</a>
         </article>
