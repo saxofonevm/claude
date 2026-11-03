@@ -76,6 +76,51 @@ PASTAS_RAMO = [
     ("1zmiNKfF1SewWzZ6ezxWGHige4KJ_5mfj", "Creative Saxophone Duets", ["melodia-intervalos"]),
 ]
 
+# ---------- Itens avulsos da conta velosomusic (pasta "MÉTODOS - VELOSO MUSIC") ----------
+# (id, nome, ramificações, "pasta" | "livro")
+EXTRAS = [
+    ("1xVgUaEKr8p_iuAnVGVE1MZrQ8pMdN32N", "Nelson Faria · A Arte da Improvisação", ["ritmo-swing", "melodia-arpejos"], "livro"),
+    ("1bbaWMnmR0RxcOQyqBusppqOk5kEahJmR", "Ramon Ricker · Advanced Chord Etudes", ["melodia-arpejos"], "livro"),
+    ("1tJDQ834RZ-ri9HQ9nJM7AwAgTYqA_tA", "Improvisação para sax (apostila)", ["ritmo-swing"], "livro"),
+    ("1zSUllCOuX9bmjR3r3b6qjzACM0GFLqU", "Gilles Senon · 16 Técnicas e Estudos Rítmicos", ["ritmo-base", "art-acentos"], "livro"),
+    ("1spk888wGI3rfCLLhO91gLgX3W7j9Pbg", "Klosé · 25 Estudos de Mecanismo (rev. Marcel Mule)", ["melodia-escalas"], "livro"),
+    ("1w4XsbhAno4QIwhqavC042bXAvPnGd5s", "Klosé · 15 Études Chantantes", ["art-basicas", "din-emocao"], "livro"),
+    ("1-hAHLvqCUSGxxCGAs_DQPZRSp7iVAxTt", "Exercício técnico de jazz", ["art-jazz"], "livro"),
+    ("1qr5sOflAs9vnQn7M62-bpDBkMVmRfqo", "Marcelo Coelho · Toque de Mestre", ["melodia-escalas"], "livro"),
+    ("1RSS8S5k04k70APQIfAQUOjdqGx8b8-UR", "25 Exercícios para Saxofone", ["melodia-escalas"], "pasta"),
+    ("1aa0fIsiSf9jCYxkoEGqJ2GfGDgTw1C4", "Digitação completa do saxofone", ["escuta-setup"], "livro"),
+    ("1IKSOB0BVoeu-Fn1KO51oeJAcEO6_VY4", "Saxofone · Técnica básica", ["escuta-setup", "din-niveis"], "livro"),
+    ("10YVxYtByz3Ow63ulkf1kyV0080RY54w", "Apostila de saxofone", ["ritmo-base"], "livro"),
+    ("1HpAyprQ7YFDI9UMbJ8oxuExfCPLrTrM", "Ivan Meyer · Ebook 01", ["escuta-setup"], "livro"),
+    ("1l9MzMAo0AcHgiC4gq-z8aU9RdSBBKXo", "Método Yamaha (sax tenor)", ["ritmo-base"], "livro"),
+    ("1q1Tir26gTf0yJUz3nl6ybnoCCKHz76U", "Nabor Pires · Método de saxofone", ["ritmo-base"], "livro"),
+    ("1mgwkokA04h7emodKjQmr-8i4aNfW7qg", "Essential Elements 2000 (sax barítono)", ["ritmo-base"], "livro"),
+    ("1w38-wPvvS5JZlSCw5v_yRMp4csJXBw4", "Da Capo (sax tenor) · Joel Barbosa", ["ritmo-base"], "livro"),
+    ("1_jtHq_cjRqik3CLmfgBwJlJDrp12Yso", "Curso de saxofone da Escola de Música de Brasília", ["ritmo-base", "melodia-escalas"], "livro"),
+    ("1zYHY3cDp9oiL4RX9VG-CH0qjMHnahWRQ", "Universal Method for the Saxophone", ["melodia-escalas"], "livro"),
+    ("1HHpW-p4EA98UPy50iX-wXo_J7Ux5ZA4", "A história e a evolução do saxofone", ["escuta-saxofonistas", "escuta-setup"], "livro"),
+    ("1jEs7l8EGseX3AAxg7ChnrbzVjV8JRoGD", "Pesquisa sobre o saxofone", ["escuta-saxofonistas"], "livro"),
+    ("1Ftiin_DvqICXQwefhZzqvQZBesCk3-4", "Transcrições de solos", ["escuta-saxofonistas"], "pasta"),
+    ("1M4LSdPz3r5COdX9PsLKIjgsjBaChQgwn", "John Coltrane · A Love Supreme", ["escuta-saxofonistas"], "livro"),
+    ("132-9OX5bMpvEC_6ADd2dZgNVHHemIWI", "Donna Lee (Sib)", ["art-jazz", "ritmo-swing"], "livro"),
+    ("1FnVUjcStmeIrDIqSfguvSKpL6OVICzI", "Giant Steps (Sib)", ["melodia-arpejos"], "livro"),
+    ("1HI58nKoHZTQh5URf6Bi0Xx8qCZAeA-0", "Bob Mintzer · 12 Etudes", ["art-jazz"], "livro"),
+    ("1xkdkFsgSzteDZImwoJZFoJsbWWab7Ww", "Blues em todos os tons", ["orn-popular", "melodia-escalas"], "livro"),
+    ("12m3HH8HDD0YsjCB8dzVtrqW32gwIUnz3", "Acordes", ["melodia-arpejos"], "pasta"),
+    ("1rKoEmrpyK9Mn5_AWEt0UtcfNt8pAM9A", "Rolf Becker · Latin Sax (play-along, Sib e Mib)", ["ritmo-bossa"], "pasta"),
+    ("15ysDraIMMrK6SBSXl0Yh78zkQfbflN-s", "Clube do Choro", ["ritmo-samba-choro"], "pasta"),
+    ("10Dkvo160cvTbRh7Up70qQUA9IezJNnda", "Chorinhos 2", ["ritmo-samba-choro", "art-choro"], "pasta"),
+    ("16mPpQBrQKHHIzEnWI3XLk1-9bvHsFJo", "Partituras de choros 1", ["ritmo-samba-choro"], "livro"),
+    ("1LLUujRf-zqGhRG6FI8UVF7JVm0CU0-3t", "Sonoroso (Sib) · K-Ximbinho", ["escuta-brasil", "orn-choro"], "pasta"),
+    ("1Q2d62vyUDMzLKBZwXOmdMJUvakQ3fbk", "Songbook Pixinguinha", ["orn-choro", "escuta-brasil"], "livro"),
+    ("1-x513Kqbb5NE9H1Evv6XE8zVIbKeyE_4", "Livrão MPB (Sib)", ["melodia-musicas"], "pasta"),
+    ("163y5OIg1aOjzgpfMRF5oWsYl9AiF1HM2", "Brazilian Play-Along MPB (livro)", ["melodia-musicas"], "livro"),
+    ("1oxlCcdtyNnMYrSNUYtVnRfoBqafcdfK3", "Creative Saxophone Duets (livro)", ["melodia-intervalos"], "livro"),
+    ("1zODFsIv0M888Ejgv1trghB8A00kQoanD", "Dueto de sax", ["melodia-intervalos"], "livro"),
+    ("1xrA4oTzDS5_u84p78VdQGo5nygWFCpEF", "Disney Movie Hits (Dó, Mib, Sib, com playback)", ["melodia-musicas"], "pasta"),
+    ("1j5yJjWUJyWMkeMmk-NYzuOx1NXN-RaET", "Disney Solos (Dó, Sib, Mib, com playback)", ["melodia-musicas"], "pasta"),
+]
+
 # ---------- Livros (métodos, songbooks, real books) ----------
 # (regex no título normalizado, nome exibido, ramificações)
 LIVROS = [
@@ -247,6 +292,12 @@ def montar():
     for pid, nome, rs in PASTAS_RAMO:
         for r in rs:
             ramo(r)["pastas"].append({"t": nome, "id": pid})
+
+    for fid, nome, rs, tipo in EXTRAS:
+        for r in rs:
+            chave = "pastas" if tipo == "pasta" else "livros"
+            if not any(x["id"] == fid for x in ramo(r)[chave]):
+                ramo(r)[chave].append({"t": nome, "id": fid})
 
     usados = set()
     for f in ARQ.values():
