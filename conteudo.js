@@ -54,7 +54,7 @@ window.CMA = {
       ramificacoes: [
         {
           id: "escuta-saxofonistas",
-          titulo: "Saxofonistas de referência",
+          titulo: "Saxofonistas internacionais",
           descricao: "Ouvir com atenção: timbre, fraseado, respiração e intenção de cada músico.",
           referencias: [
             { titulo: "Charlie Parker", detalhe: "Sax alto · bebop", busca: "Charlie Parker Confirmation" },
@@ -62,8 +62,6 @@ window.CMA = {
             { titulo: "John Coltrane", detalhe: "Sax tenor e soprano", busca: "John Coltrane Blue Train" },
             { titulo: "Stan Getz", detalhe: "Sax tenor · bossa nova", busca: "Stan Getz Desafinado" },
             { titulo: "Sonny Rollins", detalhe: "Sax tenor", busca: "Sonny Rollins St. Thomas" },
-            { titulo: "Paulo Moura", detalhe: "Sax alto e clarinete · choro e gafieira", busca: "Paulo Moura Tarde de Chuva" },
-            { titulo: "Proveta (Nailor Azevedo)", detalhe: "Sax e clarinete · música brasileira", busca: "Proveta saxofone choro" },
             { titulo: "Michael Brecker", detalhe: "Sax tenor · jazz contemporâneo", busca: "Michael Brecker Naked Soul" }
           ],
           exercicios: [
@@ -83,6 +81,54 @@ window.CMA = {
                 "Ouça a mesma música (ou o mesmo estilo) com dois saxofonistas diferentes",
                 "Descreva a diferença de timbre, articulação e vibrato entre eles",
                 "Escolha qual sonoridade você quer buscar e explique por quê"
+              ]
+            },
+            {
+              id: "esc-06",
+              titulo: "Cantar junto com a gravação",
+              passos: [
+                "Escolha um trecho curto (4 a 8 compassos) de um solo ou melodia",
+                "Ouça várias vezes e cante junto até acompanhar sem errar",
+                "Cante sozinho, sem a gravação, imitando a respiração e a articulação"
+              ]
+            },
+            {
+              id: "esc-07",
+              titulo: "Tirar de ouvido",
+              passos: [
+                "Use o mesmo trecho que você já canta",
+                "No YouTube, reduza a velocidade para 0,75 (Configurações › Velocidade de reprodução)",
+                "Encontre as notas no sax, frase por frase, e toque junto com a gravação",
+                "Volte à velocidade normal quando conseguir tocar o trecho inteiro"
+              ]
+            }
+          ]
+        },
+        {
+          id: "escuta-brasil",
+          titulo: "Sax brasileiro",
+          descricao: "A nossa escola: do choro ao samba-jazz e ao frevo. Ouvir como o sax fala com sotaque brasileiro.",
+          referencias: [
+            { titulo: "Pixinguinha", detalhe: "Sax tenor · contracantos no choro (1946–1950)", busca: "Pixinguinha Benedito Lacerda Um a Zero" },
+            { titulo: "K-Ximbinho", detalhe: "Sax e clarinete · choro", busca: "K-Ximbinho Sonoroso" },
+            { titulo: "Zé Bodega", detalhe: "Sax tenor · gafieira", busca: "Zé Bodega sax tenor gafieira" },
+            { titulo: "J. T. Meirelles", detalhe: "Sax tenor · samba-jazz (O Som, 1964)", busca: "Meirelles e os Copa 5 O Som" },
+            { titulo: "Moacir Santos", detalhe: "Sax barítono e arranjos (Coisas, 1965)", busca: "Moacir Santos Coisas Nanã" },
+            { titulo: "Victor Assis Brasil", detalhe: "Sax alto · jazz brasileiro (Desenhos, 1965)", busca: "Victor Assis Brasil Desenhos" },
+            { titulo: "Paulo Moura", detalhe: "Sax alto e clarinete · choro e gafieira", busca: "Paulo Moura Tarde de Chuva" },
+            { titulo: "Proveta (Nailor Azevedo)", detalhe: "Sax e clarinete · Banda Mantiqueira (Aldeia)", busca: "Banda Mantiqueira Aldeia" },
+            { titulo: "Leo Gandelman", detalhe: "Sax · música instrumental brasileira", busca: "Leo Gandelman saxofone" },
+            { titulo: "Carlos Malta", detalhe: "Saxes e flautas · Pife Muderno", busca: "Carlos Malta saxofone" },
+            { titulo: "Spok", detalhe: "Sax alto · SpokFrevo Orquestra (Passo de Anjo)", busca: "SpokFrevo Orquestra Passo de Anjo" }
+          ],
+          exercicios: [
+            {
+              id: "esc-05",
+              titulo: "Linha do tempo do sax brasileiro",
+              passos: [
+                "Ouça um saxofonista brasileiro por semana, seguindo a ordem da lista (do choro ao frevo)",
+                "Anote o gênero, o sax que ele toca e o que mais chamou sua atenção no som",
+                "Compare com um saxofonista internacional: o que muda no jeito de frasear?"
               ]
             }
           ]

@@ -70,7 +70,7 @@ window.CMA_METODOS = {
     ["guri", "Unidade 4 (≈ p. 39)", "Postura e chaves", "escuta-setup"],
     ["leme", "p. 29, 39, 46, 62, 73", "Apreciação: Chiquinha, Anacleto, Pixinguinha, Nazareth", "escuta-estilos"],
     ["guri", "Unidade 1 (≈ p. 7)", "A música do vento: som, ruído e instrumentos de sopro", "escuta-estilos"],
-    ["leme", "p. 78–81", "Discografia sugerida de choro", "escuta-saxofonistas"],
+    ["leme", "p. 78–81", "Discografia sugerida de choro", "escuta-brasil"],
 
     // ---------- 2. FIGURAS RÍTMICAS ----------
     ["dacapo", "Ex. 1–10 · p. 1–2", "Semibreve, mínima e compasso 4/4", "ritmo-base"],
