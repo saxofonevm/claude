@@ -367,6 +367,8 @@
       return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída" style="color:${escapar(raiz.cor)}">
         <path d="${d}" class="raiz-base"/>
         ${p.pct ? `<path d="${d}" pathLength="100" class="raiz-cor" stroke-dasharray="${p.pct} 100"/>` : ""}
+        <circle cx="${x}" cy="${y}" r="7" class="pulso-no" style="animation-delay:${(i * 0.35).toFixed(2)}s"/>
+        <circle cx="${x}" cy="${y}" r="16" class="alvo-toque"/>
         <circle cx="${x}" cy="${y}" r="7" class="${p.feitos ? "no cheio" : "no"}"/>
         <text x="${x}" y="${y + 24}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
         <text x="${x}" y="${y + 38}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
@@ -402,6 +404,32 @@
     </svg>`;
   }
 
+  // Letreiros: frase do dia e rádio
+  function montarLetreiroFrases(diaDoAno) {
+    const faixa = $("#letreiro-faixa");
+    if (!faixa || faixa.dataset.dia === String(diaDoAno)) return;
+    faixa.dataset.dia = String(diaDoAno);
+    const ordem = Array.from({ length: Math.min(FRASES.length, 6) }, (_, i) => FRASES[(diaDoAno + i) % FRASES.length]);
+    const bloco = ordem.map(f => `<span class="letreiro-item">${escapar(f)}</span><span class="letreiro-sep">✦</span>`).join("");
+    faixa.innerHTML = bloco + bloco;
+    faixa.style.setProperty("--duracao", `${Math.max(22, ordem.join(" ").length * 0.22)}s`);
+  }
+
+  function atualizarLetreiroRadio() {
+    const faixa = $("#letreiro-radio-faixa");
+    if (!faixa) return;
+    const tocando = typeof radio !== "undefined" && (radio.tocando || radio.carregando);
+    const texto = tocando
+      ? `Tocando agora: ${radio.estacao ? radio.estacao.nome : "Rádio CMA"} · toque para trocar de estação · `
+      : "Rádio CMA · toque aqui para ouvir jazz e música brasileira ao vivo enquanto estuda · ";
+    if (faixa.dataset.texto === texto) return;
+    faixa.dataset.texto = texto;
+    faixa.innerHTML = `<span>${escapar(texto)}</span><span>${escapar(texto)}</span>`;
+    const bt = $("#letreiro-radio");
+    bt.classList.toggle("tocando", tocando);
+    bt.setAttribute("aria-label", tocando ? `Rádio CMA tocando ${radio.estacao ? radio.estacao.nome : ""}. Toque para trocar de estação` : "Rádio CMA: toque para ouvir");
+  }
+
   function renderInicio() {
     const hora = new Date().getHours();
     const cumprimento = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
@@ -409,10 +437,12 @@
     $("#hero-data").textContent = maiuscula(new Date().toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" }));
     const diaDoAno = Math.floor(deISO(hojeISO()) / 864e5);
     $("#frase-dia").textContent = FRASES[diaDoAno % FRASES.length];
+    montarLetreiroFrases(diaDoAno);
+    atualizarLetreiroRadio();
 
     const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
     const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
-    $("#arvore").innerHTML = arvoreSVG();
+    $("#arvore").innerHTML = arvoreSVG() + `<span class="dica-toque">${icone("seta")}Toque numa raiz para abrir</span>`;
     $("#percurso-pct").textContent = `${pctTotal}%`;
     $("#arvore-legenda").textContent = pctTotal === 0
       ? "Cada exercício concluído aprofunda uma raiz. Comece pela Escuta."
@@ -1295,8 +1325,7 @@
     const ativa = radio.tocando || radio.carregando;
     barra.hidden = !ativa;
     document.body.classList.toggle("com-radio", ativa);
-    const bt = $("#btn-radio-topo");
-    if (bt) bt.classList.toggle("ativo", radio.tocando);
+    atualizarLetreiroRadio();
     barra.classList.toggle("tocando", radio.tocando);
     const btn = $("#radio-play");
     btn.classList.toggle("carregando", radio.carregando);
@@ -1399,7 +1428,10 @@
   $("#radio-play").addEventListener("click", () => (radio.tocando || radio.carregando ? pausarRadio() : tocarRadio()));
   $("#radio-abrir").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
   $("#radio-mais").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
-  $("#btn-radio-topo").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
+  $("#letreiro-radio").addEventListener("click", () => {
+    if (!radio.tocando && !radio.carregando) tocarRadio();
+    renderRadio(); $("#dlg-radio").showModal();
+  });
   document.addEventListener("click", ev => {
     if (ev.target.closest("[data-abrir-radio]")) { renderRadio(); $("#dlg-radio").showModal(); }
   });

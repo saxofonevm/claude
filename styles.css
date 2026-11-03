@@ -139,7 +139,7 @@ main { max-width: 720px; margin: 0 auto; }
 .percurso { display: flex; flex-direction: column; gap: 6px; }
 .percurso-topo { display: flex; justify-content: space-between; align-items: baseline; }
 .percurso-pct { font-family: var(--f-display); font-stretch: 80%; font-weight: 800; font-size: 1.4rem; color: var(--brass); font-variant-numeric: tabular-nums; }
-.arvore svg { display: block; width: 100%; max-width: 460px; margin: 0 auto; height: auto; overflow: visible; }
+.arvore > svg { display: block; width: 100%; max-width: 460px; margin: 0 auto; height: auto; overflow: visible; }
 .arvore .sax { filter: drop-shadow(0 6px 14px rgb(212 162 76 / .35)); }
 .arvore .sax-chave { fill: #6b4a17; stroke: #f6d58b; stroke-width: 1.4; }
 .arvore .raiz-base { fill: none; stroke: currentColor; stroke-opacity: .3; stroke-width: 2; }
@@ -780,3 +780,58 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
 @media (max-width: 480px) { .marca-sub { display: none; } }
 .stats.linha .stat-rotulo { flex-direction: column; gap: 3px; line-height: 1.2; }
 .stats.linha .stat-rotulo .ic { width: 15px; height: 15px; }
+
+
+/* ---------- Movimento: letreiros e dicas de toque ---------- */
+.so-leitor { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.letreiro { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.letreiro-faixa { display: flex; width: max-content; gap: 22px; align-items: center; animation: letreiro var(--duracao, 30s) linear infinite; }
+.letreiro:hover .letreiro-faixa, .letreiro:active .letreiro-faixa { animation-play-state: paused; }
+.letreiro-item { font-weight: 600; font-size: 1.25rem; line-height: 1.35; white-space: nowrap; }
+.letreiro-sep { color: var(--brass); font-size: .9rem; }
+@keyframes letreiro { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+.letreiro-radio { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 0 12px; border-radius: 999px; cursor: pointer;
+  background: linear-gradient(90deg, rgb(212 162 76 / .22), rgb(212 162 76 / .06)); border: 1px solid rgb(212 162 76 / .45); color: var(--text); font: inherit; }
+.letreiro-radio:hover { border-color: var(--brass); }
+.letreiro-radio-janela { flex: 1; min-width: 0; overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent); }
+.letreiro-radio-faixa { display: flex; width: max-content; animation: letreiro 16s linear infinite; }
+.letreiro-radio-faixa span { white-space: nowrap; font-size: .84rem; font-weight: 600; padding-right: 8px; }
+.letreiro-radio-play { flex: none; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); animation: pulsar 2.2s ease-in-out infinite; }
+.letreiro-radio-play .ic { width: 13px; height: 13px; }
+.letreiro-radio.tocando .letreiro-radio-play { animation: none; opacity: .9; }
+.eq { flex: none; display: flex; align-items: flex-end; gap: 2px; height: 16px; }
+.eq i { width: 3px; height: 30%; border-radius: 2px; background: var(--brass-soft); animation: eq 1s ease-in-out infinite; }
+.eq i:nth-child(2) { animation-delay: .2s; } .eq i:nth-child(3) { animation-delay: .4s; } .eq i:nth-child(4) { animation-delay: .1s; }
+.letreiro-radio:not(.tocando) .eq i { animation-duration: 2.4s; opacity: .7; }
+@keyframes eq { 0%, 100% { height: 25%; } 50% { height: 100%; } }
+@keyframes pulsar { 0%, 100% { box-shadow: 0 0 0 0 rgb(212 162 76 / .55); } 70% { box-shadow: 0 0 0 9px rgb(212 162 76 / 0); } }
+
+.arvore { position: relative; }
+.arvore .pulso-no { fill: none; stroke: currentColor; stroke-width: 2; transform-box: fill-box; transform-origin: center; animation: anel-no 2.4s ease-out infinite; }
+.arvore .alvo-toque { fill: transparent; }
+.arvore a { cursor: pointer; }
+.arvore a .no { transform-box: fill-box; transform-origin: center; transition: transform .2s ease; }
+.arvore a:hover .no, .arvore a:focus .no, .arvore a:active .no { transform: scale(1.35); }
+@keyframes anel-no { 0% { transform: scale(1); opacity: .8; } 100% { transform: scale(2.6); opacity: 0; } }
+.dica-toque { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 2px; font-size: .8rem; font-weight: 600; color: var(--brass-soft); }
+.dica-toque .ic { width: 14px; height: 14px; transform: rotate(-90deg); animation: subir 1.6s ease-in-out infinite; }
+@keyframes subir { 0%, 100% { translate: 0 0; } 50% { translate: 0 -4px; } }
+
+/* Setas e botões que pedem toque */
+.continuar-seta, .ind-mais .ic:last-child, .raiz-card .seta, .proxima .ic:last-child, .grupo-topo .ic:last-child { animation: cutucar 1.8s ease-in-out infinite; }
+@keyframes cutucar { 0%, 100% { translate: 0 0; } 50% { translate: 4px 0; } }
+.timer:not(.rodando) #timer-iniciar { animation: pulsar 2.4s ease-in-out infinite; }
+.abas a.ativa .ic { animation: saltar .45s ease; }
+@keyframes saltar { 0% { transform: scale(.8); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
+.raiz-card, .continuar, .ref, .tocar-lista a, .acervo-item { transition: transform .15s ease, border-color .15s ease; }
+.raiz-card:active, .continuar:active, .ref:active, .tocar-lista a:active { transform: scale(.98); }
+
+@media (prefers-reduced-motion: reduce) {
+  .letreiro-faixa, .letreiro-radio-faixa { animation: none; }
+  .letreiro { -webkit-mask-image: none; mask-image: none; }
+  .letreiro-faixa > :not(:first-child) { display: none; }
+  .letreiro-item { white-space: normal; }
+  .letreiro-radio-faixa span + span { display: none; }
+  .eq i, .letreiro-radio-play, .arvore .pulso-no, .dica-toque .ic, .continuar-seta, .ind-mais .ic, .timer #timer-iniciar, .abas a .ic, .raiz-card .seta, .proxima .ic, .grupo-topo .ic { animation: none !important; }
+}

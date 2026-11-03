@@ -19,16 +19,21 @@
     <!-- INÍCIO -->
     <section id="tela-inicio" class="tela">
       <header class="hero">
+        <button class="letreiro-radio" id="letreiro-radio" type="button" aria-label="Rádio CMA: toque para ouvir">
+          <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
+          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
+        </button>
         <div class="hero-topo">
           <span class="marca"><svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>CMA</span>
           <span class="marca-sub">Consciência Musical Aplicada</span>
           <span class="hero-data" id="hero-data"></span>
-          <button class="btn-topo" id="btn-radio-topo" type="button" aria-label="Rádio CMA"><span data-icone="radio"></span></button>
           <a class="btn-topo" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
         </div>
         <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
         <figure class="frase-dia">
-          <blockquote id="frase-dia"></blockquote>
+          <blockquote id="frase-dia" class="so-leitor"></blockquote>
+          <div class="letreiro" id="letreiro-frases" aria-hidden="true"><div class="letreiro-faixa" id="letreiro-faixa"></div></div>
           <figcaption>Frase do dia</figcaption>
         </figure>
       </header>
@@ -99,8 +104,8 @@
     <!-- RAÍZES -->
     <section id="tela-raizes" class="tela">
       <header class="cabecalho">
-        <p class="sobretitulo">O método</p>
-        <h1>As seis raízes</h1>
+        <p class="sobretitulo">Seu passo a passo</p>
+        <h1>Método CMA</h1>
         <p class="mudo">Toda árvore forte nasce de raízes profundas. Siga na ordem e no seu ritmo: cada raiz prepara o terreno para a próxima.</p>
       </header>
       <div class="grade-raizes" id="lista-raizes"></div>
