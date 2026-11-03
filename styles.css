@@ -577,6 +577,24 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 .met-compasso { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: .88rem; }
 .met-compasso select { font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 
+/* ---------- Acesso (versão grátis) ---------- */
+.raiz-card.bloqueada .raiz-card-ilus { filter: grayscale(.7); opacity: .55; }
+.selo-bloqueio { display: inline-flex; align-items: center; gap: 6px; font-size: .78rem; font-weight: 700; letter-spacing: .04em; color: var(--brass-soft); }
+.selo-bloqueio .ic { width: 15px; height: 15px; }
+.bloqueio { display: flex; flex-direction: column; gap: 14px; }
+.bloqueio-ic { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; background: var(--surface-2); color: var(--brass-soft); }
+.bloqueio-ic .ic { width: 24px; height: 24px; }
+.bloqueio h2 { font-size: 1.4rem; text-transform: uppercase; }
+.bloqueio-lista { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; }
+.bloqueio-lista li::marker { color: var(--c1, var(--brass)); }
+.form-codigo { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; font-weight: 600; font-size: .88rem; }
+.linha-codigo { display: flex; gap: 8px; }
+.linha-codigo input { flex: 1; min-width: 0; font: inherit; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; min-height: 48px; }
+.acesso-ok { display: flex; align-items: center; gap: 8px; color: var(--brass-soft); font-weight: 600; }
+.acesso-ok .ic { width: 18px; height: 18px; }
+#cartao-acesso { display: flex; flex-direction: column; gap: 12px; }
+#cartao-acesso[hidden] { display: none; }
+
 /* ---------- Rádio ---------- */
 .radio {
   position: fixed; z-index: 10; left: 0; right: 0;

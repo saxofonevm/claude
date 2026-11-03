@@ -28,6 +28,17 @@ window.CMA = {
   // Se ficar vazio, o WhatsApp abre e o aluno escolhe o contato.
   professor: { nome: "Tiago Veloso", whatsapp: "5527999704300" },
 
+  // Versão grátis x completa.
+  // gratis: raízes abertas para todos. As outras pedem o código de acesso.
+  // codigos: impressão digital (SHA-256) de cada código válido, nunca o código em si.
+  //          Para criar um código novo, peça ao Claude ou gere o SHA-256 do código em MAIÚSCULAS.
+  // paginaVendas: link da página de vendas. Vazio = o botão abre o WhatsApp do professor.
+  acesso: {
+    gratis: ["escuta"],
+    codigos: ["ce9a8a91b5dbbdcd921de1e90160731b0453e43f0f34e95024e30a0cf1d3494f"],
+    paginaVendas: ""
+  },
+
   // Rádio de fundo (mini player acima das abas).
   // "streams": endereços diretos da transmissão (https).
   // "busca": se os endereços falharem, o app procura a estação no catálogo

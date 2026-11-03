@@ -51,6 +51,7 @@
     prazos: {},        // { "r:<raizId>" | "e:<exercicioId>": "AAAA-MM-DD" }
     andamentos: {},    // { [exercicioId]: bpm atual }
     metronomo: { bpm: 80, compasso: 4 },
+    desbloqueado: false,
     timer: { inicio: null, acumulado: 0 }
   });
 
@@ -65,6 +66,57 @@
   }
 
   let estado = carregar();
+
+  // ---------- Acesso (versão grátis x completa) ----------
+
+  const ACESSO = CMA.acesso && Array.isArray(CMA.acesso.codigos) && CMA.acesso.codigos.length ? CMA.acesso : null;
+  const liberada = raiz => !ACESSO || estado.desbloqueado || (ACESSO.gratis || []).includes(raiz.id);
+  const temBloqueio = () => RAIZES.some(r => !liberada(r));
+
+  function urlConhecer() {
+    const pagina = ACESSO && urlSegura(ACESSO.paginaVendas);
+    if (pagina) return pagina;
+    const prof = CMA.professor || {};
+    const numero = String(prof.whatsapp || "").replace(/\D/g, "");
+    const texto = `Olá${prof.nome ? " " + prof.nome.split(" ")[0] : ""}! Quero conhecer o Método CMA completo.`;
+    return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
+  }
+
+  async function impressao(texto) {
+    const dados = new TextEncoder().encode(texto);
+    const hash = await crypto.subtle.digest("SHA-256", dados);
+    return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, "0")).join("");
+  }
+
+  async function tentarCodigo(bruto) {
+    const codigo = String(bruto || "").trim().toUpperCase().replace(/\s+/g, "");
+    if (!codigo) { avisar("Digite o código de acesso."); return false; }
+    let ok = false;
+    try { ok = ACESSO.codigos.includes(await impressao(codigo)); } catch { avisar("Não foi possível conferir o código neste navegador."); return false; }
+    if (!ok) { avisar("Código inválido. Confira com o professor."); return false; }
+    estado.desbloqueado = true;
+    salvar();
+    avisar("Método CMA completo liberado!");
+    renderTela();
+    return true;
+  }
+
+  function htmlCodigo() {
+    return `<form class="form-codigo" data-form-codigo>
+      <label for="inp-codigo-${rotaAtual.tela}">Já comprou? Digite o seu código de acesso</label>
+      <div class="linha-codigo">
+        <input type="text" id="inp-codigo-${rotaAtual.tela}" name="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: CMA-XXXX">
+        <button class="btn primario" type="submit">Liberar</button>
+      </div>
+    </form>`;
+  }
+
+  document.addEventListener("submit", ev => {
+    const f = ev.target.closest("[data-form-codigo]");
+    if (!f) return;
+    ev.preventDefault();
+    tentarCodigo(f.querySelector("input").value);
+  });
 
   function salvar() {
     try {
@@ -234,7 +286,7 @@
   }
 
   function proximoExercicio() {
-    for (const raiz of RAIZES) {
+    for (const raiz of RAIZES.filter(liberada)) {
       for (const ram of raiz.ramificacoes || []) {
         const ex = (ram.exercicios || []).find(e => !feito(e.id));
         if (ex) return { ex, ram, raiz };
@@ -254,6 +306,7 @@
     if (rotaAtual.tela === "raiz" && !RAIZ[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "ex" && !EXERCICIO[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "metodo" && !LIVROS[rotaAtual.id]) rotaAtual = { tela: "metodos", id: null };
+    if (rotaAtual.tela === "ex" && !liberada(EXERCICIO[rotaAtual.id].raiz)) rotaAtual = { tela: "raiz", id: EXERCICIO[rotaAtual.id].raiz.id };
   }
 
   function mostrarTela() {
@@ -376,6 +429,11 @@
           <span>${escapar(prox.raiz.titulo)} · ${escapar(prox.ram.titulo)}</span>
         </span>
         ${icone("seta", "continuar-seta")}`;
+    } else if (temBloqueio()) {
+      const bloq = RAIZES.find(r => !liberada(r));
+      cont.href = `#/raiz/${encodeURIComponent(bloq.id)}`;
+      cont.setAttribute("style", corRaiz(bloq));
+      cont.innerHTML = `<span class="continuar-ilus">${ilustracao(bloq.icone)}</span><span class="continuar-texto"><span class="continuar-rotulo">Próximo passo</span><strong>Desbloqueie ${escapar(bloq.titulo)}</strong><span>Você concluiu a parte grátis. Continue com o Método CMA completo.</span></span>${icone("cadeado", "continuar-seta")}`;
     } else {
       cont.href = "#/raizes";
       cont.removeAttribute("style");
@@ -424,6 +482,13 @@
   function renderRaizes() {
     $("#lista-raizes").innerHTML = RAIZES.map((raiz, i) => {
       const p = progressoRaiz(raiz);
+      if (!liberada(raiz)) return `<a class="raiz-card bloqueada" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
+        <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
+        <span class="raiz-num">${dois(i + 1)}</span>
+        <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
+        <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
+        <span class="raiz-rodape"><span class="selo-bloqueio">${icone("cadeado")}Método completo</span></span>
+      </a>`;
       return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
         <span class="raiz-num">${dois(i + 1)}</span>
@@ -598,7 +663,33 @@
     </div>`;
   }
 
+  function renderRaizBloqueada(raiz) {
+    const indice = RAIZES.indexOf(raiz);
+    const exs = exerciciosDaRaiz(raiz).length;
+    $("#raiz-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
+      <header class="banda">
+        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
+        <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
+        <p class="banda-sobre">Raiz ${dois(indice + 1)} / ${dois(RAIZES.length)}</p>
+        <h1>${escapar(raiz.titulo)}</h1>
+        ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
+      </header>
+      <div class="corpo">
+        <div class="cartao bloqueio">
+          <span class="bloqueio-ic">${icone("cadeado")}</span>
+          <h2>Esta raiz faz parte do Método CMA completo</h2>
+          <p class="mudo">${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
+          <ul class="bloqueio-lista">${(raiz.ramificacoes || []).map(ram => `<li>${escapar(ram.titulo)}</li>`).join("")}</ul>
+          <p class="mudo">${(raiz.ramificacoes || []).length} ramificações · ${exs} exercícios com metrônomo e prazos · aulas em vídeo</p>
+          <a class="btn primario largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>
+          ${htmlCodigo()}
+        </div>
+      </div>
+    </article>`;
+  }
+
   function renderRaiz(raiz) {
+    if (!liberada(raiz)) return renderRaizBloqueada(raiz);
     const indice = RAIZES.indexOf(raiz);
     const p = progressoRaiz(raiz);
     const proxima = RAIZES[indice + 1];
@@ -1040,6 +1131,14 @@
   function renderAjustes() {
     $("#aj-nome").value = estado.nome;
     $("#aj-meta").value = estado.metaSemanal;
+    const cartao = $("#cartao-acesso");
+    cartao.hidden = !ACESSO;
+    if (ACESSO) {
+      cartao.innerHTML = estado.desbloqueado
+        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Método CMA completo liberado neste aparelho.</p>`
+        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Método CMA completo.</p>
+           <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}`;
+    }
   }
 
   $("#form-ajustes").addEventListener("submit", ev => {
