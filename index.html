@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>CMA</title>
   <meta name="description" content="CMA — Consciência Musical Aplicada">
-  <meta name="theme-color" content="#0e0e11">
+  <meta name="theme-color" content="#0b2a20">
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -142,6 +142,7 @@
       </header>
       <ul class="lista" id="lista-sessoes"></ul>
       <div class="vazio" id="diario-vazio">
+        <span class="vazio-notas" aria-hidden="true"><span data-icone="nota"></span><span data-icone="nota"></span><span data-icone="nota"></span></span>
         <span data-icone="diario"></span>
         <p><strong>Nenhuma prática registrada.</strong></p>
         <p class="mudo">Use o cronômetro na tela inicial ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
@@ -168,8 +169,8 @@
         </label>
         <label>Cor do app
           <select id="aj-tema">
-            <option value="">Preto e dourado</option>
             <option value="verde">Verde Naipe e dourado</option>
+            <option value="preto">Preto e dourado</option>
           </select>
         </label>
         <label>Meta semanal (minutos)

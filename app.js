@@ -70,10 +70,11 @@
   let estado = carregar();
 
   function aplicarTema() {
-    if (estado.tema) document.documentElement.dataset.tema = estado.tema;
+    const tema = estado.tema === "preto" ? "preto" : "verde";
+    if (tema === "verde") document.documentElement.dataset.tema = "verde";
     else delete document.documentElement.dataset.tema;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", estado.tema === "verde" ? "#0b2a20" : "#0e0e11");
+    if (meta) meta.setAttribute("content", tema === "verde" ? "#0b2a20" : "#0e0e11");
   }
   aplicarTema();
 
@@ -823,6 +824,7 @@
 
   function renderRaiz(raiz) {
     if (!liberada(raiz)) return renderRaizBloqueada(raiz);
+    const proxId = (exerciciosDaRaiz(raiz).find(e => !feito(e.id)) || {}).id;
     setTimeout(animarAneis, 0);
     const indice = RAIZES.indexOf(raiz);
     const p = progressoRaiz(raiz);
@@ -858,7 +860,7 @@
           <h3>${escapar(ram.titulo)}</h3>
           ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
           <div class="exercicios">
-            ${(ram.exercicios || []).map(ex => `<a class="exercicio-item ${feito(ex.id) ? "feito" : ""}" href="#/ex/${encodeURIComponent(ex.id)}">
+            ${(ram.exercicios || []).map(ex => `<a class="exercicio-item ${feito(ex.id) ? "feito" : ""}${ex.id === proxId ? " proximo" : ""}" href="#/ex/${encodeURIComponent(ex.id)}">
               <span class="check">${feito(ex.id) ? icone("check") : ""}</span>
               <span class="exercicio-nome"><strong>${escapar(ex.titulo)}</strong>${ex.andamento ? `<span class="mudo">${icone("metronomo")}${ex.andamento.inicial} → ${ex.andamento.alvo} bpm</span>` : ""}</span>
               ${seloPrazo("e:" + ex.id, feito(ex.id))}
@@ -1269,7 +1271,7 @@
     $("#aj-nome").value = estado.nome;
     $("#aj-meta").value = estado.metaSemanal;
     $("#aj-sax").value = estado.sax || "";
-    $("#aj-tema").value = estado.tema || "";
+    $("#aj-tema").value = estado.tema === "preto" ? "preto" : "verde";
     const cartao = $("#cartao-acesso");
     cartao.hidden = !ACESSO;
     if (ACESSO) {
@@ -1631,6 +1633,13 @@
   });
 
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
-    navigator.serviceWorker.register("sw.js").catch(() => {});
+    const tinhaVersao = !!navigator.serviceWorker.controller;
+    let recarregou = false;
+    navigator.serviceWorker.addEventListener("controllerchange", () => {
+      if (!tinhaVersao || recarregou) return;
+      recarregou = true;
+      location.reload();
+    });
+    navigator.serviceWorker.register("sw.js").then(r => r.update && r.update()).catch(() => {});
   }
 })();

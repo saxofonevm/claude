@@ -861,3 +861,88 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
 /* Letreiro da rádio: play à esquerda, rádio à direita */
 .letreiro-radio-ic { flex: none; width: 30px; height: 30px; display: grid; place-items: center; color: var(--brass-soft); }
 .letreiro-radio-ic .ic { width: 22px; height: 22px; }
+
+
+/* ---------- Movimento em todas as abas ---------- */
+/* Entrada suave de cada tela e dos itens de lista, um após o outro */
+.tela.ativa { animation: tela-entra .35s ease both; }
+@keyframes tela-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes item-entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.grade-raizes > *, .corpo > .ramificacao, .corpo > .cartao, .genero, .lista-livros > *, #lista-sessoes > *, .ind-lista li, .tocar-lista li, .acervo-item, .lista-prazos li, .conteudo-inicio > * {
+  animation: item-entra .45s cubic-bezier(.2, .8, .3, 1) both;
+}
+.grade-raizes > :nth-child(2), .corpo > :nth-child(2), .genero:nth-of-type(2), .lista-livros > :nth-child(2), #lista-sessoes > :nth-child(2), .ind-lista li:nth-child(2), .tocar-lista li:nth-child(2), .conteudo-inicio > :nth-child(2) { animation-delay: .06s; }
+.grade-raizes > :nth-child(3), .corpo > :nth-child(3), .genero:nth-of-type(3), .lista-livros > :nth-child(3), #lista-sessoes > :nth-child(3), .ind-lista li:nth-child(3), .tocar-lista li:nth-child(3), .conteudo-inicio > :nth-child(3) { animation-delay: .12s; }
+.grade-raizes > :nth-child(4), .corpo > :nth-child(4), .genero:nth-of-type(4), .lista-livros > :nth-child(4), #lista-sessoes > :nth-child(4), .ind-lista li:nth-child(4), .tocar-lista li:nth-child(4), .conteudo-inicio > :nth-child(4) { animation-delay: .18s; }
+.grade-raizes > :nth-child(5), .corpo > :nth-child(5), .genero:nth-of-type(5), .lista-livros > :nth-child(5), #lista-sessoes > :nth-child(5), .ind-lista li:nth-child(5), .tocar-lista li:nth-child(5), .conteudo-inicio > :nth-child(5) { animation-delay: .24s; }
+.grade-raizes > :nth-child(n+6), .corpo > :nth-child(n+6), .genero:nth-of-type(n+6), .lista-livros > :nth-child(n+6), #lista-sessoes > :nth-child(n+6), .tocar-lista li:nth-child(n+6), .conteudo-inicio > :nth-child(n+6) { animation-delay: .3s; }
+
+/* Barras de progresso enchem ao abrir */
+.barra-preenchida { animation: encher 1s cubic-bezier(.2, .8, .3, 1) both; }
+@keyframes encher { from { width: 0; } }
+
+/* Ilustrações flutuando de leve (raízes, banda da raiz, continuar) */
+.raiz-card-ilus .ilus, .banda-ilus .ilus, .continuar-ilus .ilus, .mini-ilus .ilus { animation: flutuar 4s ease-in-out infinite; }
+.raiz-card:nth-child(2n) .raiz-card-ilus .ilus { animation-delay: -1.3s; }
+.raiz-card:nth-child(3n) .raiz-card-ilus .ilus { animation-delay: -2.6s; }
+@keyframes flutuar { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-5px) rotate(-2deg); } }
+.raiz-card:hover .raiz-card-ilus .ilus, .raiz-card:active .raiz-card-ilus .ilus { animation-duration: 1.2s; }
+
+/* Brilho que passa nos botões dourados e no selo Indicado */
+.btn.primario, .tag.ind, .filtro-sax button.ativo, .letreiro-radio-play { position: relative; overflow: hidden; }
+.btn.primario::after, .tag.ind::after, .filtro-sax button.ativo::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(110deg, transparent 35%, rgb(255 255 255 / .45) 50%, transparent 65%);
+  transform: translateX(-120%); animation: brilho 3.6s ease-in-out infinite;
+}
+.tag.ind::after { animation-delay: .8s; }
+@keyframes brilho { 0%, 55% { transform: translateX(-120%); } 85%, 100% { transform: translateX(120%); } }
+
+/* Próximo exercício da raiz em destaque */
+.exercicio-item.proximo { position: relative; border-color: var(--c1, var(--brass)); box-shadow: 0 0 0 1px var(--c1, var(--brass)) inset; animation: brilho-proximo 2.4s ease-in-out infinite; }
+.exercicio-item.proximo::before { content: "Próximo"; position: absolute; top: -9px; right: 14px; padding: 1px 8px; border-radius: 999px; background: var(--c1, var(--brass)); color: #0b0b0e; font-size: .66rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.exercicio-item.proximo .check { animation: pulsar 2.2s ease-in-out infinite; border-radius: 50%; }
+@keyframes brilho-proximo { 0%, 100% { box-shadow: 0 0 0 1px var(--c1, var(--brass)) inset, 0 0 0 0 transparent; } 50% { box-shadow: 0 0 0 1px var(--c1, var(--brass)) inset, 0 0 18px -4px var(--c1, var(--brass)); } }
+.exercicio-item .seta { animation: cutucar 1.8s ease-in-out infinite; }
+
+/* Tocar junto: equalizador ao lado de cada gênero */
+.genero summary h2::before { content: ""; display: inline-block; width: 12px; height: 12px; margin-right: 8px; vertical-align: -1px;
+  background: linear-gradient(var(--brass-soft), var(--brass-soft)) 0 100% / 3px 40% no-repeat, linear-gradient(var(--brass-soft), var(--brass-soft)) 50% 100% / 3px 90% no-repeat, linear-gradient(var(--brass-soft), var(--brass-soft)) 100% 100% / 3px 60% no-repeat;
+  animation: eq-genero 1.2s ease-in-out infinite; }
+@keyframes eq-genero { 0%, 100% { background-size: 3px 40%, 3px 90%, 3px 60%; } 33% { background-size: 3px 90%, 3px 50%, 3px 30%; } 66% { background-size: 3px 60%, 3px 30%, 3px 95%; } }
+.genero[open] summary small { animation: pulsar 2.4s ease-in-out infinite; }
+.tocar-lista a .ic { transition: transform .2s ease; }
+.tocar-lista a:hover .ic, .tocar-lista a:active .ic { transform: translate(3px, -3px); }
+
+/* Métodos: ícone do livro folheando e busca chamando atenção */
+.livro-ic .ic { animation: folhear 3.2s ease-in-out infinite; transform-origin: 50% 90%; }
+.livro:nth-child(2n) .livro-ic .ic { animation-delay: -1.6s; }
+@keyframes folhear { 0%, 80%, 100% { transform: rotate(0); } 88% { transform: rotate(-8deg); } 94% { transform: rotate(6deg); } }
+.busca:has(input:placeholder-shown) .ic { animation: pulsar-ic 2.6s ease-in-out infinite; }
+@keyframes pulsar-ic { 0%, 100% { transform: scale(1); opacity: .8; } 50% { transform: scale(1.18); opacity: 1; } }
+
+/* Diário: notas musicais subindo no vazio e botão Novo chamando */
+.vazio { position: relative; }
+.vazio-notas { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.vazio-notas .ic { position: absolute; bottom: 30%; width: 18px; height: 18px; color: var(--brass); opacity: 0; animation: nota-sobe 4.5s ease-in infinite; }
+.vazio-notas .ic:nth-child(1) { left: 30%; }
+.vazio-notas .ic:nth-child(2) { left: 50%; animation-delay: 1.5s; }
+.vazio-notas .ic:nth-child(3) { left: 68%; animation-delay: 3s; }
+@keyframes nota-sobe { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-90px) rotate(18deg); opacity: 0; } }
+#btn-registrar-2 { animation: pulsar 2.6s ease-in-out infinite; }
+
+/* Selos de prazo urgentes piscam de leve */
+.selo.atrasado, .selo.urgente { animation: piscar-suave 1.8s ease-in-out infinite; }
+@keyframes piscar-suave { 50% { opacity: .55; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .tela.ativa, .grade-raizes > *, .corpo > *, .genero, .lista-livros > *, #lista-sessoes > *, .ind-lista li, .tocar-lista li, .acervo-item, .lista-prazos li, .conteudo-inicio > *,
+  .barra-preenchida, .ilus, .btn.primario::after, .tag.ind::after, .filtro-sax button::after, .exercicio-item.proximo, .exercicio-item .check, .exercicio-item .seta,
+  .genero summary h2::before, .genero summary small, .livro-ic .ic, .busca .ic, .vazio-notas .ic, #btn-registrar-2, .selo { animation: none !important; }
+}
+.vazio-notas { inset: 0 0 auto 0; height: 120px; }
+.vazio-notas .ic { bottom: 6px; }
+.vazio-notas .ic:nth-child(1) { left: 38%; }
+.vazio-notas .ic:nth-child(2) { left: 50%; }
+.vazio-notas .ic:nth-child(3) { left: 60%; }
+@keyframes nota-sobe { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-70px) rotate(18deg); opacity: 0; } }
