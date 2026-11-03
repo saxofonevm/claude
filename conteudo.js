@@ -225,7 +225,8 @@ window.CMA = {
           titulo: "Samba e choro",
           descricao: "Síncope brasileira e a divisão em semicolcheias característica do choro.",
           referencias: [
-            { titulo: "Samba instrumental", detalhe: "Ouvir a levada do tamborim", busca: "levada tamborim samba" },
+            { titulo: "Teleco-teco do tamborim", detalhe: "A levada que guia a síncope do samba", busca: "teleco-teco tamborim levada samba" },
+            { titulo: "Jacob do Bandolim · Noites Cariocas", detalhe: "Divisão em semicolcheias do choro", busca: "Jacob do Bandolim Noites Cariocas" },
             { titulo: "Choro no sax", detalhe: "Pixinguinha · Um a Zero", busca: "Um a Zero Pixinguinha saxofone" }
           ],
           exercicios: [
@@ -246,7 +247,9 @@ window.CMA = {
           titulo: "Baião e forró",
           descricao: "A célula do baião (colcheia pontuada + semicolcheia + colcheia).",
           referencias: [
-            { titulo: "Luiz Gonzaga · Asa Branca", detalhe: "Levada de baião", busca: "Luiz Gonzaga Asa Branca" }
+            { titulo: "Luiz Gonzaga · Baião", detalhe: "A música que batizou o gênero (1946)", busca: "Luiz Gonzaga Baião 1946" },
+            { titulo: "Luiz Gonzaga · Asa Branca", detalhe: "Levada de baião", busca: "Luiz Gonzaga Asa Branca" },
+            { titulo: "Levada da zabumba", detalhe: "Ouvir e cantar a célula do baião", busca: "levada zabumba baião" }
           ],
           exercicios: [
             {
@@ -262,11 +265,56 @@ window.CMA = {
           ]
         },
         {
+          id: "ritmo-frevo",
+          titulo: "Frevo",
+          descricao: "Compasso 2/4, andamento rápido, semicolcheias e síncopes com muita energia: o sax é protagonista no frevo de rua.",
+          referencias: [
+            { titulo: "Vassourinhas", detalhe: "O frevo de rua mais conhecido", busca: "Vassourinhas frevo orquestra" },
+            { titulo: "SpokFrevo Orquestra · Passo de Anjo", detalhe: "Frevo com sax e improviso", busca: "SpokFrevo Orquestra Passo de Anjo" }
+          ],
+          exercicios: [
+            {
+              id: "rit-06",
+              titulo: "Semicolcheias do frevo",
+              andamento: { inicial: 70, alvo: 140 },
+              passos: [
+                "Ouça Vassourinhas e cante a levada da caixa junto com a gravação",
+                "Escreva um compasso típico: semicolcheias com acentos nas síncopes",
+                "Toque o ritmo numa nota só, depois na escala de Dó, mantendo o acento",
+                "Suba o andamento aos poucos: o frevo pede leveza mesmo rápido"
+              ]
+            }
+          ]
+        },
+        {
+          id: "ritmo-bossa",
+          titulo: "Bossa nova",
+          descricao: "Colcheias iguais (sem swing), a batida sincopada do violão e um fraseado leve e relaxado.",
+          referencias: [
+            { titulo: "João Gilberto · Chega de Saudade", detalhe: "A batida do violão que criou a bossa", busca: "João Gilberto Chega de Saudade 1959" },
+            { titulo: "Getz/Gilberto · Desafinado", detalhe: "O sax de Stan Getz na bossa nova", busca: "Getz Gilberto Desafinado" }
+          ],
+          exercicios: [
+            {
+              id: "rit-07",
+              titulo: "Batida da bossa nova",
+              andamento: { inicial: 60, alvo: 120 },
+              passos: [
+                "Ouça João Gilberto e bata a batida: polegar no tempo, dedos nas síncopes",
+                "Toque a escala de Fá maior em colcheias iguais, sem swingar",
+                "Toque a melodia de uma bossa conhecida (ex.: Corcovado) com som leve e pouca dinâmica",
+                "Grave e compare com Stan Getz: as colcheias estão iguais?"
+              ]
+            }
+          ]
+        },
+        {
           id: "ritmo-swing",
           titulo: "Swing e jazz",
           descricao: "Colcheias swingadas (sensação de tercina) e acentos nos contratempos.",
           referencias: [
-            { titulo: "Count Basie · swing", detalhe: "Sentir a 'balança' das colcheias", busca: "Count Basie Orchestra swing" }
+            { titulo: "Count Basie · Jumpin' at the Woodside", detalhe: "Sentir a 'balança' das colcheias", busca: "Count Basie Jumpin at the Woodside" },
+            { titulo: "Dexter Gordon · Cheese Cake", detalhe: "Colcheias swingadas no sax tenor", busca: "Dexter Gordon Cheese Cake" }
           ],
           exercicios: [
             {

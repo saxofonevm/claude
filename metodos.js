@@ -300,7 +300,7 @@ window.CMA_METODOS = {
     ["mintzer", "Est. II, IV, XII, XV (p. 6–7, 10–11, 26–27, 32–33)", "Etudes de swing (médio a médio-rápido)", "ritmo-swing"],
     ["mintzer", "Est. III e IX (p. 8–9, 20–21)", "Funk (swing feel e colcheias iguais)", "ritmo-base"],
     ["mintzer", "Est. V – Ballad (p. 12–13)", "Balada: som e expressão em andamento lento", "din-emocao"],
-    ["mintzer", "Est. VII – Bossa (p. 16–17)", "Bossa nova com colcheias iguais e espaço para improvisar", "ritmo-samba-choro"],
+    ["mintzer", "Est. VII – Bossa (p. 16–17)", "Bossa nova com colcheias iguais e espaço para improvisar", "ritmo-bossa"],
     ["mintzer", "Est. VIII – Shuffle (p. 18–19)", "Shuffle médio-rápido com improvisação", "ritmo-swing"],
     ["mintzer", "Est. X – Waltz (p. 22–23)", "Valsa jazz em 3/4", "ritmo-base"],
     ["mintzer", "p. 34–35", "Exercícios de transcrição de solos (piano e sax)", "orn-popular"],
