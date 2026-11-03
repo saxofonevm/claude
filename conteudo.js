@@ -26,7 +26,7 @@ window.CMA = {
   // Professor que recebe o relatório semanal pelo WhatsApp.
   // whatsapp: só números, com país e DDD (ex.: "5511999998888").
   // Se ficar vazio, o WhatsApp abre e o aluno escolhe o contato.
-  professor: { nome: "Tiago Veloso", whatsapp: "" },
+  professor: { nome: "Tiago Veloso", whatsapp: "5527999704300" },
 
   // Frases que aparecem na tela inicial (uma por dia).
   frases: [
