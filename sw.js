@@ -1,7 +1,7 @@
 // Service worker: permite usar o app offline.
 // Estratégia "stale-while-revalidate": abre na hora com a cópia salva e
 // busca a versão nova em segundo plano (aparece na próxima abertura).
-const CACHE = "cma-v10";
+const CACHE = "cma-v11";
 const ARQUIVOS = [
   "./",
   "index.html",
@@ -10,6 +10,7 @@ const ARQUIVOS = [
   "icones.js",
   "conteudo.js",
   "metodos.js",
+  "acervo.js",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",

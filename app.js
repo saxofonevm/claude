@@ -673,6 +673,26 @@
     </div>`;
   }
 
+  // Material do acervo do Drive ligado a cada ramificação (acervo.js)
+  const ACERVO = (window.CMA_ACERVO && window.CMA_ACERVO.ramos) || {};
+  function htmlAcervoRamo(ramoId) {
+    const d = ACERVO[ramoId];
+    if (!d || temBloqueio()) return "";
+    const pastas = (d.pastas || []).map(x => ({ ...x, href: urlSegura(urlPasta(x.id)) })).filter(x => x.href);
+    const livros = (d.livros || []).map(x => ({ ...x, href: urlSegura(urlArquivo(x.id)) })).filter(x => x.href);
+    const musicas = d.musicas || [];
+    const total = pastas.length + livros.length + musicas.length;
+    if (!total) return "";
+    const lista = (titulo, itens, ic) => itens.length ? `<h5>${escapar(titulo)}</h5><ul class="acervo-ramo-lista">${itens.map(x =>
+      `<li><a href="${escapar(x.href)}" target="_blank" rel="noopener">${icone(ic)}<span>${escapar(x.t)}</span></a></li>`).join("")}</ul>` : "";
+    const htmlMus = musicas.length ? `<h5>Músicas</h5><ul class="acervo-musicas">${musicas.map(m => `<li><span>${escapar(m.t)}</span><span class="ref-material">${(m.itens || []).map(i => {
+        const href = urlSegura(urlArquivo(i.id));
+        return href ? `<a href="${escapar(href)}" target="_blank" rel="noopener">${icone(i.r === "Playback" ? "nota" : "pdf")}${escapar(i.r)}</a>` : "";
+      }).join("")}</span></li>`).join("")}</ul>` : "";
+    return `<details class="acervo-ramo"><summary>${icone("pasta")}<span>Do acervo</span><small>${total} ${total === 1 ? "item" : "itens"}</small></summary>
+      ${lista("Play-alongs e coleções", pastas, "pasta")}${lista("Livros e songbooks", livros, "livro")}${htmlMus}</details>`;
+  }
+
   function renderRaizBloqueada(raiz) {
     const indice = RAIZES.indexOf(raiz);
     const exs = exerciciosDaRaiz(raiz).length;
@@ -743,6 +763,7 @@
           </div>
           ${htmlReferencias(ram.referencias)}
           ${htmlNosMetodos(ram.id, false)}
+          ${htmlAcervoRamo(ram.id)}
         </section>`).join("")}
 
         ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">

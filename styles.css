@@ -464,6 +464,20 @@ a.indicacao:hover { border-color: var(--c1, var(--brass)); }
 .ref-material a { display: inline-flex; align-items: center; gap: 5px; min-height: 34px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); font-size: .78rem; font-weight: 600; text-decoration: none; }
 .ref-material a:hover { border-color: var(--c1, var(--brass)); }
 .ref-material .ic { width: 14px; height: 14px; color: var(--c1, var(--brass)); }
+.acervo-ramo { margin-top: 12px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface-2); }
+.acervo-ramo summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 8px; padding: 12px 14px; min-height: 48px; font-weight: 700; font-size: .9rem; }
+.acervo-ramo summary::-webkit-details-marker { display: none; }
+.acervo-ramo summary .ic { width: 18px; height: 18px; color: var(--c1, var(--brass)); }
+.acervo-ramo summary small { margin-left: auto; color: var(--muted); font-weight: 600; }
+.acervo-ramo[open] summary { border-bottom: 1px solid var(--line); }
+.acervo-ramo h5 { margin: 14px 14px 6px; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.acervo-ramo-lista, .acervo-musicas { list-style: none; margin: 0; padding: 0 14px 8px; display: flex; flex-direction: column; }
+.acervo-ramo-lista a { display: flex; align-items: center; gap: 10px; padding: 9px 0; min-height: 44px; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.acervo-ramo-lista li:last-child a { border-bottom: 0; }
+.acervo-ramo-lista .ic { flex: none; width: 16px; height: 16px; color: var(--c1, var(--brass)); }
+.acervo-musicas li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
+.acervo-musicas li:last-child { border-bottom: 0; }
+.acervo-musicas li > span:first-child { min-width: 0; flex: 1 1 140px; }
 .acervo { display: flex; flex-direction: column; gap: 10px; }
 .acervo h2 { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; text-transform: uppercase; }
 .acervo h2 .ic { width: 18px; height: 18px; color: var(--brass-soft); }
