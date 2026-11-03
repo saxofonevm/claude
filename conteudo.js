@@ -690,6 +690,17 @@ window.CMA = {
                 "Confira a afinação em cada intensidade",
                 "Repita em notas graves, médias e agudas"
               ]
+            },
+            {
+              id: "din-04",
+              titulo: "Notas longas com afinador",
+              andamento: { inicial: 60, alvo: 60 },
+              passos: [
+                "Abra um app de afinador no celular e deixe na estante",
+                "Toque uma nota longa em p, depois em mf, depois em f, olhando o ponteiro",
+                "Atenção: no piano o sax tende a subir e no forte tende a baixar. Corrija com a embocadura e o ar, não com a boca apertada",
+                "Repita em Sol, Ré grave, Dó médio e Ré agudo, e anote no diário onde a afinação foge"
+              ]
             }
           ]
         },
@@ -697,7 +708,9 @@ window.CMA = {
           id: "din-variacoes",
           titulo: "Crescendo e diminuendo",
           descricao: "Mudar a intensidade aos poucos, com controle do ar.",
-          referencias: [],
+          referencias: [
+            { titulo: "Count Basie · Li'l Darlin'", detalhe: "Uma big band inteira tocando baixinho, com crescendos controlados", busca: "Count Basie Lil Darlin" }
+          ],
           exercicios: [
             {
               id: "din-02",
@@ -712,16 +725,42 @@ window.CMA = {
           ]
         },
         {
+          id: "din-subitas",
+          titulo: "Dinâmicas súbitas",
+          descricao: "Mudanças de intensidade de uma vez: subito piano, fp (forte-piano) e sfz (sforzando). Muito usadas em big band, frevo e arranjos de sopro.",
+          referencias: [
+            { titulo: "fp, sfz e subito piano", detalhe: "O que cada sinal pede", busca: "forte piano sforzando subito piano explicação" },
+            { titulo: "Vassourinhas", detalhe: "Ataques fortes e cortes súbitos dos sopros", busca: "Vassourinhas frevo orquestra" }
+          ],
+          exercicios: [
+            {
+              id: "din-05",
+              titulo: "fp, sfz e subito p",
+              andamento: { inicial: 60, alvo: 90 },
+              passos: [
+                "fp: ataque forte e caia para piano logo em seguida, segurando a nota por 4 tempos",
+                "sfz: um acento forte e isolado no meio de uma frase em mf",
+                "subito p: toque 2 compassos em f e passe direto para p, sem diminuendo",
+                "Em todos, mantenha a afinação: confira no afinador"
+              ]
+            }
+          ]
+        },
+        {
           id: "din-emocao",
           titulo: "Dinâmica e emoção",
           descricao: "Aplicar as dinâmicas em uma música para contar uma história.",
           referencias: [
-            { titulo: "Baladas no sax", detalhe: "Observe como o som cresce e diminui", busca: "John Coltrane Naima" }
+            { titulo: "John Coltrane · Naima", detalhe: "Observe como o som cresce e diminui", busca: "John Coltrane Naima" },
+            { titulo: "Coleman Hawkins · Body and Soul", detalhe: "A balada clássica do sax tenor (1939)", busca: "Coleman Hawkins Body and Soul 1939" },
+            { titulo: "Ben Webster · Chelsea Bridge", detalhe: "Som sussurrado e dinâmica no limite do piano", busca: "Ben Webster Chelsea Bridge" },
+            { titulo: "Carinhoso no sax", detalhe: "Pixinguinha: a dinâmica do choro-canção", busca: "Carinhoso Pixinguinha saxofone" }
           ],
           exercicios: [
             {
               id: "din-03",
               titulo: "Planejar a dinâmica de uma música",
+              andamento: { inicial: 60, alvo: 72 },
               passos: [
                 "Escolha uma balada e marque na partitura onde é p, mf e f",
                 "Escreva qual emoção você quer transmitir em cada parte",
