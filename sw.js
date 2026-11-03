@@ -1,7 +1,7 @@
 // Service worker: permite usar o app offline.
 // Estratégia "stale-while-revalidate": abre na hora com a cópia salva e
 // busca a versão nova em segundo plano (aparece na próxima abertura).
-const CACHE = "cma-v5";
+const CACHE = "cma-v6";
 const ARQUIVOS = [
   "./",
   "index.html",
@@ -13,7 +13,8 @@ const ARQUIVOS = [
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",
-  "icons/icon-512.png"
+  "icons/icon-512.png",
+  "icons/icon-maskable.png"
 ];
 
 self.addEventListener("install", ev => {
