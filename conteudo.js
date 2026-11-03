@@ -2,8 +2,8 @@
  * CMA — Consciência Musical Aplicada
  * CONTEÚDO DO APP — edite este arquivo para mudar o que os alunos veem.
  *
- * ⚠️ RASCUNHO: ramificações e exercícios abaixo são uma proposta inicial
- *    para o professor revisar, cortar e completar.
+ * ✅ Conteúdo revisado com o professor, raiz por raiz, em 03/11/2026.
+ *    Pendente: vídeo do professor sobre setup (raiz Escuta).
  *
  * Estrutura:
  *   RAIZ  → tem várias RAMIFICAÇÕES → cada uma tem EXERCÍCIOS e REFERÊNCIAS
@@ -787,6 +787,29 @@ window.CMA = {
       drive: { pasta: null, arquivos: [] },
       ramificacoes: [
         {
+          id: "orn-vibrato",
+          titulo: "Vibrato",
+          descricao: "A ondulação do som feita com a mandíbula. É o ornamento mais importante do sax: dá vida às notas longas e muda conforme o estilo.",
+          referencias: [
+            { titulo: "Johnny Hodges · Passion Flower", detalhe: "Vibrato largo e expressivo", busca: "Johnny Hodges Passion Flower" },
+            { titulo: "Stan Getz · Corcovado", detalhe: "Vibrato leve, no fim das notas", busca: "Stan Getz Corcovado" },
+            { titulo: "Vibrato no sax", detalhe: "Como fazer com a mandíbula", busca: "vibrato saxofone mandíbula aula" }
+          ],
+          exercicios: [
+            {
+              id: "orn-05",
+              titulo: "Vibrato medido",
+              andamento: { inicial: 60, alvo: 80 },
+              passos: [
+                "Nota longa (Sol médio): ondule a mandíbula 2 vezes por tempo, devagar e igual",
+                "Depois 3 por tempo (tercinas) e 4 por tempo (semicolcheias)",
+                "A afinação deve ondular para baixo e voltar: confira no afinador",
+                "Aplique numa balada: comece a nota reta e coloque o vibrato só no final"
+              ]
+            }
+          ]
+        },
+        {
           id: "orn-classicos",
           titulo: "Apojatura, mordente e trinado",
           descricao: "Ornamentos tradicionais escritos na partitura.",
@@ -805,6 +828,7 @@ window.CMA = {
             {
               id: "orn-02",
               titulo: "Trinado",
+              andamento: { inicial: 50, alvo: 90 },
               passos: [
                 "Trinado lento entre Sol e Lá, contando as notas (4 por tempo)",
                 "Acelere aos poucos mantendo as notas iguais",
@@ -832,20 +856,58 @@ window.CMA = {
           ]
         },
         {
+          id: "orn-choro",
+          titulo: "Ornamentos do choro",
+          descricao: "Apojaturas rápidas, bordaduras e floreios que dão o sotaque do choro. Aprenda ouvindo os mestres.",
+          referencias: [
+            { titulo: "Pixinguinha · Lamentos", detalhe: "Floreios e apojaturas no sax", busca: "Pixinguinha Lamentos" },
+            { titulo: "Abel Ferreira · Chorando Baixinho", detalhe: "Ornamentos do choro no clarinete e no sax", busca: "Abel Ferreira Chorando Baixinho" },
+            { titulo: "Paulo Moura · Tarde de Chuva", detalhe: "Ornamentos com elegância", busca: "Paulo Moura Tarde de Chuva" }
+          ],
+          exercicios: [
+            {
+              id: "orn-06",
+              titulo: "Apojaturas e bordaduras do choro",
+              andamento: { inicial: 50, alvo: 90 },
+              passos: [
+                "Ouça uma das referências e anote onde aparecem notas rápidas antes da nota principal",
+                "Apojatura rápida: nota de cima ou de baixo, bem curta, caindo na nota principal no tempo",
+                "Bordadura: principal – vizinha – principal, leve e rápida, sem pesar",
+                "Aplique numa frase de choro que você já toca, sem exagerar"
+              ]
+            }
+          ]
+        },
+        {
           id: "orn-popular",
           titulo: "Ornamentos do jazz e da música popular",
-          descricao: "Bend, scoop, fall, glissando e ghost notes.",
+          descricao: "Bend, scoop, fall, glissando, growl e subtone. (As ghost notes estão em Articulações.)",
           referencias: [
-            { titulo: "Efeitos no sax", detalhe: "Bend, fall e scoop", busca: "saxophone bend scoop fall lesson" }
+            { titulo: "Efeitos no sax", detalhe: "Bend, fall e scoop", busca: "saxophone bend scoop fall lesson" },
+            { titulo: "Ben Webster · My Romance", detalhe: "Subtone: o som soprado e aveludado", busca: "Ben Webster My Romance" },
+            { titulo: "King Curtis · Soul Serenade", detalhe: "Growl e efeitos do R&B", busca: "King Curtis Soul Serenade" },
+            { titulo: "Growl e subtone", detalhe: "Como fazer cada efeito", busca: "saxophone growl subtone lesson" }
           ],
           exercicios: [
             {
               id: "orn-04",
               titulo: "Bend, scoop e fall",
+              andamento: { inicial: 60, alvo: 90 },
               passos: [
                 "Bend: comece a nota abaixo e suba até a afinação com a embocadura",
                 "Scoop: entre na nota 'por baixo' rapidamente",
                 "Fall: termine a nota caindo; aplique cada efeito em uma frase de blues"
+              ]
+            },
+            {
+              id: "orn-07",
+              titulo: "Growl e subtone",
+              andamento: { inicial: 60, alvo: 80 },
+              passos: [
+                "Subtone: nas notas graves, solte a embocadura, toque bem piano e deixe o ar aparecer no som",
+                "Growl: cante ou rosne uma nota grave com a garganta enquanto toca",
+                "Comece com notas longas, depois use em uma frase de blues ou balada",
+                "Use com moderação: são temperos, não o prato principal"
               ]
             }
           ]
