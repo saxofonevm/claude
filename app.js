@@ -365,10 +365,10 @@
   // Cada raiz se preenche com a sua cor conforme o progresso do aluno.
   function arvoreSVG() {
     const n = RAIZES.length || 1;
-    const larg = 340, origem = { x: 170, y: 160 };
+    const larg = 340, origem = { x: 170, y: 142 };
     const pontas = RAIZES.map((_, i) => {
       const t = n === 1 ? 0.5 : i / (n - 1);
-      return { x: 36 + t * (larg - 72), y: 262 + Math.sin(t * Math.PI) * 20 };
+      return { x: 34 + t * (larg - 68), y: 236 };
     });
     const raizes = RAIZES.map((raiz, i) => {
       const { x, y } = pontas[i];
@@ -380,13 +380,14 @@
         <circle cx="${x}" cy="${y}" r="7" class="pulso-no" style="animation-delay:${(i * 0.35).toFixed(2)}s"/>
         <circle cx="${x}" cy="${y}" r="16" class="alvo-toque"/>
         <circle cx="${x}" cy="${y}" r="7" class="${p.feitos ? "no cheio" : "no"}"/>
-        <text x="${x}" y="${y + 24}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
-        <text x="${x}" y="${y + 38}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
+        <text x="${x}" y="${y + (i % 2 ? 62 : 28)}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
+        <text x="${x}" y="${y + (i % 2 ? 77 : 43)}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
+        ${i % 2 ? `<line x1="${x}" y1="${y + 11}" x2="${x}" y2="${y + 47}" class="raiz-guia"/>` : ""}
       </a>`;
     }).join("");
     const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
       .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 330" role="img" aria-label="Seu percurso: um saxofone e as seis raízes do CMA">
+    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Seu percurso: um saxofone e as seis raízes do CMA">
       <defs>
         <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>
@@ -395,7 +396,7 @@
           <stop offset="0" stop-color="#d4a24c" stop-opacity=".35"/><stop offset="1" stop-color="#d4a24c" stop-opacity="0"/>
         </radialGradient>
       </defs>
-      <circle cx="166" cy="96" r="96" fill="url(#brilho-sax)"/>
+      <g transform="translate(0 -18)"><circle cx="166" cy="96" r="96" fill="url(#brilho-sax)"/>
       <g class="sax" fill="none" stroke-linecap="round">
         <path d="M162 52C162 36 146 26 128 30" stroke="url(#latao)" stroke-width="6"/>
         <path d="M128 30L113 35.5" stroke="#18181d" stroke-width="8.5"/>
@@ -409,7 +410,7 @@
         ${chaves}
         <circle cx="186" cy="120" r="3.6" class="sax-chave"/>
         <path d="M168 60c6 4 6 12 4 18" stroke="#b7863a" stroke-width="2"/>
-      </g>
+      </g></g>
       ${raizes}
     </svg>`;
   }
@@ -1052,11 +1053,27 @@
     }
   }
 
+  // iPhone: sem isto o Web Audio fica mudo com a chave do silencioso ligada
+  const SILENCIO = "data:audio/wav;base64,UklGRsQPAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YaAPAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA";
+  let audioSilencio = null;
+  function prepararAudioCelular() {
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
+    try {
+      if (!audioSilencio) { audioSilencio = new Audio(SILENCIO); audioSilencio.loop = true; audioSilencio.setAttribute("playsinline", ""); audioSilencio.volume = 0.01; }
+      audioSilencio.play().catch(() => {});
+    } catch {}
+  }
+
   function tocarMetronomo() {
     const Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) { avisar("Este navegador não suporta áudio."); return; }
+    prepararAudioCelular();
+    if (met.ctx && (met.ctx.state === "closed" || met.ctx.state === "interrupted")) met.ctx = null;
     met.ctx = met.ctx || new Ctx();
-    met.ctx.resume();
+    // destrava o áudio no próprio toque (exigência do iPhone)
+    try { const b = met.ctx.createBuffer(1, 1, 22050), f = met.ctx.createBufferSource(); f.buffer = b; f.connect(met.ctx.destination); f.start(0); } catch {}
+    const r = met.ctx.resume();
+    if (r && r.catch) r.catch(() => avisar("Toque de novo em Tocar para liberar o som."));
     met.tocando = true;
     met.batida = 0;
     met.proximo = met.ctx.currentTime + 0.05;
@@ -1068,6 +1085,7 @@
 
   function pararMetronomo() {
     met.tocando = false;
+    if (audioSilencio) try { audioSilencio.pause(); } catch {}
     clearInterval(met.intervalo);
     abaixarRadio(false);
     document.querySelectorAll("#met-pulsos .pulso").forEach(p => p.classList.remove("ativo"));

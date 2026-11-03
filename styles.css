@@ -946,3 +946,15 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
 .vazio-notas .ic:nth-child(2) { left: 50%; }
 .vazio-notas .ic:nth-child(3) { left: 60%; }
 @keyframes nota-sobe { 0% { transform: translateY(0) rotate(0); opacity: 0; } 15% { opacity: .9; } 100% { transform: translateY(-70px) rotate(18deg); opacity: 0; } }
+
+
+/* Topo centralizado: marca no meio, engrenagem à direita; saudação centralizada */
+.hero-topo { grid-template-columns: 40px 1fr 40px; grid-template-areas: ". marca ajuste" "data data data"; }
+.hero-topo .marca { justify-self: center; font-size: 1.4rem; }
+.hero-saudacao { text-align: center; }
+/* Árvore: nomes maiores e mais fáceis de tocar */
+.arvore .raiz-nome { font: 700 13.5px var(--f-body); }
+.arvore .raiz-pct { font: 700 12px var(--f-body); }
+.arvore .raiz-guia { stroke: currentColor; stroke-opacity: .35; stroke-width: 1.5; stroke-dasharray: 2 3; }
+.arvore .no { r: 8.5; }
+.arvore .pulso-no { r: 8.5; }
