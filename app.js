@@ -414,6 +414,8 @@
       </a></li>`;
     }).join("");
 
+    if (PROFESSOR.nome) $("#btn-relatorio").textContent = `Enviar relatório para ${PROFESSOR.nome.split(" ")[0]}`;
+
     renderTimer();
   }
 
@@ -1069,6 +1071,85 @@
     } catch {
       avisar("Arquivo de backup inválido.");
     }
+  });
+
+  // ---------- Relatório semanal (WhatsApp) ----------
+
+  const PROFESSOR = CMA.professor || {};
+
+  function montarRelatorio() {
+    const hoje = deISO(hojeISO());
+    const inicio = new Date(hoje); inicio.setDate(inicio.getDate() - 6);
+    const isoInicio = dataISO(inicio), isoHoje = dataISO(hoje);
+    const naSemana = iso => iso >= isoInicio && iso <= isoHoje;
+    const dm = d => d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" });
+
+    const sessoes = estado.sessoes.filter(x => naSemana(x.data));
+    const minutos = sessoes.reduce((t, x) => t + x.minutos, 0);
+    const dias = new Set(sessoes.map(x => x.data)).size;
+    const notas = sessoes.filter(x => x.avaliacao).map(x => x.avaliacao);
+    const media = notas.length ? Math.round(notas.reduce((a, b) => a + b, 0) / notas.length) : 0;
+    const pctMeta = Math.round((minutos / estado.metaSemanal) * 100);
+
+    const porRaiz = {};
+    for (const x of sessoes) {
+      const nome = RAIZ[x.raizId]?.titulo || "Geral";
+      porRaiz[nome] = (porRaiz[nome] || 0) + x.minutos;
+    }
+
+    const concluidos = Object.entries(estado.feitos)
+      .filter(([id, iso]) => EXERCICIO[id] && naSemana(iso))
+      .map(([id]) => `• ${EXERCICIO[id].ex.titulo} (${EXERCICIO[id].raiz.titulo})`);
+
+    const exDaSemana = [...new Set(sessoes.map(x => x.exercicioId).filter(id => id && EXERCICIO[id]))];
+    const andamentos = exDaSemana
+      .filter(id => EXERCICIO[id].ex.andamento && estado.andamentos[id])
+      .map(id => `• ${EXERCICIO[id].ex.titulo}: ${estado.andamentos[id]} de ${EXERCICIO[id].ex.andamento.alvo} bpm`);
+
+    const atrasados = Object.entries(estado.prazos)
+      .filter(([chave, iso]) => diasAte(iso) < 0 && (chave[0] === "e" ? EXERCICIO[chave.slice(2)] && !feito(chave.slice(2)) : RAIZ[chave.slice(2)] && !progressoRaiz(RAIZ[chave.slice(2)]).completa))
+      .map(([chave, iso]) => {
+        const id = chave.slice(2);
+        const titulo = chave[0] === "e" ? EXERCICIO[id].ex.titulo : `Raiz ${RAIZ[id].titulo}`;
+        return `• ${titulo} (venceu em ${deISO(iso).toLocaleDateString("pt-BR")})`;
+      });
+
+    const anotacoes = sessoes.filter(x => x.notas).slice(-3)
+      .map(x => `• ${dm(deISO(x.data))}: ${x.notas.replace(/\s+/g, " ").slice(0, 200)}`);
+
+    const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
+    const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
+
+    const l = [];
+    l.push("🎷 *Relatório semanal · CMA*");
+    l.push(`*Aluno:* ${estado.nome || "(sem nome)"}`);
+    l.push(`*Período:* ${dm(inicio)} a ${dm(hoje)}`);
+    l.push("");
+    l.push(`⏱ *Prática:* ${formatarMinutos(minutos)} de ${formatarMinutos(estado.metaSemanal)} (${pctMeta}% da meta)`);
+    l.push(`📅 *Dias praticados:* ${dias} de 7 · sequência atual de ${calcularSequencia(minutosPorDia())} dia(s)`);
+    if (media) l.push(`⭐ *Avaliação média:* ${AVALIACOES[media - 1]}`);
+    if (Object.keys(porRaiz).length) {
+      l.push("", "*Tempo por raiz:*");
+      Object.entries(porRaiz).sort((a, b) => b[1] - a[1]).forEach(([n, m]) => l.push(`• ${n}: ${formatarMinutos(m)}`));
+    }
+    if (concluidos.length) l.push("", "✅ *Concluídos na semana:*", ...concluidos);
+    if (andamentos.length) l.push("", "🎚 *Andamentos (atual de alvo):*", ...andamentos);
+    if (atrasados.length) l.push("", "⚠️ *Prazos atrasados:*", ...atrasados);
+    if (anotacoes.length) l.push("", "💬 *Anotações:*", ...anotacoes);
+    l.push("", `📈 *Percurso:* ${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios (${pctTotal}%)`);
+    if (!sessoes.length) l.push("", "Não registrei prática nesta semana.");
+    return l.join("\n");
+  }
+
+  $("#btn-relatorio").addEventListener("click", async () => {
+    if (!estado.nome) {
+      avisar("Coloque seu nome em Ajustes antes de enviar.");
+      location.hash = "#/ajustes";
+      return;
+    }
+    const numero = String(PROFESSOR.whatsapp || "").replace(/\D/g, "");
+    const url = `https://wa.me/${numero}?text=${encodeURIComponent(montarRelatorio())}`;
+    window.open(url, "_blank", "noopener");
   });
 
   // ---------- Inicialização ----------

@@ -23,6 +23,11 @@
  *     O arquivo precisa estar compartilhado como "Qualquer pessoa com o link".
  */
 window.CMA = {
+  // Professor que recebe o relatório semanal pelo WhatsApp.
+  // whatsapp: só números, com país e DDD (ex.: "5511999998888").
+  // Se ficar vazio, o WhatsApp abre e o aluno escolhe o contato.
+  professor: { nome: "Tiago Veloso", whatsapp: "" },
+
   // Frases que aparecem na tela inicial (uma por dia).
   frases: [
     "Pouco todo dia vence muito de vez em quando.",
