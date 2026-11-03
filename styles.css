@@ -38,7 +38,7 @@ body {
   background: var(--bg);
   color: var(--text);
   line-height: 1.5;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: calc(140px + env(safe-area-inset-bottom, 0px));
   -webkit-font-smoothing: antialiased;
 }
 
@@ -577,6 +577,54 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 .met-compasso { display: flex; justify-content: space-between; align-items: center; font-weight: 600; font-size: .88rem; }
 .met-compasso select { font: inherit; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; }
 
+/* ---------- Rádio ---------- */
+.radio {
+  position: fixed; z-index: 10; left: 0; right: 0;
+  bottom: calc(61px + env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px max(14px, env(safe-area-inset-right, 0px)) 8px max(14px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--line);
+}
+.radio-play {
+  flex: none; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  display: grid; place-items: center; background: var(--latao); color: var(--on-brass, #1a1206);
+}
+.radio-play .ic { width: 20px; height: 20px; }
+.radio-play.carregando { animation: radio-pulsar 1s ease-in-out infinite; }
+@keyframes radio-pulsar { 50% { opacity: .55; } }
+.radio-info {
+  flex: 1; min-width: 0; text-align: left; background: none; border: 0; color: var(--text); cursor: pointer;
+  display: flex; flex-direction: column; gap: 1px; padding: 0; font: inherit;
+}
+.radio-rotulo { display: flex; align-items: center; gap: 5px; font-size: .68rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.radio-rotulo .ic { width: 14px; height: 14px; }
+#radio-nome { font-size: .92rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.radio.tocando #radio-nome { color: var(--brass-soft); }
+.radio-mais {
+  flex: none; min-height: 44px; padding: 0 12px; border-radius: 12px; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 600;
+  background: var(--surface-2); color: var(--text); border: 1px solid var(--line);
+}
+.radio-janela { display: flex; flex-direction: column; gap: 14px; }
+.radio-lista, .radio-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.radio-estacao {
+  width: 100%; text-align: left; cursor: pointer; font: inherit; color: var(--text);
+  display: flex; align-items: center; gap: 12px; padding: 12px 14px; min-height: 56px;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 14px;
+}
+.radio-estacao .ic { flex: none; width: 20px; height: 20px; color: var(--muted); }
+.radio-estacao span { display: flex; flex-direction: column; min-width: 0; }
+.radio-estacao small { color: var(--muted); font-size: .8rem; }
+.radio-estacao.ativa { border-color: var(--brass); }
+.radio-estacao.ativa .ic { color: var(--brass-soft); }
+.radio-volume { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: .88rem; }
+.radio-volume input { width: 100%; accent-color: var(--brass); }
+.radio-dica { margin-top: -8px; font-size: .8rem; }
+.radio-sub { font-size: 1rem; text-transform: uppercase; margin-top: 4px; }
+.radio-links a { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 0; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--line); }
+.radio-links a .ic { width: 16px; height: 16px; color: var(--muted); }
+
 /* ---------- Navegação inferior ---------- */
 .abas {
   position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
@@ -597,7 +645,7 @@ dialog::backdrop { background: rgb(0 0 0 / .7); backdrop-filter: blur(4px); }
 .abas a.ativa::before { content: ""; position: absolute; top: -1px; left: 28%; right: 28%; height: 2px; background: var(--latao); border-radius: 0 0 2px 2px; box-shadow: 0 0 12px rgb(212 162 76 / .8); }
 
 .aviso {
-  position: fixed; left: 50%; bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+  position: fixed; left: 50%; bottom: calc(148px + env(safe-area-inset-bottom, 0px));
   transform: translateX(-50%);
   background: var(--text); color: var(--bg); font-weight: 600;
   padding: 11px 18px; border-radius: 12px; font-size: .9rem; z-index: 30; text-align: center;

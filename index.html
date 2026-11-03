@@ -163,6 +163,15 @@
     </section>
   </main>
 
+  <div class="radio" id="radio">
+    <button class="radio-play" id="radio-play" type="button" aria-label="Tocar rádio"></button>
+    <button class="radio-info" id="radio-abrir" type="button" aria-label="Escolher estação">
+      <span class="radio-rotulo"><span data-icone="radio"></span>Rádio CMA</span>
+      <strong id="radio-nome">Toque para ouvir jazz</strong>
+    </button>
+    <button class="radio-mais" id="radio-mais" type="button" aria-label="Estações">Estações</button>
+  </div>
+
   <nav class="abas">
     <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
     <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Raízes</a>
@@ -216,6 +225,23 @@
   </dialog>
 
   <!-- Metrônomo -->
+  <dialog id="dlg-radio">
+    <div class="radio-janela">
+      <div class="cartao-topo">
+        <h2>Rádio CMA</h2>
+        <button class="link-acao" id="radio-fechar" type="button">Fechar</button>
+      </div>
+      <p class="mudo">Um fundo musical enquanto você estuda. Escolha uma estação ao vivo.</p>
+      <ul class="radio-lista" id="radio-lista"></ul>
+      <label class="radio-volume">Volume
+        <input type="range" id="radio-volume" min="0" max="100" step="1">
+      </label>
+      <p class="mudo radio-dica">Ao ligar o metrônomo, o rádio abaixa sozinho.</p>
+      <h3 class="radio-sub">Ouvir fora do app</h3>
+      <ul class="radio-links" id="radio-links"></ul>
+    </div>
+  </dialog>
+
   <dialog id="dlg-metronomo">
     <div class="metronomo">
       <div class="cartao-topo">

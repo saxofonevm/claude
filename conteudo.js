@@ -28,6 +28,29 @@ window.CMA = {
   // Se ficar vazio, o WhatsApp abre e o aluno escolhe o contato.
   professor: { nome: "Tiago Veloso", whatsapp: "5527999704300" },
 
+  // Rádio de fundo (mini player acima das abas).
+  // "streams": endereços diretos da transmissão (https).
+  // "busca": se os endereços falharem, o app procura a estação no catálogo
+  //          aberto radio-browser.info pelo nome ou pela etiqueta (tag).
+  radio: [
+    { id: "swiss-jazz", nome: "Radio Swiss Jazz", detalhe: "Jazz clássico 24h · Suíça",
+      streams: ["https://stream.srg-ssr.ch/m/rsj/mp3_128"], busca: { name: "Radio Swiss Jazz" } },
+    { id: "tsf-jazz", nome: "TSF Jazz", detalhe: "Jazz de todas as épocas · Paris",
+      streams: ["https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3"], busca: { name: "TSF Jazz" } },
+    { id: "jazz24", nome: "Jazz24", detalhe: "Jazz tradicional e moderno · Seattle",
+      streams: ["https://live.wostreaming.net/direct/ppm-jazz24aac-ibc1"], busca: { name: "Jazz24" } },
+    { id: "bossa", nome: "Bossa nova", detalhe: "Bossa nova ao vivo",
+      streams: [], busca: { tag: "bossa nova" } },
+    { id: "mpb", nome: "Música brasileira", detalhe: "MPB e instrumental · Brasil",
+      streams: [], busca: { tag: "mpb", countrycode: "BR" } }
+  ],
+  // Atalhos para ouvir fora do app.
+  radioLinks: [
+    { titulo: "Spotify · jazz com saxofone", url: "https://open.spotify.com/search/jazz%20saxofone/playlists" },
+    { titulo: "Spotify · saxofone brasileiro", url: "https://open.spotify.com/search/saxofone%20brasileiro/playlists" },
+    { titulo: "YouTube · rádios de jazz ao vivo", url: "https://www.youtube.com/results?search_query=jazz+saxophone+radio+live&sp=EgJAAQ%253D%253D" }
+  ],
+
   // Frases que aparecem na tela inicial (uma por dia).
   frases: [
     "Pouco todo dia vence muito de vez em quando.",

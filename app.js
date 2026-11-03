@@ -834,11 +834,13 @@
     agendar();
     met.intervalo = setInterval(agendar, 25);
     renderMetronomo();
+    abaixarRadio(true);
   }
 
   function pararMetronomo() {
     met.tocando = false;
     clearInterval(met.intervalo);
+    abaixarRadio(false);
     document.querySelectorAll("#met-pulsos .pulso").forEach(p => p.classList.remove("ativo"));
     $("#met-tocar").innerHTML = `${icone("play")}Tocar`;
   }
@@ -1073,6 +1075,145 @@
     }
   });
 
+  // ---------- Rádio CMA ----------
+
+  const ESTACOES = Array.isArray(CMA.radio) ? CMA.radio : [];
+  const RADIO_LINKS = Array.isArray(CMA.radioLinks) ? CMA.radioLinks : [];
+  const CATALOGO = ["de1", "de2", "fi1", "nl1"].map(h => `https://${h}.api.radio-browser.info`);
+  const radio = { audio: new Audio(), estacao: null, tocando: false, carregando: false, tentativa: 0, abaixado: false };
+  radio.audio.preload = "none";
+  const prefRadio = (() => { try { return JSON.parse(localStorage.getItem("cma.radio") || "{}"); } catch { return {}; } })();
+  const salvarPrefRadio = () => { try { localStorage.setItem("cma.radio", JSON.stringify(prefRadio)); } catch {} };
+  if (typeof prefRadio.volume !== "number") prefRadio.volume = 0.6;
+  radio.estacao = ESTACOES.find(e => e.id === prefRadio.estacao) || ESTACOES[0] || null;
+
+  function aplicarVolume() {
+    radio.audio.volume = limitar(prefRadio.volume * (radio.abaixado ? 0.25 : 1), 0, 1);
+  }
+  aplicarVolume();
+
+  function renderRadio() {
+    const barra = $("#radio");
+    if (!ESTACOES.length) { barra.hidden = true; return; }
+    barra.classList.toggle("tocando", radio.tocando);
+    const btn = $("#radio-play");
+    btn.classList.toggle("carregando", radio.carregando);
+    btn.innerHTML = icone(radio.tocando || radio.carregando ? "pause" : "play");
+    btn.setAttribute("aria-label", radio.tocando ? "Pausar rádio" : "Tocar rádio");
+    $("#radio-nome").textContent = radio.carregando ? `Sintonizando ${radio.estacao.nome}…`
+      : radio.tocando ? radio.estacao.nome
+      : radio.estacao ? radio.estacao.nome : "Toque para ouvir jazz";
+    $("#radio-lista").innerHTML = ESTACOES.map(e => `<li><button type="button" class="radio-estacao${e === radio.estacao ? " ativa" : ""}" data-estacao="${escapar(e.id)}">
+      ${icone(e === radio.estacao && radio.tocando ? "pause" : "radio")}
+      <span><strong>${escapar(e.nome)}</strong><small>${escapar(e.detalhe || "")}</small></span></button></li>`).join("");
+    $("#radio-links").innerHTML = RADIO_LINKS.map(l => {
+      const url = urlSegura(l.url);
+      return url ? `<li><a href="${escapar(url)}" target="_blank" rel="noopener">${escapar(l.titulo)}${icone("externo")}</a></li>` : "";
+    }).join("");
+    $("#radio-volume").value = Math.round(prefRadio.volume * 100);
+  }
+
+  // Procura o endereço atual da estação no catálogo radio-browser.info
+  async function buscarNoCatalogo(busca) {
+    if (!busca) return [];
+    const q = new URLSearchParams({ hidebroken: "true", order: "votes", reverse: "true", limit: "6" });
+    for (const [k, v] of Object.entries(busca)) q.set(k, v);
+    for (const host of CATALOGO) {
+      try {
+        const r = await fetch(`${host}/json/stations/search?${q}`, { signal: AbortSignal.timeout ? AbortSignal.timeout(6000) : undefined });
+        if (!r.ok) continue;
+        const lista = await r.json();
+        return lista.map(x => x.url_resolved || x.url).filter(u => /^https:\/\//i.test(u || ""));
+      } catch { /* tenta o próximo servidor */ }
+    }
+    return [];
+  }
+
+  function testarStream(url, minhaTentativa) {
+    return new Promise((ok, falha) => {
+      const a = radio.audio;
+      const limpar = () => { a.removeEventListener("playing", aoTocar); a.removeEventListener("error", aoErro); clearTimeout(t); };
+      const aoTocar = () => { limpar(); ok(); };
+      const aoErro = () => { limpar(); falha(new Error("stream")); };
+      const t = setTimeout(() => { limpar(); falha(new Error("tempo")); }, 15000);
+      a.addEventListener("playing", aoTocar);
+      a.addEventListener("error", aoErro);
+      a.src = url;
+      a.play().catch(err => { if (radio.tentativa === minhaTentativa && err.name !== "AbortError") { limpar(); falha(err); } });
+    });
+  }
+
+  async function tocarRadio(estacao = radio.estacao) {
+    if (!estacao) return;
+    const minha = ++radio.tentativa;
+    radio.estacao = estacao;
+    prefRadio.estacao = estacao.id; salvarPrefRadio();
+    radio.carregando = true; radio.tocando = false; renderRadio();
+    const vistos = new Set();
+    const tentar = async urls => {
+      for (const url of urls) {
+        if (vistos.has(url) || radio.tentativa !== minha) continue;
+        vistos.add(url);
+        try { await testarStream(url, minha); return true; } catch (err) {
+          if (err && err.name === "NotAllowedError") throw err;
+        }
+      }
+      return false;
+    };
+    try {
+      let ok = await tentar(estacao.streams || []);
+      if (!ok && radio.tentativa === minha) ok = await tentar(await buscarNoCatalogo(estacao.busca));
+      if (radio.tentativa !== minha) return;
+      radio.carregando = false;
+      radio.tocando = ok;
+      if (!ok) { radio.audio.removeAttribute("src"); avisar(`${estacao.nome} está fora do ar agora. Tente outra estação.`); }
+      else if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({ title: estacao.nome, artist: "Rádio CMA", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+      }
+    } catch {
+      if (radio.tentativa !== minha) return;
+      radio.carregando = false; radio.tocando = false;
+      avisar("Toque no play para liberar o som.");
+    }
+    renderRadio();
+  }
+
+  function pausarRadio() {
+    radio.tentativa++;
+    radio.audio.pause();
+    radio.audio.removeAttribute("src");
+    radio.audio.load();
+    radio.tocando = false; radio.carregando = false;
+    renderRadio();
+  }
+
+  // Abaixa o rádio enquanto o metrônomo toca
+  function abaixarRadio(sim) { radio.abaixado = sim; aplicarVolume(); }
+
+  // Pausa/retomada vindas de fora do app (fones, tela de bloqueio)
+  radio.audio.addEventListener("pause", () => { if (!radio.carregando && radio.tocando) { radio.tocando = false; renderRadio(); } });
+  radio.audio.addEventListener("playing", () => { if (!radio.carregando && !radio.tocando) { radio.tocando = true; renderRadio(); } });
+
+  $("#radio-play").addEventListener("click", () => (radio.tocando || radio.carregando ? pausarRadio() : tocarRadio()));
+  $("#radio-abrir").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
+  $("#radio-mais").addEventListener("click", () => { renderRadio(); $("#dlg-radio").showModal(); });
+  $("#radio-fechar").addEventListener("click", () => $("#dlg-radio").close());
+  $("#radio-lista").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-estacao]");
+    if (!b) return;
+    const e = ESTACOES.find(x => x.id === b.dataset.estacao);
+    if (e === radio.estacao && (radio.tocando || radio.carregando)) pausarRadio(); else tocarRadio(e);
+  });
+  $("#radio-volume").addEventListener("input", ev => {
+    prefRadio.volume = Number(ev.target.value) / 100; aplicarVolume(); salvarPrefRadio();
+  });
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("play", () => tocarRadio());
+      navigator.mediaSession.setActionHandler("pause", () => pausarRadio());
+    } catch {}
+  }
+
   // ---------- Relatório semanal (WhatsApp) ----------
 
   const PROFESSOR = CMA.professor || {};
@@ -1155,6 +1296,7 @@
   // ---------- Inicialização ----------
 
   hidratarIcones();
+  renderRadio();
   lerRota();
   mostrarTela();
   renderTela();
