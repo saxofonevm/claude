@@ -318,6 +318,15 @@ window.CMA_METODOS = {
     ["guia-wave", "Rotina e checklist (p. 5)", "Rotina de 20 minutos e checklist do ciclo para cada música", "melodia-musicas"]
   ],
 
+  // Acervo de partituras e playbacks (pastas do Drive), mostrado na aba Métodos.
+  acervo: [
+    { titulo: "Partituras para sax Mib", detalhe: "Sax alto e barítono", pasta: "1F47qMn9wCF-wI1mJoAVtqpSwWaB9_lsJ" },
+    { titulo: "Partituras para sax Sib", detalhe: "Sax tenor e soprano", pasta: "1JM1UcGr6o88bsqiUnvF8xR4vLX99I21q" },
+    { titulo: "600 partituras com playback", detalhe: "Sax alto, com áudio para tocar junto", pasta: "1zy1CUhYOy29WUhTW5pK4L_6PddaBcd4D" },
+    { titulo: "Songbooks", detalhe: "Coletâneas de músicas", pasta: "1qYEWP1FQkvh4M12Io3wXItC4cOa97JwS" },
+    { titulo: "Pacote de métodos", detalhe: "Klosé, Rubank, Da Capo, harmonia e outros", pasta: "1c2QpL4P-n2odQNyHAOhObuL-FjqPM441" },
+    { titulo: "Áudios das lições do Amadeu Russo", detalhe: "MP3 para acompanhar o método", pasta: "19zyr2vAQP-vs26u5bGfiwh03KXdU4i9B" }
+  ],
   pastas: {
     raiz: {
       escuta: "1HJvukgBbd2aNYq4G5HHO0w3y7uf06FZd",

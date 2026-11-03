@@ -178,7 +178,7 @@ window.CMA = {
           descricao: "Reconhecer como o sax se comporta em cada gênero musical.",
           referencias: [
             { titulo: "Choro", detalhe: "Pixinguinha e Benedito Lacerda", busca: "Pixinguinha Benedito Lacerda Um a Zero" },
-            { titulo: "Bossa nova", detalhe: "Getz/Gilberto", busca: "Getz Gilberto Garota de Ipanema" },
+            { titulo: "Bossa nova", detalhe: "Getz/Gilberto", busca: "Getz Gilberto Garota de Ipanema", material: [{ rotulo: "Partitura Sib", arquivo: "118kaOLxispa2HRJMNjqktCAo-UE1ocn3" }, { rotulo: "Playback", arquivo: "1De4jww6JSx2wlyukgsANOoCf68Jzj-Sn" }] },
             { titulo: "Swing / Big band", detalhe: "Count Basie Orchestra", busca: "Count Basie Orchestra Shiny Stockings" },
             { titulo: "Soul / Funk", detalhe: "Maceo Parker", busca: "Maceo Parker Pass the Peas" }
           ],
@@ -330,8 +330,8 @@ window.CMA = {
           titulo: "Bossa nova",
           descricao: "Colcheias iguais (sem swing), a batida sincopada do violão e um fraseado leve e relaxado.",
           referencias: [
-            { titulo: "João Gilberto · Chega de Saudade", detalhe: "A batida do violão que criou a bossa", busca: "João Gilberto Chega de Saudade 1959" },
-            { titulo: "Getz/Gilberto · Desafinado", detalhe: "O sax de Stan Getz na bossa nova", busca: "Getz Gilberto Desafinado" }
+            { titulo: "João Gilberto · Chega de Saudade", detalhe: "A batida do violão que criou a bossa", busca: "João Gilberto Chega de Saudade 1959", material: [{ rotulo: "Partitura Sib", arquivo: "15dQRmmMBgMMpEtlY5edI7Trd3gYQltUB" }, { rotulo: "Playback", arquivo: "1r2lNFJ512Zex4ZxyfVelSreW04AYEgee" }] },
+            { titulo: "Getz/Gilberto · Desafinado", detalhe: "O sax de Stan Getz na bossa nova", busca: "Getz Gilberto Desafinado", material: [{ rotulo: "Partitura Sib", arquivo: "1PzhtLA8HvyCVFtB8ZezyhWe5YrRjCHcJ" }, { rotulo: "Playback", arquivo: "1Lf0M--FdM4ENFpI91AdlJwLXDb65jO9r" }] }
           ],
           exercicios: [
             {
@@ -390,7 +390,7 @@ window.CMA = {
           titulo: "Como estudar uma frase",
           descricao: "O método CMA para qualquer melodia.",
           referencias: [
-            { titulo: "Stan Getz · Corcovado", detalhe: "Melodia cantável para cantarolar e fatiar", busca: "Stan Getz Corcovado" },
+            { titulo: "Stan Getz · Corcovado", detalhe: "Melodia cantável para cantarolar e fatiar", busca: "Stan Getz Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
             { titulo: "Sonny Rollins · St. Thomas", detalhe: "Tema curto e fácil de memorizar", busca: "Sonny Rollins St. Thomas" }
           ],
           exercicios: [
@@ -505,12 +505,12 @@ window.CMA = {
           titulo: "Músicas",
           descricao: "Aplicar tudo em repertório real. Músicas sugeridas por nível: 1 (iniciante), 2 (intermediário) e 3 (avançado). Partituras no Drive.",
           referencias: [
-            { titulo: "Asa Branca", detalhe: "Nível 1 · Luiz Gonzaga", busca: "Asa Branca saxofone" },
-            { titulo: "Carinhoso", detalhe: "Nível 1 · Pixinguinha", busca: "Carinhoso Pixinguinha saxofone" },
+            { titulo: "Asa Branca", detalhe: "Nível 1 · Luiz Gonzaga", busca: "Asa Branca saxofone", material: [{ rotulo: "Partitura Sib", arquivo: "1BRZy-1aQRPDuBeeVHN7pejZipkVC-Lf2" }, { rotulo: "Playback", arquivo: "1SKD20bakymx1--pF7YYfkaK6vInuP92W" }] },
+            { titulo: "Carinhoso", detalhe: "Nível 1 · Pixinguinha", busca: "Carinhoso Pixinguinha saxofone", material: [{ rotulo: "Partitura Sib", arquivo: "1K__WeDD4WguEk5rs-VK9QrDNLXwxuEJ8" }] },
             { titulo: "Autumn Leaves", detalhe: "Nível 1 · Cannonball Adderley", busca: "Cannonball Adderley Autumn Leaves" },
-            { titulo: "Corcovado", detalhe: "Nível 2 · Tom Jobim", busca: "Stan Getz Corcovado" },
-            { titulo: "Wave", detalhe: "Nível 2 · Tom Jobim (veja o guia de estudo em Métodos)", busca: "Tom Jobim Wave" },
-            { titulo: "Blue Bossa", detalhe: "Nível 2 · Kenny Dorham", busca: "Joe Henderson Blue Bossa" },
+            { titulo: "Corcovado", detalhe: "Nível 2 · Tom Jobim", busca: "Stan Getz Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
+            { titulo: "Wave", detalhe: "Nível 2 · Tom Jobim (veja o guia de estudo em Métodos)", busca: "Tom Jobim Wave", material: [{ rotulo: "Partitura Sib", arquivo: "1wqzwKiJMD6NI7mHhto7gkKraWy3XsJFw" }, { rotulo: "Partitura Mib", arquivo: "1WCWhRQ4zbmD6f0CIazvnId2R2ilvbbbP" }] },
+            { titulo: "Blue Bossa", detalhe: "Nível 2 · Kenny Dorham", busca: "Joe Henderson Blue Bossa", material: [{ rotulo: "Partitura Sib", arquivo: "16hoieIMrSpXvatufeQOrhxikFud7ooXg" }, { rotulo: "Partitura Mib", arquivo: "1fkpMAeKdvrlyrzjnUEPFvaebt8wcYJX5" }] },
             { titulo: "Lamentos", detalhe: "Nível 2 · Pixinguinha", busca: "Lamentos Pixinguinha saxofone" },
             { titulo: "Tico-Tico no Fubá", detalhe: "Nível 3 · Zequinha de Abreu", busca: "Tico-Tico no Fubá saxofone" },
             { titulo: "Brasileirinho", detalhe: "Nível 3 · Waldir Azevedo", busca: "Brasileirinho saxofone" },
@@ -663,8 +663,8 @@ window.CMA = {
           titulo: "Bossa nova",
           descricao: "Legato macio, ataques suaves e quase sem acentos: a voz do sax imita o canto.",
           referencias: [
-            { titulo: "Getz/Gilberto · Corcovado", detalhe: "O legato macio de Stan Getz", busca: "Getz Gilberto Corcovado" },
-            { titulo: "João Gilberto · Chega de Saudade", detalhe: "O canto que o sax imita", busca: "João Gilberto Chega de Saudade 1959" }
+            { titulo: "Getz/Gilberto · Corcovado", detalhe: "O legato macio de Stan Getz", busca: "Getz Gilberto Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
+            { titulo: "João Gilberto · Chega de Saudade", detalhe: "O canto que o sax imita", busca: "João Gilberto Chega de Saudade 1959", material: [{ rotulo: "Partitura Sib", arquivo: "15dQRmmMBgMMpEtlY5edI7Trd3gYQltUB" }, { rotulo: "Playback", arquivo: "1r2lNFJ512Zex4ZxyfVelSreW04AYEgee" }] }
           ],
           exercicios: [
             {
@@ -792,9 +792,9 @@ window.CMA = {
           descricao: "Aplicar as dinâmicas em uma música para contar uma história.",
           referencias: [
             { titulo: "John Coltrane · Naima", detalhe: "Observe como o som cresce e diminui", busca: "John Coltrane Naima" },
-            { titulo: "Coleman Hawkins · Body and Soul", detalhe: "A balada clássica do sax tenor (1939)", busca: "Coleman Hawkins Body and Soul 1939" },
+            { titulo: "Coleman Hawkins · Body and Soul", detalhe: "A balada clássica do sax tenor (1939)", busca: "Coleman Hawkins Body and Soul 1939", material: [{ rotulo: "Partitura Sib", arquivo: "1fcFNFC1orYFseOaCVW0LMDFy_OBJZ42b" }] },
             { titulo: "Ben Webster · Chelsea Bridge", detalhe: "Som sussurrado e dinâmica no limite do piano", busca: "Ben Webster Chelsea Bridge" },
-            { titulo: "Carinhoso no sax", detalhe: "Pixinguinha: a dinâmica do choro-canção", busca: "Carinhoso Pixinguinha saxofone" }
+            { titulo: "Carinhoso no sax", detalhe: "Pixinguinha: a dinâmica do choro-canção", busca: "Carinhoso Pixinguinha saxofone", material: [{ rotulo: "Partitura Sib", arquivo: "1K__WeDD4WguEk5rs-VK9QrDNLXwxuEJ8" }] }
           ],
           exercicios: [
             {
@@ -832,7 +832,7 @@ window.CMA = {
           descricao: "A ondulação do som feita com a mandíbula. É o ornamento mais importante do sax: dá vida às notas longas e muda conforme o estilo.",
           referencias: [
             { titulo: "Johnny Hodges · Passion Flower", detalhe: "Vibrato largo e expressivo", busca: "Johnny Hodges Passion Flower" },
-            { titulo: "Stan Getz · Corcovado", detalhe: "Vibrato leve, no fim das notas", busca: "Stan Getz Corcovado" },
+            { titulo: "Stan Getz · Corcovado", detalhe: "Vibrato leve, no fim das notas", busca: "Stan Getz Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
             { titulo: "Vibrato no sax", detalhe: "Como fazer com a mandíbula", busca: "vibrato saxofone mandíbula aula" }
           ],
           exercicios: [

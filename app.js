@@ -506,11 +506,16 @@
   function htmlReferencias(refs) {
     const validas = (refs || []).map(r => ({ ...r, href: urlReferencia(r) })).filter(r => r.href);
     if (!validas.length) return "";
-    return `<div class="referencias"><h4>${icone("nota")}Ouça as referências</h4><div class="ref-grade">${validas.map(r =>
-      `<a class="ref" href="${escapar(r.href)}" target="_blank" rel="noopener">
+    return `<div class="referencias"><h4>${icone("nota")}Ouça as referências</h4><div class="ref-grade">${validas.map(r => {
+      const link = `<a class="ref" href="${escapar(r.href)}" target="_blank" rel="noopener">
         ${icone(r.busca && !r.url ? "youtube" : "externo", "ref-ic")}
         <span class="ref-texto"><strong>${escapar(r.titulo)}</strong>${r.detalhe ? `<span>${escapar(r.detalhe)}</span>` : ""}</span>
-      </a>`).join("")}</div></div>`;
+      </a>`;
+      const mats = (temBloqueio() ? [] : r.material || []).map(m => ({ ...m, href: urlSegura(urlArquivo(m.arquivo)) })).filter(m => m.href);
+      if (!mats.length) return link;
+      return `<div class="ref-bloco">${link}<div class="ref-material">${mats.map(m =>
+        `<a href="${escapar(m.href)}" target="_blank" rel="noopener">${icone(/playback/i.test(m.rotulo) ? "nota" : "pdf")}${escapar(m.rotulo)}</a>`).join("")}</div></div>`;
+    }).join("")}</div></div>`;
   }
 
   // Lista "página tal → assunto". mostrarRamo: true = "Raiz › Ramificação", "ramo" = só a ramificação.
@@ -597,6 +602,11 @@
       <div class="corpo-metodos">
         <label class="busca">${icone("busca")}<input type="search" id="busca-metodos" placeholder="Buscar assunto: staccato, terças, trinado…" value="${escapar(buscaMetodos)}" autocomplete="off"></label>
         <div id="busca-resultado"></div>
+        ${(MET.acervo || []).length && temBloqueio() ? `<section class="cartao acervo"><h2>${icone("cadeado")}Acervo de partituras e playbacks</h2><p class="mudo">Partituras em Sib e Mib, mais de 600 músicas com playback, songbooks e métodos. Disponível no Método CMA completo.</p><a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}</section>` : ""}
+        ${(MET.acervo || []).length && !temBloqueio() ? `<section class="cartao acervo"><h2>${icone("pasta")}Acervo de partituras e playbacks</h2><div class="acervo-lista">${MET.acervo.map(x => {
+          const href = urlSegura(urlPasta(x.pasta));
+          return href ? `<a class="acervo-item" href="${escapar(href)}" target="_blank" rel="noopener"><span><strong>${escapar(x.titulo)}</strong><small>${escapar(x.detalhe || "")}</small></span>${icone("externo")}</a>` : "";
+        }).join("")}</div></section>` : ""}
         <div class="lista-livros" id="lista-livros">${chaves.map(k => {
           const l = LIVROS[k];
           return `<a class="livro" href="#/metodo/${encodeURIComponent(k)}">

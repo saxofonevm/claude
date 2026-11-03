@@ -459,6 +459,20 @@ a.indicacao:hover { border-color: var(--c1, var(--brass)); }
   background: var(--surface-2); color: inherit; text-decoration: none; border: 1px solid transparent; transition: border-color .15s;
 }
 .ref:hover { border-color: var(--c1); }
+.ref-bloco { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ref-material { display: flex; flex-wrap: wrap; gap: 6px; }
+.ref-material a { display: inline-flex; align-items: center; gap: 5px; min-height: 34px; padding: 0 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface-2); color: var(--text); font-size: .78rem; font-weight: 600; text-decoration: none; }
+.ref-material a:hover { border-color: var(--c1, var(--brass)); }
+.ref-material .ic { width: 14px; height: 14px; color: var(--c1, var(--brass)); }
+.acervo { display: flex; flex-direction: column; gap: 10px; }
+.acervo h2 { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; text-transform: uppercase; }
+.acervo h2 .ic { width: 18px; height: 18px; color: var(--brass-soft); }
+.acervo-lista { display: flex; flex-direction: column; }
+.acervo-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 0; min-height: 52px; border-bottom: 1px solid var(--line); color: var(--text); text-decoration: none; }
+.acervo-item:last-child { border-bottom: 0; }
+.acervo-item span { display: flex; flex-direction: column; min-width: 0; }
+.acervo-item small { color: var(--muted); font-size: .8rem; }
+.acervo-item .ic { flex: none; width: 16px; height: 16px; color: var(--muted); }
 .ref-ic { width: 22px; height: 22px; color: var(--c1); }
 .ref-texto { display: flex; flex-direction: column; min-width: 0; }
 .ref-texto strong { font-weight: 600; font-size: .92rem; }
