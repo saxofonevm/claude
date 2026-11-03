@@ -865,7 +865,7 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
 
 /* ---------- Movimento em todas as abas ---------- */
 /* Entrada suave de cada tela e dos itens de lista, um após o outro */
-.tela.ativa { animation: tela-entra .35s ease both; }
+.tela.ativa { animation: tela-entra .35s ease backwards; }
 @keyframes tela-entra { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 @keyframes item-entra { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
 .grade-raizes > *, .corpo > .ramificacao, .corpo > .cartao, .genero, .lista-livros > *, #lista-sessoes > *, .ind-lista li, .tocar-lista li, .acervo-item, .lista-prazos li, .conteudo-inicio > * {
@@ -988,3 +988,69 @@ body.com-radio .aviso { bottom: calc(148px + env(safe-area-inset-bottom, 0px)); 
   .abas { left: 50%; right: auto; width: min(720px, 100%); transform: translateX(-50%); border-left: 1px solid var(--line); border-right: 1px solid var(--line); border-radius: 18px 18px 0 0; }
   .radio { left: 50%; right: auto; width: min(720px, 100%); transform: translateX(-50%); border-radius: 18px 18px 0 0; }
 }
+
+
+/* ---------- Revisão: ramificações recolhíveis com abas ---------- */
+details.ramificacao { padding: 0; gap: 0; }
+details.ramificacao > :not(summary) { margin-left: 18px; margin-right: 18px; }
+details.ramificacao > :last-child { margin-bottom: 18px; }
+details.ramificacao > .mudo { margin-top: 2px; margin-bottom: 10px; }
+.ram-topo { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; padding: 16px 18px; min-height: 64px; }
+.ram-topo::-webkit-details-marker { display: none; }
+.ram-cab { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.ram-cab h3 { font-size: 1.15rem; }
+.ram-cont { flex: none; font-weight: 800; font-size: .82rem; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); color: var(--muted); font-variant-numeric: tabular-nums; }
+.ram-cont.completa { background: var(--c1, var(--brass)); color: #0b0b0e; }
+.ram-seta { flex: none; width: 18px; height: 18px; color: var(--muted); transform: rotate(90deg); transition: transform .2s ease; animation: none !important; }
+details[open] > summary .ram-seta { transform: rotate(-90deg); }
+details.ramificacao[open] > summary { border-bottom: 1px solid var(--line); margin-bottom: 12px; }
+.ram-abas { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; padding: 4px; margin-top: 14px; margin-bottom: 12px; border-radius: 12px; background: var(--surface-2); }
+.ram-abas button { min-height: 40px; border: 0; border-radius: 9px; background: none; color: var(--muted); font: inherit; font-weight: 700; font-size: .85rem; cursor: pointer; }
+.ram-abas button.ativa { background: var(--c1, var(--brass)); color: #0b0b0e; }
+.ram-painel .referencias { margin-top: 0; }
+.ram-painel .nos-metodos { margin-top: 0; }
+details.drive { gap: 10px; }
+.drive-topo { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 12px; }
+.drive-topo::-webkit-details-marker { display: none; }
+.drive-topo > .ic:first-child { width: 20px; height: 20px; color: var(--c1, var(--brass)); flex: none; }
+.drive-topo > span { flex: 1; display: flex; flex-direction: column; }
+.drive-topo small { color: var(--muted); font-size: .8rem; }
+
+/* ---------- Revisão: barra fixa do exercício ---------- */
+.barra-acoes { position: fixed; z-index: 9; left: 0; right: 0; bottom: calc(61px + env(safe-area-inset-bottom, 0px));
+  display: flex; gap: 8px; padding: 10px max(14px, env(safe-area-inset-right, 0px)) 10px max(14px, env(safe-area-inset-left, 0px));
+  background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(14px); border-top: 1px solid var(--line); }
+.barra-acoes .btn { flex: 1; min-height: 50px; }
+.barra-acoes .acao-met { flex: none; width: 54px; padding: 0; color: var(--brass-soft); }
+.barra-acoes .acao-met .ic { width: 22px; height: 22px; }
+body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0px)); }
+#tela-exercicio .corpo { padding-bottom: 86px; }
+@media (min-width: 760px) { .barra-acoes { left: 50%; right: auto; width: min(720px, 100%); transform: translateX(-50%); } }
+
+/* ---------- Revisão: cartão da versão grátis ---------- */
+.gratis-cartao { border: 1px solid color-mix(in srgb, var(--brass) 50%, transparent) !important;
+  background: radial-gradient(90% 120% at 100% 0%, rgb(212 162 76 / .18), transparent 60%), var(--surface); }
+.gratis-selo { justify-self: start; align-self: flex-start; margin: 0; padding: 3px 10px; border-radius: 999px; background: var(--latao); color: var(--on-brass); font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.gratis-cartao h2 { font-size: 1.3rem; text-transform: uppercase; }
+.gratis-cartao .linha-botoes { justify-content: stretch; }
+.gratis-cartao .linha-botoes .btn { flex: 1; }
+
+/* ---------- Revisão: boas-vindas ---------- */
+.boas-vindas { width: min(440px, calc(100vw - 24px)); padding: 26px 22px 18px; text-align: center; }
+.boas-vindas section { display: flex; flex-direction: column; gap: 12px; align-items: stretch; }
+.boas-vindas h2 { font-size: 1.6rem; text-transform: uppercase; justify-content: center; }
+.bv-sax { width: 54px; height: 72px; align-self: center; animation: flutuar 4s ease-in-out infinite; }
+.bv-pontos { display: flex; justify-content: center; gap: 6px; margin-bottom: 14px; }
+.bv-pontos span { width: 28px; height: 5px; border-radius: 99px; background: var(--surface-2); transition: background .3s; }
+.bv-pontos span.ativo { background: var(--latao); }
+.bv-campo { text-align: left; font-weight: 700; font-size: .9rem; margin-top: 4px; }
+#bv-nome { font: inherit; font-size: 1.1rem; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 0 14px; min-height: 52px; }
+.bv-opcoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.bv-opcoes.uma { grid-template-columns: 1fr; }
+.bv-opcao { display: flex; flex-direction: column; gap: 2px; align-items: center; justify-content: center; min-height: 70px; padding: 10px; cursor: pointer; font: inherit; color: var(--text);
+  border-radius: 14px; border: 1px solid var(--line); background: var(--surface-2); transition: border-color .15s, transform .1s; }
+.bv-opcao strong { font-family: var(--f-display); font-stretch: 85%; font-size: 1.2rem; text-transform: uppercase; }
+.bv-opcao small { color: var(--muted); font-size: .8rem; }
+.bv-opcao:hover, .bv-opcao.ativo { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 14%, var(--surface-2)); }
+.bv-opcao:active { transform: scale(.97); }
+.boas-vindas .link-acao { align-self: center; }

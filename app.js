@@ -443,7 +443,16 @@
     bt.setAttribute("aria-label", tocando ? `Rádio CMA tocando ${radio.estacao ? radio.estacao.nome : ""}. Toque para trocar de estação` : "Rádio CMA: toque para ouvir");
   }
 
+  function renderCartaoGratis() {
+    const c = $("#cartao-gratis");
+    if (!c) return;
+    c.hidden = !temBloqueio();
+    const a = c.querySelector("[data-conhecer]");
+    if (a) a.href = urlConhecer();
+  }
+
   function renderInicio() {
+    renderCartaoGratis();
     const hora = new Date().getHours();
     const cumprimento = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}.` : `${cumprimento}.`;
@@ -616,18 +625,19 @@
     for (const i of INDICACOES) if (ramos.has(i.ramo)) contagem[i.livro] = (contagem[i.livro] || 0) + 1;
     const livros = Object.keys(contagem).sort((a, b) => contagem[b] - contagem[a]);
     const cabeca = `<h2>${icone("livro")}Métodos desta raiz</h2>`;
+    const resumo = `<summary class="drive-topo">${icone("livro")}<span><strong>Métodos desta raiz</strong><small>${livros.length} ${livros.length === 1 ? "método" : "métodos"}${pasta ? " · pasta no Drive" : ""}</small></span>${icone("seta", "ram-seta")}</summary>`;
     if (!livros.length && !pasta) {
       return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos desta raiz serão publicados em breve pelo professor.</p></div>`;
     }
-    return `<div class="cartao drive">${cabeca}
-      ${livros.length ? `<p class="mudo">Em cada ramificação abaixo, abra “Nos métodos” para ver a página exata de cada assunto.</p>
+    return `<details class="cartao drive">${resumo}
+      ${livros.length ? `<p class="mudo">Em cada ramificação, a aba “Métodos” mostra a página exata de cada assunto.</p>
       <div class="livros-chips">${livros.map(k => `<a class="livro-chip" href="#/metodo/${encodeURIComponent(k)}">
         <strong>${escapar(LIVROS[k].autor || LIVROS[k].titulo)}</strong><span>${escapar(LIVROS[k].autor ? LIVROS[k].titulo : "")}</span><em>${contagem[k]}</em>
       </a>`).join("")}</div>` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">
         ${icone("pasta")}<span>Abrir a pasta desta raiz no Drive</span>${icone("externo", "material-seta")}
       </a>` : ""}
-    </div>`;
+    </details>`;
   }
 
   // ---------- Biblioteca de métodos ----------
@@ -856,9 +866,16 @@
         ${htmlDrive(raiz)}
 
         <h2 class="secao">Ramificações</h2>
-        ${(raiz.ramificacoes || []).map((ram, j) => `<section class="cartao ramificacao">
-          <p class="ram-num">Ramificação ${dois(j + 1)}</p>
-          <h3>${escapar(ram.titulo)}</h3>
+        ${(raiz.ramificacoes || []).map((ram, j) => {
+          const exs = ram.exercicios || [];
+          const fe = exs.filter(e => feito(e.id)).length;
+          const aberta = exs.some(e => e.id === proxId) || (!proxId && j === 0);
+          const abas = [["ouvir", "Ouvir", htmlReferencias(ram.referencias)], ["metodos", "Métodos", htmlNosMetodos(ram.id, true)], ["material", "Material", htmlAcervoRamo(ram.id)]].filter(a => a[2]);
+          return `<details class="cartao ramificacao"${aberta ? " open" : ""}>
+          <summary class="ram-topo">
+            <span class="ram-cab"><span class="ram-num">Ramificação ${dois(j + 1)}</span><h3>${escapar(ram.titulo)}</h3></span>
+            <span class="ram-cont${fe === exs.length && exs.length ? " completa" : ""}">${fe}/${exs.length}</span>${icone("seta", "ram-seta")}
+          </summary>
           ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
           <div class="exercicios">
             ${(ram.exercicios || []).map(ex => `<a class="exercicio-item ${feito(ex.id) ? "feito" : ""}${ex.id === proxId ? " proximo" : ""}" href="#/ex/${encodeURIComponent(ex.id)}">
@@ -868,10 +885,10 @@
               ${icone("seta", "seta")}
             </a>`).join("")}
           </div>
-          ${htmlReferencias(ram.referencias)}
-          ${htmlNosMetodos(ram.id, false)}
-          ${htmlAcervoRamo(ram.id)}
-        </section>`).join("")}
+          ${abas.length ? `<div class="ram-abas" role="tablist">${abas.map((a, k) => `<button type="button" role="tab" class="${k ? "" : "ativa"}" data-aba-ram="${a[0]}" aria-selected="${!k}">${a[1]}</button>`).join("")}</div>
+          ${abas.map((a, k) => `<div class="ram-painel" data-painel="${a[0]}"${k ? " hidden" : ""}>${a[2]}</div>`).join("")}` : ""}
+        </details>`;
+        }).join("")}
 
         ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">
           <span class="mini-ilus">${ilustracao(proxima.icone)}</span>
@@ -934,24 +951,33 @@
 
         ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
 
-        ${indicacoesDoRamo(ram.id).length ? `<div class="cartao">
-          <h2>${icone("livro")}Onde estudar nos métodos</h2>
+        ${indicacoesDoRamo(ram.id).length ? `<details class="cartao drive">
+          <summary class="drive-topo">${icone("livro")}<span><strong>Onde estudar nos métodos</strong><small>${indicacoesDoRamo(ram.id).length} indicações · toque para ver</small></span>${icone("seta", "ram-seta")}</summary>
           <p class="dica">Assuntos de “${escapar(ram.titulo)}”. Toque no nome do método para abrir o PDF e vá à página ou ao exercício indicado.</p>
           ${htmlIndicacoesPorLivro(indicacoesDoRamo(ram.id))}
-        </div>` : ""}
+        </details>` : ""}
 
         <div class="cartao">
           ${campoPrazo("e:" + id, "Meu prazo para este exercício")}
           ${seloPrazo("e:" + id, !!concluido)}
         </div>
 
-        <div class="acoes-exercicio">
-          <button class="btn largo ${concluido ? "" : "primario"}" id="ex-concluir">${icone("check")}${concluido ? "Desmarcar como concluído" : "Concluí este exercício"}</button>
-          <button class="btn largo" id="ex-praticar">${icone("diario")}Registrar prática</button>
+        <div class="barra-acoes">
+          ${ex.andamento ? `<button class="btn acao-met" id="ex-metronomo-barra" aria-label="Metrônomo">${icone("metronomo")}</button>` : ""}
+          <button class="btn ${concluido ? "" : "primario"}" id="ex-concluir">${icone("check")}${concluido ? "Desmarcar" : "Concluí"}</button>
+          <button class="btn" id="ex-praticar">${icone("diario")}Registrar</button>
         </div>
       </div>
     </article>`;
   }
+
+  $("#raiz-conteudo").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-aba-ram]");
+    if (!b) return;
+    const caixa = b.closest(".ramificacao");
+    caixa.querySelectorAll("[data-aba-ram]").forEach(x => { const on = x === b; x.classList.toggle("ativa", on); x.setAttribute("aria-selected", on); });
+    caixa.querySelectorAll(".ram-painel").forEach(pn => { pn.hidden = pn.dataset.painel !== b.dataset.abaRam; });
+  });
 
   $("#exercicio-conteudo").addEventListener("click", async ev => {
     const id = rotaAtual.id;
@@ -970,7 +996,7 @@
       salvar(); renderTela();
     }
     if (alvo.id === "ex-praticar") abrirSessao(null, { raizId: EXERCICIO[id].raiz.id, exercicioId: id });
-    if (alvo.id === "ex-metronomo") {
+    if (alvo.id === "ex-metronomo" || alvo.id === "ex-metronomo-barra") {
       const ex = EXERCICIO[id].ex;
       abrirMetronomo(estado.andamentos[id] || ex.andamento.inicial, id);
     }
@@ -1675,10 +1701,46 @@
     return false;
   }
 
+  // ---------- Boas-vindas (primeira abertura) ----------
+
+  const dlgBV = $("#dlg-boas-vindas");
+  const bv = { passo: 1, sax: "", meta: 150 };
+  function mostrarPassoBV() {
+    dlgBV.querySelectorAll("[data-passo]").forEach(sec => { sec.hidden = Number(sec.dataset.passo) !== bv.passo; });
+    dlgBV.querySelectorAll(".bv-pontos span").forEach((p, i) => p.classList.toggle("ativo", i < bv.passo));
+  }
+  function abrirBoasVindas() {
+    bv.passo = 1; $("#bv-nome").value = estado.nome || "";
+    mostrarPassoBV();
+    if (!dlgBV.open) dlgBV.showModal();
+  }
+  function concluirBoasVindas(irEscuta) {
+    const nome = $("#bv-nome").value.trim();
+    if (nome) estado.nome = nome;
+    estado.sax = bv.sax;
+    estado.metaSemanal = bv.meta;
+    estado.boasVindas = true;
+    salvar();
+    dlgBV.close();
+    if (irEscuta) location.hash = "#/raiz/escuta"; else renderTela();
+  }
+  dlgBV.addEventListener("click", ev => {
+    const b = ev.target.closest("button");
+    if (!b) return;
+    if (b.dataset.bvSax !== undefined) { bv.sax = b.dataset.bvSax; bv.passo = 3; mostrarPassoBV(); }
+    else if (b.dataset.bvMeta) { bv.meta = Number(b.dataset.bvMeta); dlgBV.querySelectorAll("[data-bv-meta]").forEach(x => x.classList.toggle("ativo", x === b)); }
+    else if (b.hasAttribute("data-bv-prox")) { bv.passo = Math.min(3, bv.passo + 1); mostrarPassoBV(); }
+    else if (b.hasAttribute("data-bv-voltar")) { bv.passo = Math.max(1, bv.passo - 1); mostrarPassoBV(); }
+    else if (b.hasAttribute("data-bv-fim")) concluirBoasVindas(true);
+    else if (b.hasAttribute("data-bv-pular")) concluirBoasVindas(false);
+  });
+  dlgBV.addEventListener("cancel", ev => { ev.preventDefault(); concluirBoasVindas(false); });
+
   // ---------- Inicialização ----------
 
   hidratarIcones();
   renderRadio();
+  if (!estado.boasVindas && !estado.nome && !estado.sessoes.length) setTimeout(abrirBoasVindas, 400);
   lerRota();
   mostrarTela();
   renderTela();

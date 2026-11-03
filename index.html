@@ -62,6 +62,16 @@
           </button>
         </div>
 
+        <div class="cartao gratis-cartao" id="cartao-gratis" hidden>
+          <p class="gratis-selo">Versão grátis</p>
+          <h2>A raiz Escuta é sua. Faltam mais 5.</h2>
+          <p class="mudo">No Método CMA completo você libera as 6 raízes, o Tocar junto com mais de 40 play-alongs, as partituras em Mib e Sib e o acervo de métodos.</p>
+          <div class="linha-botoes">
+            <a class="btn primario" data-conhecer target="_blank" rel="noopener" href="#">Conhecer o Método CMA</a>
+            <a class="btn" href="#/ajustes">Já tenho o código</a>
+          </div>
+        </div>
+
         <div class="stats linha">
           <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span>dias seguidos</span></div>
           <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo"><span data-icone="relogio"></span>min na semana</span></div>
@@ -212,6 +222,42 @@
     <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
     <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
   </nav>
+
+  <dialog id="dlg-boas-vindas" class="boas-vindas" aria-labelledby="bv-titulo">
+    <div class="bv-pontos" aria-hidden="true"><span></span><span></span><span></span></div>
+    <section data-passo="1">
+      <svg class="bv-sax" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="#C9A24B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>
+      <h2 id="bv-titulo">Bem-vindo ao Método CMA</h2>
+      <p class="mudo">Seu estudo de saxofone organizado em 6 raízes, com metrônomo, play-alongs e diário. Tudo na palma da mão.</p>
+      <label class="bv-campo" for="bv-nome">Como podemos te chamar?</label>
+      <input type="text" id="bv-nome" maxlength="40" autocomplete="given-name" placeholder="Seu nome">
+      <button class="btn primario largo" type="button" data-bv-prox>Continuar</button>
+      <button class="link-acao" type="button" data-bv-pular>Pular</button>
+    </section>
+    <section data-passo="2" hidden>
+      <h2>Qual é o seu saxofone?</h2>
+      <p class="mudo">Assim o app mostra as partituras na sua afinação.</p>
+      <div class="bv-opcoes">
+        <button class="bv-opcao" type="button" data-bv-sax="Mib"><strong>Alto</strong><small>Mib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Sib"><strong>Tenor</strong><small>Sib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Sib"><strong>Soprano</strong><small>Sib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Mib"><strong>Barítono</strong><small>Mib</small></button>
+      </div>
+      <button class="link-acao" type="button" data-bv-sax="">Ainda não sei · mostrar todas</button>
+      <button class="link-acao" type="button" data-bv-voltar>Voltar</button>
+    </section>
+    <section data-passo="3" hidden>
+      <h2>Quanto quer estudar por semana?</h2>
+      <p class="mudo">Pouco todo dia vence muito de vez em quando. Você pode mudar depois em Ajustes.</p>
+      <div class="bv-opcoes uma">
+        <button class="bv-opcao" type="button" data-bv-meta="60"><strong>60 min</strong><small>cerca de 10 min por dia</small></button>
+        <button class="bv-opcao ativo" type="button" data-bv-meta="150"><strong>150 min</strong><small>cerca de 20 min por dia · recomendado</small></button>
+        <button class="bv-opcao" type="button" data-bv-meta="300"><strong>300 min</strong><small>cerca de 45 min por dia</small></button>
+      </div>
+      <button class="btn primario largo" type="button" data-bv-fim>Começar pela Escuta</button>
+      <button class="link-acao" type="button" data-bv-voltar>Voltar</button>
+    </section>
+  </dialog>
 
   <div class="comemora" id="comemora" hidden role="status" aria-live="polite">
     <canvas id="confete" aria-hidden="true"></canvas>
