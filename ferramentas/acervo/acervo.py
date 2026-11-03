@@ -57,6 +57,23 @@ PASTAS_RAMO = [
     ("1Z3LJXpi2PY1kEqAI-_rS2N7fzvmEMnMJ", "Arturo Himmer · Sax Plus!", ["melodia-musicas"]),
     ("1JSrUZ-nALAjDLn0vvKfgMKxBk7QX8MDJ", "26 duetos (Mib e Sib)", ["melodia-intervalos"]),
     ("19zyr2vAQP-vs26u5bGfiwh03KXdU4i9B", "Áudios das lições do método Amadeu Russo", ["escuta-setup"]),
+    # Músicas Brasileiras (play-alongs)
+    ("1hsgqk7lFuIxmVXRdGhJSlJM0YpUQJd8E", "Altamiro Carrilho · 25 choros (com playback)", ["ritmo-samba-choro", "orn-choro"]),
+    ("14NsbNmc-AI7RvMISGxB9z9c0rvl6p8A0", "Altamiro Carrilho · Chorinhos didáticos (playback)", ["ritmo-samba-choro", "art-choro"]),
+    ("1jNxnKFouA3QOfSgt4k3Vtr8szr0QLCBQ", "Tocando com Jacob · 15 choros (playback, Dó e Sib)", ["ritmo-samba-choro", "art-choro", "escuta-brasil"]),
+    ("115oVuMFIbE97mnBjSb7Ge2hpvCnx_lep", "Severino Araújo · 12 playbacks (Sib)", ["escuta-brasil", "ritmo-samba-choro"]),
+    ("1LpLz0YaIyOqgndd1VXWc6_jG3PL4cVSE", "Mário Sève · 15 playbacks (Sib)", ["art-choro", "orn-choro"]),
+    ("1LfI9M3eoLKYWlnwtPSo8S-8vAegz0W9b", "Zequinha de Abreu · 14 músicas (Dó)", ["ritmo-samba-choro"]),
+    ("1L04C3VNmvwXgI2CHJfAqap-itiCfBKku", "Ernesto Nazareth · Classics of the Brazilian Choro (play-along)", ["orn-choro"]),
+    ("1cq4aJ_xmF2QOITOWdf1Z-Vx-OoQCb5XD", "10 bossas nova (Dó, Mib e Sib, com playback)", ["ritmo-bossa", "art-bossa"]),
+    ("11I19hlpDAKxxnfnHuEg3mUyxwnRW4OUN", "Aebersold Vol. 31 · Bossa Novas", ["ritmo-bossa"]),
+    ("1QdsVmmcWWqNBRvTs1pe4h1BtFubwLNY-", "Aebersold Vol. 98 · Antonio Carlos Jobim", ["ritmo-bossa", "art-bossa"]),
+    ("1-0G2yYyYANJL4GU5jlr7W3HDVu0A-jVA", "Brazilian Play-Along · MPB Vol. 1", ["melodia-musicas"]),
+    ("1ouFes6NS78mWMDVoLMkBFrmxJy2_Vtuf", "10 Latin Jazz (Mib e Sib, com playback)", ["ritmo-bossa"]),
+    ("1SwX58Wm82mgQAxv5OXWC9k6BQR0ILIVh", "Aebersold Vol. 74 · Latin Jazz", ["ritmo-bossa"]),
+    ("1MA0YOAeSsUs3hJSxX2WRMKkoVo8g94Qy", "Aebersold Vol. 64 · Salsa e Latin Jazz", ["ritmo-bossa"]),
+    ("1kpbm8U0NDovaajFC6IP_-0o9fSiFo-u3", "Aebersold Vol. 96 · Latin Quarter", ["ritmo-bossa"]),
+    ("1zmiNKfF1SewWzZ6ezxWGHige4KJ_5mfj", "Creative Saxophone Duets", ["melodia-intervalos"]),
 ]
 
 # ---------- Livros (métodos, songbooks, real books) ----------
