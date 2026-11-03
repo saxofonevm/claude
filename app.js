@@ -458,9 +458,9 @@
     $("#arvore").innerHTML = arvoreSVG() + `<span class="dica-toque">${icone("seta")}Toque numa raiz para abrir</span>`;
     $("#percurso-pct").textContent = `${pctTotal}%`;
     $("#arvore-legenda").textContent = pctTotal === 0
-      ? "Cada exercício concluído aprofunda uma raiz. Comece pela Escuta."
+      ? "Comece pela Escuta: cada exercício concluído aprofunda uma raiz."
       : pctTotal === 100 ? "Percurso completo. Todas as raízes do CMA foram trabalhadas."
-      : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos. Toque em uma raiz para abri-la.`;
+      : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos.`;
 
     const prox = proximoExercicio();
     const cont = $("#continuar");
