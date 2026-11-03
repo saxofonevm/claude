@@ -509,6 +509,7 @@ window.CMA = {
             { titulo: "Carinhoso", detalhe: "Nível 1 · Pixinguinha", busca: "Carinhoso Pixinguinha saxofone" },
             { titulo: "Autumn Leaves", detalhe: "Nível 1 · Cannonball Adderley", busca: "Cannonball Adderley Autumn Leaves" },
             { titulo: "Corcovado", detalhe: "Nível 2 · Tom Jobim", busca: "Stan Getz Corcovado" },
+            { titulo: "Wave", detalhe: "Nível 2 · Tom Jobim (veja o guia de estudo em Métodos)", busca: "Tom Jobim Wave" },
             { titulo: "Blue Bossa", detalhe: "Nível 2 · Kenny Dorham", busca: "Joe Henderson Blue Bossa" },
             { titulo: "Lamentos", detalhe: "Nível 2 · Pixinguinha", busca: "Lamentos Pixinguinha saxofone" },
             { titulo: "Tico-Tico no Fubá", detalhe: "Nível 3 · Zequinha de Abreu", busca: "Tico-Tico no Fubá saxofone" },

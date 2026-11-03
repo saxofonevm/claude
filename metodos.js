@@ -57,7 +57,8 @@ window.CMA_METODOS = {
     "ex3-tv": { titulo: "Exercício 3 – acordes maiores", autor: "Tiago Veloso", arquivo: "16U26s5DN1WcGiOVewmNL7nBVAZvdBGo8" },
     "ex4-tv": { titulo: "Exercício 4 – acordes menores", autor: "Tiago Veloso", arquivo: "1shz7r2LD55cK3H161H9vYXcueZepHvIE" },
     "ex5-tv": { titulo: "Exercício 5 – acordes diminutos", autor: "Tiago Veloso", arquivo: "1SeJ6G_nZky7mKiKf6V2FgDbEGdtlQGCR" },
-    "nelson": { titulo: "Patterns for Improvisation", autor: "Oliver Nelson", arquivo: "1cDSW52TPT3XpRcH7HQ55eCwni1cxOer6", nota: "Organizado por número do exercício." }
+    "nelson": { titulo: "Patterns for Improvisation", autor: "Oliver Nelson", arquivo: "1cDSW52TPT3XpRcH7HQ55eCwni1cxOer6", nota: "Organizado por número do exercício." },
+    "guia-wave": { titulo: "Como estudar qualquer música sozinho (Wave)", autor: "Tiago Veloso", arquivo: "1fAGtsNO1tz91lKzw8syRln23zSL9V3Hz", nota: "Guia de estudo do CMA: ouvir, cantar, fatiar e tocar." }
   },
 
   indicacoes: [
@@ -309,7 +310,12 @@ window.CMA_METODOS = {
     ["ex4-tv", "Exercício 4", "Arpejos de acordes menores", "melodia-arpejos"],
     ["ex5-tv", "Exercício 5", "Arpejos de acordes diminutos", "melodia-arpejos"],
     ["nelson", "Ex. 1–81", "Padrões melódicos para improvisação jazz", "orn-popular"],
-    ["nelson", "Ex. 1–81", "Padrões para estudar em todas as tonalidades (técnica)", "melodia-escalas"]
+    ["nelson", "Ex. 1–81", "Padrões para estudar em todas as tonalidades (técnica)", "melodia-escalas"],
+    // ---------- Guia de estudo (Wave) ----------
+    ["guia-wave", "Passos 1 a 4 (p. 2–4)", "Ouvir, cantar, fatiar e tocar: o ciclo aplicado em Wave", "melodia-metodo"],
+    ["guia-wave", "Passo 4 (p. 4)", "Subir o andamento aos poucos, de 70 a 90 bpm", "melodia-metodo"],
+    ["guia-wave", "Passo 2 (p. 2)", "Cantar em camadas: melodia, articulação, dinâmica e ornamentos", "escuta-saxofonistas"],
+    ["guia-wave", "Rotina e checklist (p. 5)", "Rotina de 20 minutos e checklist do ciclo para cada música", "melodia-musicas"]
   ],
 
   pastas: {
