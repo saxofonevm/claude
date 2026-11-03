@@ -23,6 +23,7 @@
           <span class="marca"><svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>CMA</span>
           <span class="marca-sub">Consciência Musical Aplicada</span>
           <span class="hero-data" id="hero-data"></span>
+          <a class="btn-ajustes" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
         </div>
         <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
         <figure class="frase-dia">
@@ -112,6 +113,11 @@
       <div id="exercicio-conteudo"></div>
     </section>
 
+    <!-- TOCAR JUNTO (play-alongs) -->
+    <section id="tela-tocar" class="tela">
+      <div id="tocar-conteudo"></div>
+    </section>
+
     <!-- MÉTODOS (biblioteca e detalhe de um método) -->
     <section id="tela-metodos" class="tela">
       <div id="metodos-conteudo"></div>
@@ -145,6 +151,13 @@
         <label>Seu nome
           <input type="text" id="aj-nome" maxlength="40" placeholder="Ex.: Ana">
         </label>
+        <label>Meu saxofone
+          <select id="aj-sax">
+            <option value="">Mostrar todas as afinações</option>
+            <option value="Mib">Alto ou barítono (Mib)</option>
+            <option value="Sib">Tenor ou soprano (Sib)</option>
+          </select>
+        </label>
         <label>Meta semanal (minutos)
           <input type="number" id="aj-meta" min="10" max="3000" step="10" required>
         </label>
@@ -177,9 +190,9 @@
   <nav class="abas">
     <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
     <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Raízes</a>
+    <a href="#/tocar" data-aba="tocar"><span data-icone="fone"></span>Tocar junto</a>
     <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
     <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
-    <a href="#/ajustes" data-aba="ajustes"><span data-icone="ajustes"></span>Ajustes</a>
   </nav>
 
   <!-- Registro de prática -->

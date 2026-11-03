@@ -362,13 +362,119 @@ def montar():
     return saida
 
 
+# ---------- Aba "Tocar junto": play-alongs por gênero ----------
+# (id da pasta, nome, gênero, afinações das partituras, indicado pelo professor)
+GENEROS = ["Choro", "Samba, baião e MPB", "Bossa nova e latin", "Jazz standards", "Estudos com play-along", "Blues e funk", "Baladas e pop"]
+TOCAR = [
+    ("1IqgNxpR0cmCGUrTqAusurEuIWzZvVaXc", "Chorinhos didáticos (com contagem)", "Choro", [], True),
+    ("14NsbNmc-AI7RvMISGxB9z9c0rvl6p8A0", "Altamiro Carrilho · Chorinhos didáticos", "Choro", ["Dó"], True),
+    ("1jNxnKFouA3QOfSgt4k3Vtr8szr0QLCBQ", "Tocando com Jacob · 15 choros", "Choro", ["Dó", "Sib"], True),
+    ("1hsgqk7lFuIxmVXRdGhJSlJM0YpUQJd8E", "Altamiro Carrilho · 25 choros", "Choro", ["Dó"], False),
+    ("1LpLz0YaIyOqgndd1VXWc6_jG3PL4cVSE", "Mário Sève · 15 playbacks", "Choro", ["Sib"], False),
+    ("115oVuMFIbE97mnBjSb7Ge2hpvCnx_lep", "Severino Araújo · 12 playbacks", "Choro", ["Sib"], False),
+    ("16kM8nbJUPcDHi6LtcXsoA0FlUpISuqru", "Ernesto Nazareth · Classics of the Brazilian Choro", "Choro", [], False),
+    ("1ARPIZupVelSCx3BbBZip_RQs_jL2CIP7", "Maurício Carrilho · choros", "Choro", [], False),
+    ("1HadeEkSVDV6Y9rRKZyoe8Ll6V_YjFa3K", "Maurício Carrilho e Paula Borghi", "Choro", [], False),
+    ("1LfI9M3eoLKYWlnwtPSo8S-8vAegz0W9b", "Zequinha de Abreu · 14 músicas", "Choro", ["Dó"], False),
+    ("1DuqD0i_7DTSJhv4IaL4yJsQopMzXtOwl", "Choros em dueto · Pixinguinha", "Choro", [], False),
+    ("1zy1CUhYOy29WUhTW5pK4L_6PddaBcd4D", "600 partituras com playback", "Samba, baião e MPB", ["Mib"], True),
+    ("1-0G2yYyYANJL4GU5jlr7W3HDVu0A-jVA", "Brazilian Play-Along · MPB Vol. 1", "Samba, baião e MPB", [], True),
+    ("1cq4aJ_xmF2QOITOWdf1Z-Vx-OoQCb5XD", "10 bossas nova com playback", "Bossa nova e latin", ["Dó", "Mib", "Sib"], True),
+    ("1QdsVmmcWWqNBRvTs1pe4h1BtFubwLNY-", "Aebersold Vol. 98 · Antonio Carlos Jobim", "Bossa nova e latin", [], True),
+    ("11I19hlpDAKxxnfnHuEg3mUyxwnRW4OUN", "Aebersold Vol. 31 · Bossa Novas", "Bossa nova e latin", [], False),
+    ("18Uj2De4RrIwFno2pSM7T19Smqa0jv_f0", "Jack Long · Latin Playalong", "Bossa nova e latin", ["Mib"], False),
+    ("1rKoEmrpyK9Mn5_AWEt0UtcfNt8pAM9A", "Rolf Becker · Latin Sax", "Bossa nova e latin", ["Mib", "Sib"], False),
+    ("1ouFes6NS78mWMDVoLMkBFrmxJy2_Vtuf", "10 Latin Jazz com playback", "Bossa nova e latin", ["Mib", "Sib"], False),
+    ("1SwX58Wm82mgQAxv5OXWC9k6BQR0ILIVh", "Aebersold Vol. 74 · Latin Jazz", "Bossa nova e latin", [], False),
+    ("1MA0YOAeSsUs3hJSxX2WRMKkoVo8g94Qy", "Aebersold Vol. 64 · Salsa e Latin Jazz", "Bossa nova e latin", [], False),
+    ("1kpbm8U0NDovaajFC6IP_-0o9fSiFo-u3", "Aebersold Vol. 96 · Latin Quarter", "Bossa nova e latin", [], False),
+    ("1nFydjJ_4_DeLmoWcsaMdjvKuD6pBWEwT", "Alto Sax Playalongs · Jazz Standards", "Jazz standards", ["Mib"], True),
+    ("1CzKDnpzbDyUX748yL46iLeQLejQegdsQ", "In Session with Charlie Parker", "Jazz standards", ["Mib", "Sib"], True),
+    ("1_cS6_-zGiavmCxkQAMaOBTKnqdpb0xra", "Carl Strommen · Jazz Standards", "Jazz standards", ["Mib"], False),
+    ("1AY_w4quMQo101b0MOjjpFwuYeU70Hm8P", "Electric Jazz Jam Along Vol. 1", "Jazz standards", ["Sib"], False),
+    ("1gg5NOUKeVmH4vNY8wy-7t2yJtkTTEJ-4", "Niehaus · Jazz Conception Vol. 1 (exercícios 1–12)", "Estudos com play-along", ["Mib"], True),
+    ("13tC9wTqQSH-7KohxgfhdKXKnKcJAytNO", "Bob Mintzer · 15 Easy Jazz, Blues & Funk Etudes", "Estudos com play-along", ["Sib"], True),
+    ("1lIciaLULwCmSAxoWh04lwEo5qlKLGqlg", "Niehaus · Jazz Conception Vol. 2", "Estudos com play-along", [], False),
+    ("1cmnL4d3Xx5wH6VSXufC5Flxmw7PKgPUf", "Niehaus · Jazz Conception Vol. 3", "Estudos com play-along", [], False),
+    ("1jgVQjFMNDU3Yx1mF6HX7QrddmBwSemsL", "Bob Mintzer · 14 Jazz & Funk Etudes", "Estudos com play-along", ["Mib", "Sib"], False),
+    ("1330bZHIfrPWjcy4gDnyF2cr43qCYPEq6", "Bob Mintzer · 12 Contemporary Jazz Etudes", "Estudos com play-along", ["Sib"], False),
+    ("1MX_xwty8V_0woPU29k5lMvKGDwGWhjE5", "Greg Fishman · Hip Licks Vol. 1", "Estudos com play-along", [], False),
+    ("1LC0_Qp1hg7kjq2j0iIcm_mH-ALjQg_c9", "David Liebman · Standards cromaticamente", "Estudos com play-along", [], False),
+    ("1Z3LJXpi2PY1kEqAI-_rS2N7fzvmEMnMJ", "Arturo Himmer · Sax Plus! (vol. 1 a 7)", "Estudos com play-along", [], False),
+    ("1e6KJfV1wSL-evEdFZjuWPYWxFjLcWWf1", "Bob Mintzer · 14 Blues & Funk Etudes", "Blues e funk", ["Mib", "Sib"], True),
+    ("10IONfIVeq5xRVQ7zVeFJyWYYw1bw6nrg", "Jack Long · Jazz & Blues Playalong Solos", "Blues e funk", ["Mib"], False),
+    ("1Gj7cFGK4wnCMtS-zPl8wH1IPYcHX7O38", "100 Blues Riffs", "Blues e funk", ["Sib"], False),
+    ("18GSvQHgQHoH17lvTPRjuO40UH7OKfbbS", "Bob Stoloff · Blues Scatitudes", "Blues e funk", [], False),
+    ("1novDFOR4hmE-o-Y5Rea1gNCE5hUnkdw0", "Alto Sax Playalongs · Performance Vol. 3", "Baladas e pop", ["Mib"], True),
+    ("1j5yJjWUJyWMkeMmk-NYzuOx1NXN-RaET", "Disney Solos", "Baladas e pop", ["Dó", "Mib", "Sib"], False),
+    ("1xrA4oTzDS5_u84p78VdQGo5nygWFCpEF", "Disney Movie Hits", "Baladas e pop", ["Dó", "Mib", "Sib"], False),
+]
+
+# ---------- Curadoria: o que aparece em cada ramificação, em ordem ----------
+# Nomes como aparecem no acervo (início do nome basta).
+INDICADOS = {
+    "escuta-saxofonistas": ["Transcrições de solos", "John Coltrane · Solos transcritos", "Sonny Rollins · Solos transcritos", "In Session with Charlie Parker"],
+    "escuta-brasil": ["Tocando com Jacob", "Severino Araújo", "Songbook Pixinguinha"],
+    "escuta-setup": ["Refaceamento de boquilhas", "Digitação completa", "A história e a evolução do saxofone"],
+    "ritmo-base": ["Bona · Método de solfejo", "Gilles Senon", "15 Études de Rythme", "Priolli"],
+    "ritmo-samba-choro": ["Chorinhos didáticos, com contagem", "Altamiro Carrilho · Chorinhos didáticos", "O Melhor do Choro Brasileiro Vol. I (sax alto)", "O Melhor do Choro Brasileiro Vol. 1 (sax tenor)", "Songbook Choro Vol. 2"],
+    "ritmo-baiao": ["O Melhor de Luiz Gonzaga", "Asa Branca", "Qui Nem Jiló"],
+    "ritmo-bossa": ["10 bossas nova", "Bossa Nova Songbook 1", "Aebersold Vol. 98", "Garota de Ipanema"],
+    "ritmo-swing": ["The Real Easy Book Vol. 1", "The Real Book Vol. 1 (Mib)", "Real Book Vol. 1 (Sib)", "Bob Mintzer · 15 Easy"],
+    "melodia-metodo": ["Guy Lacour"],
+    "melodia-escalas": ["Marcel Mule · 25 Estudos Diários", "Haimovich · Escala cromática", "Klosé · 25 Estudos de Mecanismo", "Woody Herman"],
+    "melodia-intervalos": ["Creative Saxophone Duets (livro)", "26 duetos"],
+    "melodia-arpejos": ["John Coltrane · Patterns", "Dan Higgins · Giant Steps", "Nelson Faria"],
+    "melodia-musicas": ["Brazilian Play-Along · MPB Vol. 1", "The Brazil Real Book", "MPB Jazz Songbook", "Disney Solos"],
+    "art-basicas": ["Rochut · Melodious Etudes", "Klosé · 15 Études Chantantes", "Guy Lacour"],
+    "art-acentos": ["Gilles Senon", "James Rae", "Bob Mintzer · 14 Jazz & Funk"],
+    "art-jazz": ["Niehaus · Jazz Conception Vol. 1", "Lennie Niehaus · Jazz Conception Vol. 2", "Greg Fishman · Hip Licks Vol. 1 (play-along)", "Donna Lee"],
+    "art-choro": ["Tocando com Jacob", "Mário Sève", "O Melhor do Choro Brasileiro Vol. 1 (sax tenor)"],
+    "art-bossa": ["10 bossas nova", "Bossa Nova Songbook 2"],
+    "din-niveis": ["Saxophone Technique", "Saxofone · Técnica básica"],
+    "din-emocao": ["Klosé · 15 Études Chantantes", "My Funny Valentine", "Kenny G · Breathless", "The Standards Real Book"],
+    "orn-choro": ["Songbook Pixinguinha", "Ernesto Nazareth · Classics", "Altamiro Carrilho · 25 choros"],
+    "orn-popular": ["100 Blues Riffs", "Jack Long · Jazz & Blues", "The Real Book of Blues"],
+}
+GENERO_DO_RAMO = {"ritmo-samba-choro": "Choro", "art-choro": "Choro", "orn-choro": "Choro", "escuta-brasil": "Choro",
+                  "ritmo-baiao": "Samba, baião e MPB", "melodia-musicas": "Samba, baião e MPB",
+                  "ritmo-bossa": "Bossa nova e latin", "art-bossa": "Bossa nova e latin",
+                  "ritmo-swing": "Jazz standards", "art-jazz": "Estudos com play-along", "art-acentos": "Estudos com play-along",
+                  "orn-popular": "Blues e funk", "din-emocao": "Baladas e pop"}
+
+
+def curar(dados):
+    ramos = {}
+    for r, nomes in INDICADOS.items():
+        d = dados.get(r, {"pastas": [], "livros": [], "musicas": []})
+        itens = []
+        for nome in nomes:
+            achado = None
+            for tipo in ("pastas", "livros", "musicas"):
+                for x in d.get(tipo, []):
+                    if norm(x["t"]).startswith(norm(nome)):
+                        achado = {"tipo": tipo[:-1] if tipo != "musicas" else "musica", **x}
+                        break
+                if achado:
+                    break
+            if achado:
+                itens.append(achado)
+            else:
+                print("  ! não achei em", r, "->", nome)
+        ramos[r] = {"indicados": itens, "genero": GENERO_DO_RAMO.get(r, "")}
+    for r, g in GENERO_DO_RAMO.items():
+        ramos.setdefault(r, {"indicados": [], "genero": g})
+    tocar = [{"id": i, "t": t, "g": g, "afin": a, "ind": ind} for i, t, g, a, ind in TOCAR]
+    return {"ramos": ramos, "generos": GENEROS, "tocar": tocar}
+
+
 if __name__ == "__main__":
     dados = montar()
     destino = os.path.join(AQUI, "..", "..", "acervo.js")
     with open(destino, "w", encoding="utf-8") as fh:
         fh.write("/* Gerado por ferramentas/acervo/acervo.py a partir do inventário do Drive. Não edite à mão. */\n")
         fh.write("window.CMA_ACERVO = ")
-        json.dump({"ramos": dados}, fh, ensure_ascii=False, separators=(",", ":"))
+        json.dump(curar(dados), fh, ensure_ascii=False, separators=(",", ":"))
         fh.write(";\n")
     for r, d in sorted(dados.items()):
         print(f"{r:22} pastas {len(d['pastas']):2}  livros {len(d['livros']):2}  músicas {len(d['musicas']):3}")

@@ -52,6 +52,7 @@
     andamentos: {},    // { [exercicioId]: bpm atual }
     metronomo: { bpm: 80, compasso: 4 },
     desbloqueado: false,
+    sax: "",
     timer: { inicio: null, acumulado: 0 }
   });
 
@@ -301,7 +302,7 @@
 
   function lerRota() {
     const [, tela = "inicio", id = null] = location.hash.replace(/^#/, "").split("/");
-    const validas = ["inicio", "raizes", "raiz", "ex", "metodos", "metodo", "diario", "ajustes"];
+    const validas = ["inicio", "raizes", "raiz", "ex", "tocar", "metodos", "metodo", "diario", "ajustes"];
     rotaAtual = validas.includes(tela) ? { tela, id: id && decodeURIComponent(id) } : { tela: "inicio", id: null };
     if (rotaAtual.tela === "raiz" && !RAIZ[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "ex" && !EXERCICIO[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
@@ -322,6 +323,7 @@
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
       case "ex": renderExercicio(rotaAtual.id); break;
+      case "tocar": renderTocar(); break;
       case "metodos": renderMetodos(); break;
       case "metodo": renderMetodo(rotaAtual.id); break;
       case "diario": renderDiario(); break;
@@ -673,25 +675,79 @@
     </div>`;
   }
 
-  // Material do acervo do Drive ligado a cada ramificação (acervo.js)
-  const ACERVO = (window.CMA_ACERVO && window.CMA_ACERVO.ramos) || {};
+  // Material do acervo do Drive (acervo.js): indicados em cada ramificação e a aba Tocar junto
+  const ACERVO_DADOS = window.CMA_ACERVO || {};
+  const ACERVO = ACERVO_DADOS.ramos || {};
+  const TOCAR = ACERVO_DADOS.tocar || [];
+  const GENEROS = ACERVO_DADOS.generos || [];
+
+  function chipsMusica(itens) {
+    const sax = estado.sax;
+    return (itens || []).filter(i => !sax || i.r === sax || i.r === "Playback" || i.r === "Partitura").map(i => {
+      const href = urlSegura(urlArquivo(i.id));
+      return href ? `<a href="${escapar(href)}" target="_blank" rel="noopener">${icone(i.r === "Playback" ? "nota" : "pdf")}${escapar(i.r)}</a>` : "";
+    }).join("");
+  }
+
   function htmlAcervoRamo(ramoId) {
     const d = ACERVO[ramoId];
     if (!d || temBloqueio()) return "";
-    const pastas = (d.pastas || []).map(x => ({ ...x, href: urlSegura(urlPasta(x.id)) })).filter(x => x.href);
-    const livros = (d.livros || []).map(x => ({ ...x, href: urlSegura(urlArquivo(x.id)) })).filter(x => x.href);
-    const musicas = d.musicas || [];
-    const total = pastas.length + livros.length + musicas.length;
-    if (!total) return "";
-    const lista = (titulo, itens, ic) => itens.length ? `<h5>${escapar(titulo)}</h5><ul class="acervo-ramo-lista">${itens.map(x =>
-      `<li><a href="${escapar(x.href)}" target="_blank" rel="noopener">${icone(ic)}<span>${escapar(x.t)}</span></a></li>`).join("")}</ul>` : "";
-    const htmlMus = musicas.length ? `<h5>Músicas</h5><ul class="acervo-musicas">${musicas.map(m => `<li><span>${escapar(m.t)}</span><span class="ref-material">${(m.itens || []).map(i => {
-        const href = urlSegura(urlArquivo(i.id));
-        return href ? `<a href="${escapar(href)}" target="_blank" rel="noopener">${icone(i.r === "Playback" ? "nota" : "pdf")}${escapar(i.r)}</a>` : "";
-      }).join("")}</span></li>`).join("")}</ul>` : "";
-    return `<details class="acervo-ramo"><summary>${icone("pasta")}<span>Do acervo</span><small>${total} ${total === 1 ? "item" : "itens"}</small></summary>
-      ${lista("Play-alongs e coleções", pastas, "pasta")}${lista("Livros e songbooks", livros, "livro")}${htmlMus}</details>`;
+    const itens = (d.indicados || []).map(x => {
+      if (x.tipo === "musica") return `<li><span class="ind-num"></span><span class="ind-texto"><strong>${escapar(x.t)}</strong><span class="ref-material">${chipsMusica(x.itens)}</span></span></li>`;
+      const href = urlSegura(x.tipo === "pasta" ? urlPasta(x.id) : urlArquivo(x.id));
+      return href ? `<li><span class="ind-num"></span><a class="ind-texto" href="${escapar(href)}" target="_blank" rel="noopener"><strong>${escapar(x.t)}</strong><small>${x.tipo === "pasta" ? "Play-along ou coleção" : "PDF"}</small></a></li>` : "";
+    }).join("");
+    const tocar = d.genero && TOCAR.some(t => t.g === d.genero)
+      ? `<a class="ind-mais" href="#/tocar" data-genero="${escapar(d.genero)}">${icone("fone")}Mais play-alongs de ${escapar(d.genero.toLowerCase())} na aba Tocar junto${icone("seta")}</a>` : "";
+    if (!itens && !tocar) return "";
+    return `<div class="indicados"><h4>${icone("check")}Indicado pelo professor</h4>${itens ? `<ol class="ind-lista">${itens}</ol>` : ""}${tocar}</div>`;
   }
+
+  let generoAberto = "";
+  document.addEventListener("click", ev => {
+    const a = ev.target.closest("[data-genero]");
+    if (a) generoAberto = a.dataset.genero;
+  });
+
+  function renderTocar() {
+    const alvo = $("#tocar-conteudo");
+    const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
+      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></header>`;
+    if (temBloqueio()) {
+      alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
+        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Método CMA completo.</p>
+        <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}</section></div>`;
+      return;
+    }
+    const sax = estado.sax;
+    const serve = t => !sax || !t.afin.length || t.afin.includes(sax);
+    const filtro = `<div class="filtro-sax" role="group" aria-label="Meu saxofone">
+      ${[["", "Todos"], ["Mib", "Alto · Mib"], ["Sib", "Tenor · Sib"]].map(([v, r]) => `<button type="button" data-sax="${v}" class="${sax === v ? "ativo" : ""}" aria-pressed="${sax === v}">${r}</button>`).join("")}</div>`;
+    const ocultos = TOCAR.filter(t => !serve(t)).length;
+    const secoes = GENEROS.map(g => {
+      const lista = TOCAR.filter(t => t.g === g && serve(t)).sort((a, b) => (b.ind ? 1 : 0) - (a.ind ? 1 : 0));
+      if (!lista.length) return "";
+      return `<details class="cartao genero"${generoAberto === g || (!generoAberto && g === GENEROS[0]) ? " open" : ""}><summary><h2>${escapar(g)}</h2><small>${lista.length}</small></summary>
+        <ul class="tocar-lista">${lista.map(t => {
+          const href = urlSegura(urlPasta(t.id));
+          return href ? `<li><a href="${escapar(href)}" target="_blank" rel="noopener"><span class="tocar-texto"><strong>${escapar(t.t)}</strong>
+            <span class="tocar-tags">${t.ind ? `<span class="tag ind">Indicado</span>` : ""}${(t.afin.length ? t.afin : ["Áudio e partituras"]).map(a => `<span class="tag">${escapar(a)}</span>`).join("")}</span></span>${icone("externo")}</a></li>` : "";
+        }).join("")}</ul></details>`;
+    }).join("");
+    alvo.innerHTML = topo + `<div class="corpo-metodos">${filtro}
+      ${ocultos ? `<p class="vazio-mini">${ocultos} ${ocultos === 1 ? "coleção em outra afinação está oculta" : "coleções em outras afinações estão ocultas"}.</p>` : ""}
+      ${secoes}
+      <p class="vazio-mini">Os play-alongs abrem no Google Drive. Se aparecer “Acesso negado”, entre com o e-mail que você passou ao professor.</p></div>`;
+    generoAberto = "";
+  }
+
+  $("#tocar-conteudo").addEventListener("click", ev => {
+    const b = ev.target.closest("[data-sax]");
+    if (!b) return;
+    estado.sax = b.dataset.sax;
+    salvar();
+    renderTocar();
+  });
 
   function renderRaizBloqueada(raiz) {
     const indice = RAIZES.indexOf(raiz);
@@ -1162,6 +1218,7 @@
   function renderAjustes() {
     $("#aj-nome").value = estado.nome;
     $("#aj-meta").value = estado.metaSemanal;
+    $("#aj-sax").value = estado.sax || "";
     const cartao = $("#cartao-acesso");
     cartao.hidden = !ACESSO;
     if (ACESSO) {
@@ -1176,6 +1233,7 @@
     ev.preventDefault();
     estado.nome = $("#aj-nome").value.trim();
     estado.metaSemanal = Math.max(10, Number($("#aj-meta").value) || 150);
+    estado.sax = $("#aj-sax").value;
     salvar();
     avisar("Ajustes salvos.");
   });
