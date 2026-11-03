@@ -195,8 +195,8 @@ window.CMA_METODOS = {
     ["rubank-int", "Seção Studies in Accents", "Acentos e rinforzando", "art-acentos"],
     ["viola3", "Introdução", "3 sinais de articulação: longa, curta e acento", "art-acentos"],
     ["dorsey", "Seção Golpe de língua", "Golpe de língua duplo e triplo", "art-acentos"],
-    ["niehaus1", "Introdução", "Colcheia swingada e os 3 sinais de articulação do jazz", "art-estilos"],
-    ["niehaus1", "Tunes (fim do livro)", "10 temas: Having a Ball, Fancy Free, Blue Haze…", "art-estilos"],
+    ["niehaus1", "Introdução", "Colcheia swingada e os 3 sinais de articulação do jazz", "art-jazz"],
+    ["niehaus1", "Tunes (fim do livro)", "10 temas: Having a Ball, Fancy Free, Blue Haze…", "art-jazz"],
 
     // ---------- 5. DINÂMICAS ----------
     ["klose", "p. 27", "Respiração e semirrespiração", "din-niveis"],
@@ -291,7 +291,7 @@ window.CMA_METODOS = {
     ["demetrio", "Estudos sobre tonalidades fáceis", "Arpejos (1-3-5-7), mecanismo e exercícios melódicos por tom", "melodia-arpejos"],
     ["freeman", "Seções Intervals e Scales", "Tabela de intervalos; escalas maior, menor harmônica e melódica", "melodia-escalas"],
     ["freeman", "p. 10–14 (Exercises)", "Arpejos: maiores, menores, 7ª dom., 7ª dim. e 9ª", "melodia-arpejos"],
-    ["freeman", "Legato Tonguing, Ex. 1–8", "Fraseado legato no swing (língua legato)", "art-estilos"],
+    ["freeman", "Legato Tonguing, Ex. 1–8", "Fraseado legato no swing (língua legato)", "art-jazz"],
     ["freeman", "Syncopation, Ex. 1–8", "Síncopas e fraseado de swing sobre progressões", "ritmo-swing"],
     ["freeman", "Treatment of Standard Songs (p. 24 em diante)", "Standards: melodia original, versão rítmica e improvisada", "melodia-musicas"],
     ["freeman", "Versões \"Improvised\" (ex.: Pagan Love Song)", "Improvisação com notas de passagem, auxiliares e glissando", "orn-popular"],

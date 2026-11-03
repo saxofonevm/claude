@@ -543,21 +543,117 @@ window.CMA = {
           ]
         },
         {
-          id: "art-estilos",
-          titulo: "Articulação nos estilos",
-          descricao: "Como articular no jazz, no choro e no pop.",
+          id: "art-jazz",
+          titulo: "Jazz: língua no legato e ghost notes",
+          descricao: "No swing a língua quase nunca para: ligamos do contratempo para o tempo (\"doo-dah\") e escondemos algumas notas (ghost notes) para a frase balançar.",
           referencias: [
-            { titulo: "Articulação no jazz", detalhe: "Ligar do contratempo para o tempo", busca: "jazz saxophone articulation lesson" },
-            { titulo: "Articulação no choro", detalhe: "Notas destacadas e leves", busca: "choro saxofone articulação" }
+            { titulo: "Cannonball Adderley · Work Song", detalhe: "Articulação de jazz clara e cheia de balanço", busca: "Cannonball Adderley Work Song" },
+            { titulo: "Charlie Parker · Confirmation", detalhe: "Ghost notes e acentos nas notas agudas", busca: "Charlie Parker Confirmation" },
+            { titulo: "Ghost notes no sax", detalhe: "Como fazer a nota fantasma", busca: "ghost notes saxophone lesson" }
           ],
+          exercicios: [
+            {
+              id: "art-04",
+              titulo: "Doo-dah: língua no legato",
+              andamento: { inicial: 80, alvo: 160 },
+              passos: [
+                "Fale \"doo-dah doo-dah\" sobre o metrônomo nos tempos 2 e 4",
+                "Toque a escala de Fá maior em colcheias swingadas: língua leve no contratempo, ligando para o tempo",
+                "A língua toca a palheta de leve, sem cortar o ar",
+                "Grave e compare com Cannonball Adderley"
+              ]
+            },
+            {
+              id: "art-05",
+              titulo: "Ghost notes",
+              andamento: { inicial: 70, alvo: 140 },
+              passos: [
+                "Toque uma linha de colcheias e deixe a língua quase abafar uma nota (a nota é sentida, mas quase não soa)",
+                "Comece escondendo a nota mais grave de cada grupo de três, como no bebop",
+                "Combine: acento na nota aguda, ghost note na grave",
+                "Aplique num tema de jazz que você já toca"
+              ]
+            }
+          ]
+        },
+        {
+          id: "art-choro",
+          titulo: "Choro e samba",
+          descricao: "Notas destacadas, leves e precisas; ligaduras curtas que valorizam a síncope e os ornamentos.",
+          referencias: [
+            { titulo: "Paulo Moura · Tarde de Chuva", detalhe: "Articulação de choro no sax", busca: "Paulo Moura Tarde de Chuva" },
+            { titulo: "Pixinguinha · Um a Zero", detalhe: "Staccato leve e contracantos", busca: "Pixinguinha Benedito Lacerda Um a Zero" }
+          ],
+          exercicios: [
+            {
+              id: "art-06",
+              titulo: "Staccato leve do choro",
+              andamento: { inicial: 60, alvo: 110 },
+              passos: [
+                "Toque a escala de Ré menor em semicolcheias, todas destacadas, curtas e leves",
+                "Agora ligue de 2 em 2, começando a ligadura na nota da síncope",
+                "Aplique num trecho de choro que você está estudando"
+              ]
+            }
+          ]
+        },
+        {
+          id: "art-frevo",
+          titulo: "Frevo",
+          descricao: "Ataques firmes, acentos fortes nas síncopes e staccato rápido com muita energia.",
+          referencias: [
+            { titulo: "Vassourinhas", detalhe: "Acentos e ataques do frevo de rua", busca: "Vassourinhas frevo orquestra" },
+            { titulo: "SpokFrevo Orquestra · Passo de Anjo", detalhe: "Articulação dos saxes no frevo", busca: "SpokFrevo Orquestra Passo de Anjo" }
+          ],
+          exercicios: [
+            {
+              id: "art-07",
+              titulo: "Ataque e acento do frevo",
+              andamento: { inicial: 70, alvo: 140 },
+              passos: [
+                "Semicolcheias numa nota só, com acento forte nas síncopes",
+                "Mantenha as notas não acentuadas curtas e leves, para o acento aparecer",
+                "Leve para a escala de Dó e depois para um trecho de Vassourinhas"
+              ]
+            }
+          ]
+        },
+        {
+          id: "art-bossa",
+          titulo: "Bossa nova",
+          descricao: "Legato macio, ataques suaves e quase sem acentos: a voz do sax imita o canto.",
+          referencias: [
+            { titulo: "Getz/Gilberto · Corcovado", detalhe: "O legato macio de Stan Getz", busca: "Getz Gilberto Corcovado" },
+            { titulo: "João Gilberto · Chega de Saudade", detalhe: "O canto que o sax imita", busca: "João Gilberto Chega de Saudade 1959" }
+          ],
+          exercicios: [
+            {
+              id: "art-08",
+              titulo: "Legato cantado",
+              andamento: { inicial: 60, alvo: 100 },
+              passos: [
+                "Cante a melodia de Corcovado e repare onde você respira",
+                "Toque com legato longo, língua bem suave (\"du\") só onde for preciso",
+                "Termine as notas sem cortar com a língua: o ar é que para",
+                "Grave e compare com Stan Getz"
+              ]
+            }
+          ]
+        },
+        {
+          id: "art-estilos",
+          titulo: "Mesma frase, vários estilos",
+          descricao: "Juntar tudo: a mesma frase muda de caráter conforme a articulação de cada gênero.",
+          referencias: [],
           exercicios: [
             {
               id: "art-03",
               titulo: "Mesma frase, três estilos",
+              andamento: { inicial: 70, alvo: 120 },
               passos: [
                 "Escolha uma frase curta de uma música",
                 "Toque com articulação de jazz (ligando contratempo → tempo)",
-                "Toque com articulação de choro e depois de pop; grave e compare"
+                "Toque com articulação de choro e depois de bossa nova; grave e compare"
               ]
             }
           ]
