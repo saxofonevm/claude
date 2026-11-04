@@ -41,6 +41,10 @@
   const urlPasta = id => id ? `https://drive.google.com/drive/folders/${encodeURIComponent(id)}` : null;
   const nomeLivro = l => l.autor ? `${l.autor} · ${l.titulo}` : l.titulo;
 
+  // Dentro da prévia do Claude (iframe) o navegador bloqueia microfone e rádio.
+  const NA_PREVIA = (() => { try { return window.self !== window.top; } catch { return true; } })();
+  const AVISO_PREVIA = "Na prévia do Claude o microfone e a rádio ficam bloqueados. Abra o CMA pelo site ou pelo app instalado no celular.";
+
   // ---------- Estado e armazenamento ----------
 
   const estadoPadrao = () => ({
@@ -1721,7 +1725,7 @@
     try {
       grav.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
     } catch {
-      avisar("Permita o uso do microfone para gravar.");
+      avisar(NA_PREVIA ? AVISO_PREVIA : "Permita o uso do microfone para gravar.");
       return;
     }
     const tipo = tipoGravacao();
@@ -1957,7 +1961,7 @@
       if (radio.tentativa !== minha) return;
       radio.carregando = false;
       radio.tocando = ok;
-      if (!ok) { radio.audio.removeAttribute("src"); avisar(`${estacao.nome} está fora do ar agora. Tente outra estação.`); }
+      if (!ok) { radio.audio.removeAttribute("src"); avisar(NA_PREVIA ? AVISO_PREVIA : `${estacao.nome} está fora do ar agora. Tente outra estação.`); }
       else if ("mediaSession" in navigator) {
         navigator.mediaSession.metadata = new MediaMetadata({ title: estacao.nome, artist: "Rádio CMA", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
       }
@@ -2149,7 +2153,7 @@
       const st = afin.stream; // um minuto de afinador ligado conta como aquecimento
       setTimeout(() => { if (afin.stream === st && st.active) marcarPasso("aq"); }, 60000);
     } catch {
-      avisar("Libere o microfone para usar o afinador.");
+      avisar(NA_PREVIA ? AVISO_PREVIA : "Libere o microfone para usar o afinador.");
       return;
     }
     const Ctx = window.AudioContext || window.webkitAudioContext;
@@ -2177,6 +2181,8 @@
   }
 
   function abrirAfinador() {
+    const av = $("#af-previa");
+    if (av) av.hidden = !NA_PREVIA;
     $("#af-sax").value = estado.sax || "";
     dlgAf.showModal();
   }

@@ -1243,3 +1243,6 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 .ed-passo.destaque .ed-seta { color: #fff; animation: cutucar 1.8s ease-in-out infinite; }
 .ed-passo.feito .ed-texto strong { text-decoration: line-through; text-decoration-color: rgb(255 255 255 / .4); }
 .ed-passo.feito:not(.destaque) { opacity: .72; }
+.af-previa { margin: 0; padding: 10px 12px; border-radius: var(--raio-sm); font-size: .85rem; line-height: 1.4; text-align: center; color: var(--text); background: color-mix(in srgb, var(--warn) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--warn) 50%, var(--line)); }
+.af-previa[hidden] { display: none; }
+.af-previa a { color: var(--brass-soft); font-weight: 700; }
