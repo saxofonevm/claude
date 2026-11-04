@@ -473,28 +473,7 @@
       : pctTotal === 100 ? "Percurso completo. Todas as raízes do CMA foram trabalhadas."
       : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos.`;
 
-    const prox = proximoExercicio();
-    const cont = $("#continuar");
-    if (prox) {
-      cont.href = `#/ex/${encodeURIComponent(prox.ex.id)}`;
-      cont.setAttribute("style", corRaiz(prox.raiz));
-      cont.innerHTML = `<span class="continuar-ilus">${ilustracao(prox.raiz.icone)}</span>
-        <span class="continuar-texto">
-          <span class="continuar-rotulo">Continuar</span>
-          <strong>${escapar(prox.ex.titulo)}</strong>
-          <span>${escapar(prox.raiz.titulo)} · ${escapar(prox.ram.titulo)}</span>
-        </span>
-        ${icone("seta", "continuar-seta")}`;
-    } else if (temBloqueio()) {
-      const bloq = RAIZES.find(r => !liberada(r));
-      cont.href = `#/raiz/${encodeURIComponent(bloq.id)}`;
-      cont.setAttribute("style", corRaiz(bloq));
-      cont.innerHTML = `<span class="continuar-ilus">${ilustracao(bloq.icone)}</span><span class="continuar-texto"><span class="continuar-rotulo">Próximo passo</span><strong>Desbloqueie ${escapar(bloq.titulo)}</strong><span>Você concluiu a parte grátis. Continue com o Método CMA completo.</span></span>${icone("cadeado", "continuar-seta")}`;
-    } else {
-      cont.href = "#/raizes";
-      cont.removeAttribute("style");
-      cont.innerHTML = `<span class="continuar-texto"><span class="continuar-rotulo">Percurso completo</span><strong>Todos os exercícios concluídos.</strong><span>Revise as raízes e combine os próximos passos com o professor.</span></span>`;
-    }
+    renderEstudoDia();
 
     const mapa = minutosPorDia();
     const inicioSemana = segunda(new Date());
@@ -1560,6 +1539,100 @@
     avisar("Backup restaurado.");
   });
 
+  // ---------- Estudo do dia ----------
+  // Roteiro de 3 passos para cada dia: aquecer, fazer o exercício da vez e tocar junto.
+
+  function estudoHoje() {
+    if (!estado.estudoDia || estado.estudoDia.data !== hojeISO()) estado.estudoDia = { data: hojeISO(), passos: {}, festa: false };
+    return estado.estudoDia;
+  }
+
+  function exercicioFeitoHoje() {
+    const hoje = hojeISO();
+    return Object.values(estado.feitos).includes(hoje) || estado.sessoes.some(s => s.data === hoje && s.exercicioId);
+  }
+
+  function passosFeitos() {
+    const ed = estudoHoje();
+    return { aq: !!ed.passos.aq, ex: !!ed.passos.ex || exercicioFeitoHoje(), tc: !!ed.passos.tc };
+  }
+
+  function marcarPasso(chave, valor = true) {
+    const ed = estudoHoje();
+    ed.passos[chave] = valor;
+    salvar();
+    const f = passosFeitos();
+    if (f.aq && f.ex && f.tc && !ed.festa) {
+      ed.festa = true; salvar();
+      setTimeout(() => celebrar("Estudo do dia completo!", "Aquecimento, exercício e tocar junto. Até amanhã!", "trofeu"), 400);
+    }
+    if (rotaAtual.tela === "inicio") renderEstudoDia();
+  }
+
+  function playAlongDoDia() {
+    if (temBloqueio() || !TOCAR.length) return null;
+    const sax = estado.sax;
+    let lista = TOCAR.filter(t => !sax || !t.afin.length || t.afin.includes(sax));
+    const ind = lista.filter(t => t.ind);
+    if (ind.length) lista = ind;
+    if (!lista.length) return null;
+    const dia = Math.floor(deISO(hojeISO()) / 864e5);
+    return lista[dia % lista.length];
+  }
+
+  function renderEstudoDia() {
+    const caixa = $("#estudo-dia");
+    if (!caixa) return;
+    const f = passosFeitos();
+    const total = [f.aq, f.ex, f.tc].filter(Boolean).length;
+
+    // Passo 2: exercício da vez
+    const prox = proximoExercicio();
+    let ex;
+    if (prox) ex = { href: `#/ex/${encodeURIComponent(prox.ex.id)}`, estilo: corRaiz(prox.raiz), ilus: ilustracao(prox.raiz.icone),
+      sobre: `Raiz ${prox.raiz.titulo}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
+    else if (temBloqueio()) { const bloq = RAIZES.find(r => !liberada(r)); ex = { href: `#/raiz/${encodeURIComponent(bloq.id)}`, estilo: corRaiz(bloq), ilus: ilustracao(bloq.icone),
+      sobre: "Próximo passo", titulo: `Desbloqueie ${bloq.titulo}`, sub: "Você concluiu a parte grátis" }; }
+    else ex = { href: "#/raizes", estilo: "", ilus: icone("trofeu"), sobre: "Percurso completo", titulo: "Revise uma raiz", sub: "Escolha um exercício para aprofundar" };
+
+    // Passo 3: tocar junto (ou escuta ativa com a rádio na versão grátis)
+    const pa = playAlongDoDia();
+    const hrefPa = pa && urlSegura(urlPasta(pa.id));
+    const tc = hrefPa
+      ? `<a class="ed-acao" href="${escapar(hrefPa)}" target="_blank" rel="noopener" data-ed-marca="tc">
+          <span class="ed-ic">${icone("fone")}</span><span class="ed-texto"><small>3 · Tocar junto</small><strong>${escapar(pa.t)}</strong><span>${escapar(pa.g)} · toque com a banda</span></span>${icone("externo", "ed-seta")}</a>`
+      : `<button class="ed-acao" type="button" data-ed-radio>
+          <span class="ed-ic">${icone("radio")}</span><span class="ed-texto"><small>3 · Escuta ativa</small><strong>Ouça a Rádio CMA</strong><span>Preste atenção no som e no fraseado dos saxofonistas</span></span>${icone("play", "ed-seta")}</button>`;
+
+    const check = (k, rot) => `<button class="ed-check" type="button" data-ed-check="${k}" aria-pressed="${f[k]}" aria-label="${f[k] ? "Desmarcar" : "Marcar"} ${rot}">${icone("check")}</button>`;
+
+    caixa.innerHTML = `<div class="ed-topo"><span class="ed-rotulo">Estudo do dia</span><span class="ed-conta${total === 3 ? " completo" : ""}">${total === 3 ? `${icone("check")}Completo` : `${total} de 3`}</span></div>
+      <div class="ed-barra"><span style="width:${Math.round(total / 3 * 100)}%"></span></div>
+      <ol class="ed-passos">
+        <li class="ed-passo${f.aq ? " feito" : ""}">${check("aq", "aquecimento")}
+          <button class="ed-acao" type="button" data-ed-afinador>
+            <span class="ed-ic">${icone("relogio")}</span><span class="ed-texto"><small>1 · Aquecimento</small><strong>Notas longas com o afinador</strong><span>5 minutos de som cheio e afinado</span></span>${icone("seta", "ed-seta")}</button></li>
+        <li class="ed-passo destaque${f.ex ? " feito" : ""}" style="${ex.estilo}">${check("ex", "exercício")}
+          <a class="ed-acao" href="${ex.href}">
+            <span class="ed-ic ilus-caixa">${ex.ilus}</span><span class="ed-texto"><small>2 · ${escapar(ex.sobre)}</small><strong>${escapar(ex.titulo)}</strong><span>${escapar(ex.sub)}</span></span>${icone("seta", "ed-seta")}</a></li>
+        <li class="ed-passo${f.tc ? " feito" : ""}">${check("tc", "tocar junto")}${tc}</li>
+      </ol>`;
+  }
+
+  $("#estudo-dia").addEventListener("click", ev => {
+    const c = ev.target.closest("[data-ed-check]");
+    if (c) {
+      const k = c.dataset.edCheck;
+      const atual = passosFeitos()[k];
+      if (k === "ex" && atual && exercicioFeitoHoje()) { avisar("Você já fez um exercício hoje."); return; }
+      marcarPasso(k, !atual);
+      return;
+    }
+    if (ev.target.closest("[data-ed-afinador]")) { abrirAfinador(); return; }
+    if (ev.target.closest("[data-ed-radio]")) { tocarRadio(); marcarPasso("tc"); return; }
+    if (ev.target.closest('[data-ed-marca="tc"]')) setTimeout(() => marcarPasso("tc"), 300);
+  });
+
   // ---------- Gravador ----------
   // As gravações ficam no próprio aparelho (IndexedDB), separadas por exercício.
 
@@ -2073,6 +2146,8 @@
   async function ligarAfinador() {
     try {
       afin.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+      const st = afin.stream; // um minuto de afinador ligado conta como aquecimento
+      setTimeout(() => { if (afin.stream === st && st.active) marcarPasso("aq"); }, 60000);
     } catch {
       avisar("Libere o microfone para usar o afinador.");
       return;

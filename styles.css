@@ -1205,3 +1205,41 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 .backup-lembrete-txt { margin: 0 0 10px; display: grid; gap: 3px; }
 .backup-lembrete-txt strong { font-size: 1rem; }
 .backup-lembrete-txt span { color: var(--muted); font-size: .9rem; }
+
+/* ---------- Estudo do dia ---------- */
+.estudo-dia { display: flex; flex-direction: column; gap: 10px; }
+.ed-topo { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.ed-rotulo { font-family: var(--f-display); font-stretch: 90%; font-size: .78rem; text-transform: uppercase; letter-spacing: .16em; color: var(--brass-soft); font-weight: 800; }
+.ed-conta { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 800; color: var(--muted); background: var(--surface-2); border: 1px solid var(--line); border-radius: 99px; padding: 3px 10px; }
+.ed-conta.completo { color: var(--on-brass); background: var(--brass-soft); border-color: transparent; }
+.ed-conta .ic { width: 14px; height: 14px; }
+.ed-barra { height: 5px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.ed-barra span { display: block; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--brass), var(--brass-soft)); transition: width .5s cubic-bezier(.2,.8,.2,1); }
+.ed-passos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.ed-passo { display: flex; align-items: stretch; gap: 0; border-radius: var(--raio-sm); background: var(--surface-2); border: 1px solid var(--line); overflow: hidden; transition: border-color .2s, opacity .2s; }
+.ed-passo.destaque {
+  background:
+    radial-gradient(80% 120% at 100% 0%, color-mix(in srgb, var(--c2, var(--brass)) 26%, transparent), transparent 60%),
+    linear-gradient(135deg, color-mix(in srgb, var(--c1, var(--brass)) 50%, var(--mistura)), color-mix(in srgb, var(--c1, var(--brass)) 16%, var(--mistura)));
+  border-color: color-mix(in srgb, var(--c1, var(--brass)) 45%, transparent);
+  box-shadow: 0 14px 30px -20px var(--c1, var(--brass));
+}
+.ed-check { flex: none; width: 48px; border: 0; border-right: 1px solid var(--line); background: rgb(0 0 0 / .12); display: grid; place-items: center; cursor: pointer; color: transparent; }
+.ed-check::before { content: ""; grid-area: 1 / 1; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--faint); transition: background .2s, border-color .2s, transform .2s; }
+.ed-check .ic { grid-area: 1 / 1; width: 15px; height: 15px; position: relative; stroke-width: 3; }
+.ed-passo.feito .ed-check::before { background: var(--ok); border-color: var(--ok); transform: scale(1.05); }
+.ed-passo.feito .ed-check { color: #fff; }
+.ed-acao { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; padding: 12px 12px 12px 12px; background: none; border: 0; color: inherit; text-decoration: none; font: inherit; text-align: left; cursor: pointer; }
+.ed-ic { flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgb(255 255 255 / .08); color: var(--brass-soft); }
+.ed-ic .ic { width: 22px; height: 22px; }
+.ed-ic.ilus-caixa { color: #fff; background: rgb(255 255 255 / .12); }
+.ed-ic .ilus { width: 30px; height: 30px; }
+.ed-texto { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.ed-texto small { font-size: .7rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; color: var(--c2, var(--brass-soft)); }
+.ed-texto strong { font-family: var(--f-display); font-stretch: 85%; font-size: 1.08rem; font-weight: 700; line-height: 1.15; }
+.ed-texto span { font-size: .8rem; color: var(--muted); }
+.ed-passo.destaque .ed-texto span { color: rgb(255 255 255 / .75); }
+.ed-seta { flex: none; width: 18px; height: 18px; color: var(--muted); }
+.ed-passo.destaque .ed-seta { color: #fff; animation: cutucar 1.8s ease-in-out infinite; }
+.ed-passo.feito .ed-texto strong { text-decoration: line-through; text-decoration-color: rgb(255 255 255 / .4); }
+.ed-passo.feito:not(.destaque) { opacity: .72; }
