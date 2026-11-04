@@ -1013,6 +1013,13 @@
     if (!ex || !bpm) return;
     const anterior = estado.andamentos[exId] || ex.andamento?.inicial || 0;
     estado.andamentos[exId] = limitar(Math.round(bpm), 20, 300);
+    estado.historicoBpm = estado.historicoBpm || {};
+    const hist = (estado.historicoBpm[exId] = estado.historicoBpm[exId] || []);
+    if (!hist.length && anterior && anterior !== estado.andamentos[exId]) hist.push({ d: hojeISO(), b: anterior });
+    const ultimo = hist[hist.length - 1];
+    if (ultimo && ultimo.d === hojeISO()) ultimo.b = estado.andamentos[exId];
+    else hist.push({ d: hojeISO(), b: estado.andamentos[exId] });
+    if (hist.length > 40) hist.splice(0, hist.length - 40);
     salvar();
     if (rotaAtual.tela === "ex") renderTela();
     if (ex.andamento && estado.andamentos[exId] >= ex.andamento.alvo && anterior < ex.andamento.alvo) {
@@ -1034,6 +1041,7 @@
     $("#met-slider").value = bpm;
     $("#met-compasso").value = String(compasso);
     $("#met-som").value = estado.metronomo.som || "analogico";
+    $("#met-sub").value = String(estado.metronomo.sub || 1);
     $("#met-tocar").innerHTML = met.tocando ? `${icone("stop")}Parar` : `${icone("play")}Tocar`;
     $("#met-salvar-bpm").hidden = !met.exId;
     $("#met-pulsos").innerHTML = Array.from({ length: compasso }, (_, i) => `<span class="pulso${i === 0 ? " forte" : ""}"></span>`).join("");
@@ -1065,7 +1073,7 @@
     return ruido;
   }
 
-  function tique(tempo, forte) {
+  function tique(tempo, forte, vol = 1) {
     const ctx = met.ctx;
     const src = ctx.createBufferSource();
     src.buffer = bufferRuido(ctx);
@@ -1074,7 +1082,7 @@
     bp.frequency.value = forte ? 2600 : 1700;
     bp.Q.value = forte ? 9 : 7;
     const g = ctx.createGain();
-    g.gain.setValueAtTime(forte ? 2.6 : 1.8, tempo);
+    g.gain.setValueAtTime((forte ? 2.6 : 1.8) * vol, tempo);
     g.gain.exponentialRampToValueAtTime(0.001, tempo + 0.05);
     src.connect(bp).connect(g).connect(ctx.destination);
     // corpo de madeira: um "toc" grave bem curto
@@ -1083,20 +1091,20 @@
     osc.frequency.setValueAtTime(forte ? 900 : 620, tempo);
     osc.frequency.exponentialRampToValueAtTime(forte ? 520 : 380, tempo + 0.03);
     go.gain.setValueAtTime(0.0001, tempo);
-    go.gain.exponentialRampToValueAtTime(forte ? 0.5 : 0.32, tempo + 0.002);
+    go.gain.exponentialRampToValueAtTime((forte ? 0.5 : 0.32) * vol, tempo + 0.002);
     go.gain.exponentialRampToValueAtTime(0.0001, tempo + 0.035);
     osc.connect(go).connect(ctx.destination);
     src.start(tempo); src.stop(tempo + 0.06);
     osc.start(tempo); osc.stop(tempo + 0.04);
   }
 
-  function clique(tempo, forte) {
-    if ((estado.metronomo.som || "analogico") === "analogico") return tique(tempo, forte);
+  function clique(tempo, forte, fraco = false) {
+    if ((estado.metronomo.som || "analogico") === "analogico") return tique(tempo, forte && !fraco, fraco ? 0.38 : 1);
     const osc = met.ctx.createOscillator();
     const ganho = met.ctx.createGain();
     osc.frequency.value = forte ? 1600 : 1000;
     ganho.gain.setValueAtTime(0.0001, tempo);
-    ganho.gain.exponentialRampToValueAtTime(forte ? 0.9 : 0.55, tempo + 0.002);
+    ganho.gain.exponentialRampToValueAtTime(fraco ? 0.22 : forte ? 0.9 : 0.55, tempo + 0.002);
     ganho.gain.exponentialRampToValueAtTime(0.0001, tempo + 0.06);
     osc.connect(ganho).connect(met.ctx.destination);
     osc.start(tempo);
@@ -1105,15 +1113,21 @@
 
   function agendar() {
     const { bpm, compasso } = estado.metronomo;
+    const sub = estado.metronomo.sub || 1;
     while (met.proximo < met.ctx.currentTime + 0.12) {
-      const posicao = met.batida % compasso;
-      clique(met.proximo, posicao === 0);
-      const atraso = Math.max(0, (met.proximo - met.ctx.currentTime) * 1000);
-      setTimeout(() => {
-        document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
-      }, atraso);
-      met.proximo += 60 / bpm;
-      met.batida++;
+      if ((met.subI || 0) % sub === 0) {
+        const posicao = met.batida % compasso;
+        clique(met.proximo, posicao === 0);
+        const atraso = Math.max(0, (met.proximo - met.ctx.currentTime) * 1000);
+        setTimeout(() => {
+          document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
+        }, atraso);
+        met.batida++;
+      } else {
+        clique(met.proximo, false, true);
+      }
+      met.proximo += 60 / bpm / sub;
+      met.subI = (met.subI || 0) + 1;
     }
   }
 
@@ -1140,6 +1154,7 @@
     if (r && r.catch) r.catch(() => avisar("Toque de novo em Tocar para liberar o som."));
     met.tocando = true;
     met.batida = 0;
+    met.subI = 0;
     met.proximo = met.ctx.currentTime + 0.05;
     agendar();
     met.intervalo = setInterval(agendar, 25);
@@ -1167,6 +1182,22 @@
   });
   $("#met-salvar-bpm").addEventListener("click", () => salvarAndamento(met.exId, estado.metronomo.bpm));
   $("#met-som").addEventListener("change", ev => { estado.metronomo.som = ev.target.value; salvar(); });
+  $("#met-sub").addEventListener("change", ev => { estado.metronomo.sub = Number(ev.target.value) || 1; met.subI = 0; met.batida = 0; salvar(); });
+  // Toque no ritmo: o app calcula o andamento pelos toques
+  const toques = [];
+  $("#met-tap").addEventListener("click", () => {
+    const agora = performance.now();
+    if (toques.length && agora - toques[toques.length - 1] > 2000) toques.length = 0;
+    toques.push(agora);
+    if (toques.length > 6) toques.shift();
+    const b = $("#met-tap");
+    b.classList.remove("bateu"); void b.offsetWidth; b.classList.add("bateu");
+    if (toques.length >= 2) {
+      const media = (toques[toques.length - 1] - toques[0]) / (toques.length - 1);
+      definirBpm(60000 / media);
+      b.querySelector("small").textContent = `${toques.length} toques`;
+    } else b.querySelector("small").textContent = "continue tocando";
+  });
   $("#met-fechar").addEventListener("click", () => dlgMet.close());
   dlgMet.addEventListener("close", pararMetronomo);
   $("#btn-metronomo-inicio").addEventListener("click", () => abrirMetronomo(null));
@@ -1251,7 +1282,8 @@
 
   function renderAvaliacao() {
     $("#s-avaliacao").innerHTML = AVALIACOES.map((e, i) =>
-      `<button type="button" data-v="${i + 1}" class="${edicao.avaliacao >= i + 1 ? "ativo" : ""}" aria-label="${i + 1} de 5: ${e}">${i + 1}</button>`).join("");
+      `<button type="button" data-v="${i + 1}" class="${edicao.avaliacao >= i + 1 ? "ativo" : ""}${edicao.avaliacao === i + 1 ? " escolhida" : ""}" aria-label="${i + 1} de 5: ${e}" aria-pressed="${edicao.avaliacao === i + 1}">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2l2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-2.9-5.4 2.9 1.1-6L3.2 9.6l6.1-.8z"/></svg><span>${e}</span></button>`).join("");
     $("#s-avaliacao-texto").textContent = edicao.avaliacao ? `· ${AVALIACOES[edicao.avaliacao - 1]}` : "";
   }
   $("#s-avaliacao").addEventListener("click", ev => {
@@ -1313,7 +1345,59 @@
 
   // ---------- Diário ----------
 
+  function htmlGraficosDiario() {
+    if (!estado.sessoes.length) return "";
+    const mapa = minutosPorDia();
+    const semanas = [];
+    const base = segunda(new Date());
+    for (let k = 7; k >= 0; k--) {
+      const ini = new Date(base); ini.setDate(ini.getDate() - k * 7);
+      let min = 0;
+      for (let i = 0; i < 7; i++) { const d = new Date(ini); d.setDate(d.getDate() + i); min += mapa[dataISO(d)] || 0; }
+      semanas.push({ ini, min, atual: k === 0 });
+    }
+    const maior = Math.max(estado.metaSemanal, ...semanas.map(x => x.min), 1);
+    const metaPct = (estado.metaSemanal / maior) * 100;
+    const total = estado.sessoes.reduce((t, x) => t + x.minutos, 0);
+    const notas = estado.sessoes.filter(x => x.avaliacao);
+    const media = notas.length ? notas.reduce((t, x) => t + x.avaliacao, 0) / notas.length : 0;
+    const barras = semanas.map(w => `<div class="g-col${w.atual ? " atual" : ""}${w.min >= estado.metaSemanal ? " meta" : ""}">
+        <span class="g-val">${w.min || ""}</span>
+        <div class="g-barra"><span style="height:${Math.round((w.min / maior) * 100)}%"></span></div>
+        <span class="g-rot">${w.atual ? "Esta" : w.ini.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" })}</span>
+      </div>`).join("");
+    const evol = Object.keys(EXERCICIO).filter(id => EXERCICIO[id].ex.andamento && estado.andamentos[id]).map(id => {
+      const { ex, raiz } = EXERCICIO[id];
+      const { inicial, alvo } = ex.andamento;
+      const atual = estado.andamentos[id];
+      const hist = (estado.historicoBpm || {})[id] || [];
+      const pontos = [inicial, ...hist.map(h => h.b)];
+      if (pontos[pontos.length - 1] !== atual) pontos.push(atual);
+      const lo = Math.min(inicial, ...pontos), hi = Math.max(alvo, ...pontos);
+      const W = 120, H = 34;
+      const pts = pontos.map((v, i) => `${(i / Math.max(1, pontos.length - 1)) * W},${H - ((v - lo) / Math.max(1, hi - lo)) * H}`).join(" ");
+      const ya = H - ((alvo - lo) / Math.max(1, hi - lo)) * H;
+      const pct = alvo > inicial ? limitar(Math.round(((atual - inicial) / (alvo - inicial)) * 100), 0, 100) : 100;
+      return `<a class="evol" href="#/ex/${encodeURIComponent(id)}" style="${corRaiz(raiz)}">
+        <span class="evol-texto"><strong>${escapar(ex.titulo)}</strong><small>${inicial} → <b>${atual}</b> de ${alvo} bpm · ${pct}%</small></span>
+        <svg class="evol-graf" viewBox="-3 -3 ${W + 6} ${H + 6}" aria-hidden="true"><line x1="0" x2="${W}" y1="${ya}" y2="${ya}" class="evol-alvo"/><polyline points="${pts}" class="evol-linha"/>${pontos.length ? `<circle cx="${W}" cy="${H - ((atual - lo) / Math.max(1, hi - lo)) * H}" r="3.5" class="evol-ponto"/>` : ""}</svg>
+      </a>`;
+    }).join("");
+    return `<section class="cartao graficos">
+      <div class="g-resumo">
+        <div><strong>${formatarMinutos(total)}</strong><span>de estudo</span></div>
+        <div><strong>${estado.sessoes.length}</strong><span>${estado.sessoes.length === 1 ? "sessão" : "sessões"}</span></div>
+        <div><strong>${media ? media.toFixed(1).replace(".", ",") : "–"}</strong><span>avaliação média</span></div>
+      </div>
+      <h2>${icone("relogio")}Minutos por semana</h2>
+      <div class="g-semanas" style="--meta:${metaPct}%">${barras}<span class="g-meta" title="Meta semanal"></span></div>
+      <p class="g-leg"><span class="g-leg-meta"></span>Meta de ${estado.metaSemanal} min por semana</p>
+      ${evol ? `<h2>${icone("metronomo")}Evolução do andamento</h2><div class="evol-lista">${evol}</div>` : `<p class="vazio-mini">Salve o seu andamento nos exercícios com metrônomo para acompanhar a evolução aqui.</p>`}
+    </section>`;
+  }
+
   function renderDiario() {
+    $("#diario-graficos").innerHTML = htmlGraficosDiario();
     const ordenadas = [...estado.sessoes].sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id));
     $("#diario-vazio").hidden = ordenadas.length > 0;
     $("#lista-sessoes").innerHTML = ordenadas.map(s => {
@@ -1629,6 +1713,148 @@
     const url = `https://wa.me/${numero}?text=${encodeURIComponent(montarRelatorio())}`;
     window.open(url, "_blank", "noopener");
   });
+
+  // ---------- Afinador ----------
+
+  const NOTAS = ["Dó", "Dó♯", "Ré", "Mi♭", "Mi", "Fá", "Fá♯", "Sol", "Sol♯", "Lá", "Si♭", "Si"];
+  const afin = { ctx: null, stream: null, an: null, buf: null, raf: 0, ligado: false, suave: null };
+  const dlgAf = $("#dlg-afinador");
+
+  function detectarFrequencia(buf, sr) {
+    let rms = 0;
+    for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
+    rms = Math.sqrt(rms / buf.length);
+    if (rms < 0.012) return -1;
+    let r1 = 0, r2 = buf.length - 1;
+    const lim = 0.2;
+    for (let i = 0; i < buf.length / 2; i++) if (Math.abs(buf[i]) < lim) { r1 = i; break; }
+    for (let i = 1; i < buf.length / 2; i++) if (Math.abs(buf[buf.length - i]) < lim) { r2 = buf.length - i; break; }
+    const b = buf.slice(r1, r2), n = b.length;
+    const c = new Float32Array(n);
+    for (let i = 0; i < n; i++) for (let j = 0; j < n - i; j++) c[i] += b[j] * b[j + i];
+    let d = 0; while (d < n - 1 && c[d] > c[d + 1]) d++;
+    let max = -1, pos = -1;
+    for (let i = d; i < n; i++) if (c[i] > max) { max = c[i]; pos = i; }
+    if (pos <= 0) return -1;
+    const x1 = c[pos - 1], x2 = c[pos], x3 = c[pos + 1] || x2;
+    const a = (x1 + x3 - 2 * x2) / 2, bb = (x3 - x1) / 2;
+    const t0 = a ? pos - bb / (2 * a) : pos;
+    return sr / t0;
+  }
+
+  function quadroAfinador() {
+    if (!afin.ligado) return;
+    afin.an.getFloatTimeDomainData(afin.buf);
+    const f = detectarFrequencia(afin.buf, afin.ctx.sampleRate);
+    const ref = Number($("#af-ref").value) || 440;
+    if (f > 40 && f < 2000) {
+      const midi = 69 + 12 * Math.log2(f / ref);
+      afin.suave = afin.suave == null ? midi : afin.suave * 0.7 + midi * 0.3;
+      const nota = Math.round(afin.suave);
+      const cents = Math.round((afin.suave - nota) * 100);
+      const desloc = { Mib: 9, Sib: 2 }[$("#af-sax").value] || 0;
+      const escrita = nota + desloc;
+      $("#af-nota").textContent = NOTAS[((escrita % 12) + 12) % 12];
+      $("#af-oitava").textContent = "";
+      $("#af-freq").textContent = `${f.toFixed(1)} Hz · som real ${NOTAS[((nota % 12) + 12) % 12]}`;
+      $("#af-cents").textContent = cents > 0 ? `+${cents}` : String(cents);
+      $("#af-agulha").style.transform = `rotate(${limitar(cents, -50, 50) * 0.9}deg)`;
+      const ok = Math.abs(cents) <= 5;
+      dlgAf.classList.toggle("afinado", ok);
+      $("#af-dica").textContent = ok ? "Afinado!" : cents < 0 ? "Baixo: empurre a boquilha para dentro" : "Alto: puxe a boquilha um pouco para fora";
+    }
+    afin.raf = requestAnimationFrame(quadroAfinador);
+  }
+
+  async function ligarAfinador() {
+    try {
+      afin.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    } catch {
+      avisar("Libere o microfone para usar o afinador.");
+      return;
+    }
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    afin.ctx = new Ctx();
+    await afin.ctx.resume();
+    const src = afin.ctx.createMediaStreamSource(afin.stream);
+    afin.an = afin.ctx.createAnalyser();
+    afin.an.fftSize = 2048;
+    afin.buf = new Float32Array(afin.an.fftSize);
+    src.connect(afin.an);
+    afin.ligado = true; afin.suave = null;
+    $("#af-ligar").innerHTML = `${icone("stop")}Parar afinador`;
+    $("#af-dica").textContent = "Toque uma nota longa";
+    quadroAfinador();
+  }
+
+  function desligarAfinador() {
+    afin.ligado = false;
+    cancelAnimationFrame(afin.raf);
+    if (afin.stream) afin.stream.getTracks().forEach(t => t.stop());
+    if (afin.ctx) afin.ctx.close().catch(() => {});
+    afin.stream = afin.ctx = null;
+    dlgAf.classList.remove("afinado");
+    $("#af-ligar").innerHTML = `${icone("play")}Ligar o microfone`;
+  }
+
+  function abrirAfinador() {
+    $("#af-sax").value = estado.sax || "";
+    dlgAf.showModal();
+  }
+  $("#af-ligar").addEventListener("click", () => (afin.ligado ? desligarAfinador() : ligarAfinador()));
+  $("#af-fechar").addEventListener("click", () => dlgAf.close());
+  dlgAf.addEventListener("close", desligarAfinador);
+  $("#btn-afinador-inicio").addEventListener("click", abrirAfinador);
+  $("#met-afinador").addEventListener("click", () => { dlgMet.close(); abrirAfinador(); });
+
+  // ---------- Busca única ----------
+
+  const dlgBusca = $("#dlg-busca");
+  let INDICE_BUSCA = null;
+  function montarIndice() {
+    const itens = [];
+    for (const raiz of RAIZES) {
+      itens.push({ tipo: "Raiz", t: raiz.titulo, sub: raiz.resumo || "", href: `#/raiz/${raiz.id}`, raiz });
+      for (const ram of raiz.ramificacoes || []) {
+        itens.push({ tipo: "Ramificação", t: ram.titulo, sub: raiz.titulo, href: `#/raiz/${raiz.id}`, raiz });
+        for (const ex of ram.exercicios || []) itens.push({ tipo: "Exercício", t: ex.titulo, sub: `${raiz.titulo} · ${ram.titulo}`, href: `#/ex/${ex.id}`, raiz });
+        for (const r of ram.referencias || []) { const u = urlReferencia(r); if (u) itens.push({ tipo: "Ouvir", t: r.titulo, sub: r.detalhe || raiz.titulo, href: u, externo: true, raiz }); }
+      }
+    }
+    for (const k of Object.keys(LIVROS)) itens.push({ tipo: "Método", t: LIVROS[k].titulo, sub: LIVROS[k].autor || "Material de apoio", href: `#/metodo/${k}` });
+    for (const i of INDICACOES) itens.push({ tipo: "Assunto", t: i.assunto, sub: `${LIVROS[i.livro].autor || LIVROS[i.livro].titulo} · ${i.onde}`, href: `#/metodo/${i.livro}`, raiz: RAMO[i.ramo]?.raiz });
+    for (const t of TOCAR) itens.push({ tipo: "Play-along", t: t.t, sub: t.g, href: urlPasta(t.id), externo: true, pago: true });
+    for (const it of itens) it.chave = semAcento(`${it.t} ${it.sub} ${it.tipo}`);
+    return itens;
+  }
+  function buscar(termo) {
+    INDICE_BUSCA = INDICE_BUSCA || montarIndice();
+    const q = semAcento(termo.trim());
+    const alvo = $("#busca-lista");
+    if (q.length < 2) { alvo.innerHTML = `<p class="vazio-mini">Digite pelo menos 2 letras: um exercício, uma música, um saxofonista, um assunto…</p>`; return; }
+    const partes = q.split(/\s+/);
+    const achados = INDICE_BUSCA.filter(it => partes.every(p => it.chave.includes(p)) && !(it.pago && temBloqueio()));
+    const ordem = ["Exercício", "Raiz", "Ramificação", "Play-along", "Ouvir", "Assunto", "Método"];
+    achados.sort((a, b) => ordem.indexOf(a.tipo) - ordem.indexOf(b.tipo) || (semAcento(a.t).startsWith(q) ? -1 : 0));
+    alvo.innerHTML = achados.length ? achados.slice(0, 40).map(it => {
+      const bloqueado = it.raiz && !liberada(it.raiz) && it.tipo !== "Raiz";
+      return `<li><a class="busca-item" href="${escapar(it.href)}"${it.externo ? ' target="_blank" rel="noopener"' : ""} ${it.raiz ? `style="${corRaiz(it.raiz)}"` : ""}>
+        <span class="busca-tipo">${escapar(it.tipo)}</span>
+        <span class="busca-texto"><strong>${escapar(it.t)}</strong><small>${escapar(it.sub)}</small></span>
+        ${icone(bloqueado ? "cadeado" : it.externo ? "externo" : "seta")}</a></li>`;
+    }).join("") + (achados.length > 40 ? `<p class="vazio-mini">Mostrando 40 de ${achados.length}. Digite mais para refinar.</p>` : "")
+      : `<p class="vazio-mini">Nada encontrado para “${escapar(termo.trim())}”.</p>`;
+  }
+  function abrirBusca() {
+    dlgBusca.showModal();
+    const inp = $("#busca-geral");
+    inp.value = ""; buscar("");
+    setTimeout(() => inp.focus(), 50);
+  }
+  $("#btn-busca").addEventListener("click", abrirBusca);
+  $("#busca-geral").addEventListener("input", ev => buscar(ev.target.value));
+  $("#busca-fechar").addEventListener("click", () => dlgBusca.close());
+  $("#busca-lista").addEventListener("click", ev => { const a = ev.target.closest("a"); if (a && !a.target) dlgBusca.close(); });
 
   // ---------- Comemorações ----------
 

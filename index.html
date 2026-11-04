@@ -28,6 +28,7 @@
           <span class="marca"><svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>CMA</span>
           <span class="marca-sub">Consciência Musical Aplicada</span>
           <span class="hero-data" id="hero-data"></span>
+          <button class="btn-topo btn-busca" id="btn-busca" type="button" aria-label="Buscar no app"><span data-icone="busca"></span></button>
           <a class="btn-topo" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
         </div>
         <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
@@ -59,6 +60,10 @@
           <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
             <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
             <span class="btn-metronomo-texto"><strong>Metrônomo</strong><small>Toque para marcar o tempo do estudo</small></span>
+          </button>
+          <button class="btn-afinador" id="btn-afinador-inicio" type="button">
+            <span class="btn-afinador-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="agulha-mini" d="M12 16l3.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.6" fill="currentColor"/></svg></span>
+            <span><strong>Afinador</strong><small>Confira a afinação com o microfone</small></span>
           </button>
         </div>
 
@@ -153,6 +158,7 @@
         </div>
         <button class="btn primario pequeno" id="btn-registrar-2" data-icone="mais">Novo</button>
       </header>
+      <div class="corpo-diario" id="diario-graficos"></div>
       <ul class="lista" id="lista-sessoes"></ul>
       <div class="vazio" id="diario-vazio">
         <span class="vazio-notas" aria-hidden="true"><span data-icone="nota"></span><span data-icone="nota"></span><span data-icone="nota"></span></span>
@@ -222,6 +228,43 @@
     <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
     <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
   </nav>
+
+  <dialog id="dlg-afinador" class="afinador" aria-labelledby="af-titulo">
+    <div class="cartao-topo"><h2 id="af-titulo">Afinador</h2><button class="link-acao" id="af-fechar" type="button">Fechar</button></div>
+    <div class="af-mostrador" aria-live="polite">
+      <svg class="af-escala" viewBox="0 0 200 110" aria-hidden="true">
+        <path d="M20 100a80 80 0 0 1 160 0" fill="none" class="af-arco"/>
+        <path d="M92 22a80 80 0 0 1 16 0" fill="none" class="af-zona"/>
+        <g class="af-marcas"><line x1="100" y1="16" x2="100" y2="28"/><line x1="43.4" y1="43.4" x2="51.9" y2="51.9"/><line x1="156.6" y1="43.4" x2="148.1" y2="51.9"/><line x1="20" y1="100" x2="32" y2="100"/><line x1="180" y1="100" x2="168" y2="100"/></g>
+        <text x="22" y="92" class="af-txt">−50</text><text x="178" y="92" class="af-txt" text-anchor="end">+50</text>
+        <g id="af-agulha" class="af-agulha"><line x1="100" y1="100" x2="100" y2="26"/><circle cx="100" cy="100" r="6"/></g>
+      </svg>
+      <div class="af-nota"><span id="af-nota">–</span><sub id="af-oitava"></sub></div>
+      <p class="af-cents"><span id="af-cents">0</span> cents</p>
+      <p class="af-dica" id="af-dica">Toque uma nota longa</p>
+      <p class="mudo af-freq" id="af-freq">Mostra a nota escrita para o seu sax</p>
+    </div>
+    <label class="met-compasso">Nota escrita para
+      <select id="af-sax">
+        <option value="">Som real (Dó)</option>
+        <option value="Mib">Sax alto / barítono (Mib)</option>
+        <option value="Sib">Sax tenor / soprano (Sib)</option>
+      </select>
+    </label>
+    <label class="met-compasso">Lá de referência
+      <select id="af-ref"><option value="440">440 Hz</option><option value="442">442 Hz</option><option value="441">441 Hz</option><option value="443">443 Hz</option></select>
+    </label>
+    <button class="btn primario largo" id="af-ligar" type="button">Ligar o microfone</button>
+    <p class="mudo af-aviso">O som do microfone é analisado só no seu celular. Nada é gravado nem enviado.</p>
+  </dialog>
+
+  <dialog id="dlg-busca" class="busca-dlg" aria-label="Buscar no app">
+    <div class="busca-topo">
+      <label class="busca"><span data-icone="busca"></span><input type="search" id="busca-geral" placeholder="Buscar exercício, música, assunto…" autocomplete="off"></label>
+      <button class="link-acao" id="busca-fechar" type="button">Fechar</button>
+    </div>
+    <ul class="busca-lista" id="busca-lista"></ul>
+  </dialog>
 
   <dialog id="dlg-boas-vindas" class="boas-vindas" aria-labelledby="bv-titulo">
     <div class="bv-pontos" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -353,6 +396,14 @@
           <option value="digital">Digital (bip)</option>
         </select>
       </label>
+      <label class="met-compasso">Subdivisão
+        <select id="met-sub">
+          <option value="1">Só o tempo (semínima)</option>
+          <option value="2">Colcheias (2 por tempo)</option>
+          <option value="3">Tercinas (3 por tempo)</option>
+          <option value="4">Semicolcheias (4 por tempo)</option>
+        </select>
+      </label>
       <label class="met-compasso">Tempos por compasso
         <select id="met-compasso">
           <option value="2">2</option>
@@ -361,7 +412,9 @@
           <option value="6">6</option>
         </select>
       </label>
+      <button class="btn largo met-tap" id="met-tap" type="button"><span><strong>Toque no ritmo</strong><small>toque 4 vezes no tempo da música</small></span></button>
       <button class="btn primario largo" id="met-tocar">Tocar</button>
+      <button class="link-acao" id="met-afinador" type="button">Abrir o afinador</button>
       <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
     </div>
   </dialog>
