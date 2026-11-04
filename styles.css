@@ -1082,7 +1082,7 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 #met-afinador { align-self: center; }
 
 /* Afinador */
-.afinador { display: flex; flex-direction: column; gap: 12px; }
+.afinador { display: none; flex-direction: column; gap: 12px; }
 .afinador[open] { display: flex; }
 .afinador .cartao-topo { justify-content: center; position: relative; }
 .afinador .cartao-topo h2 { width: 100%; justify-content: center; font-size: 1.7rem; }
