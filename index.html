@@ -67,6 +67,14 @@
           </button>
         </div>
 
+        <div class="cartao backup-lembrete" id="backup-lembrete" hidden>
+          <p class="backup-lembrete-txt"><strong>Proteja o seu progresso</strong><span id="backup-lembrete-sub">Faça um backup do seu diário e guarde no Drive ou no WhatsApp.</span></p>
+          <div class="linha-botoes">
+            <button class="btn" id="backup-depois" type="button">Depois</button>
+            <button class="btn primario" id="backup-agora" type="button">Fazer backup</button>
+          </div>
+        </div>
+
         <div class="cartao gratis-cartao" id="cartao-gratis" hidden>
           <p class="gratis-selo">Versão grátis</p>
           <h2>A raiz Escuta é sua. Faltam mais 5.</h2>
@@ -200,13 +208,15 @@
 
       <div class="cartao" id="cartao-acesso" hidden></div>
 
-      <div class="cartao">
-        <h2>Backup</h2>
-        <p class="mudo">Seus dados ficam só neste aparelho. Exporte um backup para não perder nada ao trocar de celular.</p>
-        <div class="linha-botoes">
-          <button class="btn" id="btn-exportar">Exportar</button>
-          <label class="btn">Importar<input type="file" id="inp-importar" accept="application/json" hidden></label>
+      <div class="cartao backup-cartao">
+        <h2>Backup do progresso</h2>
+        <p class="mudo">O seu diário, os exercícios concluídos, os andamentos e os prazos ficam guardados neste celular. Faça um backup e guarde no Drive, no WhatsApp ou no e-mail: se trocar de aparelho ou limpar o navegador, é só restaurar.</p>
+        <p class="backup-estado" id="backup-estado"></p>
+        <div class="backup-botoes">
+          <button class="btn primario" id="btn-exportar" type="button">Fazer backup agora</button>
+          <label class="btn">Restaurar backup<input type="file" id="inp-importar" accept="application/json,.json" hidden></label>
         </div>
+        <p class="dica">As gravações de áudio não entram no backup: elas ficam só neste celular.</p>
       </div>
       </div>
     </section>

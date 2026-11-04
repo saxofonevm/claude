@@ -332,7 +332,7 @@
       case "inicio": renderInicio(); break;
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
-      case "ex": renderExercicio(rotaAtual.id); break;
+      case "ex": renderExercicio(rotaAtual.id); renderGravador(rotaAtual.id); break;
       case "tocar": renderTocar(); break;
       case "metodos": renderMetodos(); break;
       case "metodo": renderMetodo(rotaAtual.id); break;
@@ -342,6 +342,7 @@
   }
 
   window.addEventListener("hashchange", () => {
+    if (grav.gravando) pararGravacao();
     lerRota(); mostrarTela(); renderTela(); window.scrollTo(0, 0);
   });
 
@@ -453,6 +454,7 @@
 
   function renderInicio() {
     renderCartaoGratis();
+    renderLembreteBackup();
     const hora = new Date().getHours();
     const cumprimento = hora < 12 ? "Bom dia" : hora < 18 ? "Boa tarde" : "Boa noite";
     $("#saudacao").textContent = estado.nome ? `${cumprimento}, ${estado.nome}.` : `${cumprimento}.`;
@@ -949,6 +951,16 @@
 
         ${andamento}
 
+        <div class="cartao gravador" id="gravador">
+          <h2>${icone("microfone")}Minhas gravações</h2>
+          <p class="dica">Grave o exercício, ouça com atenção e compare com a primeira vez. É a forma mais rápida de perceber a sua evolução.</p>
+          <div class="grav-controle">
+            <button class="btn primario grav-btn" id="grav-btn" type="button">${icone("microfone")}Gravar</button>
+            <div class="grav-status" id="grav-status" hidden><span class="grav-ponto"></span><span id="grav-tempo">0:00</span><span class="grav-nivel"><span id="grav-nivel"></span></span></div>
+          </div>
+          <div id="grav-lista"></div>
+        </div>
+
         ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
 
         ${indicacoesDoRamo(ram.id).length ? `<details class="cartao drive">
@@ -1439,6 +1451,7 @@
     $("#aj-meta").value = estado.metaSemanal;
     $("#aj-sax").value = estado.sax || "";
     $("#aj-tema").value = estado.tema === "preto" ? "preto" : "verde";
+    renderBackup();
     const cartao = $("#cartao-acesso");
     cartao.hidden = !ACESSO;
     if (ACESSO) {
@@ -1460,30 +1473,321 @@
     avisar("Ajustes salvos.");
   });
 
-  $("#btn-exportar").addEventListener("click", () => {
-    const blob = new Blob([JSON.stringify(estado, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = `cma-backup-${hojeISO()}.json`;
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  // ---------- Backup ----------
+
+  const diasDesde = iso => iso ? Math.floor((deISO(hojeISO()) - deISO(iso)) / 864e5) : Infinity;
+
+  function renderBackup() {
+    const el = $("#backup-estado");
+    if (!el) return;
+    const d = estado.ultimoBackup;
+    if (!d) { el.className = "backup-estado alerta"; el.textContent = "Você ainda não fez nenhum backup."; return; }
+    const n = diasDesde(d);
+    el.className = "backup-estado" + (n > 14 ? " alerta" : " ok");
+    el.textContent = `Último backup: ${deISO(d).toLocaleDateString("pt-BR")}` + (n === 0 ? " (hoje)" : n === 1 ? " (ontem)" : ` (há ${n} dias)`);
+  }
+
+  function precisaLembrarBackup() {
+    if (estado.sessoes.length < 3) return false;
+    if (estado.backupAdiado && diasDesde(estado.backupAdiado) < 7) return false;
+    return diasDesde(estado.ultimoBackup) > 14;
+  }
+
+  function renderLembreteBackup() {
+    const c = $("#backup-lembrete");
+    if (!c) return;
+    c.hidden = !precisaLembrarBackup();
+    if (!c.hidden) $("#backup-lembrete-sub").textContent = estado.ultimoBackup
+      ? `O último foi há ${diasDesde(estado.ultimoBackup)} dias. Salve uma cópia nova no Drive ou no WhatsApp.`
+      : `Você já tem ${estado.sessoes.length} práticas registradas. Salve uma cópia no Drive ou no WhatsApp para não perder nada.`;
+  }
+
+  async function fazerBackup() {
+    const copia = { ...estado, timer: { inicio: null, acumulado: 0 }, ultimoBackup: hojeISO() };
+    delete copia.backupAdiado;
+    const pacote = { app: "CMA", versao: 1, criadoEm: new Date().toISOString(), dados: copia };
+    const nome = `CMA-backup-${(estado.nome || "aluno").normalize("NFD").replace(/[^\w]/g, "")}-${hojeISO()}.json`;
+    const texto = JSON.stringify(pacote, null, 2);
+    let feito = false;
+    try {
+      const arquivo = new File([texto], nome, { type: "application/json" });
+      if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
+        await navigator.share({ files: [arquivo], title: "Backup do CMA", text: "Backup do meu progresso no Método CMA" });
+        feito = true;
+      }
+    } catch (e) {
+      if (e && e.name === "AbortError") return; // o aluno cancelou
+    }
+    if (!feito) {
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([texto], { type: "application/json" }));
+      a.download = nome;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    }
+    estado.ultimoBackup = hojeISO();
+    delete estado.backupAdiado;
+    salvar();
+    renderBackup(); renderLembreteBackup();
+    avisar("Backup feito. Guarde o arquivo num lugar seguro.");
+  }
+
+  $("#btn-exportar").addEventListener("click", fazerBackup);
+  $("#backup-agora").addEventListener("click", fazerBackup);
+  $("#backup-depois").addEventListener("click", () => {
+    estado.backupAdiado = hojeISO(); salvar(); renderLembreteBackup();
   });
 
   $("#inp-importar").addEventListener("change", async ev => {
     const arquivo = ev.target.files[0];
     ev.target.value = "";
     if (!arquivo) return;
+    let dados;
     try {
-      const dados = JSON.parse(await arquivo.text());
-      if (!Array.isArray(dados.sessoes)) throw new Error("formato");
-      if (!(await confirmar("Importar backup?", "Os dados deste aparelho serão substituídos pelos do arquivo.", "Importar"))) return;
-      estado = { ...estadoPadrao(), ...dados };
-      salvar(); renderTela(); renderTimer();
-      avisar("Backup importado.");
+      const bruto = JSON.parse(await arquivo.text());
+      dados = bruto && bruto.app === "CMA" && bruto.dados ? bruto.dados : bruto; // aceita também o formato antigo
+      if (!dados || typeof dados !== "object" || !Array.isArray(dados.sessoes)) throw new Error("formato");
     } catch {
-      avisar("Arquivo de backup inválido.");
+      avisar("Este arquivo não é um backup do CMA.");
+      return;
+    }
+    const n = dados.sessoes.length, f = Object.keys(dados.feitos || {}).length;
+    if (!(await confirmar("Restaurar backup?", `O arquivo tem ${n} prática${n === 1 ? "" : "s"} e ${f} exercício${f === 1 ? "" : "s"} concluído${f === 1 ? "" : "s"}. Os dados deste celular serão substituídos pelos do arquivo.`, "Restaurar"))) return;
+    const liberado = estado.desbloqueado;
+    estado = { ...estadoPadrao(), ...dados };
+    if (liberado) estado.desbloqueado = true; // nunca perde o acesso já liberado
+    salvar(); aplicarTema(); renderTela(); renderTimer();
+    avisar("Backup restaurado.");
+  });
+
+  // ---------- Gravador ----------
+  // As gravações ficam no próprio aparelho (IndexedDB), separadas por exercício.
+
+  const GRAV_MAX = 12;
+  const grav = { gravando: false, rec: null, stream: null, partes: [], inicio: 0, ex: null, timer: null, ctx: null, analisador: null, audio: null, tocandoId: null, urls: [], fila: null };
+
+  function bancoGravacoes() {
+    return new Promise((ok, erro) => {
+      if (!window.indexedDB) return erro(new Error("sem indexedDB"));
+      const req = indexedDB.open("cma-gravacoes", 1);
+      req.onupgradeneeded = () => {
+        const os = req.result.createObjectStore("gravacoes", { keyPath: "id" });
+        os.createIndex("ex", "ex");
+      };
+      req.onsuccess = () => ok(req.result);
+      req.onerror = () => erro(req.error);
+    });
+  }
+
+  async function operacaoGrav(modo, fn) {
+    const db = await bancoGravacoes();
+    return new Promise((ok, erro) => {
+      const tx = db.transaction("gravacoes", modo);
+      const r = fn(tx.objectStore("gravacoes"));
+      tx.oncomplete = () => { ok(r && r.result); db.close(); };
+      tx.onerror = () => { erro(tx.error); db.close(); };
+    });
+  }
+
+  const listarGravacoes = ex => operacaoGrav("readonly", os => os.index("ex").getAll(ex))
+    .then(l => (l || []).sort((a, b) => a.quando.localeCompare(b.quando)));
+  const guardarGravacao = g => operacaoGrav("readwrite", os => os.put(g));
+  const apagarGravacao = id => operacaoGrav("readwrite", os => os.delete(id));
+
+  const formatoDur = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
+  function tipoGravacao() {
+    if (!window.MediaRecorder) return null;
+    const tipos = ["audio/mp4", "audio/webm;codecs=opus", "audio/webm", "audio/ogg;codecs=opus"];
+    return tipos.find(t => MediaRecorder.isTypeSupported && MediaRecorder.isTypeSupported(t)) || "";
+  }
+
+  async function renderGravador(exId) {
+    const caixa = $("#gravador");
+    if (!caixa) return;
+    const suporte = tipoGravacao() !== null && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
+    if (!suporte) {
+      $("#grav-btn").disabled = true;
+      $("#grav-lista").innerHTML = `<p class="mudo">Este navegador não permite gravar. Atualize o navegador do celular.</p>`;
+      return;
+    }
+    atualizarBotaoGrav();
+    let lista = [];
+    try { lista = await listarGravacoes(exId); } catch { $("#grav-lista").innerHTML = `<p class="mudo">Não foi possível abrir as gravações neste aparelho.</p>`; return; }
+    if (rotaAtual.tela !== "ex" || rotaAtual.id !== exId) return;
+    grav.urls.forEach(u => URL.revokeObjectURL(u)); grav.urls = [];
+    if (!lista.length) { $("#grav-lista").innerHTML = `<p class="mudo grav-vazio">Nenhuma gravação ainda. Toque em Gravar e toque o exercício.</p>`; return; }
+    const primeira = lista[0], ultima = lista[lista.length - 1];
+    const itens = lista.slice().reverse().map(g => {
+      const d = new Date(g.quando);
+      const selo = g.id === primeira.id && lista.length > 1 ? `<span class="grav-selo">Primeira</span>` : g.id === ultima.id && lista.length > 1 ? `<span class="grav-selo novo">Mais recente</span>` : "";
+      return `<li class="grav-item ${grav.tocandoId === g.id ? "tocando" : ""}" data-grav="${escapar(g.id)}">
+        <button class="grav-play" type="button" data-grav-tocar="${escapar(g.id)}" aria-label="Ouvir gravação">${icone(grav.tocandoId === g.id ? "pause" : "play")}</button>
+        <span class="grav-info"><strong>${escapar(d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" }))} · ${escapar(d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }))} ${selo}</strong>
+        <small>${formatoDur(g.dur || 0)}${g.bpm ? ` · ${g.bpm} bpm` : ""}</small></span>
+        <button class="grav-apagar" type="button" data-grav-apagar="${escapar(g.id)}" aria-label="Apagar gravação">${icone("lixo")}</button>
+      </li>`;
+    }).join("");
+    $("#grav-lista").innerHTML = `${lista.length > 1 ? `<button class="btn largo grav-comparar" type="button" id="grav-comparar">${icone("fone")}Ouvir antes e depois<small>a primeira e a mais recente, em seguida</small></button>` : ""}
+      <ul class="grav-itens">${itens}</ul>
+      <p class="dica grav-rodape">As gravações ficam guardadas só neste celular (até ${GRAV_MAX} por exercício; a primeira é sempre mantida).</p>`;
+  }
+
+  function atualizarBotaoGrav() {
+    const b = $("#grav-btn");
+    if (!b) return;
+    const aqui = grav.gravando && grav.ex === rotaAtual.id;
+    b.innerHTML = aqui ? `${icone("stop")}Parar e salvar` : `${icone("microfone")}Gravar`;
+    b.classList.toggle("gravando", aqui);
+    $("#grav-status").hidden = !aqui;
+    $("#gravador").classList.toggle("ativo", aqui);
+  }
+
+  async function iniciarGravacao(exId) {
+    pararAudioGrav();
+    try {
+      grav.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
+    } catch {
+      avisar("Permita o uso do microfone para gravar.");
+      return;
+    }
+    const tipo = tipoGravacao();
+    try { grav.rec = tipo ? new MediaRecorder(grav.stream, { mimeType: tipo }) : new MediaRecorder(grav.stream); }
+    catch { grav.rec = new MediaRecorder(grav.stream); }
+    grav.partes = [];
+    grav.ex = exId;
+    grav.rec.ondataavailable = e => { if (e.data && e.data.size) grav.partes.push(e.data); };
+    grav.rec.onstop = salvarGravacaoFeita;
+    grav.rec.start(1000);
+    grav.inicio = Date.now();
+    grav.gravando = true;
+    abaixarRadio(true);
+    // medidor de volume
+    try {
+      grav.ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const fonte = grav.ctx.createMediaStreamSource(grav.stream);
+      grav.analisador = grav.ctx.createAnalyser(); grav.analisador.fftSize = 512;
+      fonte.connect(grav.analisador);
+    } catch { grav.analisador = null; }
+    const dados = new Uint8Array(512);
+    grav.timer = setInterval(() => {
+      const t = $("#grav-tempo"); if (t) t.textContent = formatoDur((Date.now() - grav.inicio) / 1000);
+      if (grav.analisador) {
+        grav.analisador.getByteTimeDomainData(dados);
+        let pico = 0; for (const v of dados) pico = Math.max(pico, Math.abs(v - 128));
+        const n = $("#grav-nivel"); if (n) n.style.width = Math.min(100, pico / 1.1) + "%";
+      }
+      if (Date.now() - grav.inicio > 10 * 60 * 1000) pararGravacao(); // limite de 10 minutos
+    }, 100);
+    atualizarBotaoGrav();
+  }
+
+  function pararGravacao() {
+    if (!grav.gravando) return;
+    grav.gravando = false;
+    clearInterval(grav.timer);
+    grav.dur = (Date.now() - grav.inicio) / 1000;
+    try { grav.rec.stop(); } catch {}
+    grav.stream.getTracks().forEach(t => t.stop());
+    if (grav.ctx) { grav.ctx.close().catch(() => {}); grav.ctx = null; }
+    if (!met.tocando) abaixarRadio(false);
+    atualizarBotaoGrav();
+  }
+
+  async function salvarGravacaoFeita() {
+    const exId = grav.ex;
+    if (!grav.partes.length || grav.dur < 1) { avisar("Gravação muito curta."); return; }
+    const blob = new Blob(grav.partes, { type: grav.rec.mimeType || grav.partes[0].type || "audio/webm" });
+    grav.partes = [];
+    const ex = EXERCICIO[exId] && EXERCICIO[exId].ex;
+    const g = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), ex: exId, quando: new Date().toISOString(), dur: Math.round(grav.dur), bpm: ex && ex.andamento ? (estado.andamentos[exId] || ex.andamento.inicial) : null, blob };
+    try {
+      await guardarGravacao(g);
+      const lista = await listarGravacoes(exId);
+      // mantém a primeira e as mais recentes
+      if (lista.length > GRAV_MAX) for (const velha of lista.slice(1, lista.length - GRAV_MAX + 1)) await apagarGravacao(velha.id);
+      avisar("Gravação salva.");
+    } catch {
+      avisar("Não foi possível salvar a gravação (pouco espaço no aparelho?).");
+    }
+    if (rotaAtual.tela === "ex" && rotaAtual.id === exId) renderGravador(exId);
+  }
+
+  function pararAudioGrav() {
+    grav.fila = null;
+    if (grav.audio) { grav.audio.pause(); grav.audio = null; }
+    grav.tocandoId = null;
+    document.querySelectorAll(".grav-item.tocando").forEach(li => {
+      li.classList.remove("tocando");
+      const b = li.querySelector(".grav-play"); if (b) b.innerHTML = icone("play");
+    });
+    const c = $("#grav-comparar"); if (c) c.classList.remove("ativo");
+  }
+
+  async function tocarGravacao(id, aoTerminar) {
+    const lista = await listarGravacoes(rotaAtual.id);
+    const g = lista.find(x => x.id === id);
+    if (!g) return;
+    const url = URL.createObjectURL(g.blob); grav.urls.push(url);
+    const a = new Audio(url);
+    grav.audio = a; grav.tocandoId = id;
+    document.querySelectorAll(".grav-item").forEach(li => {
+      const on = li.dataset.grav === id;
+      li.classList.toggle("tocando", on);
+      const b = li.querySelector(".grav-play"); if (b) b.innerHTML = icone(on ? "pause" : "play");
+    });
+    abaixarRadio(true);
+    a.onended = () => {
+      const seguinte = aoTerminar;
+      pararAudioGrav();
+      if (!met.tocando) abaixarRadio(false);
+      if (seguinte) seguinte();
+    };
+    try { await a.play(); } catch { avisar("Não foi possível tocar a gravação."); pararAudioGrav(); }
+  }
+
+  $("#exercicio-conteudo").addEventListener("click", async ev => {
+    const exId = rotaAtual.id;
+    if (ev.target.closest("#grav-btn")) {
+      if (grav.gravando) pararGravacao(); else iniciarGravacao(exId);
+      return;
+    }
+    const tocar = ev.target.closest("[data-grav-tocar]");
+    if (tocar) {
+      const id = tocar.dataset.gravTocar;
+      if (grav.tocandoId === id) { pararAudioGrav(); if (!met.tocando) abaixarRadio(false); return; }
+      pararAudioGrav();
+      if (grav.gravando) { avisar("Pare a gravação antes de ouvir."); return; }
+      tocarGravacao(id);
+      return;
+    }
+    if (ev.target.closest("#grav-comparar")) {
+      if (grav.gravando) { avisar("Pare a gravação antes de ouvir."); return; }
+      pararAudioGrav();
+      const lista = await listarGravacoes(exId);
+      if (lista.length < 2) return;
+      const c = $("#grav-comparar"); if (c) c.classList.add("ativo");
+      avisar("Ouvindo a primeira gravação…");
+      tocarGravacao(lista[0].id, () => setTimeout(() => {
+        if (rotaAtual.id !== exId) return;
+        avisar("Agora a mais recente…");
+        tocarGravacao(lista[lista.length - 1].id);
+      }, 700));
+      return;
+    }
+    const apagar = ev.target.closest("[data-grav-apagar]");
+    if (apagar) {
+      if (!(await confirmar("Apagar gravação?", "Ela será removida deste aparelho.", "Apagar"))) return;
+      if (grav.tocandoId === apagar.dataset.gravApagar) pararAudioGrav();
+      await apagarGravacao(apagar.dataset.gravApagar);
+      renderGravador(exId);
     }
   });
+
+  window.addEventListener("hashchange", () => { pararAudioGrav(); });
+
+  // Pede ao navegador para não apagar os dados do app (gravações e progresso)
+  try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
 
   // ---------- Rádio CMA ----------
 
