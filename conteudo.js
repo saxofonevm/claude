@@ -57,8 +57,10 @@ window.CMA = {
   ],
   // Atalhos para ouvir fora do app.
   radioLinks: [
-    { titulo: "Spotify · jazz com saxofone", url: "https://open.spotify.com/search/jazz%20saxofone/playlists" },
-    { titulo: "Spotify · saxofone brasileiro", url: "https://open.spotify.com/search/saxofone%20brasileiro/playlists" },
+    { titulo: "Spotify · Saxophone Classics (jazz)", url: "https://open.spotify.com/playlist/37i9dQZF1DWZodX1hXiq9y" },
+    { titulo: "Spotify · Chorinho brasileiro", url: "https://open.spotify.com/playlist/2n58z45c7cXhgwJ4a39tGD" },
+    { titulo: "Spotify · Bossa Nova Classics", url: "https://open.spotify.com/playlist/37i9dQZF1DWWgccrbg3zbJ" },
+    { titulo: "Spotify · Brasil instrumental", url: "https://open.spotify.com/playlist/2twI9fBJU9yQKK8WneIxKC" },
     { titulo: "YouTube · rádios de jazz ao vivo", url: "https://www.youtube.com/results?search_query=jazz+saxophone+radio+live&sp=EgJAAQ%253D%253D" }
   ],
 
