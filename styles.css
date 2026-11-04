@@ -1246,3 +1246,24 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 .af-previa { margin: 0; padding: 10px 12px; border-radius: var(--raio-sm); font-size: .85rem; line-height: 1.4; text-align: center; color: var(--text); background: color-mix(in srgb, var(--warn) 14%, var(--surface)); border: 1px solid color-mix(in srgb, var(--warn) 50%, var(--line)); }
 .af-previa[hidden] { display: none; }
 .af-previa a { color: var(--brass-soft); font-weight: 700; }
+
+/* ---------- Metrônomo em segundo plano ---------- */
+.met-mini { position: fixed; z-index: 30; top: calc(10px + env(safe-area-inset-top, 0px)); left: 50%; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 99px;
+  background: color-mix(in srgb, var(--surface) 94%, transparent); backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in srgb, var(--brass) 55%, var(--line)); box-shadow: 0 10px 28px -10px rgb(0 0 0 / .7);
+  animation: met-mini-entra .3s ease; }
+.met-mini[hidden] { display: none; }
+@keyframes met-mini-entra { from { opacity: 0; transform: translate(-50%, -12px); } }
+.met-mini-abrir { display: flex; align-items: center; gap: 9px; min-height: 40px; padding: 0 12px 0 10px; border: 0; background: none; color: var(--text); font: inherit; cursor: pointer; }
+.met-mini-ponto { width: 12px; height: 12px; border-radius: 50%; background: var(--surface-2); border: 2px solid var(--brass); }
+.met-mini.bate .met-mini-ponto { animation: met-mini-bate .18s ease-out; }
+.met-mini.bate.forte .met-mini-ponto { animation-name: met-mini-forte; }
+@keyframes met-mini-bate { from { background: var(--brass-soft); transform: scale(1.25); } }
+@keyframes met-mini-forte { from { background: var(--brass-soft); transform: scale(1.5); box-shadow: 0 0 12px var(--brass); } }
+.met-mini-txt { font-size: .85rem; color: var(--muted); white-space: nowrap; }
+.met-mini-txt strong { font-family: var(--f-mono); font-size: 1.05rem; color: var(--brass-soft); }
+.met-mini-parar { width: 40px; height: 40px; border-radius: 50%; border: 0; display: grid; place-items: center; background: var(--surface-2); color: var(--text); cursor: pointer; }
+.met-mini-parar svg { width: 18px; height: 18px; }
+.met-dica-fundo { margin: -6px 0 0; text-align: center; font-size: .82rem; color: var(--muted); }
+.met-dica-fundo[hidden] { display: none; }

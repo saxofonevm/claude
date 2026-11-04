@@ -231,6 +231,14 @@
     <button class="radio-mais" id="radio-mais" type="button" aria-label="Estações">Estações</button>
   </div>
 
+  <div class="met-mini" id="met-mini" hidden>
+    <button class="met-mini-abrir" id="met-mini-abrir" type="button" aria-label="Abrir o metrônomo">
+      <span class="met-mini-ponto" aria-hidden="true"></span>
+      <span class="met-mini-txt"><strong id="met-mini-bpm">80</strong> bpm</span>
+    </button>
+    <button class="met-mini-parar" id="met-mini-parar" type="button" aria-label="Parar o metrônomo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg></button>
+  </div>
+
   <nav class="abas">
     <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
     <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Raízes</a>
@@ -425,6 +433,7 @@
       </label>
       <button class="btn largo met-tap" id="met-tap" type="button"><span><strong>Toque no ritmo</strong><small>toque 4 vezes no tempo da música</small></span></button>
       <button class="btn primario largo" id="met-tocar">Tocar</button>
+      <p class="met-dica-fundo" id="met-dica-fundo" hidden>Pode fechar e navegar pelo app: o metrônomo continua tocando.</p>
       <button class="link-acao" id="met-afinador" type="button">Abrir o afinador</button>
       <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
     </div>

@@ -1047,6 +1047,7 @@
     met.exId = exId;
     renderMetronomo();
     dlgMet.showModal();
+    renderMetMini();
   }
 
   function definirBpm(bpm) {
@@ -1055,6 +1056,7 @@
     $("#met-bpm").textContent = estado.metronomo.bpm;
     $("#met-nome").textContent = nomeAndamento(estado.metronomo.bpm);
     $("#met-slider").value = estado.metronomo.bpm;
+    const mb = $("#met-mini-bpm"); if (mb) mb.textContent = estado.metronomo.bpm;
   }
 
   // Som de metrônomo analógico: estalo de madeira (ruído curto filtrado)
@@ -1116,6 +1118,8 @@
         const atraso = Math.max(0, (met.proximo - met.ctx.currentTime) * 1000);
         setTimeout(() => {
           document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
+          const mini = $("#met-mini");
+          if (mini && !mini.hidden) { mini.classList.remove("bate", "forte"); void mini.offsetWidth; mini.classList.add("bate"); if (posicao === 0) mini.classList.add("forte"); }
         }, atraso);
         met.batida++;
       } else {
@@ -1155,6 +1159,18 @@
     met.intervalo = setInterval(agendar, 25);
     renderMetronomo();
     abaixarRadio(true);
+    renderMetMini();
+  }
+
+  // Metrônomo em segundo plano: ao fechar a janela ele continua tocando,
+  // e uma pílula no topo da tela mostra o andamento, abre de novo ou para.
+  function renderMetMini() {
+    const mini = $("#met-mini");
+    if (!mini) return;
+    mini.hidden = !(met.tocando && !dlgMet.open);
+    $("#met-mini-bpm").textContent = estado.metronomo.bpm;
+    const dica = $("#met-dica-fundo");
+    if (dica) dica.hidden = !met.tocando;
   }
 
   function pararMetronomo() {
@@ -1164,6 +1180,7 @@
     abaixarRadio(false);
     document.querySelectorAll("#met-pulsos .pulso").forEach(p => p.classList.remove("ativo"));
     $("#met-tocar").innerHTML = `${icone("play")}Tocar`;
+    renderMetMini();
   }
 
   $("#met-tocar").addEventListener("click", () => (met.tocando ? pararMetronomo() : tocarMetronomo()));
@@ -1194,7 +1211,9 @@
     } else b.querySelector("small").textContent = "continue tocando";
   });
   $("#met-fechar").addEventListener("click", () => dlgMet.close());
-  dlgMet.addEventListener("close", pararMetronomo);
+  dlgMet.addEventListener("close", renderMetMini);
+  $("#met-mini-abrir").addEventListener("click", () => abrirMetronomo(null, met.exId));
+  $("#met-mini-parar").addEventListener("click", pararMetronomo);
   $("#btn-metronomo-inicio").addEventListener("click", () => abrirMetronomo(null));
 
   // ---------- Cronômetro ----------
@@ -2190,7 +2209,7 @@
   $("#af-fechar").addEventListener("click", () => dlgAf.close());
   dlgAf.addEventListener("close", desligarAfinador);
   $("#btn-afinador-inicio").addEventListener("click", abrirAfinador);
-  $("#met-afinador").addEventListener("click", () => { dlgMet.close(); abrirAfinador(); });
+  $("#met-afinador").addEventListener("click", () => { pararMetronomo(); dlgMet.close(); abrirAfinador(); });
 
   // ---------- Busca única ----------
 
