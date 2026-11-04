@@ -45,11 +45,11 @@ window.CMA = {
   //          aberto radio-browser.info pelo nome ou pela etiqueta (tag).
   radio: [
     { id: "swiss-jazz", nome: "Radio Swiss Jazz", detalhe: "Jazz clássico 24h · Suíça",
-      streams: ["https://stream.srg-ssr.ch/m/rsj/mp3_128"], busca: { name: "Radio Swiss Jazz" } },
+      streams: ["https://stream.srg-ssr.ch/srgssr/rsj/mp3/128", "https://stream.srg-ssr.ch/srgssr/rsj/aac/96", "https://stream.srg-ssr.ch/m/rsj/mp3_128"], busca: { name: "Radio Swiss Jazz" } },
     { id: "tsf-jazz", nome: "TSF Jazz", detalhe: "Jazz de todas as épocas · Paris",
-      streams: ["https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3"], busca: { name: "TSF Jazz" } },
+      streams: ["https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.mp3", "https://tsfjazz.ice.infomaniak.ch/tsfjazz-high.aac"], busca: { name: "TSF Jazz" } },
     { id: "jazz24", nome: "Jazz24", detalhe: "Jazz tradicional e moderno · Seattle",
-      streams: ["https://live.wostreaming.net/direct/ppm-jazz24aac-ibc1"], busca: { name: "Jazz24" } },
+      streams: ["https://live.amperwave.net/direct/ppm-jazz24mp3-ibc1", "https://live.amperwave.net/direct/ppm-jazz24aac256-ibc1", "https://live.wostreaming.net/direct/ppm-jazz24aac-ibc1"], busca: { name: "Jazz24" } },
     { id: "bossa", nome: "Bossa nova", detalhe: "Bossa nova ao vivo",
       streams: [], busca: { tag: "bossa nova" } },
     { id: "mpb", nome: "Música brasileira", detalhe: "MPB e instrumental · Brasil",

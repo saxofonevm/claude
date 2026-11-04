@@ -1026,7 +1026,7 @@
 
   // ---------- Metrônomo ----------
 
-  const met = { ctx: null, tocando: false, proximo: 0, batida: 0, intervalo: null, exId: null };
+  const met = { tocando: false, trocando: false, url: null, ultimaBatida: -1, ignorarPausaAte: 0, exId: null };
   const dlgMet = $("#dlg-metronomo");
 
   function renderMetronomo() {
@@ -1043,7 +1043,7 @@
   }
 
   function abrirMetronomo(bpm, exId = null) {
-    if (bpm) estado.metronomo.bpm = limitar(Math.round(bpm), 30, 240);
+    if (bpm && Math.round(bpm) !== estado.metronomo.bpm) { estado.metronomo.bpm = limitar(Math.round(bpm), 30, 240); refazerLoop(); }
     met.exId = exId;
     renderMetronomo();
     dlgMet.showModal();
@@ -1057,106 +1057,189 @@
     $("#met-nome").textContent = nomeAndamento(estado.metronomo.bpm);
     $("#met-slider").value = estado.metronomo.bpm;
     const mb = $("#met-mini-bpm"); if (mb) mb.textContent = estado.metronomo.bpm;
+    refazerLoop();
   }
 
-  // Som de metrônomo analógico: estalo de madeira (ruído curto filtrado)
-  let ruido = null;
-  function bufferRuido(ctx) {
-    if (ruido && ruido.sampleRate === ctx.sampleRate) return ruido;
+  // ---------- Som do metrônomo ----------
+  // O compasso é gravado num áudio WAV que toca em repetição num elemento <audio>.
+  // Assim o iPhone trata o metrônomo como música: continua tocando com a janela
+  // fechada, com o app em segundo plano, com a tela bloqueada e no modo silencioso.
+
+  const TAXA = 44100;
+  const amostras = {}; // { "analogico:forte": Float32Array, ... }
+
+  function desenharTique(ctx, forte, vol) {
     const n = Math.floor(ctx.sampleRate * 0.06);
-    ruido = ctx.createBuffer(1, n, ctx.sampleRate);
+    const ruido = ctx.createBuffer(1, n, ctx.sampleRate);
     const d = ruido.getChannelData(0);
     for (let i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / n, 6);
-    return ruido;
-  }
-
-  function tique(tempo, forte, vol = 1) {
-    const ctx = met.ctx;
-    const src = ctx.createBufferSource();
-    src.buffer = bufferRuido(ctx);
-    const bp = ctx.createBiquadFilter();
-    bp.type = "bandpass";
-    bp.frequency.value = forte ? 2600 : 1700;
-    bp.Q.value = forte ? 9 : 7;
+    const src = ctx.createBufferSource(); src.buffer = ruido;
+    const bp = ctx.createBiquadFilter(); bp.type = "bandpass";
+    bp.frequency.value = forte ? 2600 : 1700; bp.Q.value = forte ? 9 : 7;
     const g = ctx.createGain();
-    g.gain.setValueAtTime((forte ? 2.6 : 1.8) * vol, tempo);
-    g.gain.exponentialRampToValueAtTime(0.001, tempo + 0.05);
+    g.gain.setValueAtTime((forte ? 2.6 : 1.8) * vol, 0);
+    g.gain.exponentialRampToValueAtTime(0.001, 0.05);
     src.connect(bp).connect(g).connect(ctx.destination);
     // corpo de madeira: um "toc" grave bem curto
     const osc = ctx.createOscillator(), go = ctx.createGain();
     osc.type = "triangle";
-    osc.frequency.setValueAtTime(forte ? 900 : 620, tempo);
-    osc.frequency.exponentialRampToValueAtTime(forte ? 520 : 380, tempo + 0.03);
-    go.gain.setValueAtTime(0.0001, tempo);
-    go.gain.exponentialRampToValueAtTime((forte ? 0.5 : 0.32) * vol, tempo + 0.002);
-    go.gain.exponentialRampToValueAtTime(0.0001, tempo + 0.035);
+    osc.frequency.setValueAtTime(forte ? 900 : 620, 0);
+    osc.frequency.exponentialRampToValueAtTime(forte ? 520 : 380, 0.03);
+    go.gain.setValueAtTime(0.0001, 0);
+    go.gain.exponentialRampToValueAtTime((forte ? 0.5 : 0.32) * vol, 0.002);
+    go.gain.exponentialRampToValueAtTime(0.0001, 0.035);
     osc.connect(go).connect(ctx.destination);
-    src.start(tempo); src.stop(tempo + 0.06);
-    osc.start(tempo); osc.stop(tempo + 0.04);
+    src.start(0); src.stop(0.06);
+    osc.start(0); osc.stop(0.04);
   }
 
-  function clique(tempo, forte, fraco = false) {
-    if ((estado.metronomo.som || "analogico") === "analogico") return tique(tempo, forte && !fraco, fraco ? 0.38 : 1);
-    const osc = met.ctx.createOscillator();
-    const ganho = met.ctx.createGain();
+  function desenharBip(ctx, forte, fraco) {
+    const osc = ctx.createOscillator(), ganho = ctx.createGain();
     osc.frequency.value = forte ? 1600 : 1000;
-    ganho.gain.setValueAtTime(0.0001, tempo);
-    ganho.gain.exponentialRampToValueAtTime(fraco ? 0.22 : forte ? 0.9 : 0.55, tempo + 0.002);
-    ganho.gain.exponentialRampToValueAtTime(0.0001, tempo + 0.06);
-    osc.connect(ganho).connect(met.ctx.destination);
-    osc.start(tempo);
-    osc.stop(tempo + 0.07);
+    ganho.gain.setValueAtTime(0.0001, 0);
+    ganho.gain.exponentialRampToValueAtTime(fraco ? 0.22 : forte ? 0.9 : 0.55, 0.002);
+    ganho.gain.exponentialRampToValueAtTime(0.0001, 0.06);
+    osc.connect(ganho).connect(ctx.destination);
+    osc.start(0); osc.stop(0.07);
   }
 
-  function agendar() {
+  // Gera os sons uma vez só (sem precisar de toque do usuário)
+  const prontasAmostras = (async () => {
+    const Off = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    if (!Off) return false;
+    const tipos = [["analogico", "forte"], ["analogico", "normal"], ["analogico", "fraco"], ["digital", "forte"], ["digital", "normal"], ["digital", "fraco"]];
+    try {
+      for (const [som, tipo] of tipos) {
+        const ctx = new Off(1, Math.floor(TAXA * 0.08), TAXA);
+        if (som === "analogico") desenharTique(ctx, tipo === "forte", tipo === "fraco" ? 0.38 : 1);
+        else desenharBip(ctx, tipo === "forte", tipo === "fraco");
+        const buf = await new Promise((ok, erro) => {
+          const r = ctx.startRendering();
+          if (r && r.then) r.then(ok, erro); else ctx.oncomplete = e => ok(e.renderedBuffer);
+        });
+        amostras[`${som}:${tipo}`] = buf.getChannelData(0).slice();
+      }
+      return true;
+    } catch { return false; }
+  })();
+
+  function wavDe(dados) {
+    const n = dados.length, buf = new ArrayBuffer(44 + n * 2), v = new DataView(buf);
+    const txt = (o, t) => { for (let i = 0; i < t.length; i++) v.setUint8(o + i, t.charCodeAt(i)); };
+    txt(0, "RIFF"); v.setUint32(4, 36 + n * 2, true); txt(8, "WAVE"); txt(12, "fmt ");
+    v.setUint32(16, 16, true); v.setUint16(20, 1, true); v.setUint16(22, 1, true);
+    v.setUint32(24, TAXA, true); v.setUint32(28, TAXA * 2, true); v.setUint16(32, 2, true); v.setUint16(34, 16, true);
+    txt(36, "data"); v.setUint32(40, n * 2, true);
+    for (let i = 0; i < n; i++) v.setInt16(44 + i * 2, Math.max(-1, Math.min(1, dados[i])) * 32767, true);
+    return new Blob([buf], { type: "audio/wav" });
+  }
+
+  // Monta vários compassos (cerca de 30 s) para a emenda da repetição quase nunca aparecer
+  function montarLoop() {
     const { bpm, compasso } = estado.metronomo;
     const sub = estado.metronomo.sub || 1;
-    while (met.proximo < met.ctx.currentTime + 0.12) {
-      if ((met.subI || 0) % sub === 0) {
-        const posicao = met.batida % compasso;
-        clique(met.proximo, posicao === 0);
-        const atraso = Math.max(0, (met.proximo - met.ctx.currentTime) * 1000);
-        setTimeout(() => {
-          document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
-          const mini = $("#met-mini");
-          if (mini && !mini.hidden) { mini.classList.remove("bate", "forte"); void mini.offsetWidth; mini.classList.add("bate"); if (posicao === 0) mini.classList.add("forte"); }
-        }, atraso);
-        met.batida++;
-      } else {
-        clique(met.proximo, false, true);
-      }
-      met.proximo += 60 / bpm / sub;
-      met.subI = (met.subI || 0) + 1;
+    const som = (estado.metronomo.som || "analogico") === "digital" ? "digital" : "analogico";
+    const tempoSeg = 60 / bpm;
+    const compassoSeg = tempoSeg * compasso;
+    const nCompassos = Math.max(1, Math.round(30 / compassoSeg));
+    const total = Math.round(nCompassos * compassoSeg * TAXA);
+    const dados = new Float32Array(total);
+    const golpes = nCompassos * compasso * sub;
+    for (let k = 0; k < golpes; k++) {
+      const ini = Math.round((k * tempoSeg / sub) * TAXA);
+      const noTempo = k % sub === 0;
+      const tipo = !noTempo ? "fraco" : (k / sub) % compasso === 0 ? "forte" : "normal";
+      const a = amostras[`${som}:${tipo}`];
+      if (!a) continue;
+      for (let i = 0; i < a.length && ini + i < total; i++) dados[ini + i] += a[i];
     }
+    let pico = 0; for (let i = 0; i < total; i++) pico = Math.max(pico, Math.abs(dados[i]));
+    if (pico > 0.95) { const f = 0.95 / pico; for (let i = 0; i < total; i++) dados[i] *= f; }
+    return wavDe(dados);
   }
 
-  // iPhone: sem isto o Web Audio fica mudo com a chave do silencioso ligada
   const SILENCIO = "data:audio/wav;base64,UklGRsQPAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YaAPAACAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA";
-  let audioSilencio = null;
-  function prepararAudioCelular() {
-    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
+  let audioMet = null;
+  function elementoMetronomo() {
+    if (audioMet) return audioMet;
+    audioMet = new Audio();
+    audioMet.loop = true;
+    audioMet.preload = "auto";
+    audioMet.setAttribute("playsinline", "");
+    // Pausa vinda da tela de bloqueio ou dos fones: o app acompanha
+    audioMet.addEventListener("pause", () => {
+      if (!met.tocando || met.trocando || performance.now() < met.ignorarPausaAte) return;
+      setTimeout(() => { if (met.tocando && audioMet.paused && !met.trocando && performance.now() >= met.ignorarPausaAte) pararMetronomo(); }, 200);
+    });
+    return audioMet;
+  }
+
+  async function carregarLoop() {
+    const a = elementoMetronomo();
+    await prontasAmostras;
+    if (!met.tocando) return;
+    const url = URL.createObjectURL(montarLoop());
+    met.trocando = true;
+    met.ignorarPausaAte = performance.now() + 1500;
+    const antigo = met.url;
+    met.url = url;
+    a.src = url;
+    try { await a.play(); } catch { met.trocando = false; avisar("Toque de novo em Tocar para liberar o som."); pararMetronomo(); return; }
+    met.trocando = false;
+    if (antigo) setTimeout(() => URL.revokeObjectURL(antigo), 2000);
+    atualizarSessaoMet();
+  }
+
+  // Mudou o andamento, o compasso, a subdivisão ou o som com o metrônomo tocando
+  let refazerT = null;
+  function refazerLoop() {
+    if (!met.tocando) return;
+    clearTimeout(refazerT);
+    refazerT = setTimeout(carregarLoop, 250);
+  }
+
+  function atualizarSessaoMet() {
+    if (!("mediaSession" in navigator) || !met.tocando) return;
     try {
-      if (!audioSilencio) { audioSilencio = new Audio(SILENCIO); audioSilencio.loop = true; audioSilencio.setAttribute("playsinline", ""); audioSilencio.volume = 0.01; }
-      audioSilencio.play().catch(() => {});
+      navigator.mediaSession.metadata = new MediaMetadata({ title: `Metrônomo · ${estado.metronomo.bpm} bpm`, artist: "CMA", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+      navigator.mediaSession.setActionHandler("pause", () => pararMetronomo());
+      navigator.mediaSession.setActionHandler("stop", () => pararMetronomo());
+      navigator.mediaSession.setActionHandler("play", null);
     } catch {}
   }
 
+  // Luzes dos tempos acompanham o áudio
+  function animarPulsos() {
+    if (!met.tocando) return;
+    const a = audioMet;
+    if (a && !a.paused && !met.trocando) {
+      const { bpm, compasso } = estado.metronomo;
+      const batida = Math.floor(a.currentTime / (60 / bpm) + 0.02);
+      if (batida !== met.ultimaBatida) {
+        met.ultimaBatida = batida;
+        const posicao = ((batida % compasso) + compasso) % compasso;
+        document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
+        const mini = $("#met-mini");
+        if (mini && !mini.hidden) { mini.classList.remove("bate", "forte"); void mini.offsetWidth; mini.classList.add("bate"); if (posicao === 0) mini.classList.add("forte"); }
+      }
+    }
+    requestAnimationFrame(animarPulsos);
+  }
+
   function tocarMetronomo() {
-    const Ctx = window.AudioContext || window.webkitAudioContext;
-    if (!Ctx) { avisar("Este navegador não suporta áudio."); return; }
-    prepararAudioCelular();
-    if (met.ctx && (met.ctx.state === "closed" || met.ctx.state === "interrupted")) met.ctx = null;
-    met.ctx = met.ctx || new Ctx();
-    // destrava o áudio no próprio toque (exigência do iPhone)
-    try { const b = met.ctx.createBuffer(1, 1, 22050), f = met.ctx.createBufferSource(); f.buffer = b; f.connect(met.ctx.destination); f.start(0); } catch {}
-    const r = met.ctx.resume();
-    if (r && r.catch) r.catch(() => avisar("Toque de novo em Tocar para liberar o som."));
+    try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
+    const a = elementoMetronomo();
     met.tocando = true;
-    met.batida = 0;
-    met.subI = 0;
-    met.proximo = met.ctx.currentTime + 0.05;
-    agendar();
-    met.intervalo = setInterval(agendar, 25);
+    met.ultimaBatida = -1;
+    // destrava o elemento de áudio no próprio toque (exigência do iPhone)
+    met.trocando = true;
+    met.ignorarPausaAte = performance.now() + 1500;
+    a.src = SILENCIO;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+    met.trocando = false;
+    carregarLoop();
+    requestAnimationFrame(animarPulsos);
     renderMetronomo();
     abaixarRadio(true);
     renderMetMini();
@@ -1175,8 +1258,9 @@
 
   function pararMetronomo() {
     met.tocando = false;
-    if (audioSilencio) try { audioSilencio.pause(); } catch {}
-    clearInterval(met.intervalo);
+    clearTimeout(refazerT);
+    if (audioMet) { met.trocando = true; try { audioMet.pause(); } catch {} met.trocando = false; }
+    try { if ("mediaSession" in navigator) navigator.mediaSession.metadata = null; } catch {}
     abaixarRadio(false);
     document.querySelectorAll("#met-pulsos .pulso").forEach(p => p.classList.remove("ativo"));
     $("#met-tocar").innerHTML = `${icone("play")}Tocar`;
@@ -1189,12 +1273,11 @@
     b.addEventListener("click", () => definirBpm(estado.metronomo.bpm + Number(b.dataset.delta))));
   $("#met-compasso").addEventListener("change", ev => {
     estado.metronomo.compasso = Number(ev.target.value);
-    met.batida = 0;
-    salvar(); renderMetronomo();
+    salvar(); renderMetronomo(); refazerLoop();
   });
   $("#met-salvar-bpm").addEventListener("click", () => salvarAndamento(met.exId, estado.metronomo.bpm));
-  $("#met-som").addEventListener("change", ev => { estado.metronomo.som = ev.target.value; salvar(); });
-  $("#met-sub").addEventListener("change", ev => { estado.metronomo.sub = Number(ev.target.value) || 1; met.subI = 0; met.batida = 0; salvar(); });
+  $("#met-som").addEventListener("change", ev => { estado.metronomo.som = ev.target.value; salvar(); refazerLoop(); });
+  $("#met-sub").addEventListener("change", ev => { estado.metronomo.sub = Number(ev.target.value) || 1; salvar(); refazerLoop(); });
   // Toque no ritmo: o app calcula o andamento pelos toques
   const toques = [];
   $("#met-tap").addEventListener("click", () => {
@@ -1949,7 +2032,7 @@
       const limpar = () => { a.removeEventListener("playing", aoTocar); a.removeEventListener("error", aoErro); clearTimeout(t); };
       const aoTocar = () => { limpar(); ok(); };
       const aoErro = () => { limpar(); falha(new Error("stream")); };
-      const t = setTimeout(() => { limpar(); falha(new Error("tempo")); }, 15000);
+      const t = setTimeout(() => { limpar(); falha(new Error("tempo")); }, 8000);
       a.addEventListener("playing", aoTocar);
       a.addEventListener("error", aoErro);
       a.src = url;
