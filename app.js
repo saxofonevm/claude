@@ -586,7 +586,9 @@
       const nome = `${icone("pdf")}<span>${escapar(l.titulo)}${l.autor ? `<small>${escapar(l.autor)}</small>` : ""}</span>`;
       return `<div class="ind-grupo">
         ${href ? `<a class="ind-livro" href="${escapar(href)}" target="_blank" rel="noopener">${nome}${icone("externo", "material-seta")}</a>` : `<div class="ind-livro">${nome}</div>`}
-        <ul class="ind-linhas">${itens.map(i => `<li><span class="ind-onde">${escapar(i.onde)}</span><span>${escapar(i.assunto)}</span></li>`).join("")}</ul>
+        <ul class="ind-linhas">${itens.map(i => href
+          ? `<li><a class="ind-linha" href="${escapar(href)}" target="_blank" rel="noopener" aria-label="Abrir ${escapar(l.titulo)} em ${escapar(i.onde)}"><span class="ind-onde"><span class="ind-onde-txt">${String(i.onde).split(" · ").map(escapar).join("<br>")}</span>${icone("externo", "ind-abrir")}</span><span>${escapar(i.assunto)}</span></a></li>`
+          : `<li><span class="ind-linha"><span class="ind-onde">${escapar(i.onde)}</span><span>${escapar(i.assunto)}</span></span></li>`).join("")}</ul>
       </div>`;
     }).join("");
   }
@@ -600,7 +602,7 @@
       <summary>${icone("livro")}<span><strong>Nos métodos</strong><span class="mudo">${lista.length
         ? `${lista.length} ${lista.length === 1 ? "indicação" : "indicações"} em ${livros} ${livros === 1 ? "método" : "métodos"}`
         : "Materiais na pasta do Drive"}</span></span>${icone("seta", "nos-seta")}</summary>
-      ${lista.length ? `<p class="dica">Toque no nome do método para abrir o PDF e vá direto à página ou ao exercício indicado.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
+      ${lista.length ? `<p class="dica">Toque no selo amarelo para abrir o método e vá direto à página ou ao exercício indicado.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta Dica de Naipe no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
     </details>`;
   }

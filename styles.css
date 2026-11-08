@@ -408,8 +408,14 @@ a.indicacao:hover { border-color: var(--c1, var(--brass)); }
 .ind-livro .ic { color: var(--c1, var(--brass)); }
 .ind-livro .material-seta { color: var(--muted); width: 16px; height: 16px; }
 .ind-linhas { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
-.ind-linhas li { display: grid; grid-template-columns: minmax(72px, max-content) 1fr; gap: 10px; align-items: center; font-size: .88rem; line-height: 1.3; padding: 4px 0; }
-.ind-linhas .ind-onde { font-size: .76rem; padding: 4px 7px; }
+.ind-linha { display: grid; grid-template-columns: minmax(84px, max-content) 1fr; gap: 10px; align-items: center; font-size: .88rem; line-height: 1.3; padding: 4px 0; color: inherit; text-decoration: none; }
+.ind-linhas .ind-onde { font-size: .78rem; padding: 7px 9px; display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 34px; }
+a.ind-linha .ind-onde { box-shadow: 0 3px 0 color-mix(in srgb, var(--brass) 45%, #000), 0 6px 14px -6px var(--brass); transition: transform .12s, box-shadow .12s; }
+a.ind-linha:active .ind-onde { transform: translateY(2px); box-shadow: 0 1px 0 color-mix(in srgb, var(--brass) 45%, #000); }
+a.ind-linha:hover .ind-onde { filter: brightness(1.08); }
+.ind-abrir { width: 13px; height: 13px; flex: none; }
+.ind-linhas .ind-onde { max-width: none; }
+.ind-onde-txt { white-space: nowrap; }
 
 .livros-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .livro-chip {
