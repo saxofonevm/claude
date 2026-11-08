@@ -1,5 +1,5 @@
 /*
- * CMA — Consciência Musical Aplicada
+ * Naipe · Consciência Musical Aplicada
  * CONTEÚDO DO APP — edite este arquivo para mudar o que os alunos veem.
  *
  * ✅ Conteúdo revisado com o professor, raiz por raiz, em 03/11/2026.
@@ -88,7 +88,7 @@ window.CMA = {
       cor: "#5b8def",
       cor2: "#9dbcff",
       frase: "Quem aprende a ouvir, aprende a tocar.",
-      porQue: "O ouvido é o primeiro instrumento do músico. Quando você sabe exatamente qual som quer, seu corpo encontra o caminho para produzi-lo. Ouvir com atenção treina o gosto, o estilo e a memória musical.",
+      porQue: "Ouça com atenção antes de tocar. Escolha uma gravação, cante a frase e só depois pegue o sax.",
       resumo: "Referências que inspiram: saxofonistas, estilos e setup.",
       descricao: "Tudo começa pelo ouvido. Antes de tocar, o aluno conhece a sonoridade que quer alcançar: ouve os grandes saxofonistas, compara timbres e entende como o setup (boquilha, palheta, abraçadeira) influencia o som.",
       drive: { pasta: null, arquivos: [] },
@@ -228,7 +228,7 @@ window.CMA = {
       cor: "#ee8a45",
       cor2: "#ffc08f",
       frase: "A nota certa no tempo errado ainda é a nota errada.",
-      porQue: "O ritmo é a base de toda música. Quem entende as figuras rítmicas lê com mais facilidade, toca junto com outros músicos com segurança e consegue tocar qualquer gênero com o balanço certo.",
+      porQue: "Sinta o pulso no corpo antes de tocar. Bata o pé, conte em voz alta e só suba o andamento quando o ritmo estiver firme.",
       resumo: "Codificar as rítmicas dentro dos gêneros musicais.",
       descricao: "O aluno aprende a reconhecer, ler e reproduzir as figuras rítmicas típicas de cada gênero. O caminho é sempre: ouvir a referência → bater/cantar o ritmo → escrever (codificar) → tocar no sax.",
       drive: { pasta: null, arquivos: [] },
@@ -382,7 +382,7 @@ window.CMA = {
       cor: "#33bd8c",
       cor2: "#86e6c2",
       frase: "Devagar se vai longe: o andamento lento é onde o som nasce.",
-      porQue: "Escalas, intervalos e arpejos são o vocabulário da música. Estudar devagar, cantando e fatiando as frases, grava o caminho certo nos dedos e no ouvido, e a velocidade vem como consequência.",
+      porQue: "Estude devagar: ouça, cante, fatie e toque. Deixe o metrônomo uns 20 bpm abaixo e suba aos poucos.",
       resumo: "Músicas, escalas, intervalos e arpejos, com leveza e devagar.",
       descricao: "O aluno entende a importância de estudar e aplicar o estudo melódico. Método: cantarolar a frase → fatiar em pedaços pequenos → tocar devagar → aumentar o andamento gradativamente até o alvo.",
       drive: { pasta: null, arquivos: [] },
@@ -390,7 +390,7 @@ window.CMA = {
         {
           id: "melodia-metodo",
           titulo: "Como estudar uma frase",
-          descricao: "O método CMA para qualquer melodia.",
+          descricao: "O método Naipe para qualquer melodia.",
           referencias: [
             { titulo: "Stan Getz · Corcovado", detalhe: "Melodia cantável para cantarolar e fatiar", busca: "Stan Getz Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
             { titulo: "Sonny Rollins · St. Thomas", detalhe: "Tema curto e fácil de memorizar", busca: "Sonny Rollins St. Thomas" }
@@ -543,7 +543,7 @@ window.CMA = {
       cor: "#a379f0",
       cor2: "#d2bbff",
       frase: "Cada nota tem começo, meio e fim. Cuide dos três.",
-      porQue: "A articulação é a pronúncia da música. A mesma melodia muda completamente de caráter quando ligada ou destacada. Saber escolher a articulação certa é o que faz o seu som falar o idioma de cada estilo.",
+      porQue: "Decida como cada nota começa e termina. Toque a mesma frase ligada e depois destacada e escute como o caráter muda.",
       resumo: "Conhecer e aplicar as articulações no momento certo.",
       descricao: "Articulação é a forma de começar, ligar e terminar as notas. O aluno aprende cada tipo e, principalmente, quando usar cada um de acordo com o estilo da música.",
       drive: { pasta: null, arquivos: [] },
@@ -712,7 +712,7 @@ window.CMA = {
       cor: "#27b3c4",
       cor2: "#8ae3ec",
       frase: "Dinâmica é a forma de a música respirar.",
-      porQue: "Sem dinâmica, a música fica plana, como uma fala sem emoção. Controlar o volume do pianíssimo ao fortíssimo permite contar uma história e emocionar quem escuta.",
+      porQue: "Use o ar para contar a história da música. Procure a dinâmica que a melodia já pede e vá do piano ao forte com controle.",
       resumo: "Transmitir a emoção da música com as intensidades.",
       descricao: "Dinâmica é a variação de intensidade (do pianíssimo ao fortíssimo). O aluno aprende a controlar o som em todas as intensidades e aplica as dinâmicas nas músicas para transmitir a emoção que cada uma pede.",
       drive: { pasta: null, arquivos: [] },
@@ -823,7 +823,7 @@ window.CMA = {
       cor: "#ec5a7d",
       cor2: "#ffa3b8",
       frase: "O ornamento é o tempero: na medida certa, transforma a música.",
-      porQue: "Os ornamentos são a cereja do bolo. Eles dão personalidade e elegância à interpretação. Usados com bom gosto, mostram maturidade musical e deixam o seu jeito de tocar único.",
+      porQue: "Enfeite com bom gosto. Ouça como os mestres usam cada ornamento e coloque poucos, no lugar certo.",
       resumo: "A cereja do bolo: os mais diversos ornamentos.",
       descricao: "Os ornamentos dão personalidade à interpretação. O aluno aprende cada ornamento, entende em que estilo ele aparece e o aplica com bom gosto nas músicas.",
       drive: { pasta: null, arquivos: [] },

@@ -105,9 +105,9 @@ const CSS = `
 
   await p.goto('file://' + APP + '/index.html#/inicio');
   await espera(900);
-  await capa('Tour pelo<br><em>CMA</em>', 'Consciência Musical Aplicada', 3200);
+  await capa('Tour pelo<br><em>Naipe</em>', 'Consciência Musical Aplicada', 3200);
 
-  await legenda('#letreiro-radio', 'Rádio CMA', 'Toque no letreiro para ouvir jazz e música brasileira ao vivo enquanto estuda.', 4200, 'baixo');
+  await legenda('#letreiro-radio', 'Rádio Naipe', 'Toque no letreiro para ouvir jazz e música brasileira ao vivo enquanto estuda.', 4200, 'baixo');
   await legenda('.frase-dia', 'Frase do dia', 'Uma frase para inspirar o seu estudo. Ela muda todos os dias.', 3600, 'baixo');
   await legenda('#estudo-dia', 'Estudo do dia', 'Três passos para hoje: aquecer com o afinador, fazer o exercício da vez e tocar junto.', 4200, 'cima');
   await legenda('#timer-iniciar', 'Cronômetro', 'Toque em Começar ao iniciar o estudo e em Finalizar para registrar a prática.', 4000, 'cima');
@@ -121,7 +121,7 @@ const CSS = `
 
   await limpar();
   await tocar('.abas a[data-aba="raizes"]');
-  await legenda('#lista-raizes', 'Método CMA', 'As 6 raízes, na ordem do método: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
+  await legenda('#lista-raizes', 'Método Naipe', 'As 6 raízes, na ordem do método: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
   await limpar();
   await tocar('.raiz-card:nth-child(2)');
   await espera(600);

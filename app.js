@@ -23,6 +23,8 @@
       for (const ex of ram.exercicios || []) EXERCICIO[ex.id] = { ex, ram, raiz };
     }
   }
+  const ORDINAIS = ["Primeiro", "Segundo", "Terceiro", "Quarto", "Quinto", "Sexto", "Sétimo", "Oitavo"];
+  const pilar = i => `${ORDINAIS[i] || i + 1 + "º"} pilar`;
   const exerciciosDaRaiz = raiz => (raiz.ramificacoes || []).flatMap(r => r.exercicios || []);
   const TOTAL_EXERCICIOS = Object.keys(EXERCICIO).length;
   const RAMO = {};       // id → { ram, raiz }
@@ -43,7 +45,7 @@
 
   // Dentro da prévia do Claude (iframe) o navegador bloqueia microfone e rádio.
   const NA_PREVIA = (() => { try { return window.self !== window.top; } catch { return true; } })();
-  const AVISO_PREVIA = "Na prévia do Claude o microfone e a rádio ficam bloqueados. Abra o CMA pelo site ou pelo app instalado no celular.";
+  const AVISO_PREVIA = "Na prévia do Claude o microfone e a rádio ficam bloqueados. Abra o Naipe pelo site ou pelo app instalado no celular.";
 
   // ---------- Estado e armazenamento ----------
 
@@ -93,7 +95,7 @@
     if (pagina) return pagina;
     const prof = CMA.professor || {};
     const numero = String(prof.whatsapp || "").replace(/\D/g, "");
-    const texto = `Olá${prof.nome ? " " + prof.nome.split(" ")[0] : ""}! Quero conhecer o Método CMA completo.`;
+    const texto = `Olá${prof.nome ? " " + prof.nome.split(" ")[0] : ""}! Quero conhecer o Método Naipe completo.`;
     return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
   }
 
@@ -111,7 +113,7 @@
     if (!ok) { avisar("Código inválido. Confira com o professor."); return false; }
     estado.desbloqueado = true;
     salvar();
-    avisar("Método CMA completo liberado!");
+    avisar("Método Naipe completo liberado!");
     renderTela();
     return true;
   }
@@ -392,7 +394,7 @@
     }).join("");
     const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
       .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Seu percurso: um saxofone e as seis raízes do CMA">
+    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Seu percurso: um saxofone e as seis raízes do Naipe">
       <defs>
         <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>
@@ -436,8 +438,8 @@
     if (!faixa) return;
     const tocando = typeof radio !== "undefined" && (radio.tocando || radio.carregando);
     const texto = tocando
-      ? `Tocando agora: ${radio.estacao ? radio.estacao.nome : "Rádio CMA"} · toque para trocar de estação · `
-      : "Rádio CMA · toque aqui para ouvir jazz e música brasileira ao vivo enquanto estuda · ";
+      ? `Tocando agora: ${radio.estacao ? radio.estacao.nome : "Rádio Naipe"} · toque para trocar de estação · `
+      : "Rádio Naipe · toque aqui para ouvir jazz e música brasileira ao vivo enquanto estuda · ";
     if (faixa.dataset.texto === texto) return;
     faixa.dataset.texto = texto;
     faixa.innerHTML = `<span>${escapar(texto)}</span><span>${escapar(texto)}</span>`;
@@ -445,7 +447,7 @@
     bt.classList.toggle("tocando", tocando);
     const pl = bt.querySelector(".letreiro-radio-play");
     if (pl) pl.innerHTML = icone(tocando ? "pause" : "play");
-    bt.setAttribute("aria-label", tocando ? `Rádio CMA tocando ${radio.estacao ? radio.estacao.nome : ""}. Toque para trocar de estação` : "Rádio CMA: toque para ouvir");
+    bt.setAttribute("aria-label", tocando ? `Rádio Naipe tocando ${radio.estacao ? radio.estacao.nome : ""}. Toque para trocar de estação` : "Rádio Naipe: toque para ouvir");
   }
 
   function renderCartaoGratis() {
@@ -474,7 +476,7 @@
     $("#percurso-pct").textContent = `${pctTotal}%`;
     $("#arvore-legenda").textContent = pctTotal === 0
       ? "Comece pela Escuta: cada exercício concluído aprofunda uma raiz."
-      : pctTotal === 100 ? "Percurso completo. Todas as raízes do CMA foram trabalhadas."
+      : pctTotal === 100 ? "Percurso completo. Todas as raízes do Naipe foram trabalhadas."
       : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos.`;
 
     renderEstudoDia();
@@ -523,14 +525,14 @@
       const p = progressoRaiz(raiz);
       if (!liberada(raiz)) return `<a class="raiz-card bloqueada" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
-        <span class="raiz-num">${dois(i + 1)}</span>
+        <span class="raiz-num">${pilar(i)}</span>
         <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
         <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
         <span class="raiz-rodape"><span class="selo-bloqueio">${icone("cadeado")}Método completo</span></span>
       </a>`;
       return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
-        <span class="raiz-num">${dois(i + 1)}</span>
+        <span class="raiz-num">${pilar(i)}</span>
         <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
         <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
         <span class="raiz-rodape">
@@ -599,7 +601,7 @@
         ? `${lista.length} ${lista.length === 1 ? "indicação" : "indicações"} em ${livros} ${livros === 1 ? "método" : "métodos"}`
         : "Materiais na pasta do Drive"}</span></span>${icone("seta", "nos-seta")}</summary>
       ${lista.length ? `<p class="dica">Toque no nome do método para abrir o PDF e vá direto à página ou ao exercício indicado.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
-      ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta ramificação no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
+      ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta Dica de Naipe no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
     </details>`;
   }
 
@@ -615,7 +617,7 @@
       return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos desta raiz serão publicados em breve pelo professor.</p></div>`;
     }
     return `<details class="cartao drive">${resumo}
-      ${livros.length ? `<p class="mudo">Em cada ramificação, a aba “Métodos” mostra a página exata de cada assunto.</p>
+      ${livros.length ? `<p class="mudo">Em cada Dica de Naipe, a aba “Métodos” mostra a página exata de cada assunto.</p>
       <div class="livros-chips">${livros.map(k => `<a class="livro-chip" href="#/metodo/${encodeURIComponent(k)}">
         <strong>${escapar(LIVROS[k].autor || LIVROS[k].titulo)}</strong><span>${escapar(LIVROS[k].autor ? LIVROS[k].titulo : "")}</span><em>${contagem[k]}</em>
       </a>`).join("")}</div>` : ""}
@@ -642,7 +644,7 @@
       <div class="corpo-metodos">
         <label class="busca">${icone("busca")}<input type="search" id="busca-metodos" placeholder="Buscar assunto: staccato, terças, trinado…" value="${escapar(buscaMetodos)}" autocomplete="off"></label>
         <div id="busca-resultado"></div>
-        ${(MET.acervo || []).length && temBloqueio() ? `<section class="cartao acervo"><h2>${icone("cadeado")}Acervo de partituras e playbacks</h2><p class="mudo">Partituras em Sib e Mib, mais de 600 músicas com playback, songbooks e métodos. Disponível no Método CMA completo.</p><a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}</section>` : ""}
+        ${(MET.acervo || []).length && temBloqueio() ? `<section class="cartao acervo"><h2>${icone("cadeado")}Acervo de partituras e playbacks</h2><p class="mudo">Partituras em Sib e Mib, mais de 600 músicas com playback, songbooks e métodos. Disponível no Método Naipe completo.</p><a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}</section>` : ""}
         ${(MET.acervo || []).length && !temBloqueio() ? `<section class="cartao acervo"><h2>${icone("pasta")}Acervo de partituras e playbacks</h2><div class="acervo-lista">${MET.acervo.map(x => {
           const href = urlSegura(urlPasta(x.pasta));
           return href ? `<a class="acervo-item" href="${escapar(href)}" target="_blank" rel="noopener"><span><strong>${escapar(x.titulo)}</strong><small>${escapar(x.detalhe || "")}</small></span>${icone("externo")}</a>` : "";
@@ -751,11 +753,11 @@
     const alvo = $("#tocar-conteudo");
     const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
       <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p>
-      <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio CMA</button></header>`;
+      <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio Naipe</button></header>`;
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
-        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Método CMA completo.</p>
-        <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}</section></div>`;
+        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Método Naipe completo.</p>
+        <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}</section></div>`;
       return;
     }
     const sax = estado.sax;
@@ -795,18 +797,18 @@
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
-        <p class="banda-sobre">Raiz ${dois(indice + 1)} / ${dois(RAIZES.length)}</p>
+        <p class="banda-sobre">${pilar(indice)}</p>
         <h1>${escapar(raiz.titulo)}</h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
       </header>
       <div class="corpo">
         <div class="cartao bloqueio">
           <span class="bloqueio-ic">${icone("cadeado")}</span>
-          <h2>Esta raiz faz parte do Método CMA completo</h2>
+          <h2>Esta raiz faz parte do Método Naipe completo</h2>
           <p class="mudo">${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
           <ul class="bloqueio-lista">${(raiz.ramificacoes || []).map(ram => `<li>${escapar(ram.titulo)}</li>`).join("")}</ul>
-          <p class="mudo">${(raiz.ramificacoes || []).length} ramificações · ${exs} exercícios com metrônomo e prazos · aulas em vídeo</p>
-          <a class="btn primario largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>
+          <p class="mudo">${(raiz.ramificacoes || []).length} Dicas de Naipe · ${exs} exercícios com metrônomo e prazos · aulas em vídeo</p>
+          <a class="btn primario largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>
           ${htmlCodigo()}
         </div>
       </div>
@@ -829,14 +831,14 @@
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
-        <p class="banda-sobre">Raiz ${dois(indice + 1)} / ${dois(RAIZES.length)}</p>
+        <p class="banda-sobre">${pilar(indice)}</p>
         <h1>${escapar(raiz.titulo)}</h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
       </header>
 
       <div class="corpo">
         <div class="cartao por-que">
-          <h2>${icone("lampada")}Por que esta raiz importa</h2>
+          <h2>${icone("lampada")}Recado do professor</h2>
           <p>${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
         </div>
 
@@ -850,7 +852,7 @@
 
         ${htmlDrive(raiz)}
 
-        <h2 class="secao">Ramificações</h2>
+        <h2 class="secao">Dicas de Naipe</h2>
         ${(raiz.ramificacoes || []).map((ram, j) => {
           const exs = ram.exercicios || [];
           const fe = exs.filter(e => feito(e.id)).length;
@@ -858,7 +860,7 @@
           const abas = [["ouvir", "Ouvir", htmlReferencias(ram.referencias)], ["metodos", "Métodos", htmlNosMetodos(ram.id, true)], ["material", "Material", htmlAcervoRamo(ram.id)]].filter(a => a[2]);
           return `<details class="cartao ramificacao"${aberta ? " open" : ""}>
           <summary class="ram-topo">
-            <span class="ram-cab"><span class="ram-num">Ramificação ${dois(j + 1)}</span><h3>${escapar(ram.titulo)}</h3></span>
+            <span class="ram-cab"><span class="ram-num">Dica de Naipe ${dois(j + 1)}</span><h3>${escapar(ram.titulo)}</h3></span>
             <span class="ram-cont${fe === exs.length && exs.length ? " completa" : ""}">${fe}/${exs.length}</span>${icone("seta", "ram-seta")}
           </summary>
           ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}
@@ -1201,7 +1203,7 @@
   function atualizarSessaoMet() {
     if (!("mediaSession" in navigator) || !met.tocando) return;
     try {
-      navigator.mediaSession.metadata = new MediaMetadata({ title: `Metrônomo · ${estado.metronomo.bpm} bpm`, artist: "CMA", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+      navigator.mediaSession.metadata = new MediaMetadata({ title: `Metrônomo · ${estado.metronomo.bpm} bpm`, artist: "Naipe", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
       navigator.mediaSession.setActionHandler("pause", () => pararMetronomo());
       navigator.mediaSession.setActionHandler("stop", () => pararMetronomo());
       navigator.mediaSession.setActionHandler("play", null);
@@ -1541,9 +1543,9 @@
     cartao.hidden = !ACESSO;
     if (ACESSO) {
       cartao.innerHTML = estado.desbloqueado
-        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Método CMA completo liberado neste aparelho.</p>`
-        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Método CMA completo.</p>
-           <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método CMA</a>${htmlCodigo()}`;
+        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Método Naipe completo liberado neste aparelho.</p>`
+        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Método Naipe completo.</p>
+           <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}`;
     }
   }
 
@@ -1597,7 +1599,7 @@
     try {
       const arquivo = new File([texto], nome, { type: "application/json" });
       if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-        await navigator.share({ files: [arquivo], title: "Backup do CMA", text: "Backup do meu progresso no Método CMA" });
+        await navigator.share({ files: [arquivo], title: "Backup do Naipe", text: "Backup do meu progresso no Método Naipe" });
         feito = true;
       }
     } catch (e) {
@@ -1696,7 +1698,7 @@
     const prox = proximoExercicio();
     let ex;
     if (prox) ex = { href: `#/ex/${encodeURIComponent(prox.ex.id)}`, estilo: corRaiz(prox.raiz), ilus: ilustracao(prox.raiz.icone),
-      sobre: `Raiz ${prox.raiz.titulo}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
+      sobre: `${pilar(RAIZES.indexOf(prox.raiz))} · ${prox.raiz.titulo}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
     else if (temBloqueio()) { const bloq = RAIZES.find(r => !liberada(r)); ex = { href: `#/raiz/${encodeURIComponent(bloq.id)}`, estilo: corRaiz(bloq), ilus: ilustracao(bloq.icone),
       sobre: "Próximo passo", titulo: `Desbloqueie ${bloq.titulo}`, sub: "Você concluiu a parte grátis" }; }
     else ex = { href: "#/raizes", estilo: "", ilus: icone("trofeu"), sobre: "Percurso completo", titulo: "Revise uma raiz", sub: "Escolha um exercício para aprofundar" };
@@ -1708,7 +1710,7 @@
       ? `<a class="ed-acao" href="${escapar(hrefPa)}" target="_blank" rel="noopener" data-ed-marca="tc">
           <span class="ed-ic">${icone("fone")}</span><span class="ed-texto"><small>3 · Tocar junto</small><strong>${escapar(pa.t)}</strong><span>${escapar(pa.g)} · toque com a banda</span></span>${icone("externo", "ed-seta")}</a>`
       : `<button class="ed-acao" type="button" data-ed-radio>
-          <span class="ed-ic">${icone("radio")}</span><span class="ed-texto"><small>3 · Escuta ativa</small><strong>Ouça a Rádio CMA</strong><span>Preste atenção no som e no fraseado dos saxofonistas</span></span>${icone("play", "ed-seta")}</button>`;
+          <span class="ed-ic">${icone("radio")}</span><span class="ed-texto"><small>3 · Escuta ativa</small><strong>Ouça a Rádio Naipe</strong><span>Preste atenção no som e no fraseado dos saxofonistas</span></span>${icone("play", "ed-seta")}</button>`;
 
     const check = (k, rot) => `<button class="ed-check" type="button" data-ed-check="${k}" aria-pressed="${f[k]}" aria-label="${f[k] ? "Desmarcar" : "Marcar"} ${rot}">${icone("check")}</button>`;
 
@@ -1968,7 +1970,7 @@
   // Pede ao navegador para não apagar os dados do app (gravações e progresso)
   try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch {}
 
-  // ---------- Rádio CMA ----------
+  // ---------- Rádio Naipe ----------
 
   const ESTACOES = Array.isArray(CMA.radio) ? CMA.radio : [];
   const RADIO_LINKS = Array.isArray(CMA.radioLinks) ? CMA.radioLinks : [];
@@ -2065,7 +2067,7 @@
       radio.tocando = ok;
       if (!ok) { radio.audio.removeAttribute("src"); avisar(NA_PREVIA ? AVISO_PREVIA : `${estacao.nome} está fora do ar agora. Tente outra estação.`); }
       else if ("mediaSession" in navigator) {
-        navigator.mediaSession.metadata = new MediaMetadata({ title: estacao.nome, artist: "Rádio CMA", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
+        navigator.mediaSession.metadata = new MediaMetadata({ title: estacao.nome, artist: "Rádio Naipe", artwork: [{ src: "icons/icon-512.png", sizes: "512x512", type: "image/png" }] });
       }
     } catch {
       if (radio.tentativa !== minha) return;
@@ -2166,7 +2168,7 @@
     const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
 
     const l = [];
-    l.push("🎷 *Relatório semanal · CMA*");
+    l.push("🎷 *Relatório semanal · Naipe*");
     l.push(`*Aluno:* ${estado.nome || "(sem nome)"}`);
     l.push(`*Período:* ${dm(inicio)} a ${dm(hoje)}`);
     l.push("");
@@ -2303,7 +2305,7 @@
     for (const raiz of RAIZES) {
       itens.push({ tipo: "Raiz", t: raiz.titulo, sub: raiz.resumo || "", href: `#/raiz/${raiz.id}`, raiz });
       for (const ram of raiz.ramificacoes || []) {
-        itens.push({ tipo: "Ramificação", t: ram.titulo, sub: raiz.titulo, href: `#/raiz/${raiz.id}`, raiz });
+        itens.push({ tipo: "Dica", t: ram.titulo, sub: raiz.titulo, href: `#/raiz/${raiz.id}`, raiz });
         for (const ex of ram.exercicios || []) itens.push({ tipo: "Exercício", t: ex.titulo, sub: `${raiz.titulo} · ${ram.titulo}`, href: `#/ex/${ex.id}`, raiz });
         for (const r of ram.referencias || []) { const u = urlReferencia(r); if (u) itens.push({ tipo: "Ouvir", t: r.titulo, sub: r.detalhe || raiz.titulo, href: u, externo: true, raiz }); }
       }
@@ -2321,7 +2323,7 @@
     if (q.length < 2) { alvo.innerHTML = `<p class="vazio-mini">Digite pelo menos 2 letras: um exercício, uma música, um saxofonista, um assunto…</p>`; return; }
     const partes = q.split(/\s+/);
     const achados = INDICE_BUSCA.filter(it => partes.every(p => it.chave.includes(p)) && !(it.pago && temBloqueio()));
-    const ordem = ["Exercício", "Raiz", "Ramificação", "Play-along", "Ouvir", "Assunto", "Método"];
+    const ordem = ["Exercício", "Raiz", "Dica", "Play-along", "Ouvir", "Assunto", "Método"];
     achados.sort((a, b) => ordem.indexOf(a.tipo) - ordem.indexOf(b.tipo) || (semAcento(a.t).startsWith(q) ? -1 : 0));
     alvo.innerHTML = achados.length ? achados.slice(0, 40).map(it => {
       const bloqueado = it.raiz && !liberada(it.raiz) && it.tipo !== "Raiz";
