@@ -1289,3 +1289,10 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 h1 .pilar-selo { font-size: .9rem; }
 .raiz-card .raiz-titulo { font-size: 1.55rem; max-width: none; padding-right: 0; }
 .raiz-card .pilar-selo { font-size: .68rem; margin-left: .3em; }
+/* Sugestão de estudo: título com ícone e ícones maiores */
+.ed-rotulo { display: inline-flex; align-items: center; gap: 7px; font-size: .9rem; letter-spacing: .12em; }
+.ed-rotulo .ic { width: 20px; height: 20px; color: var(--brass-soft); }
+.ed-ic { width: 58px; height: 58px; border-radius: 16px; }
+.ed-ic .ic { width: 32px; height: 32px; stroke-width: 1.8; }
+.ed-ic .ilus { width: 42px; height: 42px; }
+.ed-acao { gap: 14px; padding: 14px 12px; }
