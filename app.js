@@ -23,8 +23,7 @@
       for (const ex of ram.exercicios || []) EXERCICIO[ex.id] = { ex, ram, raiz };
     }
   }
-  const ORDINAIS = ["Primeiro", "Segundo", "Terceiro", "Quarto", "Quinto", "Sexto", "Sétimo", "Oitavo"];
-  const pilar = i => `${ORDINAIS[i] || i + 1 + "º"} pilar`;
+  const pilar = i => `${i + 1}º pilar`;
   const exerciciosDaRaiz = raiz => (raiz.ramificacoes || []).flatMap(r => r.exercicios || []);
   const TOTAL_EXERCICIOS = Object.keys(EXERCICIO).length;
   const RAMO = {};       // id → { ram, raiz }
@@ -525,15 +524,13 @@
       const p = progressoRaiz(raiz);
       if (!liberada(raiz)) return `<a class="raiz-card bloqueada" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
-        <span class="raiz-num">${pilar(i)}</span>
-        <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
+        <span class="raiz-titulo">${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(i)}</span></span>
         <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
         <span class="raiz-rodape"><span class="selo-bloqueio">${icone("cadeado")}Método completo</span></span>
       </a>`;
       return `<a class="raiz-card" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
         <span class="raiz-card-ilus">${ilustracao(raiz.icone)}</span>
-        <span class="raiz-num">${pilar(i)}</span>
-        <span class="raiz-titulo">${escapar(raiz.titulo)}</span>
+        <span class="raiz-titulo">${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(i)}</span></span>
         <span class="raiz-resumo">${escapar(raiz.resumo)}</span>
         <span class="raiz-rodape">
           <span class="barra clara"><span class="barra-preenchida" style="width:${p.pct}%"></span></span>
@@ -799,8 +796,7 @@
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
-        <p class="banda-sobre">${pilar(indice)}</p>
-        <h1>${escapar(raiz.titulo)}</h1>
+        <h1>${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(indice)}</span></h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
       </header>
       <div class="corpo">
@@ -833,8 +829,7 @@
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
-        <p class="banda-sobre">${pilar(indice)}</p>
-        <h1>${escapar(raiz.titulo)}</h1>
+        <h1>${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(indice)}</span></h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
       </header>
 
@@ -1700,7 +1695,7 @@
     const prox = proximoExercicio();
     let ex;
     if (prox) ex = { href: `#/ex/${encodeURIComponent(prox.ex.id)}`, estilo: corRaiz(prox.raiz), ilus: ilustracao(prox.raiz.icone),
-      sobre: `${pilar(RAIZES.indexOf(prox.raiz))} · ${prox.raiz.titulo}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
+      sobre: `${prox.raiz.titulo} · ${pilar(RAIZES.indexOf(prox.raiz))}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
     else if (temBloqueio()) { const bloq = RAIZES.find(r => !liberada(r)); ex = { href: `#/raiz/${encodeURIComponent(bloq.id)}`, estilo: corRaiz(bloq), ilus: ilustracao(bloq.icone),
       sobre: "Próximo passo", titulo: `Desbloqueie ${bloq.titulo}`, sub: "Você concluiu a parte grátis" }; }
     else ex = { href: "#/raizes", estilo: "", ilus: icone("trofeu"), sobre: "Percurso completo", titulo: "Revise uma raiz", sub: "Escolha um exercício para aprofundar" };

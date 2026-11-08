@@ -1281,3 +1281,11 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
   display: inline-flex; align-items: flex-end; text-transform: none;
 }
 .marca .marca-simbolo { width: .66em; height: 1.1em; margin: 0 0 -.04em -.06em; vertical-align: baseline; color: #F2C14E; flex: none; }
+
+/* Selo "1º pilar" ao lado do nome da raiz */
+.pilar-selo { display: inline-block; vertical-align: middle; margin-left: .35em; padding: .3em .6em .28em; border-radius: 999px;
+  font-family: var(--f-body); font-stretch: normal; font-size: .78rem; font-weight: 700; letter-spacing: .02em; line-height: 1; text-transform: none; white-space: nowrap;
+  color: var(--c2, var(--brass-soft)); background: rgb(0 0 0 / .22); border: 1px solid color-mix(in srgb, var(--c2, var(--brass)) 55%, transparent); position: relative; top: -.12em; }
+h1 .pilar-selo { font-size: .9rem; }
+.raiz-card .raiz-titulo { font-size: 1.55rem; max-width: none; padding-right: 0; }
+.raiz-card .pilar-selo { font-size: .68rem; margin-left: .3em; }
