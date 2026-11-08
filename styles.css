@@ -143,7 +143,7 @@ main { max-width: 720px; margin: 0 auto; }
   font-family: var(--f-display); font-stretch: 75%; font-weight: 800; font-size: 1.25rem; letter-spacing: .14em;
   background: var(--latao); -webkit-background-clip: text; background-clip: text; color: transparent;
 }
-.marca-simbolo { width: .95em; height: 1.3em; margin-right: .3em; vertical-align: -.25em; color: #C9A24B; }
+.marca-simbolo { width: .95em; height: 1.3em; margin-left: .3em; vertical-align: -.25em; color: #C9A24B; }
 .marca-sub { font-size: .78rem; color: var(--muted); }
 .hero-data { margin-left: auto; font-size: .78rem; color: var(--muted); }
 .hero-saudacao { font-size: 2.6rem; }

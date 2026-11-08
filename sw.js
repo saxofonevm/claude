@@ -1,7 +1,7 @@
 // Service worker: permite usar o app offline.
-// Estratégia "stale-while-revalidate": abre na hora com a cópia salva e
-// busca a versão nova em segundo plano (aparece na próxima abertura).
-const CACHE = "cma-v38";
+// Estratégia "rede primeiro": com internet, sempre busca a versão nova do servidor
+// (sem usar cópia velha do navegador); sem internet, usa a cópia salva.
+const CACHE = "cma-v39";
 const ARQUIVOS = [
   "./",
   "index.html",
@@ -19,7 +19,7 @@ const ARQUIVOS = [
 ];
 
 self.addEventListener("install", ev => {
-  ev.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS)).then(() => self.skipWaiting()));
+  ev.waitUntil(caches.open(CACHE).then(c => c.addAll(ARQUIVOS.map(u => new Request(u, { cache: "reload" })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener("activate", ev => {
@@ -35,13 +35,27 @@ self.addEventListener("fetch", ev => {
   const url = new URL(req.url);
   const fonte = /^fonts\.(googleapis|gstatic)\.com$/.test(url.hostname);
   if (req.method !== "GET" || (url.origin !== location.origin && !fonte)) return;
+  if (fonte) {
+    ev.respondWith(caches.open(CACHE).then(async cache => {
+      const salvo = await cache.match(req);
+      if (salvo) return salvo;
+      const resp = await fetch(req);
+      if (resp.ok) cache.put(req, resp.clone());
+      return resp;
+    }));
+    return;
+  }
   ev.respondWith(
     caches.open(CACHE).then(async cache => {
-      const salvo = await cache.match(req, { ignoreSearch: true });
-      const rede = fetch(req)
-        .then(resp => { if (resp.ok) cache.put(req, resp.clone()); return resp; })
-        .catch(() => salvo);
-      return salvo || rede;
+      try {
+        const resp = await fetch(req, { cache: "no-cache" });
+        if (resp.ok) cache.put(req, resp.clone());
+        return resp;
+      } catch {
+        const salvo = await cache.match(req, { ignoreSearch: true });
+        if (salvo) return salvo;
+        throw new Error("offline");
+      }
     })
   );
 });
