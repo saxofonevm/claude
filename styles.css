@@ -1273,3 +1273,11 @@ body.com-radio .barra-acoes { bottom: calc(121px + env(safe-area-inset-bottom, 0
 .met-mini-parar svg { width: 18px; height: 18px; }
 .met-dica-fundo { margin: -6px 0 0; text-align: center; font-size: .82rem; color: var(--muted); }
 .met-dica-fundo[hidden] { display: none; }
+
+/* ---------- Marca Naipe (fonte Outfit, igual à arte da marca) ---------- */
+.marca, .hero-topo .marca {
+  font-family: "Outfit", var(--f-body); font-stretch: normal; font-weight: 600; letter-spacing: -.01em;
+  font-size: 2.1rem; line-height: 1; color: #F2C14E; background: none; -webkit-background-clip: border-box; background-clip: border-box;
+  display: inline-flex; align-items: flex-end; text-transform: none;
+}
+.marca .marca-simbolo { width: .66em; height: 1.1em; margin: 0 0 -.04em -.06em; vertical-align: baseline; color: #F2C14E; flex: none; }

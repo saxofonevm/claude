@@ -1,8 +1,9 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Método Naipe</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=Outfit:wght@600&display=swap">
 <style>
 /* Layout: faixa verde da Naipe no topo e no fechamento, seções claras no meio; tudo numa coluna de leitura com blocos que viram grade no desktop. */
 :root {
@@ -59,7 +60,8 @@ a { color: inherit; }
 .topo { background: var(--verde); color: var(--sobre-verde); overflow: hidden; }
 .topo .miolo { padding-block: 28px 64px; display: grid; gap: 40px; }
 .marca { display: flex; align-items: center; gap: 10px; font-family: var(--f-display); font-stretch: 75%; font-weight: 800; letter-spacing: .14em; color: var(--ouro); }
-.marca svg { width: 18px; height: 24px; }
+.marca svg { width: .66em; height: 1.1em; margin: 0 0 -.04em -.06em; }
+.marca .marca-nome { display: inline-flex; align-items: flex-end; font-family: "Outfit", sans-serif; font-weight: 600; font-size: 1.9rem; letter-spacing: -.01em; line-height: 1; color: #F2C14E; }
 .marca span { color: var(--sobre-verde-mudo); font-family: var(--f-corpo); font-weight: 500; letter-spacing: .02em; font-size: .85rem; }
 .heroi { display: grid; gap: 36px; align-items: center; }
 .heroi h1 { font-size: clamp(2.6rem, 9vw, 5.2rem); color: var(--sobre-verde); }
@@ -185,8 +187,7 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
 <header class="topo">
   <div class="miolo">
     <div class="marca">
-      <svg viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>
-      Naipe <span>com Tiago Veloso</span>
+      <span class="marca-nome">naipe<svg viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg></span> <span>com Tiago Veloso</span>
     </div>
 
     <div class="heroi">
