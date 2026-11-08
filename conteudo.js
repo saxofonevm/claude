@@ -1,5 +1,5 @@
 /*
- * Naipe · Consciência Musical Aplicada
+ * Naipe · app de estudo de saxofone
  * CONTEÚDO DO APP — edite este arquivo para mudar o que os alunos veem.
  *
  * ✅ Conteúdo revisado com o professor, raiz por raiz, em 03/11/2026.
@@ -35,7 +35,7 @@ window.CMA = {
   // paginaVendas: link da página de vendas. Vazio = o botão abre o WhatsApp do professor.
   acesso: {
     gratis: ["escuta"],
-    codigos: ["ce9a8a91b5dbbdcd921de1e90160731b0453e43f0f34e95024e30a0cf1d3494f"],
+    codigos: ["7d654f52e6224d3ce4f0b54e5090b3f93478e0199034eb1ac203cf83aa72de41", "9d30d4b1245acf821f9fcdb8e99210d9d54ab96935f2c27867c4af414e2bc016"],
     paginaVendas: ""
   },
 

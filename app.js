@@ -122,7 +122,7 @@
     return `<form class="form-codigo" data-form-codigo>
       <label for="inp-codigo-${rotaAtual.tela}">Já comprou? Digite o seu código de acesso</label>
       <div class="linha-codigo">
-        <input type="text" id="inp-codigo-${rotaAtual.tela}" name="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Ex.: CMA-XXXX">
+        <input type="text" id="inp-codigo-${rotaAtual.tela}" name="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Digite o código">
         <button class="btn primario" type="submit">Liberar</button>
       </div>
     </form>`;

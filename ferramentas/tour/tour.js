@@ -105,7 +105,7 @@ const CSS = `
 
   await p.goto('file://' + APP + '/index.html#/inicio');
   await espera(900);
-  await capa('Tour pelo<br><em>Naipe</em>', 'Consciência Musical Aplicada', 3200);
+  await capa('Tour pelo<br><em>Naipe</em>', 'Seu estudo de saxofone na palma da mão', 3200);
 
   await legenda('#letreiro-radio', 'Rádio Naipe', 'Toque no letreiro para ouvir jazz e música brasileira ao vivo enquanto estuda.', 4200, 'baixo');
   await legenda('.frase-dia', 'Frase do dia', 'Uma frase para inspirar o seu estudo. Ela muda todos os dias.', 3600, 'baixo');
