@@ -119,7 +119,7 @@
 
   function htmlCodigo() {
     return `<form class="form-codigo" data-form-codigo>
-      <label for="inp-codigo-${rotaAtual.tela}">Já comprou? Digite o seu código de acesso</label>
+      <label for="inp-codigo-${rotaAtual.tela}">Já comprei: meu código de acesso</label>
       <div class="linha-codigo">
         <input type="text" id="inp-codigo-${rotaAtual.tela}" name="codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Digite o código">
         <button class="btn primario" type="submit">Liberar</button>
@@ -393,7 +393,7 @@
     }).join("");
     const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
       .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Seu percurso: um saxofone e as seis raízes do Naipe">
+    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Meu percurso: um saxofone e as seis raízes do Naipe">
       <defs>
         <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>
@@ -899,7 +899,7 @@
         <h2>${icone("metronomo")}Andamento</h2>
         <div class="velocimetro">
           <div><span class="vel-rotulo">Início</span><strong>${inicial}</strong><span class="vel-nome">${nomeAndamento(inicial)}</span></div>
-          <div class="vel-atual"><span class="vel-rotulo">Você está em</span><strong>${atual}</strong><span class="vel-nome">${nomeAndamento(atual)}</span></div>
+          <div class="vel-atual"><span class="vel-rotulo">Estou em</span><strong>${atual}</strong><span class="vel-nome">${nomeAndamento(atual)}</span></div>
           <div><span class="vel-rotulo">Alvo</span><strong>${alvo}</strong><span class="vel-nome">${nomeAndamento(alvo)}</span></div>
         </div>
         ${progride ? `<div class="barra grossa"><div class="barra-preenchida" style="width:${pct}%"></div></div>` : ""}

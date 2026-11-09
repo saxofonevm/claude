@@ -115,8 +115,8 @@ const CSS = `
   await tocar('#btn-metronomo-inicio');
   await espera(1600);
   await p.click('#met-fechar'); await espera(500);
-  await legenda('.stats', 'Seus números', 'Dias seguidos, minutos na semana e exercícios concluídos.', 3600, 'cima');
-  await legenda('.percurso-cartao', 'Seu percurso', 'O saxofone e as 6 raízes do método. Cada raiz se enche de cor conforme você avança. Toque numa raiz para abrir.', 4600, 'cima');
+  await legenda('.stats', 'Meus números', 'Dias seguidos, minutos na semana e exercícios concluídos.', 3600, 'cima');
+  await legenda('.percurso-cartao', 'Meu percurso', 'O saxofone e as 6 raízes do método. Cada raiz se enche de cor conforme você avança. Toque numa raiz para abrir.', 4600, 'cima');
   await legenda('#btn-relatorio', 'Relatório para o professor', 'Mande o resumo da sua semana para o professor pelo WhatsApp com um toque.', 3800, 'cima');
 
   await limpar();
