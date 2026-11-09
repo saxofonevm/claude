@@ -116,18 +116,18 @@ const CSS = `
   await espera(1600);
   await p.click('#met-fechar'); await espera(500);
   await legenda('.stats', 'Meus números', 'Dias seguidos, minutos na semana e exercícios concluídos.', 3600, 'cima');
-  await legenda('.percurso-cartao', 'Meu percurso', 'O saxofone e as 6 raízes do método. Cada raiz se enche de cor conforme você avança. Toque numa raiz para abrir.', 4600, 'cima');
+  await legenda('.percurso-cartao', 'Meu percurso', 'O saxofone e os 6 pilares do Naipe. Cada pilar se enche de cor conforme você avança. Toque num pilar para abrir.', 4600, 'cima');
   await legenda('#btn-relatorio', 'Relatório para o professor', 'Mande o resumo da sua semana para o professor pelo WhatsApp com um toque.', 3800, 'cima');
 
   await limpar();
   await tocar('.abas a[data-aba="raizes"]');
-  await legenda('#lista-raizes', 'Naipe', 'As 6 raízes, na ordem do método: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
+  await legenda('#lista-raizes', 'Naipe', 'Os 6 pilares, na ordem: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
   await limpar();
   await tocar('.raiz-card:nth-child(2)');
   await espera(600);
   await p.evaluate(() => document.querySelector('.ramificacao').scrollIntoView({ block: 'start', behavior: 'smooth' }));
   await espera(900);
-  await legenda('.exercicio-item.proximo', 'Dentro da raiz', 'Cada ramificação tem exercícios com metrônomo e prazo. O próximo a fazer fica em destaque.', 4200, 'baixo');
+  await legenda('.exercicio-item.proximo', 'Dentro do pilar', 'Cada Dica de Naipe tem exercícios com metrônomo e prazo. O próximo a fazer fica em destaque.', 4200, 'baixo');
   await legenda('.indicados', 'Indicado pelo professor', 'Os materiais escolhidos para esta etapa, em ordem de uso: livros, partituras e play-alongs.', 4200, 'cima');
 
   await limpar();
@@ -138,7 +138,7 @@ const CSS = `
   await legenda('.busca', 'Métodos', 'Busque um assunto, como staccato ou terças, e veja em que página de cada método ele está.', 4200, 'baixo');
   await limpar();
   await tocar('.abas a[data-aba="diario"]');
-  await legenda('#lista-sessoes', 'Diário', 'Todas as suas práticas, com o tempo, a raiz estudada e as suas anotações.', 3800, 'baixo');
+  await legenda('#lista-sessoes', 'Diário', 'Todas as suas práticas, com o tempo, o pilar estudado e as suas anotações.', 3800, 'baixo');
   await limpar();
   await tocar('.abas a[data-aba="inicio"]');
   await espera(400);

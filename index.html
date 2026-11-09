@@ -86,8 +86,8 @@
 
         <div class="cartao gratis-cartao" id="cartao-gratis" hidden>
           <p class="gratis-selo">Versão grátis</p>
-          <h2>A raiz Escuta já é minha. Faltam mais 5.</h2>
-          <p class="mudo">No Naipe completo você libera as 6 raízes, o Tocar junto com mais de 40 play-alongs, as partituras em Mib e Sib e o acervo de métodos.</p>
+          <h2>O pilar Escuta já é meu. Faltam mais 5.</h2>
+          <p class="mudo">No Naipe completo você libera os 6 pilares, o Tocar junto com mais de 40 play-alongs, as partituras em Mib e Sib e o acervo de métodos.</p>
           <div class="linha-botoes">
             <a class="btn primario" data-conhecer target="_blank" rel="noopener" href="#">Conhecer o Naipe</a>
             <a class="btn" href="#/ajustes">Já tenho o código</a>
@@ -100,28 +100,26 @@
           <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
         </div>
 
-        <div class="cartao">
-          <div class="cartao-topo"><h2><span data-icone="calendario"></span>Próximos prazos</h2></div>
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
           <ul class="lista-prazos" id="lista-prazos"></ul>
-          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra uma raiz ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
-        </div>
+          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra um pilar ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
+        </details>
 
-        <div class="cartao">
-          <div class="cartao-topo">
-            <h2><span data-icone="alvo"></span>Meta semanal</h2>
-            <span class="mudo" id="meta-texto"></span>
-          </div>
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="alvo"></span><span class="rec-txt"><strong>Meta semanal</strong><small id="meta-texto"></small></span><span class="rec-seta" data-icone="seta"></span></summary>
           <div class="barra grossa"><div class="barra-preenchida arco" id="meta-barra"></div></div>
           <div class="semana" id="semana"></div>
-        </div>
+        </details>
 
-        <div class="cartao">
-          <div class="cartao-topo"><h2><span data-icone="diario"></span>Relatório para o professor</h2></div>
-          <p class="mudo" id="relatorio-dica">Envie o resumo dos seus últimos 7 dias pelo WhatsApp: minutos, raízes estudadas, exercícios concluídos, andamentos e anotações.</p>
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="diario"></span><span class="rec-txt"><strong>Relatório para o professor</strong><small>Envie o resumo da semana pelo WhatsApp</small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <p class="mudo" id="relatorio-dica">Envie o resumo dos seus últimos 7 dias pelo WhatsApp: minutos, pilares estudados, exercícios concluídos, andamentos e anotações.</p>
           <button class="btn primario largo" id="btn-relatorio" type="button">Enviar relatório pelo WhatsApp</button>
-        </div>
+        </details>
 
         <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
+        <button class="link-acao ajuda-link" type="button" data-abrir-ajuda>Como usar o Naipe</button>
       </div>
     </section>
 
@@ -129,8 +127,8 @@
     <section id="tela-raizes" class="tela">
       <header class="cabecalho">
         <p class="sobretitulo">Meu passo a passo</p>
-        <h1>Naipe</h1>
-        <p class="mudo">Toda árvore forte nasce de raízes profundas. Siga na ordem e no seu ritmo: cada raiz prepara o terreno para a próxima.</p>
+        <h1>Pilares</h1>
+        <p class="mudo">Seis pilares para um som firme. Siga na ordem e no seu ritmo: cada pilar prepara o próximo.</p>
       </header>
       <div class="grade-raizes" id="lista-raizes"></div>
     </section>
@@ -204,6 +202,8 @@
         <button class="btn primario" type="submit">Salvar</button>
       </form>
 
+      <button class="btn largo ajuda-btn" type="button" data-abrir-ajuda><span data-icone="lampada"></span>Como usar o Naipe</button>
+
       <div class="cartao" id="cartao-acesso" hidden></div>
 
       <div class="cartao backup-cartao">
@@ -239,7 +239,7 @@
 
   <nav class="abas">
     <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
-    <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Raízes</a>
+    <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Pilares</a>
     <a href="#/tocar" data-aba="tocar"><span data-icone="fone"></span>Tocar junto</a>
     <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
     <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
@@ -275,6 +275,21 @@
     <p class="mudo af-aviso">O som do microfone é analisado só no meu celular. Nada é gravado nem enviado.</p>
   </dialog>
 
+  <dialog id="dlg-ajuda" class="ajuda-dlg" aria-labelledby="ajuda-titulo">
+    <div class="cartao-topo"><h2 id="ajuda-titulo">Como usar o Naipe</h2><button class="link-acao" id="ajuda-fechar" type="button">Fechar</button></div>
+    <ol class="ajuda-passos">
+      <li><span class="aj-ic" data-icone="raizes"></span><span><strong>Meu percurso</strong><small>Toque num pilar para ver as Dicas de Naipe e os exercícios. Siga na ordem e comece pela Escuta.</small></span></li>
+      <li><span class="aj-ic" data-icone="play"></span><span><strong>Começar os estudos</strong><small>Ligue o cronômetro quando pegar o sax. Ao terminar, toque em Finalizar e a prática vai para o Diário.</small></span></li>
+      <li><span class="aj-ic" data-icone="metronomo"></span><span><strong>Metrônomo e afinador</strong><small>Ficam logo abaixo. O metrônomo continua tocando quando você fecha a janela; para parar, toque no ■ no topo da tela.</small></span></li>
+      <li><span class="aj-ic" data-icone="lampada"></span><span><strong>Dica de estudo</strong><small>Três passos para hoje: aquecer, fazer o exercício da vez e tocar junto. Toque na bolinha para marcar o que já fez.</small></span></li>
+      <li><span class="aj-ic" data-icone="nota"></span><span><strong>Dentro do exercício</strong><small>Leia o “Como fazer”, abra o metrônomo no andamento indicado, grave e compare. Toque em Concluí quando estiver limpo.</small></span></li>
+      <li><span class="aj-ic" data-icone="livro"></span><span><strong>Selo amarelo</strong><small>Nos métodos, toque no selo amarelo (p. 27, Ex. 1–5) para abrir o livro e vá à página indicada.</small></span></li>
+      <li><span class="aj-ic" data-icone="fone"></span><span><strong>Abas de baixo</strong><small>Tocar junto: play-alongs por estilo. Métodos: busque um assunto. Diário: suas práticas e gráficos.</small></span></li>
+      <li><span class="aj-ic" data-icone="engrenagem"></span><span><strong>Engrenagem</strong><small>Nome, sax, meta da semana, cor do app, backup do progresso e código de acesso.</small></span></li>
+    </ol>
+    <button class="btn primario largo" id="ajuda-ok" type="button">Entendi</button>
+  </dialog>
+
   <dialog id="dlg-busca" class="busca-dlg" aria-label="Buscar no app">
     <div class="busca-topo">
       <label class="busca"><span data-icone="busca"></span><input type="search" id="busca-geral" placeholder="Buscar exercício, música, assunto…" autocomplete="off"></label>
@@ -288,7 +303,7 @@
     <section data-passo="1">
       <svg class="bv-sax" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="#C9A24B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>
       <h2 id="bv-titulo">Bem-vindo ao Naipe</h2>
-      <p class="mudo">Meu estudo de saxofone organizado em 6 raízes, com metrônomo, play-alongs e diário. Tudo na palma da mão.</p>
+      <p class="mudo">Meu estudo de saxofone organizado em 6 pilares, com metrônomo, play-alongs e diário. Tudo na palma da mão.</p>
       <label class="bv-campo" for="bv-nome">Meu nome é</label>
       <input type="text" id="bv-nome" maxlength="40" autocomplete="given-name" placeholder="Meu nome">
       <button class="btn primario largo" type="button" data-bv-prox>Continuar</button>
@@ -341,7 +356,7 @@
           <input type="number" id="s-minutos" min="1" max="600" required>
         </label>
       </div>
-      <label>Raiz
+      <label>Pilar
         <select id="s-raiz"><option value="">— geral —</option></select>
       </label>
       <label>Exercício

@@ -292,7 +292,7 @@
       if (tipo === "r" && RAIZ[id]) {
         const p = progressoRaiz(RAIZ[id]);
         if (p.completa) continue;
-        itens.push({ iso, raiz: RAIZ[id], titulo: RAIZ[id].titulo, contexto: `Raiz · ${p.feitos}/${p.total} exercícios`, href: `#/raiz/${id}` });
+        itens.push({ iso, raiz: RAIZ[id], titulo: RAIZ[id].titulo, contexto: `Pilar · ${p.feitos}/${p.total} exercícios`, href: `#/raiz/${id}` });
       } else if (tipo === "e" && EXERCICIO[id] && !feito(id)) {
         const { ex, raiz } = EXERCICIO[id];
         itens.push({ iso, raiz, titulo: ex.titulo, contexto: raiz.titulo, href: `#/ex/${id}` });
@@ -380,7 +380,7 @@
       const { x, y } = pontas[i];
       const d = `M${origem.x} ${origem.y} C${origem.x} ${origem.y + 50}, ${x} ${y - 70}, ${x} ${y}`;
       const p = progressoRaiz(raiz);
-      return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="Raiz ${i + 1}: ${escapar(raiz.titulo)}, ${p.pct}% concluída" style="color:${escapar(raiz.cor)}">
+      return `<a href="#/raiz/${encodeURIComponent(raiz.id)}" aria-label="${i + 1}º pilar: ${escapar(raiz.titulo)}, ${p.pct}% concluído" style="color:${escapar(raiz.cor)}">
         <path d="${d}" class="raiz-base"/>
         ${p.pct ? `<path d="${d}" pathLength="100" class="raiz-cor" stroke-dasharray="${p.pct} 100"/>` : ""}
         <circle cx="${x}" cy="${y}" r="7" class="pulso-no" style="animation-delay:${(i * 0.35).toFixed(2)}s"/>
@@ -392,7 +392,7 @@
     }).join("");
     const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
       .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 296" role="img" style="--sobe:-18px" aria-label="Meu percurso: um saxofone e as seis raízes do Naipe">
+    return `<svg viewBox="0 0 ${larg} 296" role="img" style="--sobe:-18px" aria-label="Meu percurso: um saxofone e os seis pilares do Naipe">
       <defs>
         <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>
@@ -468,11 +468,11 @@
 
     const totalFeitos = Object.keys(estado.feitos).filter(id => EXERCICIO[id]).length;
     const pctTotal = TOTAL_EXERCICIOS ? Math.round((totalFeitos / TOTAL_EXERCICIOS) * 100) : 0;
-    $("#arvore").innerHTML = arvoreSVG() + `<span class="dica-toque">${icone("seta")}Toque numa raiz para abrir</span>`;
+    $("#arvore").innerHTML = arvoreSVG() + `<span class="dica-toque">${icone("seta")}Toque num pilar para abrir</span>`;
     $("#percurso-pct").textContent = `${pctTotal}%`;
     $("#arvore-legenda").textContent = pctTotal === 0
-      ? "Comece pela Escuta: cada exercício concluído aprofunda uma raiz."
-      : pctTotal === 100 ? "Percurso completo. Todas as raízes do Naipe foram trabalhadas."
+      ? "Comece pela Escuta: cada exercício concluído fortalece um pilar."
+      : pctTotal === 100 ? "Percurso completo. Todos os pilares do Naipe foram trabalhados."
       : `${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios concluídos.`;
 
     renderEstudoDia();
@@ -500,6 +500,7 @@
 
     const prazos = proximosPrazos().slice(0, 5);
     $("#prazos-vazio").hidden = prazos.length > 0;
+    $("#prazos-resumo").textContent = prazos.length ? `${prazos.length} ${prazos.length === 1 ? "prazo marcado" : "prazos marcados"}` : "Nenhum prazo marcado";
     $("#lista-prazos").innerHTML = prazos.map(p => {
       const s = statusPrazo(p.iso, false);
       return `<li><a class="prazo-item" href="${p.href}" style="${corRaiz(p.raiz)}">
@@ -535,7 +536,7 @@
         </span>
         ${seloPrazo("r:" + raiz.id, p.completa)}
       </a>`;
-    }).join("") || `<p class="vazio">Nenhuma raiz publicada ainda.</p>`;
+    }).join("") || `<p class="vazio">Nenhum pilar publicado ainda.</p>`;
   }
 
   function htmlReferencias(refs) {
@@ -607,10 +608,10 @@
     const contagem = {};
     for (const i of INDICACOES) if (ramos.has(i.ramo)) contagem[i.livro] = (contagem[i.livro] || 0) + 1;
     const livros = Object.keys(contagem).sort((a, b) => contagem[b] - contagem[a]);
-    const cabeca = `<h2>${icone("livro")}Métodos desta raiz</h2>`;
-    const resumo = `<summary class="drive-topo">${icone("livro")}<span><strong>Métodos desta raiz</strong><small>${livros.length} ${livros.length === 1 ? "método" : "métodos"}${pasta ? " · pasta no Drive" : ""}</small></span>${icone("seta", "ram-seta")}</summary>`;
+    const cabeca = `<h2>${icone("livro")}Métodos deste pilar</h2>`;
+    const resumo = `<summary class="drive-topo">${icone("livro")}<span><strong>Métodos deste pilar</strong><small>${livros.length} ${livros.length === 1 ? "método" : "métodos"}${pasta ? " · pasta no Drive" : ""}</small></span>${icone("seta", "ram-seta")}</summary>`;
     if (!livros.length && !pasta) {
-      return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos desta raiz serão publicados em breve pelo professor.</p></div>`;
+      return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos deste pilar serão publicados em breve pelo professor.</p></div>`;
     }
     return `<details class="cartao drive">${resumo}
       ${livros.length ? `<p class="mudo">Em cada Dica de Naipe, a aba “Métodos” mostra a página exata de cada assunto.</p>
@@ -618,7 +619,7 @@
         <strong>${escapar(LIVROS[k].autor || LIVROS[k].titulo)}</strong><span>${escapar(LIVROS[k].autor ? LIVROS[k].titulo : "")}</span><em>${contagem[k]}</em>
       </a>`).join("")}</div>` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">
-        ${icone("pasta")}<span>Abrir a pasta desta raiz no Drive</span>${icone("externo", "material-seta")}
+        ${icone("pasta")}<span>Abrir a pasta deste pilar no Drive</span>${icone("externo", "material-seta")}
       </a>` : ""}
     </details>`;
   }
@@ -635,7 +636,7 @@
       <header class="cabecalho">
         <p class="sobretitulo">Biblioteca</p>
         <h1>Métodos</h1>
-        <p class="mudo">Cada método tem muitos assuntos. Aqui você vê em que página está cada um e em qual raiz ele se encaixa.</p>
+        <p class="mudo">Cada método tem muitos assuntos. Aqui você vê em que página está cada um e em qual pilar ele se encaixa.</p>
       </header>
       <div class="corpo-metodos">
         <label class="busca">${icone("busca")}<input type="search" id="busca-metodos" placeholder="Buscar assunto: staccato, terças, trinado…" value="${escapar(buscaMetodos)}" autocomplete="off"></label>
@@ -791,7 +792,7 @@
     const exs = exerciciosDaRaiz(raiz).length;
     $("#raiz-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
       <header class="banda">
-        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
+        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Pilares</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
         <h1>${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(indice)}</span></h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
@@ -799,7 +800,7 @@
       <div class="corpo">
         <div class="cartao bloqueio">
           <span class="bloqueio-ic">${icone("cadeado")}</span>
-          <h2>Esta raiz faz parte do Naipe completo</h2>
+          <h2>Este pilar faz parte do Naipe completo</h2>
           <p class="mudo">${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
           <ul class="bloqueio-lista">${(raiz.ramificacoes || []).map(ram => `<li>${escapar(ram.titulo)}</li>`).join("")}</ul>
           <p class="mudo">${(raiz.ramificacoes || []).length} Dicas de Naipe · ${exs} exercícios com metrônomo e prazos · aulas em vídeo</p>
@@ -824,7 +825,7 @@
     const proxima = RAIZES[indice + 1];
     $("#raiz-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
       <header class="banda">
-        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Raízes</a>
+        <a class="btn-voltar" href="#/raizes">${icone("voltar")}Pilares</a>
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
         <h1>${escapar(raiz.titulo)} <span class="pilar-selo">${pilar(indice)}</span></h1>
         ${raiz.frase ? `<p class="banda-frase">${escapar(raiz.frase)}</p>` : ""}
@@ -839,7 +840,7 @@
         <div class="cartao progresso-raiz">
           ${anel(p.pct, `${p.feitos} de ${p.total}`)}
           <div class="progresso-lado">
-            ${campoPrazo("r:" + raiz.id, "Meu prazo para esta raiz")}
+            ${campoPrazo("r:" + raiz.id, "Meu prazo para este pilar")}
             ${seloPrazo("r:" + raiz.id, p.completa)}
           </div>
         </div>
@@ -873,7 +874,7 @@
 
         ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">
           <span class="mini-ilus">${ilustracao(proxima.icone)}</span>
-          <span><span class="mudo">Próxima raiz</span><strong>${escapar(proxima.titulo)}</strong></span>
+          <span><span class="mudo">Próximo pilar</span><strong>${escapar(proxima.titulo)}</strong></span>
           ${icone("seta")}
         </a>` : ""}
       </div>
@@ -981,7 +982,7 @@
       } else {
         estado.feitos[id] = hojeISO();
         const raiz = EXERCICIO[id].raiz;
-        if (progressoRaiz(raiz).completa) celebrar(`Raiz ${raiz.titulo} completa!`, "Todos os exercícios desta raiz foram concluídos.", "trofeu");
+        if (progressoRaiz(raiz).completa) celebrar(`Pilar ${raiz.titulo} completo!`, "Todos os exercícios deste pilar foram concluídos.", "trofeu");
         else celebrar("Exercício concluído", EXERCICIO[id].ex.titulo, "check");
       }
       salvar(); renderTela();
@@ -1365,7 +1366,7 @@
     const raiz = RAIZ[raizId];
     const sel = $("#s-exercicio");
     sel.disabled = !raiz;
-    sel.innerHTML = `<option value="">${raiz ? "— nenhum —" : "— escolha a raiz —"}</option>` + (raiz ? (raiz.ramificacoes || []).map(ram =>
+    sel.innerHTML = `<option value="">${raiz ? "— nenhum —" : "— escolha o pilar —"}</option>` + (raiz ? (raiz.ramificacoes || []).map(ram =>
       `<optgroup label="${escapar(ram.titulo)}">${(ram.exercicios || []).map(ex =>
         `<option value="${escapar(ex.id)}">${escapar(ex.titulo)}</option>`).join("")}</optgroup>`).join("") : "");
     sel.value = selecionado && EXERCICIO[selecionado]?.raiz.id === raizId ? selecionado : "";
@@ -1538,7 +1539,7 @@
     if (ACESSO) {
       cartao.innerHTML = estado.desbloqueado
         ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Naipe completo liberado neste aparelho.</p>`
-        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Naipe completo.</p>
+        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: o pilar Escuta está aberto. Os outros cinco pilares fazem parte do Naipe completo.</p>
            <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}`;
     }
   }
@@ -1695,7 +1696,7 @@
       sobre: `${prox.raiz.titulo} · ${pilar(RAIZES.indexOf(prox.raiz))}`, titulo: prox.ex.titulo, sub: prox.ram.titulo };
     else if (temBloqueio()) { const bloq = RAIZES.find(r => !liberada(r)); ex = { href: `#/raiz/${encodeURIComponent(bloq.id)}`, estilo: corRaiz(bloq), ilus: ilustracao(bloq.icone),
       sobre: "Próximo passo", titulo: `Desbloqueie ${bloq.titulo}`, sub: "Você concluiu a parte grátis" }; }
-    else ex = { href: "#/raizes", estilo: "", ilus: icone("trofeu"), sobre: "Percurso completo", titulo: "Revise uma raiz", sub: "Escolha um exercício para aprofundar" };
+    else ex = { href: "#/raizes", estilo: "", ilus: icone("trofeu"), sobre: "Percurso completo", titulo: "Revise um pilar", sub: "Escolha um exercício para aprofundar" };
 
     // Passo 3: tocar junto (ou escuta ativa com a rádio na versão grátis)
     const pa = playAlongDoDia();
@@ -2151,7 +2152,7 @@
       .filter(([chave, iso]) => diasAte(iso) < 0 && (chave[0] === "e" ? EXERCICIO[chave.slice(2)] && !feito(chave.slice(2)) : RAIZ[chave.slice(2)] && !progressoRaiz(RAIZ[chave.slice(2)]).completa))
       .map(([chave, iso]) => {
         const id = chave.slice(2);
-        const titulo = chave[0] === "e" ? EXERCICIO[id].ex.titulo : `Raiz ${RAIZ[id].titulo}`;
+        const titulo = chave[0] === "e" ? EXERCICIO[id].ex.titulo : `Pilar ${RAIZ[id].titulo}`;
         return `• ${titulo} (venceu em ${deISO(iso).toLocaleDateString("pt-BR")})`;
       });
 
@@ -2170,7 +2171,7 @@
     l.push(`📅 *Dias praticados:* ${dias} de 7 · sequência atual de ${calcularSequencia(minutosPorDia())} dia(s)`);
     if (media) l.push(`⭐ *Avaliação média:* ${AVALIACOES[media - 1]}`);
     if (Object.keys(porRaiz).length) {
-      l.push("", "*Tempo por raiz:*");
+      l.push("", "*Tempo por pilar:*");
       Object.entries(porRaiz).sort((a, b) => b[1] - a[1]).forEach(([n, m]) => l.push(`• ${n}: ${formatarMinutos(m)}`));
     }
     if (concluidos.length) l.push("", "✅ *Concluídos na semana:*", ...concluidos);
@@ -2297,7 +2298,7 @@
   function montarIndice() {
     const itens = [];
     for (const raiz of RAIZES) {
-      itens.push({ tipo: "Raiz", t: raiz.titulo, sub: raiz.resumo || "", href: `#/raiz/${raiz.id}`, raiz });
+      itens.push({ tipo: "Pilar", t: raiz.titulo, sub: raiz.resumo || "", href: `#/raiz/${raiz.id}`, raiz });
       for (const ram of raiz.ramificacoes || []) {
         itens.push({ tipo: "Dica", t: ram.titulo, sub: raiz.titulo, href: `#/raiz/${raiz.id}`, raiz });
         for (const ex of ram.exercicios || []) itens.push({ tipo: "Exercício", t: ex.titulo, sub: `${raiz.titulo} · ${ram.titulo}`, href: `#/ex/${ex.id}`, raiz });
@@ -2317,10 +2318,10 @@
     if (q.length < 2) { alvo.innerHTML = `<p class="vazio-mini">Digite pelo menos 2 letras: um exercício, uma música, um saxofonista, um assunto…</p>`; return; }
     const partes = q.split(/\s+/);
     const achados = INDICE_BUSCA.filter(it => partes.every(p => it.chave.includes(p)) && !(it.pago && temBloqueio()));
-    const ordem = ["Exercício", "Raiz", "Dica", "Play-along", "Ouvir", "Assunto", "Método"];
+    const ordem = ["Exercício", "Pilar", "Dica", "Play-along", "Ouvir", "Assunto", "Método"];
     achados.sort((a, b) => ordem.indexOf(a.tipo) - ordem.indexOf(b.tipo) || (semAcento(a.t).startsWith(q) ? -1 : 0));
     alvo.innerHTML = achados.length ? achados.slice(0, 40).map(it => {
-      const bloqueado = it.raiz && !liberada(it.raiz) && it.tipo !== "Raiz";
+      const bloqueado = it.raiz && !liberada(it.raiz) && it.tipo !== "Pilar";
       return `<li><a class="busca-item" href="${escapar(it.href)}"${it.externo ? ' target="_blank" rel="noopener"' : ""} ${it.raiz ? `style="${corRaiz(it.raiz)}"` : ""}>
         <span class="busca-tipo">${escapar(it.tipo)}</span>
         <span class="busca-texto"><strong>${escapar(it.t)}</strong><small>${escapar(it.sub)}</small></span>
@@ -2335,6 +2336,12 @@
     setTimeout(() => inp.focus(), 50);
   }
   $("#btn-busca").addEventListener("click", abrirBusca);
+
+  // Como usar o Naipe
+  const dlgAjuda = $("#dlg-ajuda");
+  document.addEventListener("click", ev => { if (ev.target.closest("[data-abrir-ajuda]")) dlgAjuda.showModal(); });
+  $("#ajuda-fechar").addEventListener("click", () => dlgAjuda.close());
+  $("#ajuda-ok").addEventListener("click", () => dlgAjuda.close());
   $("#busca-geral").addEventListener("input", ev => buscar(ev.target.value));
   $("#busca-fechar").addEventListener("click", () => dlgBusca.close());
   $("#busca-lista").addEventListener("click", ev => { const a = ev.target.closest("a"); if (a && !a.target) dlgBusca.close(); });

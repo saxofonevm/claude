@@ -1322,3 +1322,33 @@ h1 .pilar-selo { font-size: .9rem; }
 .btn-afinador strong { font-size: 1.3rem; font-weight: 800; color: var(--brass-soft); }
 .btn-metronomo-texto, .btn-afinador > span:last-child { min-width: 14.2rem; }
 .hoje .estudo-dia { margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); }
+/* Cartões recolhidos do Início (prazos, meta, relatório) */
+details.recolhe { padding: 0; }
+details.recolhe > summary { list-style: none; display: flex; align-items: center; gap: 12px; padding: 14px 16px; cursor: pointer; }
+details.recolhe > summary::-webkit-details-marker { display: none; }
+details.recolhe .rec-ic { flex: none; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: color-mix(in srgb, var(--brass) 16%, transparent); color: var(--brass-soft); }
+details.recolhe .rec-ic .ic { width: 20px; height: 20px; }
+details.recolhe .rec-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+details.recolhe .rec-txt strong { font-weight: 700; font-size: 1rem; }
+details.recolhe .rec-txt small { color: var(--muted); font-size: .82rem; }
+details.recolhe .rec-seta { flex: none; color: var(--muted); transition: transform .2s; }
+details.recolhe .rec-seta .ic { width: 18px; height: 18px; }
+details.recolhe[open] .rec-seta { transform: rotate(90deg); }
+details.recolhe > :not(summary) { margin: 0 16px; }
+details.recolhe > :last-child:not(summary) { margin-bottom: 16px; }
+details.recolhe > summary + * { margin-top: 2px; }
+/* Como usar o Naipe */
+.ajuda-dlg { display: none; flex-direction: column; gap: 14px; width: min(480px, calc(100vw - 24px)); }
+.ajuda-dlg[open] { display: flex; }
+.ajuda-dlg .cartao-topo { justify-content: center; position: relative; }
+.ajuda-dlg h2 { width: 100%; text-align: center; justify-content: center; font-size: 1.4rem; }
+#ajuda-fechar { position: absolute; right: 0; }
+.ajuda-passos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+.ajuda-passos li { display: flex; gap: 12px; align-items: flex-start; }
+.ajuda-passos .aj-ic { flex: none; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); }
+.ajuda-passos .aj-ic .ic { width: 22px; height: 22px; }
+.ajuda-passos strong { display: block; font-size: .98rem; }
+.ajuda-passos small { display: block; color: var(--muted); font-size: .86rem; line-height: 1.4; margin-top: 2px; }
+.ajuda-btn { gap: 8px; color: var(--brass-soft); }
+.ajuda-btn .ic { width: 20px; height: 20px; }
+.ajuda-link { align-self: center; display: block; margin: 4px auto 0; color: var(--brass-soft); }
