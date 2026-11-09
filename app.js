@@ -435,7 +435,7 @@
     const faixa = $("#letreiro-radio-faixa");
     if (!faixa) return;
     const tocando = typeof radio !== "undefined" && (radio.tocando || radio.carregando);
-    const texto = tocando && radio.estacao ? `Rádio Naipe · ${radio.estacao.nome}` : "Rádio Naipe";
+    const texto = tocando && radio.estacao ? `Rádio Naipe · ${radio.estacao.nome}` : "Ouvir a Rádio Naipe";
     if (faixa.dataset.texto === texto) return;
     faixa.dataset.texto = texto;
     faixa.innerHTML = `<span>${escapar(texto)}</span>`;
