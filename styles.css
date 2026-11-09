@@ -1296,3 +1296,9 @@ h1 .pilar-selo { font-size: .9rem; }
 .ed-ic .ic { width: 32px; height: 32px; stroke-width: 1.8; }
 .ed-ic .ilus { width: 42px; height: 42px; }
 .ed-acao { gap: 14px; padding: 14px 12px; }
+
+/* Rádio e frase do dia fixos (sem movimento) */
+.letreiro-radio-janela { -webkit-mask-image: none; mask-image: none; text-align: center; }
+.letreiro-radio-faixa { animation: none; width: auto; justify-content: center; }
+.letreiro-radio-faixa span { font-size: .95rem; font-weight: 700; letter-spacing: .02em; padding: 0; overflow: hidden; text-overflow: ellipsis; }
+.frase-dia blockquote { max-width: none; font-size: 1.15rem; }

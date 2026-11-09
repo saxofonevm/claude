@@ -436,12 +436,10 @@
     const faixa = $("#letreiro-radio-faixa");
     if (!faixa) return;
     const tocando = typeof radio !== "undefined" && (radio.tocando || radio.carregando);
-    const texto = tocando
-      ? `Tocando agora: ${radio.estacao ? radio.estacao.nome : "Rádio Naipe"} · toque para trocar de estação · `
-      : "Rádio Naipe · toque aqui para ouvir jazz e música brasileira ao vivo enquanto estuda · ";
+    const texto = tocando && radio.estacao ? `Rádio Naipe · ${radio.estacao.nome}` : "Rádio Naipe";
     if (faixa.dataset.texto === texto) return;
     faixa.dataset.texto = texto;
-    faixa.innerHTML = `<span>${escapar(texto)}</span><span>${escapar(texto)}</span>`;
+    faixa.innerHTML = `<span>${escapar(texto)}</span>`;
     const bt = $("#letreiro-radio");
     bt.classList.toggle("tocando", tocando);
     const pl = bt.querySelector(".letreiro-radio-play");
