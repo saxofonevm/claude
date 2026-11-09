@@ -374,7 +374,7 @@
     const larg = 340, origem = { x: 170, y: 142 };
     const pontas = RAIZES.map((_, i) => {
       const t = n === 1 ? 0.5 : i / (n - 1);
-      return { x: 34 + t * (larg - 68), y: 236 };
+      return { x: 26 + t * (larg - 52), y: 236 };
     });
     const raizes = RAIZES.map((raiz, i) => {
       const { x, y } = pontas[i];
@@ -386,14 +386,13 @@
         <circle cx="${x}" cy="${y}" r="7" class="pulso-no" style="animation-delay:${(i * 0.35).toFixed(2)}s"/>
         <circle cx="${x}" cy="${y}" r="16" class="alvo-toque"/>
         <circle cx="${x}" cy="${y}" r="7" class="${p.feitos ? "no cheio" : "no"}"/>
-        <text x="${x}" y="${y + (i % 2 ? 62 : 28)}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
-        <text x="${x}" y="${y + (i % 2 ? 77 : 43)}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
-        ${i % 2 ? `<line x1="${x}" y1="${y + 11}" x2="${x}" y2="${y + 47}" class="raiz-guia"/>` : ""}
+        <text x="${x}" y="${y + 28}" text-anchor="middle" class="raiz-nome">${escapar(raiz.curto || raiz.titulo)}</text>
+        <text x="${x}" y="${y + 43}" text-anchor="middle" class="raiz-pct">${p.pct}%</text>
       </a>`;
     }).join("");
     const chaves = [[161, 68], [159, 82], [157, 96], [155, 110], [153, 123]]
       .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="4.2" class="sax-chave"/>`).join("");
-    return `<svg viewBox="0 0 ${larg} 330" role="img" style="--sobe:-18px" aria-label="Meu percurso: um saxofone e as seis raízes do Naipe">
+    return `<svg viewBox="0 0 ${larg} 296" role="img" style="--sobe:-18px" aria-label="Meu percurso: um saxofone e as seis raízes do Naipe">
       <defs>
         <linearGradient id="latao" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0" stop-color="#fbe3a4"/><stop offset=".45" stop-color="#d9a547"/><stop offset="1" stop-color="#8a5a1c"/>

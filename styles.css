@@ -1302,3 +1302,12 @@ h1 .pilar-selo { font-size: .9rem; }
 .letreiro-radio-faixa { animation: none; width: auto; justify-content: center; }
 .letreiro-radio-faixa span { font-size: .95rem; font-weight: 700; letter-spacing: .02em; padding: 0; overflow: hidden; text-overflow: ellipsis; }
 .frase-dia blockquote { max-width: none; font-size: 1.15rem; }
+/* Meu percurso: nomes das raízes numa linha só, bem espaçados */
+.arvore .raiz-nome { font: 600 9.6px var(--f-body); letter-spacing: -.01em; }
+.arvore .raiz-pct { font: 700 9.6px var(--f-body); }
+.percurso-cartao .arvore { margin-inline: -8px; }
+/* Frase do dia: rótulo centralizado em cima, frase embaixo */
+.frase-dia { border-left: 0; padding: 0; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.frase-dia figcaption { margin: 0; display: flex; align-items: center; gap: 10px; color: var(--brass-soft); font-weight: 700; letter-spacing: .2em; }
+.frase-dia figcaption::before, .frase-dia figcaption::after { content: ""; width: 26px; height: 1px; background: currentColor; opacity: .8; }
+.frase-dia blockquote { text-align: center; max-width: 30ch; margin: 0 auto; }
