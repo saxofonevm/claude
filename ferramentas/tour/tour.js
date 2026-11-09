@@ -121,7 +121,7 @@ const CSS = `
 
   await limpar();
   await tocar('.abas a[data-aba="raizes"]');
-  await legenda('#lista-raizes', 'Método Naipe', 'As 6 raízes, na ordem do método: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
+  await legenda('#lista-raizes', 'Naipe', 'As 6 raízes, na ordem do método: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', 4400, 'baixo');
   await limpar();
   await tocar('.raiz-card:nth-child(2)');
   await espera(600);

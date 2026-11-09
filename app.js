@@ -94,7 +94,7 @@
     if (pagina) return pagina;
     const prof = CMA.professor || {};
     const numero = String(prof.whatsapp || "").replace(/\D/g, "");
-    const texto = `Olá${prof.nome ? " " + prof.nome.split(" ")[0] : ""}! Quero conhecer o Método Naipe completo.`;
+    const texto = `Olá${prof.nome ? " " + prof.nome.split(" ")[0] : ""}! Quero conhecer o Naipe completo.`;
     return `https://wa.me/${numero}?text=${encodeURIComponent(texto)}`;
   }
 
@@ -112,7 +112,7 @@
     if (!ok) { avisar("Código inválido. Confira com o professor."); return false; }
     estado.desbloqueado = true;
     salvar();
-    avisar("Método Naipe completo liberado!");
+    avisar("Naipe completo liberado!");
     renderTela();
     return true;
   }
@@ -643,7 +643,7 @@
       <div class="corpo-metodos">
         <label class="busca">${icone("busca")}<input type="search" id="busca-metodos" placeholder="Buscar assunto: staccato, terças, trinado…" value="${escapar(buscaMetodos)}" autocomplete="off"></label>
         <div id="busca-resultado"></div>
-        ${(MET.acervo || []).length && temBloqueio() ? `<section class="cartao acervo"><h2>${icone("cadeado")}Acervo de partituras e playbacks</h2><p class="mudo">Partituras em Sib e Mib, mais de 600 músicas com playback, songbooks e métodos. Disponível no Método Naipe completo.</p><a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}</section>` : ""}
+        ${(MET.acervo || []).length && temBloqueio() ? `<section class="cartao acervo"><h2>${icone("cadeado")}Acervo de partituras e playbacks</h2><p class="mudo">Partituras em Sib e Mib, mais de 600 músicas com playback, songbooks e métodos. Disponível no Naipe completo.</p><a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section>` : ""}
         ${(MET.acervo || []).length && !temBloqueio() ? `<section class="cartao acervo"><h2>${icone("pasta")}Acervo de partituras e playbacks</h2><div class="acervo-lista">${MET.acervo.map(x => {
           const href = urlSegura(urlPasta(x.pasta));
           return href ? `<a class="acervo-item" href="${escapar(href)}" target="_blank" rel="noopener"><span><strong>${escapar(x.titulo)}</strong><small>${escapar(x.detalhe || "")}</small></span>${icone("externo")}</a>` : "";
@@ -755,8 +755,8 @@
       <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio Naipe</button></header>`;
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
-        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Método Naipe completo.</p>
-        <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}</section></div>`;
+        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Naipe completo.</p>
+        <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
       return;
     }
     const sax = estado.sax;
@@ -802,11 +802,11 @@
       <div class="corpo">
         <div class="cartao bloqueio">
           <span class="bloqueio-ic">${icone("cadeado")}</span>
-          <h2>Esta raiz faz parte do Método Naipe completo</h2>
+          <h2>Esta raiz faz parte do Naipe completo</h2>
           <p class="mudo">${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
           <ul class="bloqueio-lista">${(raiz.ramificacoes || []).map(ram => `<li>${escapar(ram.titulo)}</li>`).join("")}</ul>
           <p class="mudo">${(raiz.ramificacoes || []).length} Dicas de Naipe · ${exs} exercícios com metrônomo e prazos · aulas em vídeo</p>
-          <a class="btn primario largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>
+          <a class="btn primario largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>
           ${htmlCodigo()}
         </div>
       </div>
@@ -1540,9 +1540,9 @@
     cartao.hidden = !ACESSO;
     if (ACESSO) {
       cartao.innerHTML = estado.desbloqueado
-        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Método Naipe completo liberado neste aparelho.</p>`
-        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Método Naipe completo.</p>
-           <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Método Naipe</a>${htmlCodigo()}`;
+        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Naipe completo liberado neste aparelho.</p>`
+        : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: a raiz Escuta está aberta. As outras cinco raízes fazem parte do Naipe completo.</p>
+           <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}`;
     }
   }
 
@@ -1596,7 +1596,7 @@
     try {
       const arquivo = new File([texto], nome, { type: "application/json" });
       if (navigator.canShare && navigator.canShare({ files: [arquivo] })) {
-        await navigator.share({ files: [arquivo], title: "Backup do Naipe", text: "Backup do meu progresso no Método Naipe" });
+        await navigator.share({ files: [arquivo], title: "Backup do Naipe", text: "Backup do meu progresso no Naipe" });
         feito = true;
       }
     } catch (e) {

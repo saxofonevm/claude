@@ -390,7 +390,7 @@ window.CMA = {
         {
           id: "melodia-metodo",
           titulo: "Como estudar uma frase",
-          descricao: "O método Naipe para qualquer melodia.",
+          descricao: "O jeito Naipe de estudar qualquer melodia.",
           referencias: [
             { titulo: "Stan Getz · Corcovado", detalhe: "Melodia cantável para cantarolar e fatiar", busca: "Stan Getz Corcovado", material: [{ rotulo: "Partitura Sib", arquivo: "1OmiRsZQCVZL6cAfb__oxtrVCnzwoCh2d" }, { rotulo: "Playback", arquivo: "1kq6Hq94CUYkftyFvYr31wP_ZNSAbeRfN" }] },
             { titulo: "Sonny Rollins · St. Thomas", detalhe: "Tema curto e fácil de memorizar", busca: "Sonny Rollins St. Thomas" }
