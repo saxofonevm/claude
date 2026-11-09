@@ -1666,7 +1666,7 @@
     const f = passosFeitos();
     if (f.aq && f.ex && f.tc && !ed.festa) {
       ed.festa = true; salvar();
-      setTimeout(() => celebrar("Sugestão de estudo completa!", "Aquecimento, exercício e tocar junto. Até amanhã!", "trofeu"), 400);
+      setTimeout(() => celebrar("Dica de estudo completa!", "Aquecimento, exercício e tocar junto. Até amanhã!", "trofeu"), 400);
     }
     if (rotaAtual.tela === "inicio") renderEstudoDia();
   }
@@ -1708,7 +1708,7 @@
 
     const check = (k, rot) => `<button class="ed-check" type="button" data-ed-check="${k}" aria-pressed="${f[k]}" aria-label="${f[k] ? "Desmarcar" : "Marcar"} ${rot}">${icone("check")}</button>`;
 
-    caixa.innerHTML = `<div class="ed-topo"><span class="ed-rotulo">${icone("lampada")}Sugestão de estudo</span><span class="ed-conta${total === 3 ? " completo" : ""}">${total === 3 ? `${icone("check")}Completo` : `${total} de 3`}</span></div>
+    caixa.innerHTML = `<div class="ed-topo"><span class="ed-rotulo">${icone("lampada")}Dica de estudo</span><span class="ed-conta${total === 3 ? " completo" : ""}">${total === 3 ? `${icone("check")}Completo` : `${total} de 3`}</span></div>
       <div class="ed-barra"><span style="width:${Math.round(total / 3 * 100)}%"></span></div>
       <ol class="ed-passos">
         <li class="ed-passo${f.aq ? " feito" : ""}">${check("aq", "aquecimento")}

@@ -109,7 +109,7 @@ const CSS = `
 
   await legenda('#letreiro-radio', 'Rádio Naipe', 'Toque no letreiro para ouvir jazz e música brasileira ao vivo enquanto estuda.', 4200, 'baixo');
   await legenda('.frase-dia', 'Frase do dia', 'Uma frase para inspirar o seu estudo. Ela muda todos os dias.', 3600, 'baixo');
-  await legenda('#estudo-dia', 'Sugestão de estudo', 'Três passos para hoje: aquecer com o afinador, fazer o exercício da vez e tocar junto.', 4200, 'cima');
+  await legenda('#estudo-dia', 'Dica de estudo', 'Três passos para hoje: aquecer com o afinador, fazer o exercício da vez e tocar junto.', 4200, 'cima');
   await legenda('#timer-iniciar', 'Cronômetro', 'Toque em Começar ao iniciar o estudo e em Finalizar para registrar a prática.', 4000, 'cima');
   await legenda('#btn-metronomo-inicio', 'Metrônomo', 'Escolha o andamento e toque com o tic-tac. O metrônomo abaixa a rádio sozinho.', 3000, 'cima');
   await tocar('#btn-metronomo-inicio');
