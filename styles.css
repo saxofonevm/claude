@@ -1321,3 +1321,4 @@ h1 .pilar-selo { font-size: .9rem; }
 .btn-afinador > span:last-child { gap: 2px; }
 .btn-afinador strong { font-size: 1.3rem; font-weight: 800; color: var(--brass-soft); }
 .btn-metronomo-texto, .btn-afinador > span:last-child { min-width: 14.2rem; }
+.hoje .estudo-dia { margin-top: 10px; padding-top: 14px; border-top: 1px solid var(--line); }

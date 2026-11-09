@@ -54,7 +54,6 @@
             <span class="rotulo">Hoje</span>
             <span class="timer-estado" id="timer-estado">Parado</span>
           </div>
-          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
           <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
           <div class="timer-meta">
             <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
@@ -62,10 +61,11 @@
           </div>
           <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
           <div class="timer-botoes">
-            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar</button>
+            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
             <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
             <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
           </div>
+          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
           <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
             <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
             <span class="btn-metronomo-texto"><strong>Metrônomo</strong><small>Toque para marcar o tempo do estudo</small></span>

@@ -1319,7 +1319,7 @@
     const temTempo = rodando || t.acumulado > 0;
     $("#cartao-timer").classList.toggle("rodando", rodando);
     $("#timer-estado").textContent = rodando ? "Gravando" : temTempo ? "Pausado" : "Parado";
-    $("#timer-iniciar").lastChild.textContent = temTempo ? "Continuar" : "Começar";
+    $("#timer-iniciar").lastChild.textContent = temTempo ? "Continuar os estudos" : "Começar os estudos";
     $("#timer-iniciar").hidden = rodando;
     $("#timer-pausar").hidden = !rodando;
     $("#timer-finalizar").hidden = !temTempo;
