@@ -328,7 +328,8 @@
   function mostrarTela() {
     const telaId = { ex: "exercicio", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === `tela-${telaId}`));
-    const aba = { raiz: "raizes", ex: "raizes", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
+    const deUmPilar = rotaAtual.tela === "metodo" && typeof pilha !== "undefined" && /^#\/(raiz|ex)\//.test(pilha[pilha.length - 2] || "");
+    const aba = { raiz: "raizes", ex: "raizes", metodo: deUmPilar ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".abas a").forEach(a => a.classList.toggle("ativa", a.dataset.aba === aba));
   }
 
@@ -346,9 +347,47 @@
     }
   }
 
+  // Histórico próprio: o botão voltar leva para a tela anterior, no mesmo ponto.
+  const pilha = [location.hash || "#/inicio"];
+  const posicoes = {};
+  const telaAnterior = () => pilha[pilha.length - 2] || "";
+  function guardarPosicao(hash) {
+    const tela = document.querySelector(".tela.ativa");
+    posicoes[hash] = { y: window.scrollY, abertos: tela ? [...tela.querySelectorAll("details")].map(d => d.open) : [] };
+  }
+  function restaurarPosicao(hash) {
+    const pos = posicoes[hash];
+    if (!pos) return window.scrollTo(0, 0);
+    const tela = document.querySelector(".tela.ativa");
+    const dets = tela ? [...tela.querySelectorAll("details")] : [];
+    if (dets.length === pos.abertos.length) dets.forEach((d, i) => { d.open = pos.abertos[i]; });
+    requestAnimationFrame(() => window.scrollTo(0, pos.y));
+  }
+
   window.addEventListener("hashchange", () => {
     if (grav.gravando) pararGravacao();
-    lerRota(); mostrarTela(); renderTela(); window.scrollTo(0, 0);
+    const novo = location.hash || "#/inicio";
+    guardarPosicao(pilha[pilha.length - 1]);
+    const voltando = pilha.length > 1 && telaAnterior() === novo;
+    if (voltando) pilha.pop(); else pilha.push(novo);
+    if (pilha.length > 50) pilha.splice(0, pilha.length - 50);
+    lerRota(); mostrarTela(); renderTela();
+    if (voltando) restaurarPosicao(novo); else window.scrollTo(0, 0);
+  });
+
+  // Botões "voltar": usam o histórico quando a tela anterior é a de destino
+  document.addEventListener("click", ev => {
+    const v = ev.target.closest("a.btn-voltar");
+    if (!v) return;
+    if (pilha.length > 1 && telaAnterior() === v.getAttribute("href")) { ev.preventDefault(); history.back(); }
+  });
+
+  // "Ver todos os métodos" no cartão do pilar
+  document.addEventListener("click", ev => {
+    const b = ev.target.closest("[data-mp-mais]");
+    if (!b) return;
+    b.closest(".metodos-pilar").querySelectorAll(".mp-extra").forEach(a => { a.hidden = false; });
+    b.remove();
   });
 
   // ---------- Início ----------
@@ -608,20 +647,25 @@
     const contagem = {};
     for (const i of INDICACOES) if (ramos.has(i.ramo)) contagem[i.livro] = (contagem[i.livro] || 0) + 1;
     const livros = Object.keys(contagem).sort((a, b) => contagem[b] - contagem[a]);
-    const cabeca = `<h2>${icone("livro")}Métodos deste pilar</h2>`;
-    const resumo = `<summary class="drive-topo">${icone("livro")}<span><strong>Métodos deste pilar</strong><small>${livros.length} ${livros.length === 1 ? "método" : "métodos"}${pasta ? " · pasta no Drive" : ""}</small></span>${icone("seta", "ram-seta")}</summary>`;
+    const topo = `<div class="mp-topo"><span class="mp-ic">${icone("livro")}</span>
+      <h2>Métodos deste pilar</h2>
+      <p>Os livros que trabalham ${escapar(raiz.titulo)}, já organizados por assunto. Toque num método para ver as páginas e os exercícios certos.</p></div>`;
     if (!livros.length && !pasta) {
-      return `<div class="cartao drive">${cabeca}<p class="mudo">Os métodos deste pilar serão publicados em breve pelo professor.</p></div>`;
+      return `<section class="cartao metodos-pilar">${topo}<p class="mudo">Os métodos deste pilar serão publicados em breve pelo professor.</p></section>`;
     }
-    return `<details class="cartao drive">${resumo}
-      ${livros.length ? `<p class="mudo">Em cada Dica de Naipe, a aba “Métodos” mostra a página exata de cada assunto.</p>
-      <div class="livros-chips">${livros.map(k => `<a class="livro-chip" href="#/metodo/${encodeURIComponent(k)}">
-        <strong>${escapar(LIVROS[k].autor || LIVROS[k].titulo)}</strong><span>${escapar(LIVROS[k].autor ? LIVROS[k].titulo : "")}</span><em>${contagem[k]}</em>
-      </a>`).join("")}</div>` : ""}
+    const VISIVEIS = 6;
+    const item = (k, i) => `<a class="mp-livro${i >= VISIVEIS ? " mp-extra" : ""}" href="#/metodo/${encodeURIComponent(k)}"${i >= VISIVEIS ? " hidden" : ""}>
+        <span class="mp-livro-ic">${icone("pdf")}</span>
+        <span class="mp-livro-txt"><strong>${escapar(LIVROS[k].titulo)}</strong>${LIVROS[k].autor ? `<small>${escapar(LIVROS[k].autor)}</small>` : ""}</span>
+        <em>${contagem[k]} ${contagem[k] === 1 ? "assunto" : "assuntos"}</em>${icone("seta", "mp-seta")}
+      </a>`;
+    return `<section class="cartao metodos-pilar">${topo}
+      ${livros.length ? `<div class="mp-lista">${livros.map(item).join("")}</div>
+      ${livros.length > VISIVEIS ? `<button class="btn largo mp-mais" type="button" data-mp-mais>Ver todos os ${livros.length} métodos</button>` : ""}` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">
         ${icone("pasta")}<span>Abrir a pasta deste pilar no Drive</span>${icone("externo", "material-seta")}
       </a>` : ""}
-    </details>`;
+    </section>`;
   }
 
   // ---------- Biblioteca de métodos ----------
@@ -684,10 +728,18 @@
     const l = LIVROS[chave];
     const href = urlSegura(urlArquivo(l.arquivo));
     const lista = INDICACOES.filter(i => i.livro === chave);
-    const porRaiz = RAIZES.map(raiz => ({ raiz, itens: lista.filter(i => RAMO[i.ramo].raiz === raiz) })).filter(g => g.itens.length);
+    const origem = (telaAnterior().match(/^#\/raiz\/(.+)$/) || [])[1];
+    const porRaiz = RAIZES.map(raiz => ({ raiz, itens: lista.filter(i => RAMO[i.ramo].raiz === raiz) })).filter(g => g.itens.length)
+      .sort((a, b) => (b.raiz.id === decodeURIComponent(origem || "")) - (a.raiz.id === decodeURIComponent(origem || "")));
     $("#metodos-conteudo").innerHTML = `<article>
       <header class="cabecalho">
-        <a class="btn-voltar" href="#/metodos">${icone("voltar")}Métodos</a>
+        ${(() => {
+          const ant = telaAnterior();
+          const m = ant.match(/^#\/(raiz|ex)\/(.+)$/);
+          if (!m) return `<a class="btn-voltar" href="#/metodos">${icone("voltar")}Métodos</a>`;
+          const nome = m[1] === "raiz" ? (RAIZ[decodeURIComponent(m[2])] || {}).titulo : "o exercício";
+          return `<a class="btn-voltar" href="${escapar(ant)}">${icone("voltar")}Voltar para ${escapar(nome || "o pilar")}</a>`;
+        })()}
         <p class="sobretitulo">${escapar(l.autor || "Material de apoio")}</p>
         <h1>${escapar(l.titulo)}</h1>
         ${l.nota ? `<p class="mudo">${escapar(l.nota)}</p>` : ""}
@@ -837,6 +889,8 @@
           <p>${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
         </div>
 
+        ${htmlDrive(raiz)}
+
         <div class="cartao progresso-raiz">
           ${anel(p.pct, `${p.feitos} de ${p.total}`)}
           <div class="progresso-lado">
@@ -845,14 +899,12 @@
           </div>
         </div>
 
-        ${htmlDrive(raiz)}
-
         <h2 class="secao">Dicas de Naipe</h2>
         ${(raiz.ramificacoes || []).map((ram, j) => {
           const exs = ram.exercicios || [];
           const fe = exs.filter(e => feito(e.id)).length;
           const aberta = exs.some(e => e.id === proxId) || (!proxId && j === 0);
-          const abas = [["ouvir", "Ouvir", htmlReferencias(ram.referencias)], ["metodos", "Métodos", htmlNosMetodos(ram.id, true)], ["material", "Material", htmlAcervoRamo(ram.id)]].filter(a => a[2]);
+          const abas = [["metodos", `${icone("livro")}Métodos`, htmlNosMetodos(ram.id, true)], ["ouvir", "Ouvir", htmlReferencias(ram.referencias)], ["material", "Material", htmlAcervoRamo(ram.id)]].filter(a => a[2]);
           return `<details class="cartao ramificacao"${aberta ? " open" : ""}>
           <summary class="ram-topo">
             <span class="ram-cab"><span class="ram-num">Dica de Naipe ${dois(j + 1)}</span><h3>${escapar(ram.titulo)}</h3></span>

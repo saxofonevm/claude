@@ -1352,3 +1352,28 @@ details.recolhe > summary + * { margin-top: 2px; }
 .ajuda-btn { gap: 8px; color: var(--brass-soft); }
 .ajuda-btn .ic { width: 20px; height: 20px; }
 .ajuda-link { align-self: center; display: block; margin: 4px auto 0; color: var(--brass-soft); }
+
+/* ---------- Métodos deste pilar (destaque) ---------- */
+.metodos-pilar { border: 2px solid color-mix(in srgb, var(--brass) 70%, transparent);
+  background: radial-gradient(90% 70% at 50% 0%, rgb(212 162 76 / .22), transparent 70%), var(--surface);
+  box-shadow: 0 18px 40px -22px var(--brass); display: flex; flex-direction: column; gap: 14px; }
+.mp-topo { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; }
+.mp-ic { width: 56px; height: 56px; border-radius: 16px; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); box-shadow: 0 8px 22px -8px var(--brass); }
+.mp-ic .ic { width: 30px; height: 30px; }
+.mp-topo h2 { margin: 4px 0 0; font-size: 1.45rem; text-transform: uppercase; letter-spacing: .02em; justify-content: center; color: var(--brass-soft); }
+.mp-topo p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.45; max-width: 34ch; }
+.mp-lista { display: flex; flex-direction: column; gap: 8px; }
+.mp-livro { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: var(--raio-sm); text-decoration: none; color: var(--text);
+  background: var(--surface-2); border: 1px solid color-mix(in srgb, var(--brass) 35%, var(--line)); transition: border-color .15s, transform .12s; }
+.mp-livro[hidden] { display: none; }
+.mp-livro:hover { border-color: var(--brass); }
+.mp-livro:active { transform: scale(.98); }
+.mp-livro-ic { flex: none; width: 40px; height: 40px; border-radius: 11px; display: grid; place-items: center; background: color-mix(in srgb, var(--brass) 18%, transparent); color: var(--brass-soft); }
+.mp-livro-ic .ic { width: 22px; height: 22px; }
+.mp-livro-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.mp-livro-txt strong { font-size: .95rem; line-height: 1.25; }
+.mp-livro-txt small { color: var(--muted); font-size: .8rem; }
+.mp-livro em { flex: none; font-style: normal; font-weight: 800; font-size: .74rem; color: var(--on-brass); background: var(--latao); border-radius: 99px; padding: 4px 9px; }
+.mp-seta { flex: none; width: 16px; height: 16px; color: var(--muted); }
+.mp-mais { color: var(--brass-soft); }
+.ram-abas button .ic { width: 16px; height: 16px; margin-right: 5px; vertical-align: -3px; }
