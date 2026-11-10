@@ -377,7 +377,7 @@
 
   // Botões "voltar": usam o histórico quando a tela anterior é a de destino
   document.addEventListener("click", ev => {
-    const v = ev.target.closest("a.btn-voltar");
+    const v = ev.target.closest("a.btn-voltar, a[data-voltar]");
     if (!v) return;
     if (pilha.length > 1 && telaAnterior() === v.getAttribute("href")) { ev.preventDefault(); history.back(); }
   });
@@ -874,7 +874,6 @@
     setTimeout(animarAneis, 0);
     const indice = RAIZES.indexOf(raiz);
     const p = progressoRaiz(raiz);
-    const proxima = RAIZES[indice + 1];
     $("#raiz-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
       <header class="banda">
         <a class="btn-voltar" href="#/raizes">${icone("voltar")}Pilares</a>
@@ -924,11 +923,7 @@
         </details>`;
         }).join("")}
 
-        ${proxima ? `<a class="proxima" href="#/raiz/${encodeURIComponent(proxima.id)}" style="${corRaiz(proxima)}">
-          <span class="mini-ilus">${ilustracao(proxima.icone)}</span>
-          <span><span class="mudo">Próximo pilar</span><strong>${escapar(proxima.titulo)}</strong></span>
-          ${icone("seta")}
-        </a>` : ""}
+        <a class="btn largo contorno voltar-pilares" href="#/raizes" data-voltar>${icone("voltar")}Voltar para os pilares</a>
       </div>
     </article>`;
   }

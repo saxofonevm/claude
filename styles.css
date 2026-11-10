@@ -1377,3 +1377,4 @@ details.recolhe > summary + * { margin-top: 2px; }
 .mp-seta { flex: none; width: 16px; height: 16px; color: var(--muted); }
 .mp-mais { color: var(--brass-soft); }
 .ram-abas button .ic { width: 16px; height: 16px; margin-right: 5px; vertical-align: -3px; }
+.voltar-pilares { gap: 8px; margin-top: 6px; } .voltar-pilares .ic { width: 18px; height: 18px; }
