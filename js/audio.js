@@ -64,21 +64,34 @@
     congaH: [63, 1, 0, 0.9], congaL: [64, 1, 0, 0.9], cow: [56, 1, 0, 0.6],
     clickH: [76, 1, 0, 0.9], clickL: [77, 1, 0, 0.8]
   };
-  var drumBuf = {}, instBuf = {};
+  Object.keys(DRUM).forEach(function (k) { DRUM[k][3] *= 0.7; });
+  var drumBuf = {}, instBuf = {}, pedidos = {}, espera = [];
 
-  function loadPack() {
-    var pack = root.SAMPLE_PACK;
-    if (!pack) return;
-    var decode = function (b64, store, key) {
-      var bin = atob(b64), bytes = new Uint8Array(bin.length);
+  function decodificar(id, mapa) {
+    var store = id === 'drums' ? drumBuf : (instBuf[id.replace(/^i-/, '')] = {});
+    Object.keys(mapa).forEach(function (key) {
+      var bin = atob(mapa[key]), bytes = new Uint8Array(bin.length);
       for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
       ctx.decodeAudioData(bytes.buffer, function (buf) { store[key] = buf; }, function () {});
-    };
-    Object.keys(pack.drums).forEach(function (n) { decode(pack.drums[n], drumBuf, n); });
-    Object.keys(pack.inst).forEach(function (id) {
-      instBuf[id] = {};
-      Object.keys(pack.inst[id]).forEach(function (n) { decode(pack.inst[id][n], instBuf[id], n); });
     });
+  }
+  // Cada arquivo de samples/ chama esta função ao carregar.
+  root.NAIPE_SAMPLES = function (id, mapa) {
+    if (ctx) decodificar(id, mapa); else espera.push([id, mapa]);
+  };
+  /* Carrega sob demanda samples/drums.js ou samples/i-<instrumento>.js. */
+  function load(id) {
+    if (pedidos[id] || !root.document) return;
+    pedidos[id] = true;
+    var sc = document.createElement('script');
+    sc.src = 'samples/' + (id === 'drums' ? 'drums' : 'i-' + id) + '.js';
+    sc.onerror = function () { pedidos[id] = false; };
+    document.head.appendChild(sc);
+  }
+  function loadPack() {
+    espera.forEach(function (e) { decodificar(e[0], e[1]); });
+    espera = [];
+    load('drums');
   }
 
   /* Toca uma nota gravada do instrumento, afinando a amostra mais próxima.
@@ -213,7 +226,7 @@
   }
 
   root.Engine = {
-    init: init, setVol: setVol, hit: hit, bass: bass, chord: chord, note: note,
+    init: init, setVol: setVol, hit: hit, bass: bass, chord: chord, note: note, load: load,
     now: function () { return ctx ? ctx.currentTime : 0; },
     resume: function () { return ctx && ctx.state !== 'running' ? ctx.resume() : null; }
   };

@@ -13,11 +13,19 @@
     pop: ['#2ec4f1', '#3ddc97'], reggae: ['#3ddc97', '#ffd23f'], balada: ['#2ec4f1', '#ff5c8a'],
     metro: ['#a78bfa', '#2ec4f1']
   };
-  // Instrumentos de harmonia por família de ritmo: [timbre gravado, nome].
+  // Timbres gravados disponíveis para cada função da harmonia: [arquivo, nome].
+  var TIMBRES = {
+    bass: [['bassA', 'Baixo acústico'], ['bassE', 'Baixo elétrico'], ['bassP', 'Baixo com palheta'], ['bassF', 'Baixo fretless']],
+    gtr: [['nylon', 'Violão de nylon'], ['steel', 'Violão de aço'], ['clean', 'Guitarra limpa'], ['jazzg', 'Guitarra de jazz']],
+    keys: [['piano', 'Piano de cauda'], ['ep', 'Piano elétrico'], ['ep2', 'Piano elétrico digital'], ['organ', 'Órgão']],
+    acc: [['acc', 'Sanfona'], ['band', 'Bandoneon'], ['harm', 'Harmônio']]
+  };
+  var PAPEL = { bass: 'Baixo', gtr: 'Violão / Guitarra', keys: 'Teclado', acc: 'Sanfona' };
+  // Timbre inicial por família de ritmo.
   var KITS = {
-    br: { bass: ['bassA', 'Baixo acústico'], keys: ['piano', 'Piano'], gtr: ['nylon', 'Violão'] },
-    jazz: { bass: ['bassA', 'Baixo acústico'], keys: ['piano', 'Piano'], gtr: ['jazzg', 'Guitarra'] },
-    pop: { bass: ['bassE', 'Baixo elétrico'], keys: ['ep', 'Piano elétrico'], gtr: ['clean', 'Guitarra'] }
+    br: { bass: 'bassA', keys: 'piano', gtr: 'nylon', acc: 'acc' },
+    jazz: { bass: 'bassA', keys: 'piano', gtr: 'jazzg' },
+    pop: { bass: 'bassE', keys: 'ep', gtr: 'clean' }
   };
   var KIT_DE = { swing: 'jazz', valsa: 'jazz', metro: 'jazz', funk: 'pop', pop: 'pop', reggae: 'pop', balada: 'pop' };
   var COM_SANFONA = { baiao: 1, xote: 1, frevo: 1 };
@@ -26,6 +34,7 @@
   /* ---------- Estado ---------- */
   var S = {
     rhythmId: 'samba', songId: 'p-samba', bpm: 96, transpose: 0, countIn: true, ramp: 0, fill: 4,
+    timbre: {}, // timbre[família][função] = timbre escolhido
     mix: {},    // mix[ritmo][canal] = { v: volume, m: mudo }
     edits: {},  // edits[ritmo][canal] = padrão alterado
     songs: []   // progressões criadas ou alteradas: { id, title, text }
@@ -43,7 +52,7 @@
     var over = {};
     S.songs.forEach(function (s) { over[s.id] = s; });
     var list = M.PRESETS.map(function (p) { return over[p.id] || p; });
-    S.songs.forEach(function (s) { if (s.id.indexOf('p-') !== 0) list.push(s); });
+    S.songs.forEach(function (s) { if (!/^[pm]-/.test(s.id)) list.push(s); });
     return list;
   }
   function song() {
@@ -58,13 +67,21 @@
       return { id: 't' + i, name: t.name, group: t.group, voice: t.voice, pat: ed['t' + i] || t.pat,
         base: t.pat, v: t.v || 0.8, off: !!t.off, cycle: '-xXo' };
     });
-    var tipo = KIT_DE[r.id] || 'br', kit = KITS[tipo];
-    list.push({ id: 'bass', name: kit.bass[1], inst: kit.bass[0], group: 'Harmonia', pat: ed.bass || r.bass, base: r.bass, v: 0.8, cycle: '-r58N37aw', h: true });
+    var tipo = KIT_DE[r.id] || 'br', kit = KITS[tipo], esc = S.timbre[tipo] || {};
+    var harm = function (papel, extra) {
+      var inst = esc[papel] || kit[papel];
+      var achado = TIMBRES[papel].filter(function (t) { return t[0] === inst; })[0] || TIMBRES[papel][0];
+      var c = { id: papel, papel: papel, tipo: tipo, inst: achado[0], name: PAPEL[papel], group: 'Harmonia', h: true };
+      Object.keys(extra).forEach(function (k) { c[k] = extra[k]; });
+      E.load(c.inst);
+      list.push(c);
+    };
+    harm('bass', { pat: ed.bass || r.bass, base: r.bass, v: 0.8, cycle: '-r58N37aw' });
     // A linha "Acordes" guarda a rítmica; quem toca são os instrumentos abaixo dela.
     list.push({ id: 'comp', name: 'Acordes', group: 'Harmonia', pat: ed.comp || r.comp, base: r.comp, v: 0.7, cycle: '-xXn', h: true, semMixer: true });
-    list.push({ id: 'gtr', name: kit.gtr[1], inst: kit.gtr[0], group: 'Harmonia', v: 0.7, off: tipo === 'jazz', h: true, semGrade: true });
-    list.push({ id: 'keys', name: kit.keys[1], inst: kit.keys[0], group: 'Harmonia', v: 0.7, off: tipo === 'br', h: true, semGrade: true });
-    if (tipo === 'br') list.push({ id: 'acc', name: 'Sanfona', inst: 'acc', group: 'Harmonia', v: 0.6, off: !COM_SANFONA[r.id], h: true, semGrade: true, longo: true });
+    harm('gtr', { v: 0.7, off: tipo === 'jazz', semGrade: true });
+    harm('keys', { v: 0.7, off: tipo === 'br', semGrade: true });
+    if (tipo === 'br') harm('acc', { v: 0.6, off: !COM_SANFONA[r.id], semGrade: true, longo: true });
     return list;
   }
   function mixOf(c) {
@@ -172,7 +189,7 @@
         var midi = bassNote(ch, cur, nxt, beat, bar);
         if (midi !== null) {
           var bd = nextHit(c.pat, idx, spbar) * sd * 0.92;
-          if (!E.note(c.inst, midi, t, bd, 'bass', 1)) E.bass(midi, t, bd);
+          if (!E.note(c.inst, midi, t, bd, 'bass', 0.85)) E.bass(midi, t, bd);
         }
       } else {
         var chord = ch === 'n' ? nxt.ch : cur.ch;
@@ -181,7 +198,7 @@
         CH.forEach(function (k) {
           if (!k.semGrade || mixOf(k).m) return;
           var dur = ch === 'X' ? Math.min(2.5, ate) : k.longo ? Math.min(0.6, ate * 0.85) : 0.3;
-          notas.forEach(function (n) { if (!E.note(k.inst, n, t, dur, k.id, 0.5)) sint = true; });
+          notas.forEach(function (n) { if (!E.note(k.inst, n, t, dur, k.id, 0.32)) sint = true; });
         });
         if (sint) E.chord(notas, t, ch === 'X' ? Math.min(2.5, ate) : 0.24);
       }
@@ -325,6 +342,22 @@
       vol.addEventListener('input', function () { setMix(c, { v: +vol.value }); });
       strip.appendChild(btn);
       strip.appendChild(vol);
+      if (c.papel) {
+        var sel = el('select', 'timbre');
+        sel.id = 'timbre-' + c.tipo + '-' + c.papel;
+        sel.setAttribute('aria-label', 'Timbre de ' + c.name);
+        TIMBRES[c.papel].forEach(function (t) { var o = el('option', '', t[1]); o.value = t[0]; sel.appendChild(o); });
+        sel.value = c.inst;
+        sel.addEventListener('change', function () {
+          (S.timbre[c.tipo] || (S.timbre[c.tipo] = {}))[c.papel] = sel.value;
+          rebuild();
+          renderMixer();
+          renderGrid();
+          save();
+        });
+        strip.classList.add('com-timbre');
+        strip.appendChild(sel);
+      }
       box.appendChild(strip);
     });
   }
@@ -400,10 +433,13 @@
     var ss = $('song');
     renderRhythms();
     ss.textContent = '';
+    var grupos = {};
     allSongs().forEach(function (s) {
+      var g = s.id.indexOf('m-') === 0 ? 'Músicas' : s.id.indexOf('p-') === 0 ? 'Estudos' : 'Minhas progressões';
+      if (!grupos[g]) { grupos[g] = el('optgroup'); grupos[g].label = g; ss.appendChild(grupos[g]); }
       var o = el('option', '', s.title);
       o.value = s.id;
-      ss.appendChild(o);
+      grupos[g].appendChild(o);
     });
     ss.value = song().id;
   }
@@ -491,7 +527,7 @@
   var editing = null;
   function openEditor(s) {
     editing = s;
-    var isPreset = s.id.indexOf('p-') === 0;
+    var isPreset = /^[pm]-/.test(s.id);
     var changed = S.songs.some(function (x) { return x.id === s.id; });
     $('ed-title').value = s.title;
     $('ed-text').value = s.text;

@@ -13,9 +13,11 @@ Protótipo web, sem instalação e sem dependências: abra `index.html` no naveg
   Jazz Waltz, Funk, Pop/Rock e metrônomo simples.
 - **Instrumentos separados**: cada peça (surdo, tamborim, pandeiro, zabumba, triângulo,
   bumbo, chimbal…) tem volume e botão de silenciar. Na harmonia: baixo, violão ou guitarra,
-  piano e, nos ritmos brasileiros, sanfona.
+  teclado e, nos ritmos brasileiros, sanfona, cada um com quatro opções de timbre (três na sanfona).
 - **Grade do ritmo**: cada levada pode ser editada casa a casa (normal, acento, nota
   fantasma), inclusive a linha do baixo e a rítmica dos acordes.
+- **Repertório**: progressões de estudo e harmonias de músicas conhecidas (bossa, baião,
+  standards de jazz, funk e pop).
 - **Cifra**: compassos em grade, partes nomeadas (`[A]`, `[B]`), compasso atual destacado,
   começo a partir de qualquer compasso.
 - **Editor de progressões** em texto: `| Dm7 | G7 | C7M | % |`. Aceita `7M`/`maj7`,
@@ -30,7 +32,7 @@ Protótipo web, sem instalação e sem dependências: abra `index.html` no naveg
 | --- | --- |
 | `js/music.js` | Leitura de cifras, transposição, voicings, ritmos e progressões prontas |
 | `js/audio.js` | Reprodução das gravações e timbres sintetizados de reserva |
-| `samples/pack.js` | Gravações dos instrumentos |
+| `samples/` | Gravações dos instrumentos (origens e licenças em `samples/README.md`) |
 | `js/app.js` | Sequenciador e interface |
 | `test/music.test.js` | Testes do núcleo musical (`node test/music.test.js`) |
 
