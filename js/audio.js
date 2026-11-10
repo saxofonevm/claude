@@ -32,7 +32,7 @@
     clickL: [['t', 'sine', 1000, 1000, 0.04, 0.5]]
   };
 
-  var ctx = null, master = null, noiseBuf = null, chans = {};
+  var ctx = null, master = null, noiseBuf = null, chans = {}, samples = {};
 
   function init() {
     if (ctx) return ctx;
@@ -46,7 +46,25 @@
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     var d = noiseBuf.getChannelData(0);
     for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    loadSamples();
     return ctx;
+  }
+
+  /* Amostras gravadas (opcionais). samples/index.json mapeia timbre -> arquivo,
+     por exemplo { "surdoO": "surdo-aberto.wav" }. O que não tiver amostra
+     continua sintetizado. */
+  function loadSamples() {
+    if (!root.fetch) return;
+    fetch('samples/index.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (map) {
+      Object.keys(map).forEach(function (voice) {
+        if (!VOICES[voice]) return;
+        fetch('samples/' + map[voice])
+          .then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+          .then(function (buf) { return ctx.decodeAudioData(buf); })
+          .then(function (audio) { samples[voice] = audio; })
+          .catch(function () { /* arquivo ausente ou inválido: fica o sintetizado */ });
+      });
+    }).catch(function () { /* sem pasta de amostras */ });
   }
 
   function chan(id) {
@@ -73,6 +91,15 @@
   function hit(voice, chanId, t, vel) {
     var layers = VOICES[voice], out = chan(chanId);
     if (!layers) return;
+    if (samples[voice]) {
+      var s = ctx.createBufferSource(), sg = ctx.createGain();
+      s.buffer = samples[voice];
+      sg.gain.value = vel;
+      s.connect(sg);
+      sg.connect(out);
+      s.start(t);
+      return;
+    }
     layers.forEach(function (l) {
       var src, g = env(t, l[4], l[5] * vel);
       if (l[0] === 't') {

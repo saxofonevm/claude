@@ -106,13 +106,46 @@
       if (!cells.length) return;
       var row = { label: label, bars: [] };
       cells.forEach(function (c) {
-        var bar = { chords: c.split(/\s+/), index: bars.length };
+        var bar = { index: bars.length, repStart: false, repEnd: false, ending: 0 };
+        if (c[0] === ':') { bar.repStart = true; c = c.slice(1); }
+        if (c[c.length - 1] === ':') { bar.repEnd = true; c = c.slice(0, -1); }
+        bar.chords = c.trim().split(/\s+/).filter(function (t) {
+          var m = /^([12])\.$/.exec(t);
+          if (m) bar.ending = +m[1];
+          return t && !m;
+        });
+        if (!bar.chords.length) bar.chords = ['%'];
         row.bars.push(bar);
         bars.push(bar);
       });
       rows.push(row);
     });
     return { rows: rows, bars: bars };
+  }
+
+  /* Ordem em que os compassos são tocados, resolvendo ritornelos (|: … :|)
+     e casas de 1ª e 2ª vez. Devolve índices de compasso. */
+  function playOrder(bars) {
+    var order = [], i = 0, start = 0, pass = 1, house = 0, guard = 0;
+    var houses = bars.map(function (bar) {
+      if (bar.repStart) house = 0;
+      if (bar.ending) house = bar.ending;
+      var h = house;
+      if (bar.repEnd && house === 1) house = 0;
+      return h;
+    });
+    while (i < bars.length && guard++ < 4000) {
+      var bar = bars[i];
+      if (bar.repStart && i !== start) { start = i; pass = 1; }
+      if (houses[i] && houses[i] !== pass && pass === 2) { i++; continue; }
+      order.push(i);
+      if (bar.repEnd) {
+        if (pass === 1) { pass = 2; i = start; continue; }
+        pass = 1; start = i + 1;
+      }
+      i++;
+    }
+    return order;
   }
 
   /* Para cada compasso e tempo, qual acorde soa e se ele começa ali. */
@@ -144,7 +177,7 @@
      Acordes:  x curto · X sustentado · n antecipa o próximo acorde               */
   var B = 'Bateria', P = 'Percussão';
   var RHYTHMS = [
-    { id: 'samba', name: 'Samba', sig: '2/4', beats: 2, spb: 4, bars: 2, bpm: 96,
+    { id: 'samba', name: 'Samba', fill: 'caixa', sig: '2/4', beats: 2, spb: 4, bars: 2, bpm: 96,
       tracks: [
         { name: 'Surdo aberto', voice: 'surdoO', group: P, pat: '----X---' },
         { name: 'Surdo abafado', voice: 'surdoM', group: P, pat: 'x-------' },
@@ -158,7 +191,7 @@
         { name: 'Aro', voice: 'rim', group: B, pat: 'x-x-xx-x-x-xx-x-', off: 1 }
       ],
       bass: 'r--55--N', comp: 'x--x-x--x-x--x-n' },
-    { id: 'bossa', name: 'Bossa Nova', sig: '4/4', beats: 4, spb: 2, bars: 2, bpm: 130,
+    { id: 'bossa', name: 'Bossa Nova', fill: 'snare', sig: '4/4', beats: 4, spb: 2, bars: 2, bpm: 130,
       tracks: [
         { name: 'Aro', voice: 'rim', group: B, pat: 'x--x--x---x--x--' },
         { name: 'Chimbal', voice: 'hh', group: B, pat: 'xxxxxxxx', v: 0.5 },
@@ -166,14 +199,14 @@
         { name: 'Ganzá', voice: 'ganza', group: P, pat: 'XoXoXoXo', off: 1 }
       ],
       bass: 'r--55--N', comp: 'x-x--x-x--x--x-n' },
-    { id: 'choro', name: 'Choro', sig: '2/4', beats: 2, spb: 4, bars: 1, bpm: 84,
+    { id: 'choro', name: 'Choro', fill: 'pandJ', sig: '2/4', beats: 2, spb: 4, bars: 1, bpm: 84,
       tracks: [
         { name: 'Pandeiro (platinela)', voice: 'pandJ', group: P, pat: 'xoxXxoxX' },
         { name: 'Pandeiro (grave)', voice: 'pandT', group: P, pat: 'X--x----' },
         { name: 'Ganzá', voice: 'ganza', group: P, pat: 'XoxoXoxo', off: 1 }
       ],
       bass: 'r---5--N', comp: 'x-xx-x-x' },
-    { id: 'baiao', name: 'Baião', sig: '2/4', beats: 2, spb: 4, bars: 1, bpm: 100,
+    { id: 'baiao', name: 'Baião', fill: 'zabH', sig: '2/4', beats: 2, spb: 4, bars: 1, bpm: 100,
       tracks: [
         { name: 'Zabumba (grave)', voice: 'zabL', group: P, pat: 'X--x----' },
         { name: 'Zabumba (bacalhau)', voice: 'zabH', group: P, pat: '------x-' },
@@ -184,7 +217,7 @@
         { name: 'Chimbal', voice: 'hh', group: B, pat: 'xxxxxxxx', off: 1 }
       ],
       bass: 'r--r--5-', comp: 'x--x-x--' },
-    { id: 'maracatu', name: 'Maracatu', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 96,
+    { id: 'maracatu', name: 'Maracatu', fill: 'caixa', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 96,
       tracks: [
         { name: 'Alfaia', voice: 'alfaia', group: P, pat: 'X--x--x-X--xx-x-' },
         { name: 'Gonguê', voice: 'agoL', group: P, pat: 'x--xx-x-x--xx-x-', v: 0.6 },
@@ -192,7 +225,7 @@
         { name: 'Abê', voice: 'ganza', group: P, pat: 'x-xxx-xxx-xxx-xx', v: 0.5 }
       ],
       bass: 'r--r--r-5--5--N-', comp: 'x--x--x-----x---' },
-    { id: 'ijexa', name: 'Ijexá', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 92,
+    { id: 'ijexa', name: 'Ijexá', fill: 'congaH', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 92,
       tracks: [
         { name: 'Agogô agudo', voice: 'agoH', group: P, pat: 'xx------x-x-----' },
         { name: 'Agogô grave', voice: 'agoL', group: P, pat: '---x-xx-----xx--' },
@@ -201,7 +234,7 @@
         { name: 'Ganzá', voice: 'ganza', group: P, pat: 'XoxoXoxoXoxoXoxo', v: 0.5 }
       ],
       bass: 'r-----5-r--5----', comp: '--x--x-x--x--x--' },
-    { id: 'afro', name: 'Afro 12/8', sig: '12/8', beats: 4, spb: 3, bars: 1, bpm: 100,
+    { id: 'afro', name: 'Afro 12/8', fill: 'congaH', sig: '12/8', beats: 4, spb: 3, bars: 1, bpm: 100,
       tracks: [
         { name: 'Agogô', voice: 'agoH', group: P, pat: 'x-x-xx-x-x-x' },
         { name: 'Atabaque grave', voice: 'congaL', group: P, pat: 'x-----x--x--' },
@@ -209,7 +242,7 @@
         { name: 'Ganzá', voice: 'ganza', group: P, pat: 'XooXooXooXoo', v: 0.5 }
       ],
       bass: 'r-----5--r--', comp: 'x--x-x---x--' },
-    { id: 'swing', name: 'Jazz Swing', sig: '4/4', beats: 4, spb: 3, bars: 2, bpm: 140,
+    { id: 'swing', name: 'Jazz Swing', fill: 'snare', sig: '4/4', beats: 4, spb: 3, bars: 2, bpm: 140,
       tracks: [
         { name: 'Condução', voice: 'ride', group: B, pat: 'x--x-xx--x-x' },
         { name: 'Chimbal (pé)', voice: 'hh', group: B, pat: '---x-----x--' },
@@ -217,14 +250,14 @@
         { name: 'Caixa', voice: 'snare', group: B, pat: '-----o-----o', off: 1 }
       ],
       bass: 'w--w--w--w--', comp: 'x----x-----------x--x---' },
-    { id: 'valsa', name: 'Jazz Waltz', sig: '3/4', beats: 3, spb: 3, bars: 1, bpm: 150,
+    { id: 'valsa', name: 'Jazz Waltz', fill: 'snare', sig: '3/4', beats: 3, spb: 3, bars: 1, bpm: 150,
       tracks: [
         { name: 'Condução', voice: 'ride', group: B, pat: 'x--x-xx--' },
         { name: 'Chimbal (pé)', voice: 'hh', group: B, pat: '---x-----' },
         { name: 'Bumbo', voice: 'kick', group: B, pat: 'x--------', v: 0.5 }
       ],
       bass: 'w--w--w--', comp: '---x-x---' },
-    { id: 'funk', name: 'Funk', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 96,
+    { id: 'funk', name: 'Funk', fill: 'snare', sig: '4/4', beats: 4, spb: 4, bars: 1, bpm: 96,
       tracks: [
         { name: 'Bumbo', voice: 'kick', group: B, pat: 'X--x--x---x--x--' },
         { name: 'Caixa', voice: 'snare', group: B, pat: '----X--o-o--X--o' },
@@ -232,13 +265,44 @@
         { name: 'Cowbell', voice: 'cow', group: P, pat: 'x---x---x---x---', off: 1 }
       ],
       bass: 'r--r--8-r-5-7-r-', comp: '---x--x-----x-x-' },
-    { id: 'pop', name: 'Pop / Rock', sig: '4/4', beats: 4, spb: 2, bars: 1, bpm: 110,
+    { id: 'pop', name: 'Pop / Rock', fill: 'snare', sig: '4/4', beats: 4, spb: 2, bars: 1, bpm: 110,
       tracks: [
         { name: 'Bumbo', voice: 'kick', group: B, pat: 'x--xx---' },
         { name: 'Caixa', voice: 'snare', group: B, pat: '--x---x-' },
         { name: 'Chimbal', voice: 'hh', group: B, pat: 'XxXxXxXx' }
       ],
       bass: 'rrrrrrr5', comp: 'X---X---' },
+    { id: 'xote', name: 'Xote', fill: 'zabH', sig: '2/4', beats: 2, spb: 4, bars: 1, bpm: 76,
+      tracks: [
+        { name: 'Zabumba (grave)', voice: 'zabL', group: P, pat: 'X-----x-' },
+        { name: 'Zabumba (bacalhau)', voice: 'zabH', group: P, pat: '----x---' },
+        { name: 'Triângulo fechado', voice: 'triC', group: P, pat: 'x---x---', v: 0.6 },
+        { name: 'Triângulo aberto', voice: 'triO', group: P, pat: '--X---X-', v: 0.6 },
+        { name: 'Ganzá', voice: 'ganza', group: P, pat: 'XoxoXoxo', off: 1 }
+      ],
+      bass: 'r-----5-', comp: '--x---x-' },
+    { id: 'frevo', name: 'Frevo', fill: 'caixa', sig: '2/4', beats: 2, spb: 4, bars: 2, bpm: 136,
+      tracks: [
+        { name: 'Caixa', voice: 'caixa', group: P, pat: 'XoxxXoxxXoxxXxxx' },
+        { name: 'Surdo abafado', voice: 'surdoM', group: P, pat: 'x-------' },
+        { name: 'Surdo aberto', voice: 'surdoO', group: P, pat: '----X---' },
+        { name: 'Pandeiro', voice: 'pandJ', group: P, pat: 'XoxXXoxX', v: 0.6 }
+      ],
+      bass: 'r---5---', comp: '--x---x-' },
+    { id: 'reggae', name: 'Reggae', fill: 'snare', sig: '4/4', beats: 4, spb: 2, bars: 1, bpm: 76,
+      tracks: [
+        { name: 'Bumbo', voice: 'kick', group: B, pat: '----x---' },
+        { name: 'Aro', voice: 'rim', group: B, pat: '----x---' },
+        { name: 'Chimbal', voice: 'hh', group: B, pat: 'xXxXxXxX' }
+      ],
+      bass: 'r--r-5--', comp: '--x---x-' },
+    { id: 'balada', name: 'Balada 12/8', fill: 'snare', sig: '12/8', beats: 4, spb: 3, bars: 1, bpm: 66,
+      tracks: [
+        { name: 'Bumbo', voice: 'kick', group: B, pat: 'x----xx-----' },
+        { name: 'Caixa', voice: 'snare', group: B, pat: '---x-----x--' },
+        { name: 'Chimbal', voice: 'hh', group: B, pat: 'XxxXxxXxxXxx' }
+      ],
+      bass: 'r-----r--5--', comp: 'x--x--x--x--' },
     { id: 'metro', name: 'Só metrônomo', sig: '4/4', beats: 4, spb: 1, bars: 1, bpm: 80,
       tracks: [
         { name: 'Clique forte', voice: 'clickH', group: 'Metrônomo', pat: 'x---' },
@@ -273,12 +337,14 @@
     { id: 'p-ciclo', title: 'Ciclo de quartas em Lá menor', text:
       '| Am7 | D7(9) | G7M | C7M |\n| F#m7(b5) | B7(b9) | Em7 | E7(b9) |' },
     { id: 'p-baiao', title: 'Baião modal (mixolídio)', text: '[A] | D7(9) | % | C/D | % |\n[B] | G7 | % | D7(9) | % |' },
+    { id: 'p-casas', title: 'Ritornelo com casas de 1ª e 2ª vez', text:
+      '[A] |: C7M | A7 | Dm7 | G7 |\n| 1. Em7 A7 | Dm7 G7 :| 2. Gm7 C7 | F7M |\n[B] | Fm6 | C7M | Dm7 G7 | C6 |' },
     { id: 'p-vamp', title: 'Um acorde só (vamp)', text: '| Dm7 | % | % | % |' }
   ];
 
   var api = {
     NOTES: NOTES, parseChord: parseChord, transposeSym: transposeSym, voicing: voicing,
-    bassMidi: bassMidi, parseChart: parseChart, buildTimeline: buildTimeline,
+    bassMidi: bassMidi, parseChart: parseChart, playOrder: playOrder, buildTimeline: buildTimeline,
     RHYTHMS: RHYTHMS, PRESETS: PRESETS
   };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;

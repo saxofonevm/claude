@@ -7,7 +7,7 @@
 
   /* ---------- Estado ---------- */
   var S = {
-    rhythmId: 'samba', songId: 'p-samba', bpm: 96, transpose: 0, countIn: true, ramp: 0,
+    rhythmId: 'samba', songId: 'p-samba', bpm: 96, transpose: 0, countIn: true, ramp: 0, fill: 4,
     mix: {},    // mix[ritmo][canal] = { v: volume, m: mudo }
     edits: {},  // edits[ritmo][canal] = padrão alterado
     songs: []   // progressões criadas ou alteradas: { id, title, text }
@@ -58,13 +58,14 @@
     CH.forEach(function (c) { var m = mixOf(c); E.setVol(c.id, m.m ? 0 : m.v); });
   }
 
-  var CH = [], CHART = { rows: [], bars: [] }, TL = [];
+  var CH = [], CHART = { rows: [], bars: [] }, TL = [], ORDER = [];
   var startBar = 0;
 
   function rebuild() {
     CH = channels();
     CHART = M.parseChart(song().text);
-    TL = M.buildTimeline(CHART.bars, rhythm().beats, S.transpose);
+    ORDER = M.playOrder(CHART.bars);
+    TL = M.buildTimeline(ORDER.map(function (i) { return CHART.bars[i]; }), rhythm().beats, S.transpose);
     if (startBar >= CHART.bars.length) startBar = 0;
   }
 
@@ -79,7 +80,7 @@
     applyVolumes();
     stop(true);
     var r = rhythm();
-    P = { bar: fromBar || 0, step: 0, count: (S.countIn && !noCount) ? r.beats * r.spb : 0, t: E.now() + 0.08 };
+    P = { bar: Math.max(0, ORDER.indexOf(fromBar || 0)), step: 0, count: (S.countIn && !noCount) ? r.beats * r.spb : 0, t: E.now() + 0.08 };
     timer = setInterval(tick, 25);
     tick();
     raf = requestAnimationFrame(draw);
@@ -133,10 +134,16 @@
     var cur = TL[bar][beat];
     var nxt = beat + 1 < r.beats ? TL[bar][beat + 1] : TL[(bar + 1) % n][0];
 
+    // Virada: no último tempo do último compasso de cada grupo, a percussão dá lugar a um rufo.
+    var fill = r.fill && S.fill > 0 && (bar + 1) % S.fill === 0 && beat === r.beats - 1 &&
+      CH.some(function (c) { return !c.h && !mixOf(c).m; });
+    if (fill) E.hit(r.fill, 'fill', t, 0.45 + 0.55 * ((step % r.spb) + 1) / r.spb);
+
     CH.forEach(function (c) {
       var ch = c.pat[idx];
       if (!ch || ch === '-' || mixOf(c).m) return;
       if (!c.h) {
+        if (fill) return;
         E.hit(c.voice, c.id, t, ch === 'X' ? 1 : ch === 'o' ? 0.3 : 0.7);
       } else if (c.id === 'bass') {
         var midi = bassNote(ch, cur, nxt, beat, bar);
@@ -146,7 +153,7 @@
         if (chord) E.chord(M.voicing(chord), t, ch === 'X' ? Math.min(2.5, nextHit(c.pat, idx, spbar) * sd) : 0.24);
       }
     });
-    queue.push({ t: t, bar: bar, step: idx, beat: beat });
+    queue.push({ t: t, bar: ORDER[bar], step: idx, beat: beat });
 
     P.step++;
     if (P.step >= spbar) {
@@ -245,6 +252,9 @@
           var b = el('button', 'bar' + (bar.index === startBar && startBar > 0 ? ' start' : ''));
           b.type = 'button';
           b.setAttribute('aria-label', 'Compasso ' + (bar.index + 1));
+          if (bar.repStart) b.classList.add('rs');
+          if (bar.repEnd) b.classList.add('re');
+          if (bar.ending) b.appendChild(el('span', 'house', bar.ending + '.'));
           bar.chords.slice(0, r.beats).forEach(function (t) { b.appendChild(chordEl(t)); });
           b.addEventListener('click', function () {
             startBar = bar.index;
@@ -409,6 +419,7 @@
     if (taps.length >= 2) setBpm(60000 / ((taps[taps.length - 1] - taps[0]) / (taps.length - 1)));
   });
   $('countin').addEventListener('change', function () { S.countIn = this.checked; save(); });
+  $('fill').addEventListener('change', function () { S.fill = +this.value; save(); });
   $('ramp').addEventListener('change', function () {
     S.ramp = Math.max(0, Math.min(20, Math.round(+this.value) || 0));
     this.value = S.ramp;
@@ -475,6 +486,7 @@
   /* ---------- Início ---------- */
   $('countin').checked = S.countIn;
   $('ramp').value = S.ramp;
+  $('fill').value = String(S.fill);
   renderSelects();
   setBpm(S.bpm);
   refresh(false);

@@ -48,3 +48,9 @@ M.PRESETS.forEach((p) => M.parseChart(p.text).bars.forEach((b) => b.chords.forEa
   assert.ok(c === '%' || M.parseChord(c), p.id + ' ' + c);
 })));
 console.log('ok');
+
+const rep = M.parseChart('|: C | 1. D :| 2. E | F |\n|: G :| A |');
+assert.deepStrictEqual(M.playOrder(rep.bars), [0, 1, 0, 2, 3, 4, 4, 5]);
+assert.deepStrictEqual(rep.bars[1].chords, ['D']);
+assert.deepStrictEqual(M.playOrder(M.parseChart('| C | D |').bars), [0, 1]);
+console.log('ok ritornelos');
