@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Levada</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <h1>Levada</h1>
+    <p>Ritmo e harmonia para estudar tocando junto</p>
+  </header>
+
+  <section class="setup" aria-label="Configuração">
+    <label class="field">
+      <span>Ritmo</span>
+      <select id="rhythm"></select>
+    </label>
+    <label class="field grow">
+      <span>Progressão</span>
+      <select id="song"></select>
+    </label>
+    <div class="field">
+      <span>Tom</span>
+      <div class="stepper">
+        <button id="tr-down" type="button" aria-label="Descer meio tom">−</button>
+        <output id="tr-val">Original</output>
+        <button id="tr-up" type="button" aria-label="Subir meio tom">+</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="chart-wrap" aria-label="Cifra">
+    <div class="chart-head">
+      <h2 id="song-title"></h2>
+      <span id="sig" class="sig"></span>
+      <div class="chart-actions">
+        <button id="edit" type="button" class="ghost">Editar</button>
+        <button id="new" type="button" class="ghost">Nova</button>
+      </div>
+    </div>
+    <div id="chart" class="chart"></div>
+    <p class="hint">Toque em um compasso para começar a partir dele.</p>
+  </section>
+
+  <section class="panel" aria-label="Instrumentos">
+    <div class="tabs" role="tablist">
+      <button id="tab-mixer" type="button" role="tab" aria-selected="true">Instrumentos</button>
+      <button id="tab-grid" type="button" role="tab" aria-selected="false">Grade do ritmo</button>
+    </div>
+    <div id="mixer" class="mixer"></div>
+    <div id="grid-pane" hidden>
+      <div class="grid-scroll"><div id="grid" class="grid"></div></div>
+      <div class="grid-foot">
+        <p class="hint">Toque nas casas para alterar. Percussão: normal, acento, nota fantasma.
+          Baixo: <b>r</b> fundamental, <b>3 5 7 8</b> notas do acorde, <b>N</b> próximo acorde, <b>a</b> aproximação, <b>w</b> walking.
+          Acordes: <b>x</b> curto, <b>X</b> longo, <b>n</b> antecipa o próximo.</p>
+        <button id="grid-reset" type="button" class="ghost">Restaurar ritmo original</button>
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer class="transport">
+  <div class="transport-in">
+    <button id="play" type="button" class="play" aria-label="Tocar">
+      <svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><path id="play-icon" d="M7 4l14 8-14 8z" fill="currentColor"/></svg>
+    </button>
+    <div class="tempo">
+      <div class="tempo-row">
+        <button id="bpm-down" type="button" aria-label="Diminuir andamento">−</button>
+        <div class="bpm"><output id="bpm-val">96</output><small>BPM</small></div>
+        <button id="bpm-up" type="button" aria-label="Aumentar andamento">+</button>
+        <button id="tap" type="button" class="ghost">Tap</button>
+        <div id="beats" class="beats" aria-hidden="true"></div>
+      </div>
+      <input id="bpm" type="range" min="40" max="260" value="96" aria-label="Andamento">
+    </div>
+    <div class="opts">
+      <label><input id="countin" type="checkbox" checked> Contagem</label>
+      <label title="Aumenta o andamento a cada volta da progressão">+<input id="ramp" type="number" min="0" max="20" value="0" inputmode="numeric"> BPM/volta</label>
+    </div>
+  </div>
+</footer>
+
+<dialog id="editor">
+  <form id="editor-form" method="dialog">
+    <h2>Editar progressão</h2>
+    <label class="field"><span>Título</span><input id="ed-title" type="text" required maxlength="60"></label>
+    <label class="field"><span>Cifra</span>
+      <textarea id="ed-text" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
+    </label>
+    <p class="hint">Um compasso entre barras: <code>| Dm7 | G7 | C7M | % |</code>. Dois acordes no mesmo compasso dividem os tempos: <code>| Dm7 G7 |</code>.
+      <code>%</code> repete o acorde anterior, <code>[A]</code> no começo da linha nomeia a parte. Aceita <code>7M</code> ou <code>maj7</code>, <code>m7(b5)</code>, <code>dim</code>, <code>7(b9)</code>, <code>6/9</code>, <code>C/E</code>.</p>
+    <p id="ed-error" class="error" hidden></p>
+    <div class="dialog-actions">
+      <button id="ed-delete" type="button" class="ghost danger">Excluir</button>
+      <span class="spacer"></span>
+      <button id="ed-cancel" type="button" class="ghost">Cancelar</button>
+      <button id="ed-save" type="submit" class="primary">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<script src="js/music.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
