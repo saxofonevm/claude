@@ -13,6 +13,14 @@
     pop: ['#2ec4f1', '#3ddc97'], reggae: ['#3ddc97', '#ffd23f'], balada: ['#2ec4f1', '#ff5c8a'],
     metro: ['#a78bfa', '#2ec4f1']
   };
+  // Instrumentos de harmonia por família de ritmo: [timbre gravado, nome].
+  var KITS = {
+    br: { bass: ['bassA', 'Baixo acústico'], keys: ['piano', 'Piano'], gtr: ['nylon', 'Violão'] },
+    jazz: { bass: ['bassA', 'Baixo acústico'], keys: ['piano', 'Piano'], gtr: ['jazzg', 'Guitarra'] },
+    pop: { bass: ['bassE', 'Baixo elétrico'], keys: ['ep', 'Piano elétrico'], gtr: ['clean', 'Guitarra'] }
+  };
+  var KIT_DE = { swing: 'jazz', valsa: 'jazz', metro: 'jazz', funk: 'pop', pop: 'pop', reggae: 'pop', balada: 'pop' };
+  var COM_SANFONA = { baiao: 1, xote: 1, frevo: 1 };
   var GRUPO = { 'Percussão': '#ff5c8a', 'Bateria': '#2ec4f1', 'Harmonia': '#ffd23f', 'Metrônomo': '#a78bfa' };
 
   /* ---------- Estado ---------- */
@@ -50,8 +58,13 @@
       return { id: 't' + i, name: t.name, group: t.group, voice: t.voice, pat: ed['t' + i] || t.pat,
         base: t.pat, v: t.v || 0.8, off: !!t.off, cycle: '-xXo' };
     });
-    list.push({ id: 'bass', name: 'Baixo', group: 'Harmonia', pat: ed.bass || r.bass, base: r.bass, v: 0.8, cycle: '-r58N37aw', h: true });
-    list.push({ id: 'comp', name: 'Acordes', group: 'Harmonia', pat: ed.comp || r.comp, base: r.comp, v: 0.7, cycle: '-xXn', h: true });
+    var tipo = KIT_DE[r.id] || 'br', kit = KITS[tipo];
+    list.push({ id: 'bass', name: kit.bass[1], inst: kit.bass[0], group: 'Harmonia', pat: ed.bass || r.bass, base: r.bass, v: 0.8, cycle: '-r58N37aw', h: true });
+    // A linha "Acordes" guarda a rítmica; quem toca são os instrumentos abaixo dela.
+    list.push({ id: 'comp', name: 'Acordes', group: 'Harmonia', pat: ed.comp || r.comp, base: r.comp, v: 0.7, cycle: '-xXn', h: true, semMixer: true });
+    list.push({ id: 'gtr', name: kit.gtr[1], inst: kit.gtr[0], group: 'Harmonia', v: 0.7, off: tipo === 'jazz', h: true, semGrade: true });
+    list.push({ id: 'keys', name: kit.keys[1], inst: kit.keys[0], group: 'Harmonia', v: 0.7, off: tipo === 'br', h: true, semGrade: true });
+    if (tipo === 'br') list.push({ id: 'acc', name: 'Sanfona', inst: 'acc', group: 'Harmonia', v: 0.6, off: !COM_SANFONA[r.id], h: true, semGrade: true, longo: true });
     return list;
   }
   function mixOf(c) {
@@ -150,17 +163,27 @@
     if (fill) E.hit(r.fill, 'fill', t, 0.45 + 0.55 * ((step % r.spb) + 1) / r.spb);
 
     CH.forEach(function (c) {
-      var ch = c.pat[idx];
+      var ch = c.pat && c.pat[idx];
       if (!ch || ch === '-' || mixOf(c).m) return;
       if (!c.h) {
         if (fill) return;
         E.hit(c.voice, c.id, t, ch === 'X' ? 1 : ch === 'o' ? 0.3 : 0.7);
       } else if (c.id === 'bass') {
         var midi = bassNote(ch, cur, nxt, beat, bar);
-        if (midi !== null) E.bass(midi, t, nextHit(c.pat, idx, spbar) * sd * 0.92);
+        if (midi !== null) {
+          var bd = nextHit(c.pat, idx, spbar) * sd * 0.92;
+          if (!E.note(c.inst, midi, t, bd, 'bass', 1)) E.bass(midi, t, bd);
+        }
       } else {
         var chord = ch === 'n' ? nxt.ch : cur.ch;
-        if (chord) E.chord(M.voicing(chord), t, ch === 'X' ? Math.min(2.5, nextHit(c.pat, idx, spbar) * sd) : 0.24);
+        if (!chord) return;
+        var notas = M.voicing(chord), ate = nextHit(c.pat, idx, spbar) * sd, sint = false;
+        CH.forEach(function (k) {
+          if (!k.semGrade || mixOf(k).m) return;
+          var dur = ch === 'X' ? Math.min(2.5, ate) : k.longo ? Math.min(0.6, ate * 0.85) : 0.3;
+          notas.forEach(function (n) { if (!E.note(k.inst, n, t, dur, k.id, 0.5)) sint = true; });
+        });
+        if (sint) E.chord(notas, t, ch === 'X' ? Math.min(2.5, ate) : 0.24);
       }
     });
     queue.push({ t: t, bar: ORDER[bar], step: idx, beat: beat });
@@ -216,8 +239,6 @@
       if (barEls[shown.bar]) barEls[shown.bar].classList.remove('now');
       if (barEls[bar]) {
         barEls[bar].classList.add('now');
-        var rect = barEls[bar].getBoundingClientRect();
-        if (rect.top < 0 || rect.bottom > window.innerHeight - 170) barEls[bar].scrollIntoView({ block: 'center', behavior: 'smooth' });
       }
     }
     if (step !== shown.step) {
@@ -283,6 +304,7 @@
     var box = $('mixer'), group = null;
     box.textContent = '';
     CH.forEach(function (c) {
+      if (c.semMixer) return;
       if (c.group !== group) { group = c.group; var h = el('h3', 'group', group); h.style.setProperty('--g', GRUPO[group]); box.appendChild(h); }
       var m = mixOf(c), strip = el('div', 'strip');
       strip.style.setProperty('--g', GRUPO[c.group]);
@@ -313,6 +335,7 @@
     box.style.gridTemplateColumns = 'auto repeat(' + len + ', 22px)';
     cellCols = [];
     CH.forEach(function (c) {
+      if (c.semGrade) return;
       box.appendChild(el('span', 'g-name', c.name));
       for (var i = 0; i < len; i++) (function (i) {
         var cell = el('button', 'cell' + (c.h ? ' h' : '') + (i % spbar === 0 ? ' bar1' : i % r.spb === 0 ? ' beat' : ''));
@@ -351,12 +374,11 @@
     var box = $('rhythms'), r = rhythm(), cor = CORES[r.id] || CORES.metro;
     document.documentElement.style.setProperty('--c1', cor[0]);
     document.documentElement.style.setProperty('--c2', cor[1]);
-    $('rhythm-name').textContent = r.name;
-    $('sig').textContent = r.sig;
-    $('rhythm-desc').textContent = r.tracks.length + ' instrumentos · ciclo de ' + (r.bars > 1 ? r.bars + ' compassos' : '1 compasso');
     box.textContent = '';
     M.RHYTHMS.forEach(function (x) {
-      var b = el('button', 'chip', x.name);
+      var b = el('button', 'chip');
+      b.appendChild(el('span', '', x.name));
+      b.appendChild(el('small', '', x.sig));
       b.type = 'button';
       b.dataset.id = x.id;
       b.setAttribute('role', 'radio');
@@ -510,6 +532,7 @@
   });
 
   /* ---------- Início ---------- */
+  try { E.init(); } catch (e) { /* o áudio começa no primeiro toque */ }
   $('countin').checked = S.countIn;
   $('ramp').value = S.ramp;
   $('fill').value = String(S.fill);

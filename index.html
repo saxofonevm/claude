@@ -11,17 +11,11 @@
 <body>
 <header class="hero">
   <div class="hero-in">
-    <div class="hero-topo">
-      <span class="marca" aria-label="Naipe Rit">naipe <b>rit</b></span>
-      <span class="hero-sub">ritmo + harmonia para tocar junto</span>
-    </div>
-    <div class="hero-ritmo">
-      <p class="sobretitulo">Ritmo</p>
-      <h1 id="rhythm-name"></h1>
-      <p class="hero-meta"><span id="sig" class="sig"></span><span id="rhythm-desc"></span></p>
-    </div>
+    <h1 class="marca" aria-label="Naipe Rit">naipe <b>rit</b></h1>
+    <p class="hero-sub">Ritmo + harmonia para tocar junto</p>
+    <p class="sobretitulo">Escolha o ritmo</p>
+    <div id="rhythms" class="chips" role="radiogroup" aria-label="Ritmo"></div>
   </div>
-  <div id="rhythms" class="chips" role="radiogroup" aria-label="Ritmo"></div>
 </header>
 
 <div class="app">
@@ -66,6 +60,7 @@
       </div>
     </div>
   </section>
+  <p class="creditos">Instrumentos gravados: FluidR3_GM, de Frank Wen (CC BY 3.0).</p>
 </div>
 
 <footer class="transport">
@@ -110,6 +105,7 @@
   </form>
 </dialog>
 
+<script src="samples/pack.js"></script>
 <script src="js/music.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/app.js"></script>

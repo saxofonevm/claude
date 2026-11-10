@@ -1,18 +1,22 @@
-# Amostras gravadas
+# Sons gravados
 
-Por padrão todos os sons são sintetizados. Para usar gravações reais, coloque os arquivos
-(`.wav`, `.mp3` ou `.ogg`, um toque isolado por arquivo, sem silêncio no início) nesta pasta
-e liste-os em `index.json`:
+`pack.js` reúne as gravações de instrumentos reais usadas pelo app: bateria e percussão,
+baixo acústico e elétrico, piano, piano elétrico, violão, guitarra e sanfona.
 
-```json
-{ "surdoO": "surdo-aberto.wav", "tamb": "tamborim.wav" }
+Origem: banco **FluidR3_GM**, de Frank Wen, licença
+[Creative Commons Attribution 3.0](https://creativecommons.org/licenses/by/3.0/us/),
+nas versões distribuídas por `gleitz/midi-js-soundfonts` e `surikov/webaudiofontdata`.
+
+Para refazer o pacote (ou acrescentar instrumentos), edite e rode:
+
+```bash
+node tools/fetch-samples.js
 ```
 
-O que não estiver listado continua sintetizado. As amostras só carregam quando o app é
-servido por um servidor web (GitHub Pages, por exemplo), não ao abrir o arquivo direto do disco.
+Para economizar espaço há uma gravação a cada três semitons; o app afina as notas vizinhas.
+Se o pacote não carregar, o app usa os timbres sintetizados de `js/audio.js` como reserva.
 
-Nomes dos timbres: `kick` bumbo, `snare` caixa de bateria, `caixa` caixa/tarol, `rim` aro,
-`hh` chimbal, `ride` condução, `surdoO` surdo aberto, `surdoM` surdo abafado, `tamb` tamborim,
-`agoH`/`agoL` agogô agudo/grave, `pandJ` platinela do pandeiro, `pandT` grave do pandeiro,
-`ganza` ganzá, `triO`/`triC` triângulo aberto/fechado, `zabL` zabumba grave, `zabH` bacalhau,
-`alfaia`, `congaH`/`congaL` atabaque agudo/grave, `cow` cowbell, `clickH`/`clickL` metrônomo.
+As peças de percussão vêm do padrão General MIDI, que não tem surdo, tamborim, pandeiro,
+zabumba ou alfaia. Esses usam a peça gravada mais parecida (tom de chão, timbale, pandeirola,
+bumbo), reafinada. A correspondência está na tabela `DRUM` de `js/audio.js`; trocar por
+gravações dos instrumentos brasileiros é o próximo passo natural.
