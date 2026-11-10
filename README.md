@@ -1,4 +1,4 @@
-# Levada
+# Naipe Rit
 
 Aplicativo de estudo que junta **levadas de bateria e percussão** com **harmonia cifrada**:
 o aluno escolhe um ritmo, escreve (ou escolhe) uma progressão de acordes e toca junto com

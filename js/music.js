@@ -1,4 +1,4 @@
-/* Levada — núcleo musical: acordes, cifras, ritmos e progressões.
+/* Naipe Rit — núcleo musical: acordes, cifras, ritmos e progressões.
    Sem dependência de navegador: também roda em Node para os testes. */
 (function (root) {
   'use strict';

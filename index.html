@@ -3,51 +3,54 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Levada</title>
+<title>Naipe Rit</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-<div class="app">
-  <header class="top">
-    <h1>Levada</h1>
-    <p>Ritmo e harmonia para estudar tocando junto</p>
-  </header>
+<header class="hero">
+  <div class="hero-in">
+    <div class="hero-topo">
+      <span class="marca" aria-label="Naipe Rit">naipe <b>rit</b></span>
+      <span class="hero-sub">ritmo + harmonia para tocar junto</span>
+    </div>
+    <div class="hero-ritmo">
+      <p class="sobretitulo">Ritmo</p>
+      <h1 id="rhythm-name"></h1>
+      <p class="hero-meta"><span id="sig" class="sig"></span><span id="rhythm-desc"></span></p>
+    </div>
+  </div>
+  <div id="rhythms" class="chips" role="radiogroup" aria-label="Ritmo"></div>
+</header>
 
-  <section class="setup" aria-label="Configuração">
-    <label class="field">
-      <span>Ritmo</span>
-      <select id="rhythm"></select>
-    </label>
-    <label class="field grow">
-      <span>Progressão</span>
-      <select id="song"></select>
-    </label>
-    <div class="field">
-      <span>Tom</span>
-      <div class="stepper">
-        <button id="tr-down" type="button" aria-label="Descer meio tom">−</button>
-        <output id="tr-val">Original</output>
-        <button id="tr-up" type="button" aria-label="Subir meio tom">+</button>
+<div class="app">
+  <section class="cartao chart-wrap" aria-label="Cifra">
+    <div class="chart-head">
+      <label class="field grow">
+        <span class="rotulo">Progressão</span>
+        <select id="song"></select>
+      </label>
+      <div class="field">
+        <span class="rotulo">Tom</span>
+        <div class="stepper">
+          <button id="tr-down" type="button" aria-label="Descer meio tom">−</button>
+          <output id="tr-val">Original</output>
+          <button id="tr-up" type="button" aria-label="Subir meio tom">+</button>
+        </div>
       </div>
     </div>
-  </section>
-
-  <section class="chart-wrap" aria-label="Cifra">
-    <div class="chart-head">
-      <h2 id="song-title"></h2>
-      <span id="sig" class="sig"></span>
+    <div id="chart" class="chart"></div>
+    <div class="chart-foot">
+      <p class="hint">Toque em um compasso para começar a partir dele.</p>
       <div class="chart-actions">
         <button id="edit" type="button" class="ghost">Editar</button>
         <button id="new" type="button" class="ghost">Nova</button>
       </div>
     </div>
-    <div id="chart" class="chart"></div>
-    <p class="hint">Toque em um compasso para começar a partir dele.</p>
   </section>
 
-  <section class="panel" aria-label="Instrumentos">
+  <section class="cartao panel" aria-label="Instrumentos">
     <div class="tabs" role="tablist">
       <button id="tab-mixer" type="button" role="tab" aria-selected="true">Instrumentos</button>
       <button id="tab-grid" type="button" role="tab" aria-selected="false">Grade do ritmo</button>

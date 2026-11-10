@@ -1,9 +1,19 @@
-/* Levada — interface e sequenciador. */
+/* Naipe Rit — interface e sequenciador. */
 (function () {
   'use strict';
   var M = window.Music, E = window.Engine;
   var $ = function (id) { return document.getElementById(id); };
-  var KEY = 'levada.v1';
+  var KEY = 'naiperit.v1';
+  // Par de cores de cada ritmo e cor de cada família de instrumentos.
+  var CORES = {
+    samba: ['#ffd23f', '#3ddc97'], bossa: ['#2ec4f1', '#a78bfa'], choro: ['#ff9a3c', '#ffd23f'],
+    baiao: ['#ff9a3c', '#ff5c8a'], xote: ['#3ddc97', '#ffd23f'], frevo: ['#ff5c8a', '#ffd23f'],
+    maracatu: ['#ff5c8a', '#a78bfa'], ijexa: ['#ffd23f', '#ff9a3c'], afro: ['#3ddc97', '#2ec4f1'],
+    swing: ['#a78bfa', '#2ec4f1'], valsa: ['#a78bfa', '#ff5c8a'], funk: ['#ff5c8a', '#ff9a3c'],
+    pop: ['#2ec4f1', '#3ddc97'], reggae: ['#3ddc97', '#ffd23f'], balada: ['#2ec4f1', '#ff5c8a'],
+    metro: ['#a78bfa', '#2ec4f1']
+  };
+  var GRUPO = { 'Percussão': '#ff5c8a', 'Bateria': '#2ec4f1', 'Harmonia': '#ffd23f', 'Metrônomo': '#a78bfa' };
 
   /* ---------- Estado ---------- */
   var S = {
@@ -240,8 +250,6 @@
 
   function renderChart() {
     var s = song(), r = rhythm(), box = $('chart');
-    $('song-title').textContent = s.title;
-    $('sig').textContent = r.sig;
     box.textContent = '';
     barEls = [];
     CHART.rows.forEach(function (row) {
@@ -249,7 +257,7 @@
         var line = el('div', 'row');
         line.appendChild(i === 0 && row.label ? el('span', 'row-label', row.label) : el('span'));
         row.bars.slice(i, i + 4).forEach(function (bar) {
-          var b = el('button', 'bar' + (bar.index === startBar && startBar > 0 ? ' start' : ''));
+          var b = el('button', 'bar' + (bar.index === startBar && startBar > 0 ? ' start' : '') + (bar.chords.length > 1 ? ' multi' : ''));
           b.type = 'button';
           b.setAttribute('aria-label', 'Compasso ' + (bar.index + 1));
           if (bar.repStart) b.classList.add('rs');
@@ -275,8 +283,9 @@
     var box = $('mixer'), group = null;
     box.textContent = '';
     CH.forEach(function (c) {
-      if (c.group !== group) { group = c.group; box.appendChild(el('h3', 'group', group)); }
+      if (c.group !== group) { group = c.group; var h = el('h3', 'group', group); h.style.setProperty('--g', GRUPO[group]); box.appendChild(h); }
       var m = mixOf(c), strip = el('div', 'strip');
+      strip.style.setProperty('--g', GRUPO[c.group]);
       var btn = el('button', 'mute');
       btn.type = 'button';
       btn.setAttribute('aria-pressed', String(!m.m));
@@ -308,6 +317,7 @@
       for (var i = 0; i < len; i++) (function (i) {
         var cell = el('button', 'cell' + (c.h ? ' h' : '') + (i % spbar === 0 ? ' bar1' : i % r.spb === 0 ? ' beat' : ''));
         cell.type = 'button';
+        cell.style.setProperty('--g', GRUPO[c.group]);
         var paint = function () {
           var v = c.pat[i];
           cell.dataset.v = v;
@@ -337,15 +347,36 @@
     shown.beat = -2;
   }
 
-  function renderSelects() {
-    var rs = $('rhythm'), ss = $('song');
-    rs.textContent = '';
-    M.RHYTHMS.forEach(function (r) {
-      var o = el('option', '', r.name + ' · ' + r.sig);
-      o.value = r.id;
-      rs.appendChild(o);
+  function renderRhythms() {
+    var box = $('rhythms'), r = rhythm(), cor = CORES[r.id] || CORES.metro;
+    document.documentElement.style.setProperty('--c1', cor[0]);
+    document.documentElement.style.setProperty('--c2', cor[1]);
+    $('rhythm-name').textContent = r.name;
+    $('sig').textContent = r.sig;
+    $('rhythm-desc').textContent = r.tracks.length + ' instrumentos · ciclo de ' + (r.bars > 1 ? r.bars + ' compassos' : '1 compasso');
+    box.textContent = '';
+    M.RHYTHMS.forEach(function (x) {
+      var b = el('button', 'chip', x.name);
+      b.type = 'button';
+      b.dataset.id = x.id;
+      b.setAttribute('role', 'radio');
+      b.setAttribute('aria-checked', String(x.id === r.id));
+      b.style.setProperty('--c1', (CORES[x.id] || CORES.metro)[0]);
+      b.style.setProperty('--c2', (CORES[x.id] || CORES.metro)[1]);
+      b.addEventListener('click', function () {
+        if (S.rhythmId === x.id) return;
+        S.rhythmId = x.id;
+        setBpm(x.bpm);
+        renderRhythms();
+        refresh(true);
+      });
+      box.appendChild(b);
     });
-    rs.value = rhythm().id;
+  }
+
+  function renderSelects() {
+    var ss = $('song');
+    renderRhythms();
     ss.textContent = '';
     allSongs().forEach(function (s) {
       var o = el('option', '', s.title);
@@ -387,11 +418,6 @@
     $('play').click();
   });
 
-  $('rhythm').addEventListener('change', function () {
-    S.rhythmId = this.value;
-    setBpm(rhythm().bpm);
-    refresh(true);
-  });
   $('song').addEventListener('change', function () {
     S.songId = this.value;
     startBar = 0;

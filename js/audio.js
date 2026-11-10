@@ -1,4 +1,4 @@
-/* Levada — motor de áudio (Web Audio). Todos os timbres são sintetizados,
+/* Naipe Rit — motor de áudio (Web Audio). Todos os timbres são sintetizados,
    sem amostras gravadas. */
 (function (root) {
   'use strict';
