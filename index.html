@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Naipe</title>
+  <meta name="description" content="Naipe · meu estudo de saxofone na palma da mão">
+  <meta name="theme-color" content="#0b2a20">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main>
+    <!-- INÍCIO -->
+    <section id="tela-inicio" class="tela">
+      <header class="hero">
+        <button class="letreiro-radio" id="letreiro-radio" type="button" aria-label="Rádio Naipe: toque para ouvir">
+          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
+          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
+          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
+        </button>
+        <div class="hero-topo">
+          <span class="marca" aria-label="naipe">naipe<svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg></span>
+          <span class="hero-data" id="hero-data"></span>
+          <button class="btn-topo btn-busca" id="btn-busca" type="button" aria-label="Buscar no app"><span data-icone="busca"></span></button>
+          <a class="btn-topo" href="#/ajustes" aria-label="Ajustes"><span data-icone="engrenagem"></span></a>
+        </div>
+        <h1 class="hero-saudacao" id="saudacao">Olá.</h1>
+        <figure class="frase-dia">
+          <figcaption>Frase do dia</figcaption>
+          <blockquote id="frase-dia"></blockquote>
+        </figure>
+      </header>
+
+      <div class="conteudo-inicio">
+        <div class="cartao percurso-cartao">
+          <div class="percurso">
+          <div class="percurso-topo">
+            <span class="rotulo">Meu percurso</span>
+            <span class="percurso-pct" id="percurso-pct">0%</span>
+          </div>
+          <div class="arvore" id="arvore"></div>
+          <p class="arvore-legenda" id="arvore-legenda"></p>
+        </div>
+        </div>
+
+        <div class="cartao timer hoje" id="cartao-timer">
+          <div class="timer-topo">
+            <span class="rotulo">Hoje</span>
+            <span class="timer-estado" id="timer-estado">Parado</span>
+          </div>
+          <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
+          <div class="timer-meta">
+            <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
+            <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
+          </div>
+          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
+          <div class="timer-botoes">
+            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
+            <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
+            <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
+          </div>
+          <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
+            <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <span class="btn-metronomo-texto"><strong>Metrônomo</strong><small>Toque para marcar o tempo do estudo</small></span>
+          </button>
+          <button class="btn-afinador" id="btn-afinador-inicio" type="button">
+            <span class="btn-afinador-ic" aria-hidden="true"><svg viewBox="0 1.2 24 24"><path d="M4 16a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="agulha-mini" d="M12 16l3.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.6" fill="currentColor"/></svg></span>
+            <span><strong>Afinador</strong><small>Confira a afinação com o microfone</small></span>
+          </button>
+          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
+        </div>
+
+        <div class="cartao backup-lembrete" id="backup-lembrete" hidden>
+          <p class="backup-lembrete-txt"><strong>Backup do meu progresso</strong><span id="backup-lembrete-sub">Faça um backup do seu diário e guarde no Drive ou no WhatsApp.</span></p>
+          <div class="linha-botoes">
+            <button class="btn" id="backup-depois" type="button">Depois</button>
+            <button class="btn primario" id="backup-agora" type="button">Fazer backup</button>
+          </div>
+        </div>
+
+        <div class="cartao gratis-cartao" id="cartao-gratis" hidden>
+          <p class="gratis-selo">Versão grátis</p>
+          <h2>O pilar Escuta já é meu. Faltam mais 5.</h2>
+          <p class="mudo">No Naipe completo você libera os 6 pilares, o Tocar junto com mais de 40 play-alongs, as partituras em Mib e Sib e o acervo de métodos.</p>
+          <div class="linha-botoes">
+            <a class="btn primario" data-conhecer target="_blank" rel="noopener" href="#">Conhecer o Naipe</a>
+            <a class="btn" href="#/ajustes">Já tenho o código</a>
+          </div>
+        </div>
+
+        <div class="stats linha">
+          <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span>dias seguidos</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo"><span data-icone="relogio"></span>min na semana</span></div>
+          <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
+        </div>
+
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <ul class="lista-prazos" id="lista-prazos"></ul>
+          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra um pilar ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
+        </details>
+
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="alvo"></span><span class="rec-txt"><strong>Meta semanal</strong><small id="meta-texto"></small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <div class="barra grossa"><div class="barra-preenchida arco" id="meta-barra"></div></div>
+          <div class="semana" id="semana"></div>
+        </details>
+
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="diario"></span><span class="rec-txt"><strong>Relatório para o professor</strong><small>Envie o resumo da semana pelo WhatsApp</small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <p class="mudo" id="relatorio-dica">Envie o resumo dos seus últimos 7 dias pelo WhatsApp: minutos, pilares estudados, exercícios concluídos, andamentos e anotações.</p>
+          <button class="btn primario largo" id="btn-relatorio" type="button">Enviar relatório pelo WhatsApp</button>
+        </details>
+
+        <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
+        <button class="link-acao ajuda-link" type="button" data-abrir-ajuda>Como usar o Naipe</button>
+      </div>
+    </section>
+
+    <!-- RAÍZES -->
+    <section id="tela-raizes" class="tela">
+      <header class="cabecalho">
+        <p class="sobretitulo">Meu passo a passo</p>
+        <h1>Pilares</h1>
+        <p class="mudo">Seis pilares para um som firme. Siga na ordem e no seu ritmo: cada pilar prepara o próximo.</p>
+      </header>
+      <div class="grade-raizes" id="lista-raizes"></div>
+    </section>
+
+    <!-- RAIZ (detalhe) -->
+    <section id="tela-raiz" class="tela">
+      <div id="raiz-conteudo"></div>
+    </section>
+
+    <!-- EXERCÍCIO (detalhe) -->
+    <section id="tela-exercicio" class="tela">
+      <div id="exercicio-conteudo"></div>
+    </section>
+
+    <!-- TOCAR JUNTO (play-alongs) -->
+    <section id="tela-tocar" class="tela">
+      <div id="tocar-conteudo"></div>
+    </section>
+
+    <!-- MÉTODOS (biblioteca e detalhe de um método) -->
+    <section id="tela-metodos" class="tela">
+      <div id="metodos-conteudo"></div>
+    </section>
+
+    <!-- DIÁRIO -->
+    <section id="tela-diario" class="tela">
+      <header class="cabecalho linha-cabecalho">
+        <div>
+          <p class="sobretitulo">Meu histórico</p>
+          <h1>Diário de prática</h1>
+        </div>
+        <button class="btn primario pequeno" id="btn-registrar-2" data-icone="mais">Novo</button>
+      </header>
+      <div class="corpo-diario" id="diario-graficos"></div>
+      <ul class="lista" id="lista-sessoes"></ul>
+      <div class="vazio" id="diario-vazio">
+        <span class="vazio-notas" aria-hidden="true"><span data-icone="nota"></span><span data-icone="nota"></span><span data-icone="nota"></span></span>
+        <span data-icone="diario"></span>
+        <p><strong>Nenhuma prática registrada.</strong></p>
+        <p class="mudo">Use o cronômetro na tela inicial ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
+      </div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section id="tela-ajustes" class="tela">
+      <header class="cabecalho">
+        <p class="sobretitulo">Personalize</p>
+        <h1>Ajustes</h1>
+      </header>
+      <div class="ajustes-corpo">
+      <form class="cartao form" id="form-ajustes">
+        <label>Meu nome
+          <input type="text" id="aj-nome" maxlength="40" placeholder="Ex.: Ana">
+        </label>
+        <label>Meu saxofone
+          <select id="aj-sax">
+            <option value="">Mostrar todas as afinações</option>
+            <option value="Mib">Alto ou barítono (Mib)</option>
+            <option value="Sib">Tenor ou soprano (Sib)</option>
+          </select>
+        </label>
+        <label>Cor do app
+          <select id="aj-tema">
+            <option value="verde">Verde Naipe e dourado</option>
+            <option value="preto">Preto e dourado</option>
+          </select>
+        </label>
+        <label>Meta semanal (minutos)
+          <input type="number" id="aj-meta" min="10" max="3000" step="10" required>
+        </label>
+        <button class="btn primario" type="submit">Salvar</button>
+      </form>
+
+      <button class="btn largo ajuda-btn" type="button" data-abrir-ajuda><span data-icone="lampada"></span>Como usar o Naipe</button>
+
+      <div class="cartao" id="cartao-acesso" hidden></div>
+
+      <div class="cartao backup-cartao">
+        <h2>Backup do progresso</h2>
+        <p class="mudo">O meu diário, os exercícios concluídos, os andamentos e os prazos ficam guardados neste celular. Faça um backup e guarde no Drive, no WhatsApp ou no e-mail: se trocar de aparelho ou limpar o navegador, é só restaurar.</p>
+        <p class="backup-estado" id="backup-estado"></p>
+        <div class="backup-botoes">
+          <button class="btn primario" id="btn-exportar" type="button">Fazer backup agora</button>
+          <label class="btn">Restaurar backup<input type="file" id="inp-importar" accept="application/json,.json" hidden></label>
+        </div>
+        <p class="dica">As gravações de áudio não entram no backup: elas ficam só neste celular.</p>
+      </div>
+      </div>
+    </section>
+  </main>
+
+  <div class="radio" id="radio">
+    <button class="radio-play" id="radio-play" type="button" aria-label="Tocar rádio"></button>
+    <button class="radio-info" id="radio-abrir" type="button" aria-label="Escolher estação">
+      <span class="radio-rotulo"><span data-icone="radio"></span>Rádio Naipe</span>
+      <strong id="radio-nome">Toque para ouvir jazz</strong>
+    </button>
+    <button class="radio-mais" id="radio-mais" type="button" aria-label="Estações">Estações</button>
+  </div>
+
+  <div class="met-mini" id="met-mini" hidden>
+    <button class="met-mini-abrir" id="met-mini-abrir" type="button" aria-label="Abrir o metrônomo">
+      <span class="met-mini-ponto" aria-hidden="true"></span>
+      <span class="met-mini-txt"><strong id="met-mini-bpm">80</strong> bpm</span>
+    </button>
+    <button class="met-mini-parar" id="met-mini-parar" type="button" aria-label="Parar o metrônomo"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg></button>
+  </div>
+
+  <nav class="abas">
+    <a href="#/inicio" data-aba="inicio"><span data-icone="inicio"></span>Início</a>
+    <a href="#/raizes" data-aba="raizes"><span data-icone="raizes"></span>Pilares</a>
+    <a href="#/tocar" data-aba="tocar"><span data-icone="fone"></span>Tocar junto</a>
+    <a href="#/metodos" data-aba="metodos"><span data-icone="livro"></span>Métodos</a>
+    <a href="#/diario" data-aba="diario"><span data-icone="diario"></span>Diário</a>
+  </nav>
+
+  <dialog id="dlg-afinador" class="afinador" aria-labelledby="af-titulo">
+    <div class="cartao-topo"><h2 id="af-titulo">Afinador</h2><button class="link-acao" id="af-fechar" type="button">Fechar</button></div>
+    <div class="af-mostrador" aria-live="polite">
+      <svg class="af-escala" viewBox="0 0 200 110" aria-hidden="true">
+        <path d="M20 100a80 80 0 0 1 160 0" fill="none" class="af-arco"/>
+        <path d="M92 22a80 80 0 0 1 16 0" fill="none" class="af-zona"/>
+        <g class="af-marcas"><line x1="100" y1="16" x2="100" y2="28"/><line x1="43.4" y1="43.4" x2="51.9" y2="51.9"/><line x1="156.6" y1="43.4" x2="148.1" y2="51.9"/><line x1="20" y1="100" x2="32" y2="100"/><line x1="180" y1="100" x2="168" y2="100"/></g>
+        <text x="22" y="92" class="af-txt">−50</text><text x="178" y="92" class="af-txt" text-anchor="end">+50</text>
+        <g id="af-agulha" class="af-agulha"><line x1="100" y1="100" x2="100" y2="26"/><circle cx="100" cy="100" r="6"/></g>
+      </svg>
+      <div class="af-nota"><span id="af-nota">–</span><sub id="af-oitava"></sub></div>
+      <p class="af-cents"><span id="af-cents">0</span> cents</p>
+      <p class="af-dica" id="af-dica">Toque uma nota longa</p>
+      <p class="mudo af-freq" id="af-freq">Mostra a nota escrita para o meu sax</p>
+    </div>
+    <label class="met-compasso">Nota escrita para
+      <select id="af-sax">
+        <option value="">Som real (Dó)</option>
+        <option value="Mib">Sax alto / barítono (Mib)</option>
+        <option value="Sib">Sax tenor / soprano (Sib)</option>
+      </select>
+    </label>
+    <label class="met-compasso">Lá de referência
+      <select id="af-ref"><option value="440">440 Hz</option><option value="442">442 Hz</option><option value="441">441 Hz</option><option value="443">443 Hz</option></select>
+    </label>
+    <button class="btn primario largo" id="af-ligar" type="button">Ligar o microfone</button>
+    <p class="af-previa" id="af-previa" hidden>Você está na prévia do Claude, onde o microfone é bloqueado. Para afinar, abra o Naipe pelo <a href="https://saxofonevm.github.io/claude/" target="_blank" rel="noopener">site</a> ou pelo app instalado no celular.</p>
+    <p class="mudo af-aviso">O som do microfone é analisado só no meu celular. Nada é gravado nem enviado.</p>
+  </dialog>
+
+  <dialog id="dlg-ajuda" class="ajuda-dlg" aria-labelledby="ajuda-titulo">
+    <div class="cartao-topo"><h2 id="ajuda-titulo">Como usar o Naipe</h2><button class="link-acao" id="ajuda-fechar" type="button">Fechar</button></div>
+    <ol class="ajuda-passos">
+      <li><span class="aj-ic" data-icone="raizes"></span><span><strong>Meu percurso</strong><small>Toque num pilar para ver as Dicas de Naipe e os exercícios. Siga na ordem e comece pela Escuta.</small></span></li>
+      <li><span class="aj-ic" data-icone="play"></span><span><strong>Começar os estudos</strong><small>Ligue o cronômetro quando pegar o sax. Ao terminar, toque em Finalizar e a prática vai para o Diário.</small></span></li>
+      <li><span class="aj-ic" data-icone="metronomo"></span><span><strong>Metrônomo e afinador</strong><small>Ficam logo abaixo. O metrônomo continua tocando quando você fecha a janela; para parar, toque no ■ no topo da tela.</small></span></li>
+      <li><span class="aj-ic" data-icone="lampada"></span><span><strong>Dica de estudo</strong><small>Três passos para hoje: aquecer, fazer o exercício da vez e tocar junto. Toque na bolinha para marcar o que já fez.</small></span></li>
+      <li><span class="aj-ic" data-icone="nota"></span><span><strong>Dentro do exercício</strong><small>Leia o “Como fazer”, abra o metrônomo no andamento indicado, grave e compare. Toque em Concluí quando estiver limpo.</small></span></li>
+      <li><span class="aj-ic" data-icone="livro"></span><span><strong>Selo amarelo</strong><small>Nos métodos, toque no selo amarelo (p. 27, Ex. 1–5) para abrir o livro e vá à página indicada.</small></span></li>
+      <li><span class="aj-ic" data-icone="fone"></span><span><strong>Abas de baixo</strong><small>Tocar junto: play-alongs por estilo. Métodos: busque um assunto. Diário: suas práticas e gráficos.</small></span></li>
+      <li><span class="aj-ic" data-icone="engrenagem"></span><span><strong>Engrenagem</strong><small>Nome, sax, meta da semana, cor do app, backup do progresso e código de acesso.</small></span></li>
+    </ol>
+    <button class="btn primario largo" id="ajuda-ok" type="button">Entendi</button>
+  </dialog>
+
+  <dialog id="dlg-busca" class="busca-dlg" aria-label="Buscar no app">
+    <div class="busca-topo">
+      <label class="busca"><span data-icone="busca"></span><input type="search" id="busca-geral" placeholder="Buscar exercício, música, assunto…" autocomplete="off"></label>
+      <button class="link-acao" id="busca-fechar" type="button">Fechar</button>
+    </div>
+    <ul class="busca-lista" id="busca-lista"></ul>
+  </dialog>
+
+  <dialog id="dlg-boas-vindas" class="boas-vindas" aria-labelledby="bv-titulo">
+    <div class="bv-pontos" aria-hidden="true"><span></span><span></span><span></span></div>
+    <section data-passo="1">
+      <svg class="bv-sax" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="#C9A24B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg>
+      <h2 id="bv-titulo">Bem-vindo ao Naipe</h2>
+      <p class="mudo">Meu estudo de saxofone organizado em 6 pilares, com metrônomo, play-alongs e diário. Tudo na palma da mão.</p>
+      <label class="bv-campo" for="bv-nome">Meu nome é</label>
+      <input type="text" id="bv-nome" maxlength="40" autocomplete="given-name" placeholder="Meu nome">
+      <button class="btn primario largo" type="button" data-bv-prox>Continuar</button>
+      <button class="link-acao" type="button" data-bv-pular>Pular</button>
+    </section>
+    <section data-passo="2" hidden>
+      <h2>Meu saxofone é</h2>
+      <p class="mudo">Assim o app mostra as partituras na minha afinação.</p>
+      <div class="bv-opcoes">
+        <button class="bv-opcao" type="button" data-bv-sax="Mib"><strong>Alto</strong><small>Mib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Sib"><strong>Tenor</strong><small>Sib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Sib"><strong>Soprano</strong><small>Sib</small></button>
+        <button class="bv-opcao" type="button" data-bv-sax="Mib"><strong>Barítono</strong><small>Mib</small></button>
+      </div>
+      <button class="link-acao" type="button" data-bv-sax="">Ainda não sei · mostrar todas</button>
+      <button class="link-acao" type="button" data-bv-voltar>Voltar</button>
+    </section>
+    <section data-passo="3" hidden>
+      <h2>Quanto quer estudar por semana?</h2>
+      <p class="mudo">Pouco todo dia vence muito de vez em quando. Você pode mudar depois em Ajustes.</p>
+      <div class="bv-opcoes uma">
+        <button class="bv-opcao" type="button" data-bv-meta="60"><strong>60 min</strong><small>cerca de 10 min por dia</small></button>
+        <button class="bv-opcao ativo" type="button" data-bv-meta="150"><strong>150 min</strong><small>cerca de 20 min por dia · recomendado</small></button>
+        <button class="bv-opcao" type="button" data-bv-meta="300"><strong>300 min</strong><small>cerca de 45 min por dia</small></button>
+      </div>
+      <button class="btn primario largo" type="button" data-bv-fim>Começar pela Escuta</button>
+      <button class="link-acao" type="button" data-bv-voltar>Voltar</button>
+    </section>
+  </dialog>
+
+  <div class="comemora" id="comemora" hidden role="status" aria-live="polite">
+    <canvas id="confete" aria-hidden="true"></canvas>
+    <div class="comemora-cartao">
+      <span class="comemora-ic" id="comemora-ic"></span>
+      <strong id="comemora-titulo"></strong>
+      <span id="comemora-sub"></span>
+      <button class="btn primario" id="comemora-ok" type="button">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Registro de prática -->
+  <dialog id="dlg-sessao">
+    <form method="dialog" class="form" id="form-sessao">
+      <h2 id="dlg-titulo">Registrar prática</h2>
+      <div class="linha">
+        <label>Data
+          <input type="date" id="s-data" required>
+        </label>
+        <label>Minutos
+          <input type="number" id="s-minutos" min="1" max="600" required>
+        </label>
+      </div>
+      <label>Pilar
+        <select id="s-raiz"><option value="">— geral —</option></select>
+      </label>
+      <label>Exercício
+        <select id="s-exercicio"><option value="">— nenhum —</option></select>
+      </label>
+      <div class="campo">
+        <span class="campo-rotulo">Como foi a sessão? <span class="mudo" id="s-avaliacao-texto"></span></span>
+        <div class="avaliacao" id="s-avaliacao"></div>
+      </div>
+      <label>Anotações
+        <textarea id="s-notas" rows="3" maxlength="1000" placeholder="O que deu certo? O que precisa melhorar?"></textarea>
+      </label>
+      <div class="linha-botoes">
+        <button class="btn" value="cancelar" formnovalidate>Cancelar</button>
+        <button class="btn primario" value="salvar" id="s-salvar">Salvar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Confirmação -->
+  <dialog id="dlg-confirmar">
+    <form method="dialog" class="form">
+      <h2 id="conf-titulo">Tem certeza?</h2>
+      <p class="mudo" id="conf-texto"></p>
+      <div class="linha-botoes">
+        <button class="btn" value="nao" id="conf-nao">Cancelar</button>
+        <button class="btn primario" value="sim" id="conf-sim">Confirmar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Metrônomo -->
+  <dialog id="dlg-radio">
+    <div class="radio-janela">
+      <div class="cartao-topo">
+        <h2>Rádio Naipe</h2>
+        <button class="link-acao" id="radio-fechar" type="button">Fechar</button>
+      </div>
+      <p class="mudo">Um fundo musical enquanto você estuda. Escolha uma estação ao vivo.</p>
+      <ul class="radio-lista" id="radio-lista"></ul>
+      <label class="radio-volume">Volume
+        <input type="range" id="radio-volume" min="0" max="100" step="1">
+      </label>
+      <p class="mudo radio-dica">Ao ligar o metrônomo, o rádio abaixa sozinho.</p>
+      <h3 class="radio-sub">Ouvir fora do app</h3>
+      <ul class="radio-links" id="radio-links"></ul>
+    </div>
+  </dialog>
+
+  <dialog id="dlg-metronomo">
+    <div class="metronomo">
+      <div class="cartao-topo">
+        <h2>Metrônomo</h2>
+        <button class="link-acao" id="met-fechar">Fechar</button>
+      </div>
+      <div class="met-pulsos" id="met-pulsos"></div>
+      <div class="met-bpm"><span id="met-bpm">80</span><small>bpm</small></div>
+      <p class="met-nome" id="met-nome"></p>
+      <input type="range" id="met-slider" min="30" max="240" step="1" aria-label="Andamento">
+      <div class="met-ajustes">
+        <button class="btn" data-delta="-5">−5</button>
+        <button class="btn" data-delta="-1">−1</button>
+        <button class="btn" data-delta="1">+1</button>
+        <button class="btn" data-delta="5">+5</button>
+      </div>
+      <label class="met-compasso">Som
+        <select id="met-som">
+          <option value="analogico">Analógico (tic-tac)</option>
+          <option value="digital">Digital (bip)</option>
+        </select>
+      </label>
+      <label class="met-compasso">Subdivisão
+        <select id="met-sub">
+          <option value="1">Só o tempo (semínima)</option>
+          <option value="2">Colcheias (2 por tempo)</option>
+          <option value="3">Tercinas (3 por tempo)</option>
+          <option value="4">Semicolcheias (4 por tempo)</option>
+        </select>
+      </label>
+      <label class="met-compasso">Tempos por compasso
+        <select id="met-compasso">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4" selected>4</option>
+          <option value="6">6</option>
+        </select>
+      </label>
+      <button class="btn largo met-tap" id="met-tap" type="button"><span><strong>Toque no ritmo</strong><small>toque 4 vezes no tempo da música</small></span></button>
+      <button class="btn primario largo" id="met-tocar">Tocar</button>
+      <p class="met-dica-fundo" id="met-dica-fundo" hidden>Pode fechar e navegar pelo app: o metrônomo continua tocando.</p>
+      <button class="link-acao" id="met-afinador" type="button">Abrir o afinador</button>
+      <button class="btn largo" id="met-salvar-bpm" hidden>Salvar como meu andamento atual</button>
+    </div>
+  </dialog>
+
+  <script src="icones.js"></script>
+  <script src="conteudo.js"></script>
+  <script src="metodos.js"></script>
+  <script src="acervo.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
