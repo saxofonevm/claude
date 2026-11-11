@@ -25,7 +25,12 @@ const CSS = `
   background: rgb(9 30 23 / .97); border: 1.5px solid #e9b949; box-shadow: 0 18px 40px rgb(0 0 0 / .55);
   color: #f3efe6; font-family: Figtree, system-ui, sans-serif; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .3s; }
 .tour-legenda.ver { opacity: 1; transform: none; }
-.tour-legenda.cima { top: 12px; } .tour-legenda.baixo { bottom: 74px; }
+.tour-legenda.cima, .tour-legenda.baixo { top: 54%; bottom: auto; transform: translateY(-50%) scale(.92); }
+.tour-legenda.ver { transform: translateY(-50%) scale(1) !important; }
+.tour-legenda { left: 18px; right: 18px; padding: 18px 20px 20px; text-align: center; border-width: 2.5px; border-radius: 22px;
+  background: rgb(8 28 21 / .96); box-shadow: 0 0 0 100vmax rgb(0 0 0 / .28), 0 0 34px rgb(242 193 78 / .45), 0 22px 50px rgb(0 0 0 / .6); }
+.tour-legenda b { font-size: 1.65rem !important; margin-bottom: 6px !important; }
+.tour-legenda span { font-size: 1.18rem !important; line-height: 1.4 !important; }
 .tour-legenda b { display: block; font-family: Archivo, sans-serif; font-stretch: 80%; font-size: 1.2rem; text-transform: uppercase; letter-spacing: .03em; color: #f2c14e; margin-bottom: 2px; }
 .tour-legenda span { font-size: .98rem; line-height: 1.35; }
 .tour-alvo { outline: 3px solid #f2d48a !important; outline-offset: 4px; border-radius: 14px; animation: tour-anel 1.2s ease-in-out infinite !important; position: relative; z-index: 5; }
@@ -70,7 +75,7 @@ const SAX = `<svg viewBox="-12.6 -2.12 71.22 95.96"><g transform="rotate(-10 30 
       document.querySelectorAll('.tour-alvo').forEach(e => e.classList.remove('tour-alvo'));
       document.querySelectorAll('.tour-legenda').forEach(e => e.remove());
       const el = sel && document.querySelector(sel);
-      if (el) { el.scrollIntoView({ block: cen, behavior: 'smooth' }); el.classList.add('tour-alvo'); }
+      if (el) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); setTimeout(() => window.scrollBy({ top: -60, behavior: 'smooth' }), 350); el.classList.add('tour-alvo'); }
       const l = document.createElement('div'); l.className = 'tour-legenda ' + ond;
       l.innerHTML = `<b>${t}</b><span>${tx}</span>`; document.body.appendChild(l);
       requestAnimationFrame(() => requestAnimationFrame(() => l.classList.add('ver')));
