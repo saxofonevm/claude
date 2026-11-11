@@ -842,7 +842,7 @@
     const secoes = GENEROS.map(g => {
       const lista = TOCAR.filter(t => t.g === g && serve(t)).sort((a, b) => (b.ind ? 1 : 0) - (a.ind ? 1 : 0));
       if (!lista.length) return "";
-      return `<details class="cartao genero"${generoAberto === g || (!generoAberto && g === GENEROS[0]) ? " open" : ""}><summary><h2>${escapar(g)}</h2><small>${lista.length}</small></summary>
+      return `<details class="cartao genero"${generoAberto === g ? " open" : ""}><summary><h2>${escapar(g)}</h2><small>${lista.length}</small></summary>
         <ul class="tocar-lista">${lista.map(t => {
           const href = urlSegura(urlPasta(t.id));
           return href ? `<li><a href="${escapar(href)}" target="_blank" rel="noopener"><span class="tocar-texto"><strong>${escapar(t.t)}</strong>

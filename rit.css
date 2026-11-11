@@ -241,3 +241,7 @@ body.com-radio .rit .transport { bottom: calc(122px + env(safe-area-inset-bottom
 
 .rit .vista { margin-top: -6px; }
 .rit dialog form label.field { font-weight: 400; }
+
+/* Todos os ritmos à vista, sem arrastar para o lado */
+.rit .chips { flex-wrap: wrap; overflow: visible; justify-content: center; }
+.rit .chip { flex: 0 1 auto; }
