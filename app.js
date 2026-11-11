@@ -366,12 +366,16 @@
 
   window.addEventListener("hashchange", () => {
     if (grav.gravando) pararGravacao();
+    const antes = rotaAtual;
     const novo = location.hash || "#/inicio";
     guardarPosicao(pilha[pilha.length - 1]);
     const voltando = pilha.length > 1 && telaAnterior() === novo;
     if (voltando) pilha.pop(); else pilha.push(novo);
     if (pilha.length > 50) pilha.splice(0, pilha.length - 50);
     lerRota(); mostrarTela(); renderTela();
+    if (rotaAtual.tela !== "tocar") pararBase();
+    // trocar entre Play-alongs e Montar base não rola a tela para o topo
+    if (antes.tela === "tocar" && rotaAtual.tela === "tocar") return;
     if (voltando) restaurarPosicao(novo); else window.scrollTo(0, 0);
   });
 
@@ -798,14 +802,35 @@
     if (a) generoAberto = a.dataset.genero;
   });
 
+  // A aba Tocar junto tem dois modos: os play-alongs do acervo e "Montar base"
+  // (ritmo + harmonia sintetizados; markup em index.html, lógica em rit.js).
+  window.NaipeSax = () => estado.sax;
+  const pararBase = () => { if (window.NaipeRit) window.NaipeRit.parar(); };
+  document.addEventListener("rit:tocar", () => {
+    if (radio.tocando || radio.carregando) pausarRadio();
+    if (met.tocando) pararMetronomo();
+  });
+
   function renderTocar() {
     const alvo = $("#tocar-conteudo");
-    const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
-      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p>
-      <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio Naipe</button></header>`;
+    const base = rotaAtual.id === "base" && !temBloqueio();
+    const painel = $("#rit");
+    painel.hidden = !base;
+    if (!base) pararBase();
+    const modos = temBloqueio() ? "" : `<div class="modo-tocar" role="group" aria-label="Modo">
+      <a href="#/tocar" class="${base ? "" : "ativo"}"${base ? "" : ' aria-current="page"'}>Play-alongs</a>
+      <a href="#/tocar/base" class="${base ? "ativo" : ""}"${base ? ' aria-current="page"' : ""}>Montar base</a></div>`;
+    const topo = `<header class="cabecalho"><p class="sobretitulo">${base ? "Ritmo e harmonia" : "Play-alongs"}</p><h1>Tocar junto</h1>
+      <p class="mudo">${base ? "Escolha o ritmo, a progressão e o andamento, e toque em cima. Dá para mudar o tom e ligar ou silenciar cada instrumento." : "Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação."}</p>
+      ${base ? "" : `<button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio Naipe</button>`}${modos}</header>`;
+    if (base) {
+      alvo.innerHTML = topo;
+      if (window.NaipeRit) window.NaipeRit.definirSax(estado.sax);
+      return;
+    }
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
-        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Naipe completo.</p>
+        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto, e a base de ritmo e harmonia para montar o seu acompanhamento. Disponível no Naipe completo.</p>
         <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
       return;
     }
@@ -1271,6 +1296,7 @@
   }
 
   function tocarMetronomo() {
+    pararBase();
     try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch {}
     const a = elementoMetronomo();
     met.tocando = true;
@@ -2086,6 +2112,7 @@
 
   async function tocarRadio(estacao = radio.estacao) {
     if (!estacao) return;
+    pararBase();
     const minha = ++radio.tentativa;
     radio.estacao = estacao;
     prefRadio.estacao = estacao.id; salvarPrefRadio();

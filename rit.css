@@ -1,0 +1,243 @@
+/* Montar base (Naipe Rit) dentro da aba Tocar junto: ritmo + harmonia sintetizados.
+   Usa as cores do tema do Naipe; cada ritmo acende um par de cores próprio. */
+.rit {
+  --sunk: var(--visor);
+  --rosa: #ff5c8a; --laranja: #ff9a3c; --amarelo: #ffd23f; --verde: #3ddc97; --turquesa: #2ec4f1; --violeta: #a78bfa;
+  --c1: #ffd23f; --c2: #3ddc97;
+  --festa: linear-gradient(135deg, var(--c1), var(--c2));
+  --on-festa: #150f05;
+  display: flex; flex-direction: column;
+}
+.rit button, .rit select, .rit input, .rit textarea { font: inherit; color: inherit; }
+.rit button { cursor: pointer; }
+.rit :focus-visible { outline: 2px solid var(--c1); outline-offset: 2px; }
+.rit h1, .rit h2, .rit h3, .rit p { margin: 0; }
+.modo-tocar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 4px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); margin-top: 6px; }
+.modo-tocar a { min-height: 44px; border-radius: 10px; color: var(--muted); font-weight: 700; font-size: .9rem; text-decoration: none; display: grid; place-items: center; }
+.modo-tocar a.ativo { background: var(--latao); color: var(--on-brass); }
+.rit .group {
+  font-family: var(--f-display); font-stretch: 90%;
+  font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; color: var(--muted);
+}
+.rit .hint { color: var(--muted); font-size: .85rem; }
+.rit .hint code, .rit .hint b { color: var(--text); font-family: var(--f-mono); font-size: .78rem; font-weight: 700; }
+.rit .error { color: var(--danger); font-size: .88rem; }
+
+/* ---------- Topo ---------- */
+.rit .rit-topo {
+  border-top: 1px solid var(--line);
+  background:
+    radial-gradient(70% 55% at 92% -10%, color-mix(in srgb, var(--c1) 38%, transparent), transparent 70%),
+    radial-gradient(60% 50% at -10% 20%, color-mix(in srgb, var(--c2) 26%, transparent), transparent 70%),
+    radial-gradient(50% 45% at 60% 120%, rgb(255 92 138 / .2), transparent 70%),
+    var(--bg);
+  border-bottom: 1px solid var(--line);
+  padding-block: 20px 16px;
+  display: flex; flex-direction: column; gap: 16px;
+  transition: background .4s;
+}
+.rit .rit-topo-in {
+  width: 100%; max-width: 760px; margin: 0 auto;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 18px;
+}
+.rit .hero-ritmo { display: flex; flex-direction: column; gap: 6px; }
+.rit .hero-ritmo h1 {
+  font-family: var(--f-display); font-stretch: 78%; font-weight: 800; font-size: clamp(2.2rem, 10vw, 3.2rem);
+  line-height: .95; letter-spacing: -.01em; text-transform: uppercase; text-wrap: balance;
+}
+.rit .hero-meta { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: .88rem; flex-wrap: wrap; }
+.rit .sig {
+  font: 700 .85rem var(--f-mono); color: var(--on-festa); background: var(--festa);
+  border-radius: 7px; padding: 2px 8px;
+}
+
+.rit .chips {
+  display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none;
+  width: 100%; max-width: 760px; margin: 0 auto; padding-block: 4px;
+  padding-left: max(18px, env(safe-area-inset-left, 0px));
+  padding-right: max(18px, env(safe-area-inset-right, 0px));
+}
+.rit .chips::-webkit-scrollbar { display: none; }
+.rit .chip {
+  flex: none; display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid var(--line); background: color-mix(in srgb, var(--surface) 80%, transparent);
+  border-radius: 999px; padding: 8px 14px 8px 10px; min-height: 40px;
+  font-weight: 600; font-size: .9rem; color: var(--muted); white-space: nowrap;
+  transition: transform .1s, border-color .15s, color .15s;
+}
+.rit .chip::before { content: ""; width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--c1), var(--c2)); }
+.rit .chip:hover { color: var(--text); border-color: var(--faint); }
+.rit .chip:active { transform: scale(.97); }
+.rit .chip[aria-checked="true"] {
+  color: var(--on-festa); border-color: transparent; background: linear-gradient(135deg, var(--c1), var(--c2));
+  box-shadow: 0 8px 22px -10px var(--c1), inset 0 1px 0 rgb(255 255 255 / .35);
+}
+.rit .chip[aria-checked="true"]::before { background: var(--on-festa); opacity: .55; }
+
+/* ---------- Corpo ---------- */
+.rit .app {
+  width: 100%;
+  padding-block: 18px 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: flex; flex-direction: column; gap: 14px;
+}
+.rit .cartao { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.rit .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.rit .field.grow { flex: 1 1 200px; }
+.rit select, .rit input[type="text"], .rit textarea, .rit input[type="number"] {
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--raio-sm);
+  padding: 10px 12px; min-width: 0; max-width: 100%;
+}
+.rit select { min-height: 46px; font-weight: 600; }
+.rit .stepper { display: flex; align-items: center; background: var(--surface-2); border: 1px solid var(--line); border-radius: var(--raio-sm); min-height: 46px; }
+.rit .stepper button { border: 0; background: none; width: 42px; height: 44px; font-size: 1.25rem; color: var(--c1); }
+.rit .stepper output { min-width: 76px; text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rit .ghost {
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px;
+  padding: 8px 14px; min-height: 40px; font-weight: 600; font-size: .9rem; transition: border-color .15s, transform .1s;
+}
+.rit .ghost:hover { border-color: var(--faint); }
+.rit .ghost:active { transform: scale(.98); }
+.rit .ghost.danger { color: var(--danger); }
+.rit .primary {
+  background: var(--festa); color: var(--on-festa); border: 0; border-radius: 12px; padding: 10px 20px; min-height: 44px; font-weight: 700;
+  box-shadow: 0 8px 22px -10px var(--c1), inset 0 1px 0 rgb(255 255 255 / .35);
+}
+
+/* ---------- Cifra ---------- */
+.rit .chart-head { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; }
+.rit .chart { display: flex; flex-direction: column; gap: 8px; background: var(--sunk); border-radius: 12px; padding: 12px 10px; }
+.rit .row { display: grid; grid-template-columns: 24px repeat(4, minmax(0, 1fr)); align-items: stretch; }
+.rit .row-label {
+  font: 800 .78rem var(--f-display); color: var(--on-festa); background: var(--festa);
+  border-radius: 6px; align-self: center; justify-self: start; min-width: 20px; text-align: center; padding: 1px 4px;
+}
+.rit .bar {
+  position: relative; background: none; border: 0; border-left: 2px solid var(--faint); border-radius: 0;
+  min-height: 58px; padding: 8px 4px 8px 8px; min-width: 0;
+  display: flex; align-items: center; gap: 6px; text-align: left; transition: background-color .08s;
+}
+.rit .row .bar:last-child { border-right: 2px solid var(--faint); }
+.rit .bar .ch { font: 800 clamp(1.05rem, 4.6vw, 1.5rem)/1.1 var(--f-display); font-stretch: 85%; min-width: 0; flex: 1 1 0; white-space: nowrap; }
+.rit .bar.multi .ch { font-size: clamp(.82rem, 3.5vw, 1.2rem); }
+.rit .bar .ch small { font-size: .66em; font-weight: 600; color: var(--muted); margin-left: 1px; }
+.rit .bar .ch.rep { color: var(--faint); font-weight: 500; }
+.rit .bar .ch.bad { color: var(--danger); }
+.rit .bar.rs { border-left: 5px solid var(--c1); padding-left: 16px; }
+.rit .bar.re { border-right: 5px solid var(--c1); padding-right: 14px; }
+.rit .row .bar.re:last-child { border-right: 5px solid var(--c1); }
+.rit .bar.re + .bar { border-left: 0; }
+.rit .bar.rs::before, .rit .bar.re::after { content: ":"; position: absolute; top: 50%; transform: translateY(-55%); font: 800 1.1rem/1 var(--f-display); color: var(--c1); }
+.rit .bar.rs::before { left: 4px; }
+.rit .bar.re::after { right: 4px; }
+.rit .house { position: absolute; top: 0; left: 6px; right: 0; font: 700 .65rem/1.4 var(--f-mono); color: var(--c2); border-top: 2px solid var(--c2); }
+.rit .bar.start { box-shadow: inset 0 -3px 0 var(--c1); }
+.rit .bar.now { background: var(--festa); border-radius: 8px; border-color: transparent; box-shadow: 0 10px 24px -12px var(--c1); }
+.rit .bar.now .ch, .rit .bar.now .ch small, .rit .bar.now .ch.rep, .rit .bar.now .house, .rit .bar.now::before, .rit .bar.now::after { color: var(--on-festa); }
+.rit .bar.now .house { border-top-color: var(--on-festa); }
+.rit .chart-foot { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.rit .chart-foot .hint { flex: 1 1 180px; }
+.rit .chart-actions { display: flex; gap: 8px; }
+
+/* ---------- Instrumentos ---------- */
+.rit .tabs { display: flex; gap: 6px; background: var(--sunk); border-radius: 12px; padding: 4px; align-self: flex-start; }
+.rit .tabs button { background: none; border: 0; border-radius: 9px; padding: 8px 14px; font-weight: 600; font-size: .9rem; color: var(--muted); }
+.rit .tabs button[aria-selected="true"] { color: var(--text); background: var(--surface-2); box-shadow: 0 1px 0 rgb(255 255 255 / .06) inset; }
+.rit .mixer { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 6px 22px; }
+.rit .group { grid-column: 1 / -1; margin-top: 8px; color: var(--g); display: flex; align-items: center; gap: 10px; }
+.rit .group::after { content: ""; flex: 1; height: 1px; background: color-mix(in srgb, var(--g) 35%, transparent); }
+.rit .group:first-child { margin-top: 0; }
+.rit .strip { display: flex; align-items: center; gap: 12px; min-height: 46px; }
+.rit .mute {
+  flex: 0 0 176px; min-width: 0; text-align: left; min-height: 40px;
+  background: color-mix(in srgb, var(--g) 16%, var(--surface-2)); border: 1px solid color-mix(in srgb, var(--g) 45%, transparent);
+  border-radius: 999px; padding: 6px 14px 6px 10px; display: flex; align-items: center; gap: 9px; font-weight: 600; font-size: .9rem;
+}
+.rit .mute::before { content: ""; flex: none; width: 11px; height: 11px; border-radius: 50%; background: var(--g); box-shadow: 0 0 10px var(--g); }
+.rit .mute[aria-pressed="false"] { color: var(--faint); background: none; border-color: var(--line); }
+.rit .mute[aria-pressed="false"]::before { background: none; box-shadow: inset 0 0 0 1.5px var(--faint); }
+.rit .mute span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rit .strip input[type="range"] { flex: 1 1 0; min-width: 0; accent-color: var(--g); }
+
+.rit .grid-scroll { overflow-x: auto; padding-bottom: 6px; }
+.rit .grid { display: grid; gap: 3px; align-items: center; width: max-content; }
+.rit .g-name { font-size: .78rem; font-weight: 600; color: var(--muted); padding-right: 10px; white-space: nowrap; position: sticky; left: 0; background: var(--surface); z-index: 1; align-self: stretch; display: flex; align-items: center; }
+.rit .cell {
+  width: 22px; height: 28px; padding: 0; border: 0; border-radius: 5px; background: var(--surface-2);
+  display: grid; place-items: center; font: 700 .68rem var(--f-mono); color: var(--on-festa);
+}
+.rit .cell.beat { margin-left: 3px; }
+.rit .cell.bar1 { margin-left: 8px; }
+.rit .cell[data-v="x"] { background: color-mix(in srgb, var(--g) 70%, var(--surface-2)); }
+.rit .cell[data-v="X"] { background: var(--g); box-shadow: 0 0 10px -2px var(--g); }
+.rit .cell[data-v="o"] { background: color-mix(in srgb, var(--g) 28%, var(--surface-2)); }
+.rit .cell.h:not([data-v="-"]) { background: var(--g); }
+.rit .cell.now { outline: 2px solid var(--text); outline-offset: -1px; }
+.rit .grid-foot { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; margin-top: 12px; }
+
+/* ---------- Transporte ---------- */
+/* Barra de play: gruda acima das abas (e da Rádio, quando ela está tocando) enquanto a tela rola. */
+.rit .transport {
+  position: sticky; z-index: 5; order: 9;
+  bottom: calc(61px + env(safe-area-inset-bottom, 0px));
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+  padding: 10px max(16px, env(safe-area-inset-right, 0px)) 10px max(16px, env(safe-area-inset-left, 0px));
+}
+body.com-radio .rit .transport { bottom: calc(122px + env(safe-area-inset-bottom, 0px)); }
+.rit .transport-in { display: flex; align-items: center; gap: 12px; }
+.rit .play {
+  flex: none; width: 54px; height: 54px; border-radius: 50%; border: 0; display: grid; place-items: center;
+  background: var(--festa); color: var(--on-festa);
+  box-shadow: 0 10px 26px -8px var(--c1), inset 0 1px 0 rgb(255 255 255 / .4); transition: transform .1s;
+}
+.rit .play:active { transform: scale(.95); }
+.rit .play.on { background: var(--surface-2); color: var(--c1); box-shadow: inset 0 0 0 2px var(--c1), 0 0 24px -6px var(--c1); }
+.rit .tempo-row { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: 8px; }
+.rit .tempo-row > button:not(.ghost) { width: 38px; height: 38px; border-radius: 50%; border: 1px solid var(--line); background: var(--surface-2); font-size: 1.1rem; flex: none; }
+.rit .bpm { display: flex; align-items: baseline; gap: 5px; min-width: 84px; justify-content: center; }
+.rit .bpm output { font: 800 2rem/1 var(--f-display); font-stretch: 80%; font-variant-numeric: tabular-nums; }
+.rit .bpm small { font: 700 .66rem var(--f-display); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.rit .beats { display: flex; gap: 6px; margin-left: auto; }
+.rit .beats i { width: 12px; height: 12px; border-radius: 50%; background: var(--line); }
+.rit .beats i.on { background: var(--c2); box-shadow: 0 0 12px var(--c2); }
+.rit .beats i.on:first-child { background: var(--c1); box-shadow: 0 0 14px var(--c1); }
+.rit input[type="range"]#rit-bpm { width: 100%; accent-color: var(--c1); }
+.rit .opts { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: .88rem; color: var(--muted); }
+.rit .opts label { display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.rit .opts input[type="number"] { width: 52px; padding: 3px 6px; border-radius: 7px; }
+.rit .opts select { min-height: 0; padding: 3px 6px; border-radius: 7px; font-weight: 500; }
+.rit .opts input[type="checkbox"] { accent-color: var(--c1); width: 17px; height: 17px; margin: 0; }
+
+.rit dialog {
+  border: 1px solid var(--line); border-radius: var(--raio); background: var(--surface); color: var(--text);
+  padding: 20px; width: min(560px, calc(100vw - 32px));
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / .9);
+}
+.rit dialog::backdrop { background: rgb(8 6 14 / .7); }
+.rit dialog form { display: flex; flex-direction: column; gap: 14px; }
+.rit dialog h2 { font: 800 1.4rem/1.1 var(--f-display); font-stretch: 80%; text-transform: uppercase; }
+.rit dialog .field > span { font-family: var(--f-display); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
+.rit dialog input[type="text"], .rit dialog textarea { width: 100%; }
+.rit dialog textarea { font: 500 .9rem/1.6 var(--f-mono); resize: vertical; }
+.rit .dialog-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.rit .spacer { flex: 1; }
+
+@media (max-width: 520px) {
+  .rit .bar { min-height: 52px; padding-left: 6px; }
+  .rit .mute { flex-basis: 158px; }
+  .rit .tempo-row { gap: 6px; }
+  .rit .tempo-row > button:not(.ghost) { width: 34px; height: 34px; }
+  .rit .bpm { min-width: 66px; }
+  .rit .bpm small { display: none; }
+  .rit .tempo-row .ghost { padding-inline: 10px; }
+  .rit .beats { gap: 4px; }
+  .rit .beats i { width: 9px; height: 9px; }
+}
+
+.rit .vista { margin-top: -6px; }
+.rit dialog form label.field { font-weight: 400; }
