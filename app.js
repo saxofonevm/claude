@@ -2534,6 +2534,18 @@
   lerRota();
   mostrarTela();
   renderTela();
+
+  // Link de teste: ?codigo=XXXX já libera o app (o código sai do endereço em seguida)
+  (() => {
+    try {
+      const u = new URL(location.href);
+      const cod = u.searchParams.get("codigo");
+      if (!cod || !ACESSO) return;
+      u.searchParams.delete("codigo");
+      history.replaceState(null, "", u.pathname + u.search + u.hash);
+      if (!estado.desbloqueado) tentarCodigo(cod);
+    } catch {}
+  })();
   renderTimer();
 
   // Atualiza o cronômetro e as datas ao voltar para o app

@@ -1378,3 +1378,14 @@ details.recolhe > summary + * { margin-top: 2px; }
 .mp-mais { color: var(--brass-soft); }
 .ram-abas button .ic { width: 16px; height: 16px; margin-right: 5px; vertical-align: -3px; }
 .voltar-pilares { gap: 8px; margin-top: 6px; } .voltar-pilares .ic { width: 18px; height: 18px; }
+/* Como usar o Naipe no topo do Início */
+.ajuda-topo { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; cursor: pointer; font: inherit; color: var(--text); text-align: left;
+  border-radius: var(--raio-sm); border: 1px dashed color-mix(in srgb, var(--brass) 60%, transparent); background: color-mix(in srgb, var(--brass) 8%, var(--surface)); }
+.ajuda-topo:active { transform: scale(.98); }
+.ajuda-topo-ic { flex: none; width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); }
+.ajuda-topo-ic .ic { width: 22px; height: 22px; }
+.ajuda-topo-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.ajuda-topo-txt strong { font-size: 1rem; color: var(--brass-soft); }
+.ajuda-topo-txt small { color: var(--muted); font-size: .82rem; }
+.ajuda-topo-seta { flex: none; color: var(--brass-soft); }
+.ajuda-topo-seta .ic { width: 18px; height: 18px; }
