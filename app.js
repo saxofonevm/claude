@@ -819,8 +819,8 @@
     if (!base) pararBase();
     const modos = temBloqueio() ? "" : `<div class="modo-tocar" role="group" aria-label="Modo">
       <a href="#/tocar" class="${base ? "" : "ativo"}"${base ? "" : ' aria-current="page"'}>Play-alongs</a>
-      <a href="#/tocar/base" class="${base ? "ativo" : ""}"${base ? ' aria-current="page"' : ""}>Naipe Rit</a></div>`;
-    const topo = `<header class="cabecalho"><p class="sobretitulo">${base ? "Naipe Rit · ritmo e harmonia" : "Play-alongs"}</p><h1>Tocar junto</h1>
+      <a href="#/tocar/base" class="${base ? "ativo" : ""}"${base ? ' aria-current="page"' : ""} aria-label="Naipe Rit"><span class="rit-marca mini" aria-hidden="true">naipe <b>rit</b></span></a></div>`;
+    const topo = `<header class="cabecalho"><p class="sobretitulo">${base ? "Ritmo e harmonia" : "Play-alongs"}</p><h1>Tocar junto</h1>
       <p class="mudo">${base ? "Escolha o ritmo, a progressão e o andamento, e toque em cima. Dá para mudar o tom e ligar ou silenciar cada instrumento." : "Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação."}</p>
       ${modos}</header>`;
     if (base) {

@@ -245,3 +245,21 @@ body.com-radio .rit .transport { bottom: calc(122px + env(safe-area-inset-bottom
 /* Todos os ritmos à vista, sem arrastar para o lado */
 .rit .chips { flex-wrap: wrap; overflow: visible; justify-content: center; }
 .rit .chip { flex: 0 1 auto; }
+
+/* ---------- Marca naipe rit (com brilho) ---------- */
+.rit-marca { margin: 0; font-family: var(--f-display); font-stretch: 78%; font-weight: 800; letter-spacing: .14em; line-height: 1; color: #f4f1fb; white-space: nowrap; }
+.rit-marca b { font-weight: 800; background: linear-gradient(90deg, #f0727a 0%, #f6c85a 50%, #5fd6a0 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 10px rgb(246 200 90 / .55)) drop-shadow(0 0 22px rgb(240 114 122 / .35)); animation: rit-brilho 2.8s ease-in-out infinite; }
+.rit-marca.grande { font-size: clamp(2.6rem, 14vw, 3.6rem); text-shadow: 0 0 18px rgb(255 255 255 / .18); }
+.rit-marca.mini { font-size: 1.05rem; letter-spacing: .1em; }
+.rit-logo { text-align: center; padding: 22px 16px 6px;
+  background: radial-gradient(60% 80% at 50% 40%, rgb(246 200 90 / .12), transparent 70%); }
+.rit-logo-sub { margin: 10px 0 0; color: #b9b2cf; font-size: 1rem; }
+@keyframes rit-brilho { 50% { filter: drop-shadow(0 0 16px rgb(246 200 90 / .8)) drop-shadow(0 0 30px rgb(95 214 160 / .45)); } }
+@media (prefers-reduced-motion: reduce) { .rit-marca b { animation: none; } }
+.modo-tocar a .rit-marca.mini { color: inherit; }
+.modo-tocar a.ativo .rit-marca.mini { color: #1a1206; }
+.rit-marca b { background: linear-gradient(90deg, #ff6b7a 0%, #ff8f6b 22%, #ffcb47 50%, #b9de5c 70%, #4fe0a0 100%); -webkit-background-clip: text; background-clip: text; }
+.modo-tocar a[href="#/tocar/base"].ativo { background: radial-gradient(80% 120% at 50% 0%, #2a2440, #14121c); color: #f4f1fb;
+  box-shadow: 0 0 0 1px rgb(255 203 71 / .5), 0 0 18px -4px rgb(255 203 71 / .55); }
+.modo-tocar a.ativo .rit-marca.mini, .modo-tocar a[href="#/tocar/base"].ativo .rit-marca.mini { color: #f4f1fb; }
