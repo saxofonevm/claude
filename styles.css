@@ -1389,3 +1389,8 @@ details.recolhe > summary + * { margin-top: 2px; }
 .ajuda-topo-txt small { color: var(--muted); font-size: .82rem; }
 .ajuda-topo-seta { flex: none; color: var(--brass-soft); }
 .ajuda-topo-seta .ic { width: 18px; height: 18px; }
+/* Como usar o Naipe: discreto */
+.ajuda-topo { align-self: center; width: auto; display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; min-height: 32px;
+  border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--muted); font-size: .82rem; font-weight: 600; margin: -4px auto 0; }
+.ajuda-topo .ic { width: 15px; height: 15px; color: var(--brass-soft); }
+.ajuda-topo:hover { color: var(--text); border-color: var(--brass); }
