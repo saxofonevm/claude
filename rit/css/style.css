@@ -293,3 +293,13 @@ dialog textarea { font: 500 .9rem/1.6 var(--f-mono); resize: vertical; }
   .beats i { width: 9px; height: 9px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* Créditos dos sons */
+details.creditos { font-size: .78rem; line-height: 1.5; color: var(--faint); text-align: left; max-width: 640px; margin: 18px auto 0; padding: 0 18px; }
+details.creditos summary { cursor: pointer; text-align: center; font-weight: 600; list-style: none; padding: 6px 0; }
+details.creditos summary::-webkit-details-marker { display: none; }
+details.creditos summary::after { content: " ▾"; }
+details.creditos[open] summary::after { content: " ▴"; }
+details.creditos ul { margin: 6px 0; padding-left: 18px; }
+details.creditos li { margin: 3px 0; }
+details.creditos em { font-style: normal; opacity: .8; }

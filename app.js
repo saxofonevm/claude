@@ -2505,6 +2505,7 @@
   }
   function abrirBoasVindas() {
     bv.passo = 1; $("#bv-nome").value = estado.nome || "";
+    if (estado.boasVindas) { bv.sax = estado.sax || ""; bv.meta = estado.metaSemanal || 150; }
     mostrarPassoBV();
     if (!dlgBV.open) dlgBV.showModal();
   }
@@ -2529,6 +2530,8 @@
     else if (b.hasAttribute("data-bv-pular")) concluirBoasVindas(false);
   });
   dlgBV.addEventListener("cancel", ev => { ev.preventDefault(); concluirBoasVindas(false); });
+  // Ajustes: rever a tela de boas-vindas (a mesma que o aluno vê na primeira vez)
+  document.addEventListener("click", ev => { if (ev.target.closest("[data-abrir-bv]")) abrirBoasVindas(); });
 
   // ---------- Inicialização ----------
 

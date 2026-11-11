@@ -1414,3 +1414,8 @@ body.com-rit { padding-bottom: 0; overflow: hidden; }
 .rit-quadro { flex: 1; width: 100%; border: 0; display: block; background: #0e0d14; }
 body.com-rit main { padding-bottom: 0; }
 body.com-rit #tela-tocar { padding: 0; }
+.creditos-lista { margin: 0 16px 8px; padding-left: 18px; font-size: .84rem; color: var(--muted); line-height: 1.45; }
+.creditos-lista li { margin: 4px 0; }
+.creditos-lista strong { color: var(--text); font-weight: 600; }
+.creditos-lista em { font-style: normal; color: var(--brass-soft); }
+.rever-bv { align-self: center; margin: -4px auto 0; display: block; }
