@@ -4,7 +4,9 @@ Aplicativo de estudo que junta **levadas de bateria e percussão** com **harmoni
 o aluno escolhe um ritmo, escreve (ou escolhe) uma progressão de acordes e toca junto com
 percussão, baixo e acordes no andamento e no tom que quiser.
 
-Protótipo web, sem instalação e sem dependências: abra `index.html` no navegador
+Faz parte do Naipe: abre pela aba **Tocar junto**, usa o sax escolhido pelo aluno e respeita
+a versão grátis (Samba, Bossa Nova, Jazz Swing e metrônomo) ou completa. Também funciona
+sozinho: abra `index.html` no navegador
 (computador ou celular). Os instrumentos são gravações reais (veja `samples/README.md`).
 
 ## O que já faz
@@ -22,6 +24,9 @@ Protótipo web, sem instalação e sem dependências: abra `index.html` no naveg
   começo a partir de qualquer compasso.
 - **Editor de progressões** em texto: `| Dm7 | G7 | C7M | % |`. Aceita `7M`/`maj7`,
   `m7(b5)`, `dim`, `7(b9)`, `6/9`, `sus4`, baixo invertido (`C/E`) etc.
+- **Para o sax**: cifra escrita em Dó, Mib (alto) ou Sib (tenor); o acompanhamento soa no tom real.
+- **Repetir trecho**: marque o primeiro e o último compasso e o trecho fica em loop.
+- **Tom por volta**: a cada volta a progressão muda de tom (meio tom, quartas ou um tom abaixo).
 - **Estudo**: transposição por semitons, andamento de 40 a 260 BPM, tap tempo, contagem
   inicial e aceleração automática a cada volta da progressão.
 - Progressões e ajustes ficam salvos no próprio navegador.

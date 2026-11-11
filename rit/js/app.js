@@ -33,7 +33,7 @@
 
   /* ---------- Estado ---------- */
   var S = {
-    rhythmId: 'samba', songId: 'p-samba', bpm: 96, transpose: 0, countIn: true, ramp: 0, fill: 4,
+    rhythmId: 'samba', songId: 'p-samba', bpm: 96, transpose: 0, countIn: true, ramp: 0, fill: 4, sax: null, tons: 0,
     timbre: {}, // timbre[família][função] = timbre escolhido
     mix: {},    // mix[ritmo][canal] = { v: volume, m: mudo }
     edits: {},  // edits[ritmo][canal] = padrão alterado
@@ -43,6 +43,21 @@
     var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
     if (saved && typeof saved === 'object') Object.keys(S).forEach(function (k) { if (k in saved) S[k] = saved[k]; });
   } catch (e) { /* sem armazenamento: segue com o padrão */ }
+  /* Quando roda dentro do Naipe: lê o sax do aluno e o acesso (grátis x completo). */
+  var NAIPE = (function () {
+    var cma = window.CMA, est = {};
+    try { est = JSON.parse(localStorage.getItem('cma.v1') || '{}') || {}; } catch (e) { /* segue sem */ }
+    var ctrl = cma && cma.acesso && Array.isArray(cma.acesso.codigos) && cma.acesso.codigos.length;
+    return { dentro: !!cma, sax: est.sax || '', completo: !ctrl || !!est.desbloqueado };
+  })();
+  if (S.sax === null) S.sax = NAIPE.sax;
+  var GRATIS = { samba: 1, bossa: 1, swing: 1, metro: 1 };
+  function liberado(ritmoId) { return NAIPE.completo || !!GRATIS[ritmoId]; }
+  function musicaLiberada(id) { return NAIPE.completo || id.indexOf('m-') !== 0; }
+  if (!liberado(S.rhythmId)) S.rhythmId = 'samba';
+  if (!musicaLiberada(S.songId)) S.songId = 'p-samba';
+  var SAX = { '': 0, Mib: 9, Sib: 2 }; // semitons acima do som real em que o sax lê
+
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* idem */ } }
 
   function rhythm() {
@@ -100,6 +115,13 @@
 
   var CH = [], CHART = { rows: [], bars: [] }, TL = [], ORDER = [];
   var startBar = 0;
+  var loopOn = false, loopSel = [];  // trecho em repetição: índices de compasso da cifra
+  function loopPos() {
+    if (!loopOn || !loopSel.length) return null;
+    var a = ORDER.indexOf(loopSel[0]), b = ORDER.indexOf(loopSel[loopSel.length - 1]);
+    if (a < 0 || b < 0) return null;
+    return { lo: Math.min(a, b), hi: Math.max(a, b) };
+  }
 
   function rebuild() {
     CH = channels();
@@ -107,6 +129,7 @@
     ORDER = M.playOrder(CHART.bars);
     TL = M.buildTimeline(ORDER.map(function (i) { return CHART.bars[i]; }), rhythm().beats, S.transpose);
     if (startBar >= CHART.bars.length) startBar = 0;
+    loopSel = loopSel.filter(function (i) { return i < CHART.bars.length; });
   }
 
   /* ---------- Sequenciador ---------- */
@@ -120,7 +143,8 @@
     applyVolumes();
     stop(true);
     var r = rhythm();
-    P = { bar: Math.max(0, ORDER.indexOf(fromBar || 0)), step: 0, count: (S.countIn && !noCount) ? r.beats * r.spb : 0, t: E.now() + 0.08 };
+    var lp = loopPos();
+    P = { bar: lp ? lp.lo : Math.max(0, ORDER.indexOf(fromBar || 0)), step: 0, count: (S.countIn && !noCount) ? r.beats * r.spb : 0, t: E.now() + 0.08 };
     timer = setInterval(tick, 25);
     tick();
     raf = requestAnimationFrame(draw);
@@ -209,9 +233,17 @@
     if (P.step >= spbar) {
       P.step = 0;
       P.bar++;
-      if (P.bar >= n) {
-        P.bar = 0;
+      var lp = loopPos();
+      if (P.bar >= n || (lp && P.bar > lp.hi)) {
+        P.bar = lp ? lp.lo : 0;
         if (S.ramp > 0) setBpm(S.bpm + S.ramp);
+        if (S.tons) {
+          // Nova volta em outro tom; a cifra é redesenhada quando o som chegar lá.
+          S.transpose = ((S.transpose + S.tons + 17) % 12) - 5;
+          TL = M.buildTimeline(ORDER.map(function (i) { return CHART.bars[i]; }), r.beats, S.transpose);
+          queue.push({ t: t + sd, redraw: true });
+          save();
+        }
       }
     }
   }
@@ -246,7 +278,10 @@
 
   function draw() {
     var now = E.now(), ev = null;
-    while (queue.length && queue[0].t <= now) ev = queue.shift();
+    while (queue.length && queue[0].t <= now) {
+      var e = queue.shift();
+      if (e.redraw) { renderChart(); renderTranspose(); } else ev = e;
+    }
     if (ev) mark(ev.bar, ev.step, ev.beat);
     raf = requestAnimationFrame(draw);
   }
@@ -276,7 +311,7 @@
 
   function chordEl(tok) {
     if (tok === '%') return el('span', 'ch rep', '%');
-    var sym = M.transposeSym(tok, S.transpose);
+    var sym = M.transposeSym(tok, S.transpose + SAX[S.sax || '']);
     var span = el('span', 'ch' + (M.parseChord(sym) ? '' : ' bad'));
     var m = /^([A-G][#b]?)(.*)$/.exec(sym);
     if (!m) { span.textContent = sym; return span; }
@@ -287,7 +322,8 @@
   }
 
   function renderChart() {
-    var s = song(), r = rhythm(), box = $('chart');
+    var s = song(), r = rhythm(), box = $('chart'), lp = loopPos(), noLoop = {};
+    if (lp) for (var k = lp.lo; k <= lp.hi; k++) noLoop[ORDER[k]] = true;
     box.textContent = '';
     barEls = [];
     CHART.rows.forEach(function (row) {
@@ -302,7 +338,14 @@
           if (bar.repEnd) b.classList.add('re');
           if (bar.ending) b.appendChild(el('span', 'house', bar.ending + '.'));
           bar.chords.slice(0, r.beats).forEach(function (t) { b.appendChild(chordEl(t)); });
+          if (noLoop[bar.index]) b.classList.add('loop');
           b.addEventListener('click', function () {
+            if (loopOn) {
+              loopSel = loopSel.length === 1 && loopSel[0] !== bar.index ? [loopSel[0], bar.index] : [bar.index];
+              renderLoop();
+              if (P) play(0, true); else renderChart();
+              return;
+            }
             startBar = bar.index;
             if (P) play(startBar, true);
             else renderChart();
@@ -418,7 +461,9 @@
       b.setAttribute('aria-checked', String(x.id === r.id));
       b.style.setProperty('--c1', (CORES[x.id] || CORES.metro)[0]);
       b.style.setProperty('--c2', (CORES[x.id] || CORES.metro)[1]);
+      if (!liberado(x.id)) b.classList.add('trancado');
       b.addEventListener('click', function () {
+        if (!liberado(x.id)) { $('aviso').hidden = false; return; }
         if (S.rhythmId === x.id) return;
         S.rhythmId = x.id;
         setBpm(x.bpm);
@@ -439,12 +484,27 @@
       if (!grupos[g]) { grupos[g] = el('optgroup'); grupos[g].label = g; ss.appendChild(grupos[g]); }
       var o = el('option', '', s.title);
       o.value = s.id;
+      if (!musicaLiberada(s.id)) { o.disabled = true; o.textContent = s.title + ' (Naipe completo)'; }
       grupos[g].appendChild(o);
     });
     ss.value = song().id;
   }
 
+  function renderLoop() {
+    var lp = loopPos();
+    $('loop').setAttribute('aria-pressed', String(loopOn));
+    $('chart-hint').textContent = !loopOn ? 'Toque em um compasso para começar a partir dele.'
+      : !lp ? 'Toque no primeiro compasso do trecho que quer repetir.'
+      : loopSel.length === 1 ? 'Agora toque no último compasso do trecho. Um só compasso também vale.'
+      : 'Repetindo ' + (lp.hi - lp.lo + 1) + ' compassos. Toque em outro compasso para marcar um novo trecho.';
+  }
+
   function renderTranspose() {
+    [].forEach.call(document.querySelectorAll('#sax button'), function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.sax === (S.sax || '')));
+    });
+    $('sax-nota').textContent = S.sax ? 'Cifra escrita para o sax em ' + S.sax + '. O acompanhamento soa no tom real.' : '';
+    $('sax-nota').hidden = !S.sax;
     var n = S.transpose;
     $('tr-val').textContent = n === 0 ? 'Original' : (n > 0 ? '+' + n : '−' + (-n)) + ' st';
   }
@@ -479,6 +539,8 @@
   $('song').addEventListener('change', function () {
     S.songId = this.value;
     startBar = 0;
+    loopSel = [];
+    renderLoop();
     refresh(true);
   });
   function transposeBy(d) {
@@ -501,6 +563,21 @@
     taps.push(now);
     if (taps.length > 5) taps.shift();
     if (taps.length >= 2) setBpm(60000 / ((taps[taps.length - 1] - taps[0]) / (taps.length - 1)));
+  });
+  $('sax').addEventListener('click', function (e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    S.sax = b.dataset.sax;
+    renderChart();
+    renderTranspose();
+    save();
+  });
+  $('tons').addEventListener('change', function () { S.tons = +this.value; save(); });
+  $('loop').addEventListener('click', function () {
+    loopOn = !loopOn;
+    loopSel = [];
+    renderLoop();
+    renderChart();
   });
   $('countin').addEventListener('change', function () { S.countIn = this.checked; save(); });
   $('fill').addEventListener('change', function () { S.fill = +this.value; save(); });
@@ -570,6 +647,9 @@
   /* ---------- Início ---------- */
   try { E.init(); } catch (e) { /* o áudio começa no primeiro toque */ }
   $('countin').checked = S.countIn;
+  $('tons').value = String(S.tons);
+  $('voltar').hidden = !NAIPE.dentro;
+  renderLoop();
   $('ramp').value = S.ramp;
   $('fill').value = String(S.fill);
   renderSelects();

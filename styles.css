@@ -1378,3 +1378,24 @@ details.recolhe > summary + * { margin-top: 2px; }
 .mp-mais { color: var(--brass-soft); }
 .ram-abas button .ic { width: 16px; height: 16px; margin-right: 5px; vertical-align: -3px; }
 .voltar-pilares { gap: 8px; margin-top: 6px; } .voltar-pilares .ic { width: 18px; height: 18px; }
+
+/* ---------- Naipe Rit (entrada na aba Tocar junto) ---------- */
+.rit-cartao {
+  display: flex; align-items: center; gap: 14px; text-decoration: none; color: var(--text);
+  background:
+    radial-gradient(90% 140% at 100% 0%, rgb(46 196 241 / .22), transparent 60%),
+    radial-gradient(80% 120% at 0% 100%, rgb(255 92 138 / .2), transparent 60%),
+    var(--surface);
+  border: 1px solid color-mix(in srgb, var(--line) 60%, transparent);
+  border-radius: var(--raio); padding: 16px;
+  box-shadow: 0 16px 34px -22px rgb(255 154 60 / .7);
+  transition: transform .15s ease, border-color .15s ease;
+}
+.rit-cartao:hover { border-color: var(--faint); }
+.rit-cartao:active { transform: scale(.98); }
+.rit-marca { flex: none; font-family: var(--f-display); font-stretch: 75%; font-weight: 800; font-size: .95rem; letter-spacing: .12em; writing-mode: vertical-rl; transform: rotate(180deg); }
+.rit-marca b { font-weight: 800; margin-top: .3em; background: linear-gradient(180deg, #ff5c8a, #ff9a3c, #ffd23f, #3ddc97); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rit-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.rit-txt strong { font-weight: 700; font-size: 1.02rem; line-height: 1.25; }
+.rit-txt small { color: var(--muted); font-size: .86rem; line-height: 1.4; }
+.rit-cartao .ic { flex: none; width: 18px; height: 18px; color: var(--muted); }

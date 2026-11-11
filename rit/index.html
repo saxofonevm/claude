@@ -11,10 +11,12 @@
 <body>
 <header class="hero">
   <div class="hero-in">
+    <a id="voltar" class="voltar" href="../index.html#/tocar" hidden>‹ Voltar ao Naipe</a>
     <h1 class="marca" aria-label="Naipe Rit">naipe<b>rit</b></h1>
     <p class="hero-sub">Ritmo + harmonia para tocar junto</p>
     <p class="sobretitulo">Escolha o ritmo</p>
     <div id="rhythms" class="chips" role="radiogroup" aria-label="Ritmo"></div>
+    <p id="aviso" class="aviso" hidden>Na versão grátis estão abertos Samba, Bossa Nova, Jazz Swing e o metrônomo. Os outros ritmos e as músicas fazem parte do Naipe completo. <a href="../index.html#/ajustes">Tenho o código</a></p>
   </div>
 </header>
 
@@ -34,10 +36,20 @@
         </div>
       </div>
     </div>
+    <div class="field">
+      <span class="rotulo">Cifra escrita para</span>
+      <div id="sax" class="seg" role="group" aria-label="Cifra escrita para">
+        <button type="button" data-sax="">Som real · Dó</button>
+        <button type="button" data-sax="Mib">Alto · Mib</button>
+        <button type="button" data-sax="Sib">Tenor · Sib</button>
+      </div>
+      <p id="sax-nota" class="hint" hidden></p>
+    </div>
     <div id="chart" class="chart"></div>
     <div class="chart-foot">
-      <p class="hint">Toque em um compasso para começar a partir dele.</p>
+      <p id="chart-hint" class="hint">Toque em um compasso para começar a partir dele.</p>
       <div class="chart-actions">
+        <button id="loop" type="button" class="ghost" aria-pressed="false">Repetir trecho</button>
         <button id="edit" type="button" class="ghost">Editar</button>
         <button id="new" type="button" class="ghost">Nova</button>
       </div>
@@ -81,6 +93,7 @@
     <div class="opts">
       <label><input id="countin" type="checkbox" checked> Contagem</label>
       <label>Virada <select id="fill"><option value="0">não</option><option value="4">a cada 4</option><option value="8">a cada 8</option></select></label>
+      <label>Tom por volta <select id="tons"><option value="0">fixo</option><option value="1">sobe ½ tom</option><option value="5">sobe uma quarta</option><option value="-2">desce 1 tom</option></select></label>
       <label title="Aumenta o andamento a cada volta da progressão">+<input id="ramp" type="number" min="0" max="20" value="0" inputmode="numeric"> BPM/volta</label>
     </div>
   </div>
@@ -105,6 +118,7 @@
   </form>
 </dialog>
 
+<script src="../conteudo.js" onerror="void 0"></script>
 <script src="js/music.js"></script>
 <script src="js/audio.js"></script>
 <script src="js/app.js"></script>

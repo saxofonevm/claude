@@ -803,8 +803,11 @@
     const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
       <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p>
       <button class="btn pequeno" type="button" data-abrir-radio>${icone("radio")}Ouvir a Rádio Naipe</button></header>`;
+    const rit = `<a class="rit-cartao" href="rit/index.html"><span class="rit-marca" aria-hidden="true">naipe<b>rit</b></span>
+      <span class="rit-txt"><strong>Naipe Rit: monte o seu play-along</strong>
+      <small>${temBloqueio() ? "Samba, Bossa Nova e Jazz Swing abertos na versão grátis. Bateria, baixo e harmonia no andamento que eu quiser." : "16 ritmos com bateria, baixo e harmonia. Cifra no tom do meu sax, em qualquer andamento."}</small></span>${icone("seta")}</a>`;
     if (temBloqueio()) {
-      alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
+      alvo.innerHTML = topo + `<div class="corpo-metodos">${rit}<section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
         <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. Disponível no Naipe completo.</p>
         <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
       return;
@@ -824,7 +827,7 @@
             <span class="tocar-tags">${t.ind ? `<span class="tag ind">Indicado</span>` : ""}${(t.afin.length ? t.afin : ["Áudio e partituras"]).map(a => `<span class="tag">${escapar(a)}</span>`).join("")}</span></span>${icone("externo")}</a></li>` : "";
         }).join("")}</ul></details>`;
     }).join("");
-    alvo.innerHTML = topo + `<div class="corpo-metodos">${filtro}
+    alvo.innerHTML = topo + `<div class="corpo-metodos">${rit}${filtro}
       ${ocultos ? `<p class="vazio-mini">${ocultos} ${ocultos === 1 ? "coleção em outra afinação está oculta" : "coleções em outras afinações estão ocultas"}.</p>` : ""}
       ${secoes}
       <p class="vazio-mini">Os play-alongs abrem no Google Drive. Se aparecer “Acesso negado”, entre com o e-mail que você passou ao professor.</p></div>`;
