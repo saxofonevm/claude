@@ -72,57 +72,14 @@
     }
   }
 
-  // ---------- Modo demonstração (para gravar vídeos) ----------
-  // Link ?demo=1: guarda os dados reais do aparelho e abre o app com um aluno de exemplo.
-  // Link ?demo=0 (ou o botão em Ajustes): sai do modo e devolve os dados reais.
-  const CHAVE_REAL = "cma.v1.real", CHAVE_DEMO = "cma.demo";
-  function dadosDemo() {
-    const dia = k => { const d = new Date(); d.setDate(d.getDate() - k); return d.toISOString().slice(0, 10); };
-    const futuro = k => { const d = new Date(); d.setDate(d.getDate() + k); return d.toISOString().slice(0, 10); };
-    const plano = [["escuta", "esc-01"], ["escuta", "esc-02"], ["escuta", "esc-06"], ["escuta", "esc-07"], ["escuta", "esc-05"], ["escuta", "esc-03"],
-      ["ritmo", "rit-01"], ["ritmo", "rit-02"], ["ritmo", "rit-01"], ["ritmo", "rit-03"], ["ritmo", "rit-02"], ["escuta", "esc-04"]];
-    const sessoes = [];
-    [0, 1, 2, 3, 5, 6, 8, 9, 11, 13, 15, 16, 18, 20, 22, 25, 27, 29, 32, 34, 36, 39, 41].forEach((k, i) => {
-      const [raizId, exercicioId] = plano[i % plano.length];
-      sessoes.push({ id: "demo" + i, data: dia(k), minutos: 15 + (i * 7) % 26, raizId, exercicioId, avaliacao: 3 + (i % 3),
-        notas: i === 0 ? "Contratempo saindo mais limpo" : i === 4 ? "Ouvi Paulo Moura e cantei a frase" : "" });
-    });
-    return {
-      nome: "", metaSemanal: 150, sax: "Mib", tema: "verde", desbloqueado: true, boasVindas: true, sessoes,
-      feitos: { "esc-01": dia(30), "esc-02": dia(24), "esc-06": dia(18), "esc-07": dia(12), "esc-05": dia(8), "rit-01": dia(3) },
-      prazos: { "r:ritmo": futuro(10), "e:rit-02": futuro(3) },
-      andamentos: { "rit-01": 100, "rit-02": 84, "rit-03": 72 },
-      historicoBpm: { "rit-01": [{ d: dia(25), b: 60 }, { d: dia(18), b: 72 }, { d: dia(10), b: 88 }, { d: dia(3), b: 100 }],
-        "rit-02": [{ d: dia(12), b: 66 }, { d: dia(5), b: 76 }, { d: dia(1), b: 84 }] },
-      metronomo: { bpm: 84, compasso: 4, som: "analogico", sub: 1 },
-      timer: { inicio: null, acumulado: 0 }, ultimoBackup: dia(2)
-    };
-  }
-  (() => {
-    try {
-      const u = new URL(location.href);
-      const pedido = u.searchParams.get("demo");
-      if (pedido === null) return;
-      u.searchParams.delete("demo");
-      history.replaceState(null, "", u.pathname + u.search + u.hash);
-      const emDemo = localStorage.getItem(CHAVE_DEMO) === "1";
-      if (pedido === "0") {
-        if (!emDemo) return;
-        const real = localStorage.getItem(CHAVE_REAL);
-        if (real) localStorage.setItem(CHAVE, real); else localStorage.removeItem(CHAVE);
-        localStorage.removeItem(CHAVE_REAL); localStorage.removeItem(CHAVE_DEMO);
-        return;
-      }
-      if (!emDemo) {
-        const atual = localStorage.getItem(CHAVE);
-        if (atual) localStorage.setItem(CHAVE_REAL, atual);
-        localStorage.setItem(CHAVE_DEMO, "1");
-      }
-      localStorage.setItem(CHAVE, JSON.stringify(dadosDemo()));
-    } catch {}
-  })();
-  const EM_DEMO = (() => { try { return localStorage.getItem(CHAVE_DEMO) === "1"; } catch { return false; } })();
-
+  // Limpeza: se este aparelho chegou a abrir o antigo modo demonstração, devolve os dados reais
+  try {
+    if (localStorage.getItem("cma.demo") === "1") {
+      const real = localStorage.getItem("cma.v1.real");
+      if (real) localStorage.setItem(CHAVE, real); else localStorage.removeItem(CHAVE);
+      localStorage.removeItem("cma.v1.real"); localStorage.removeItem("cma.demo");
+    }
+  } catch {}
   let estado = carregar();
 
   function aplicarTema() {
@@ -1662,8 +1619,6 @@
     $("#aj-sax").value = estado.sax || "";
     $("#aj-tema").value = estado.tema === "preto" ? "preto" : "verde";
     renderBackup();
-    const avDemo = $("#cartao-demo");
-    if (avDemo) avDemo.hidden = !EM_DEMO;
     const cartao = $("#cartao-acesso");
     cartao.hidden = !ACESSO;
     if (ACESSO) {
@@ -2583,13 +2538,6 @@
     else if (b.hasAttribute("data-bv-pular")) concluirBoasVindas(false);
   });
   dlgBV.addEventListener("cancel", ev => { ev.preventDefault(); concluirBoasVindas(false); });
-  // Sair do modo demonstração: recarrega para trocar os dados com segurança
-  document.addEventListener("click", ev => {
-    const a = ev.target.closest("[data-sair-demo]");
-    if (!a) return;
-    ev.preventDefault();
-    location.href = location.pathname + "?demo=0#/inicio";
-  });
   // Ajustes: rever a tela de boas-vindas (a mesma que o aluno vê na primeira vez)
   document.addEventListener("click", ev => { if (ev.target.closest("[data-abrir-bv]")) abrirBoasVindas(); });
 

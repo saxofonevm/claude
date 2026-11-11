@@ -1419,4 +1419,3 @@ body.com-rit #tela-tocar { padding: 0; }
 .creditos-lista strong { color: var(--text); font-weight: 600; }
 .creditos-lista em { font-style: normal; color: var(--brass-soft); }
 .rever-bv { align-self: center; margin: -4px auto 0; display: block; }
-.demo-cartao { border-color: color-mix(in srgb, var(--warn) 60%, var(--line)); background: color-mix(in srgb, var(--warn) 9%, var(--surface)); }
