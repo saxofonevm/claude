@@ -25,10 +25,10 @@ const CSS = `
   background: rgb(9 30 23 / .97); border: 1.5px solid #e9b949; box-shadow: 0 18px 40px rgb(0 0 0 / .55);
   color: #f3efe6; font-family: Figtree, system-ui, sans-serif; opacity: 0; transform: translateY(10px); transition: opacity .3s, transform .3s; }
 .tour-legenda.ver { opacity: 1; transform: none; }
-.tour-legenda.cima, .tour-legenda.baixo { top: 54%; bottom: auto; transform: translateY(-50%) scale(.92); }
+.tour-legenda.cima, .tour-legenda.baixo { top: 50%; bottom: auto; transform: translateY(-50%) scale(.92); }
 .tour-legenda.ver { transform: translateY(-50%) scale(1) !important; }
 .tour-legenda { left: 18px; right: 18px; padding: 18px 20px 20px; text-align: center; border-width: 2.5px; border-radius: 22px;
-  background: rgb(8 28 21 / .96); box-shadow: 0 0 0 100vmax rgb(0 0 0 / .28), 0 0 34px rgb(242 193 78 / .45), 0 22px 50px rgb(0 0 0 / .6); }
+  background: rgb(8 28 21 / .96); box-shadow: 0 0 0 100vmax rgb(4 14 10 / .72), 0 0 34px rgb(242 193 78 / .45), 0 22px 50px rgb(0 0 0 / .6); }
 .tour-legenda b { font-size: 1.65rem !important; margin-bottom: 6px !important; }
 .tour-legenda span { font-size: 1.18rem !important; line-height: 1.4 !important; }
 .tour-legenda b { display: block; font-family: Archivo, sans-serif; font-stretch: 80%; font-size: 1.2rem; text-transform: uppercase; letter-spacing: .03em; color: #f2c14e; margin-bottom: 2px; }
@@ -70,18 +70,29 @@ const SAX = `<svg viewBox="-12.6 -2.12 71.22 95.96"><g transform="rotate(-10 30 
     await p.evaluate(() => { const c = document.getElementById('tour-capa'); c.style.opacity = '0'; setTimeout(() => c.remove(), 520); });
     await espera(520);
   }
-  async function legenda(seletor, titulo, texto, ms, onde = 'baixo', centro = 'center') {
-    await p.evaluate(([sel, t, tx, ond, cen]) => {
-      document.querySelectorAll('.tour-alvo').forEach(e => e.classList.remove('tour-alvo'));
-      document.querySelectorAll('.tour-legenda').forEach(e => e.remove());
-      const el = sel && document.querySelector(sel);
-      if (el) { el.scrollIntoView({ block: 'start', behavior: 'smooth' }); setTimeout(() => window.scrollBy({ top: -60, behavior: 'smooth' }), 350); el.classList.add('tour-alvo'); }
-      const l = document.createElement('div'); l.className = 'tour-legenda ' + ond;
+  // Cada item: 1) a explicação aparece sozinha no centro e fica o tempo de ler;
+  // 2) ela sai; 3) o app mostra o item com o anel dourado (e o toque, se houver).
+  const tempoLeitura = t => Math.max(3400, 1300 + t.length * 46);
+  async function item(seletor, titulo, texto, { ver = 2500, acao = null, quadro = false } = {}) {
+    await limpar();
+    await p.evaluate(([t, tx]) => {
+      const l = document.createElement('div'); l.className = 'tour-legenda cima';
       l.innerHTML = `<b>${t}</b><span>${tx}</span>`; document.body.appendChild(l);
       requestAnimationFrame(() => requestAnimationFrame(() => l.classList.add('ver')));
-    }, [seletor, titulo, texto, onde, centro]);
-    await espera(ms);
+    }, [titulo, texto]);
+    await espera(tempoLeitura(titulo + texto));
+    await p.evaluate(() => document.querySelectorAll('.tour-legenda').forEach(l => { l.classList.remove('ver'); setTimeout(() => l.remove(), 320); }));
+    await espera(380);
+    if (seletor) await p.evaluate(sel => {
+      const el = document.querySelector(sel);
+      if (el) { el.scrollIntoView({ block: 'center', behavior: 'smooth' }); el.classList.add('tour-alvo'); }
+    }, seletor);
+    await espera(700);
+    if (acao) await acao();
+    await espera(ver);
+    await limpar();
   }
+  async function legenda(seletor, titulo, texto, ms, onde, centro) { await item(seletor, titulo, texto, { ver: 2200 }); }
   async function limpar() {
     await p.evaluate(() => { document.querySelectorAll('.tour-alvo').forEach(e => e.classList.remove('tour-alvo')); document.querySelectorAll('.tour-legenda').forEach(e => e.remove()); });
   }
@@ -106,51 +117,40 @@ const SAX = `<svg viewBox="-12.6 -2.12 71.22 95.96"><g transform="rotate(-10 30 
   await capa(`<span class="logo">naipe${SAX}</span><p>Seu estudo de saxofone<br>na palma da mão</p>`, 2600);
 
   // 2. Início
-  await legenda('.percurso-cartao', 'Meu percurso', 'O sax e os 6 pilares do estudo. Cada pilar se enche de cor quando você avança.', 2992, 'cima');
-  await legenda('#timer-iniciar', 'Começar os estudos', 'Ligue o cronômetro ao pegar o sax. A prática vai direto para o Diário.', 2640, 'cima');
-  await legenda('#btn-afinador-inicio', 'Metrônomo e afinador', 'Sempre à mão. O metrônomo continua tocando enquanto você navega.', 2816, 'cima');
-  // 3. Dica de estudo
-  await legenda('#estudo-dia', 'Dica de estudo', 'Três passos para hoje: aquecer, o exercício da vez e tocar junto.', 3696, 'cima');
-  await limpar();
+  await item('.percurso-cartao', 'Meu percurso', 'O sax e os 6 pilares do seu estudo. Cada pilar se enche de cor quando você avança.');
+  await item('#timer-iniciar', 'Começar os estudos', 'Ligue o cronômetro quando pegar o sax. Ao terminar, a prática vai direto para o Diário.');
+  await item('#btn-metronomo-inicio', 'Metrônomo e afinador', 'Sempre à mão. O metrônomo continua tocando enquanto você navega pelo app.');
+  await item('#estudo-dia', 'Dica de estudo', 'Três passos para hoje: aquecer, fazer o exercício da vez e tocar junto.', { ver: 3600 });
 
-  // 4. Pilar
-  await tocar('.abas a[data-aba="raizes"]');
-  await tocar('.raiz-card:nth-child(2)');
-  await espera(500);
-  await legenda('.metodos-pilar', 'Métodos deste pilar', 'Os livros já organizados por assunto. Nada de procurar página por página.', 3168, 'baixo', 'start');
-  await limpar();
-  await tocar('.mp-livro');
-  await espera(400);
-  await legenda('.grupo-raiz .ind-onde', 'Selo amarelo', 'Toque no selo e o método abre no exercício indicado.', 2992, 'baixo');
-  await limpar();
-  await tocar('#metodos-conteudo .btn-voltar');
-  await espera(500);
+  // 3. Pilar
+  await item('.abas a[data-aba="raizes"]', 'Pilares', 'Seis pilares, na ordem: Escuta, Figuras Rítmicas, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.', {
+    acao: async () => { await tocar('.abas a[data-aba="raizes"]'); await espera(1400); await tocar('.raiz-card:nth-child(2)'); }, ver: 1500 });
+  await item('.metodos-pilar', 'Métodos deste pilar', 'Dentro de cada pilar, os livros já organizados por assunto. Nada de procurar página por página.', {
+    acao: async () => { await espera(1200); await tocar('.mp-livro'); }, ver: 1500 });
+  await item('.grupo-raiz .ind-onde', 'Selo amarelo', 'Cada assunto tem a página e o exercício certos. Toque no selo amarelo e o método abre.', {
+    acao: async () => { await espera(1200); await tocar('#metodos-conteudo .btn-voltar'); }, ver: 1200 });
 
-  // 5. Exercício
+  // 4. Exercício
   await p.evaluate(() => { location.hash = '#/ex/rit-01'; }); await espera(900);
-  await legenda('.andamento', 'Exercício com metrônomo', 'Comece devagar e suba o andamento até o alvo.', 2992, 'baixo', 'start');
-  await legenda('#gravador', 'Grave e compare', 'Ouça a primeira gravação e a mais recente: a sua evolução, em segundos.', 3168, 'baixo', 'start');
-  await limpar();
+  await item('.andamento', 'Exercício com metrônomo', 'Cada exercício tem o andamento de início e o alvo. Comece devagar e vá subindo.', { ver: 3200 });
+  await item('#gravador', 'Grave e compare', 'Grave o exercício e ouça a primeira gravação e a mais recente. A sua evolução, em segundos.', { ver: 3200 });
 
-  // 6. Tocar junto + naipe rit
-  await tocar('.abas a[data-aba="tocar"]');
-  await legenda('.modo-tocar', 'Tocar junto', 'Play-alongs por estilo, em Mib ou Sib. E o naipe rit:', 2288, 'baixo');
-  await limpar();
-  await tocar('.modo-tocar a[href="#/tocar/base"]');
-  await espera(2200);
-  const rit = p.frameLocator('.rit-quadro');
-  await legenda('.rit-quadro', 'naipe rit', 'Escolha o ritmo, a música e o tom. A banda toca, você improvisa.', 2816, 'cima');
-  await limpar();
-  await tocar('#rhythms button:nth-child(2)', rit);
-  await tocar('#tr-up', rit);
-  await tocar('#play', rit);
-  await espera(2600);
-  await tocar('#play', rit);
+  // 5. Tocar junto + naipe rit
+  await item('.abas a[data-aba="tocar"]', 'Tocar junto', 'Play-alongs por estilo, já separados para sax alto (Mib) e tenor (Sib).', {
+    acao: async () => { await tocar('.abas a[data-aba="tocar"]'); await p.evaluate(() => document.querySelector('.modo-tocar')?.classList.add('tour-alvo')); }, ver: 2600 });
+  await item('.modo-tocar a[href="#/tocar/base"]', 'naipe rit', 'A sua banda de bolso: escolha o ritmo, a música e o tom. Bateria, baixo e harmonia tocam, você improvisa.', {
+    acao: async () => {
+      await tocar('.modo-tocar a[href="#/tocar/base"]'); await espera(2400);
+      const rit = p.frameLocator('.rit-quadro');
+      await tocar('#rhythms button:nth-child(2)', rit); await espera(600);
+      await tocar('#tr-up', rit); await espera(600);
+      await tocar('#play', rit); await espera(3200);
+      await tocar('#play', rit);
+    }, ver: 800 });
 
-  // 7. Diário
-  await tocar('.abas a[data-aba="diario"]');
-  await legenda('#diario-graficos', 'Diário', 'Minutos por semana, a meta e o andamento subindo. Para você e para o professor.', 3520, 'baixo', 'start');
-  await limpar();
+  // 6. Diário
+  await item('.abas a[data-aba="diario"]', 'Diário', 'Minutos por semana, a meta e o andamento subindo. Para você e para o professor acompanharem.', {
+    acao: async () => { await tocar('.abas a[data-aba="diario"]'); await p.evaluate(() => document.querySelector('#diario-graficos')?.classList.add('tour-alvo')); }, ver: 3400 });
 
   // 8. Fechamento
   await capa(`<span class="logo">naipe${SAX}</span><p>Bons estudos!</p><span class="arroba">@naipesax</span>`, 3600);
