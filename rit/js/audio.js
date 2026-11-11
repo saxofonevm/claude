@@ -32,7 +32,7 @@
     clickL: [['t', 'sine', 1000, 1000, 0.04, 0.5]]
   };
 
-  var ctx = null, master = null, noiseBuf = null, chans = {}, samples = {};
+  var ctx = null, master = null, noiseBuf = null, chans = {};
 
   function init() {
     if (ctx) return ctx;
@@ -46,25 +46,74 @@
     noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
     var d = noiseBuf.getChannelData(0);
     for (var i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
-    loadSamples();
+    loadPack();
     return ctx;
   }
 
-  /* Amostras gravadas (opcionais). samples/index.json mapeia timbre -> arquivo,
-     por exemplo { "surdoO": "surdo-aberto.wav" }. O que não tiver amostra
-     continua sintetizado. */
-  function loadSamples() {
-    if (!root.fetch) return;
-    fetch('samples/index.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (map) {
-      Object.keys(map).forEach(function (voice) {
-        if (!VOICES[voice]) return;
-        fetch('samples/' + map[voice])
-          .then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
-          .then(function (buf) { return ctx.decodeAudioData(buf); })
-          .then(function (audio) { samples[voice] = audio; })
-          .catch(function () { /* arquivo ausente ou inválido: fica o sintetizado */ });
-      });
-    }).catch(function () { /* sem pasta de amostras */ });
+  /* Gravações reais (samples/pack.js). Cada timbre de percussão aponta para uma
+     peça gravada: [nota GM, afinação, duração máxima, ganho]. Enquanto o pacote
+     não carrega (ou se faltar), o som sintetizado serve de reserva. */
+  var DRUM = {
+    kick: [36, 1, 0, 1], snare: [38, 1, 0, 0.9], caixa: [40, 1.15, 0.18, 0.8], rim: [37, 1, 0, 0.9],
+    hh: [42, 1, 0, 0.6], ride: [51, 1, 0.9, 0.6],
+    surdoO: [41, 0.72, 0, 1.2], surdoM: [41, 0.72, 0.13, 1.1], alfaia: [41, 0.6, 0, 1.2],
+    tamb: [65, 1.5, 0.12, 0.8], agoH: [67, 1, 0, 0.8], agoL: [68, 1, 0, 0.8],
+    pandJ: [54, 1, 0.14, 0.7], pandT: [61, 0.6, 0.25, 1], ganza: [70, 1, 0, 0.7],
+    triO: [81, 1, 0, 0.7], triC: [80, 1, 0, 0.7],
+    zabL: [35, 0.9, 0, 1.2], zabH: [60, 1.6, 0.1, 0.8],
+    congaH: [63, 1, 0, 0.9], congaL: [64, 1, 0, 0.9], cow: [56, 1, 0, 0.6],
+    clickH: [76, 1, 0, 0.9], clickL: [77, 1, 0, 0.8]
+  };
+  Object.keys(DRUM).forEach(function (k) { DRUM[k][3] *= 0.7; });
+  var drumBuf = {}, instBuf = {}, pedidos = {}, espera = [];
+
+  function decodificar(id, mapa) {
+    var store = id === 'drums' ? drumBuf : (instBuf[id.replace(/^i-/, '')] = {});
+    Object.keys(mapa).forEach(function (key) {
+      var bin = atob(mapa[key]), bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      ctx.decodeAudioData(bytes.buffer, function (buf) { store[key] = buf; }, function () {});
+    });
+  }
+  // Cada arquivo de samples/ chama esta função ao carregar.
+  root.NAIPE_SAMPLES = function (id, mapa) {
+    if (ctx) decodificar(id, mapa); else espera.push([id, mapa]);
+  };
+  /* Carrega sob demanda samples/drums.js ou samples/i-<instrumento>.js. */
+  function load(id) {
+    if (pedidos[id] || !root.document) return;
+    pedidos[id] = true;
+    var sc = document.createElement('script');
+    sc.src = 'samples/' + (id === 'drums' ? 'drums' : 'i-' + id) + '.js';
+    sc.onerror = function () { pedidos[id] = false; };
+    document.head.appendChild(sc);
+  }
+  function loadPack() {
+    espera.forEach(function (e) { decodificar(e[0], e[1]); });
+    espera = [];
+    load('drums');
+  }
+
+  /* Toca uma nota gravada do instrumento, afinando a amostra mais próxima.
+     Devolve false se o instrumento ainda não estiver carregado. */
+  function note(inst, midi, t, dur, chanId, vel) {
+    var bank = instBuf[inst], best = null;
+    if (!bank) return false;
+    Object.keys(bank).forEach(function (n) {
+      if (best === null || Math.abs(n - midi) < Math.abs(best - midi)) best = +n;
+    });
+    if (best === null) return false;
+    var src = ctx.createBufferSource(), g = ctx.createGain();
+    src.buffer = bank[best];
+    src.playbackRate.value = Math.pow(2, (midi - best) / 12);
+    g.gain.setValueAtTime(vel, t);
+    g.gain.setValueAtTime(vel, t + dur);
+    g.gain.linearRampToValueAtTime(0, t + dur + 0.1);
+    src.connect(g);
+    g.connect(chan(chanId));
+    src.start(t);
+    src.stop(t + dur + 0.12);
+    return true;
   }
 
   function chan(id) {
@@ -91,10 +140,16 @@
   function hit(voice, chanId, t, vel) {
     var layers = VOICES[voice], out = chan(chanId);
     if (!layers) return;
-    if (samples[voice]) {
+    var d = DRUM[voice];
+    if (d && drumBuf[d[0]]) {
       var s = ctx.createBufferSource(), sg = ctx.createGain();
-      s.buffer = samples[voice];
-      sg.gain.value = vel;
+      s.buffer = drumBuf[d[0]];
+      s.playbackRate.value = d[1];
+      sg.gain.setValueAtTime(vel * d[3], t);
+      if (d[2]) {
+        sg.gain.setValueAtTime(vel * d[3], t + d[2] * 0.6);
+        sg.gain.linearRampToValueAtTime(0, t + d[2]);
+      }
       s.connect(sg);
       sg.connect(out);
       s.start(t);
@@ -171,7 +226,7 @@
   }
 
   root.Engine = {
-    init: init, setVol: setVol, hit: hit, bass: bass, chord: chord,
+    init: init, setVol: setVol, hit: hit, bass: bass, chord: chord, note: note, load: load,
     now: function () { return ctx ? ctx.currentTime : 0; },
     resume: function () { return ctx && ctx.state !== 'running' ? ctx.resume() : null; }
   };

@@ -1,7 +1,7 @@
 // Service worker: permite usar o app offline.
 // Estratégia "rede primeiro": com internet, sempre busca a versão nova do servidor
 // (sem usar cópia velha do navegador); sem internet, usa a cópia salva.
-const CACHE = "cma-v60";
+const CACHE = "cma-v62";
 const ARQUIVOS = [
   "./",
   "index.html",
@@ -11,16 +11,17 @@ const ARQUIVOS = [
   "conteudo.js",
   "metodos.js",
   "acervo.js",
-  "rit.css",
-  "rit-music.js",
-  "rit-audio.js",
-  "rit.js",
-  "samples/index.json",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-192.png",
   "icons/icon-512.png",
-  "icons/icon-maskable.png"
+  "icons/icon-maskable.png",
+  "rit/index.html",
+  "rit/css/style.css",
+  "rit/js/music.js",
+  "rit/js/audio.js",
+  "rit/js/app.js",
+  "rit/samples/drums.js"
 ];
 
 self.addEventListener("install", ev => {

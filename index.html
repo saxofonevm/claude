@@ -13,7 +13,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..800&family=Figtree:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@500;700&family=Outfit:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="rit.css">
 </head>
 <body>
   <main>
@@ -147,112 +146,6 @@
     <!-- TOCAR JUNTO (play-alongs) -->
     <section id="tela-tocar" class="tela">
       <div id="tocar-conteudo"></div>
-      <!-- Naipe Rit: ritmo + harmonia -->
-      <div id="rit" class="rit" hidden>
-      <div class="rit-logo">
-        <p class="rit-marca grande" aria-label="Naipe Rit">naipe <b>rit</b></p>
-        <p class="rit-logo-sub">Ritmo + harmonia para tocar junto</p>
-      </div>
-      <div class="rit-topo">
-        <div class="rit-topo-in">
-          <div class="hero-ritmo">
-            <p class="sobretitulo">Ritmo</p>
-            <h2 id="rit-rhythm-name"></h2>
-            <p class="hero-meta"><span id="rit-sig" class="sig"></span><span id="rit-rhythm-desc"></span></p>
-          </div>
-        </div>
-        <div id="rit-rhythms" class="chips" role="radiogroup" aria-label="Ritmo"></div>
-      </div>
-
-      <div class="app">
-        <section class="cartao chart-wrap" aria-label="Cifra">
-          <div class="chart-head">
-            <label class="field grow">
-              <span class="rotulo">Progressão</span>
-              <select id="rit-song"></select>
-            </label>
-            <div class="field">
-              <span class="rotulo">Tom</span>
-              <div class="stepper">
-                <button id="rit-tr-down" type="button" aria-label="Descer meio tom">−</button>
-                <output id="rit-tr-val">Original</output>
-                <button id="rit-tr-up" type="button" aria-label="Subir meio tom">+</button>
-              </div>
-            </div>
-          </div>
-          <p id="rit-vista" class="hint vista" hidden></p>
-          <div id="rit-chart" class="chart"></div>
-          <div class="chart-foot">
-            <p class="hint">Toque em um compasso para começar a partir dele.</p>
-            <div class="chart-actions">
-              <button id="rit-edit" type="button" class="ghost">Editar</button>
-              <button id="rit-new" type="button" class="ghost">Nova</button>
-            </div>
-          </div>
-        </section>
-
-        <section class="cartao panel" aria-label="Instrumentos">
-          <div class="tabs" role="tablist">
-            <button id="rit-tab-mixer" type="button" role="tab" aria-selected="true">Instrumentos</button>
-            <button id="rit-tab-grid" type="button" role="tab" aria-selected="false">Grade do ritmo</button>
-          </div>
-          <div id="rit-mixer" class="mixer"></div>
-          <div id="rit-grid-pane" hidden>
-            <div class="grid-scroll"><div id="rit-grid" class="grid"></div></div>
-            <div class="grid-foot">
-              <p class="hint">Toque nas casas para alterar. Percussão: normal, acento, nota fantasma.
-                Baixo: <b>r</b> fundamental, <b>3 5 7 8</b> notas do acorde, <b>N</b> próximo acorde, <b>a</b> aproximação, <b>w</b> walking.
-                Acordes: <b>x</b> curto, <b>X</b> longo, <b>n</b> antecipa o próximo.</p>
-              <button id="rit-grid-reset" type="button" class="ghost">Restaurar ritmo original</button>
-            </div>
-          </div>
-        </section>
-        <section class="cartao" aria-label="Andamento e opções">
-          <label class="field"><span class="rotulo">Andamento</span>
-            <input id="rit-bpm" type="range" min="40" max="260" value="96" aria-label="Andamento">
-          </label>
-          <div class="opts">
-            <label><input id="rit-countin" type="checkbox" checked> Contagem</label>
-            <label>Virada <select id="rit-fill"><option value="0">não</option><option value="4">a cada 4</option><option value="8">a cada 8</option></select></label>
-            <label title="Aumenta o andamento a cada volta da progressão">+<input id="rit-ramp" type="number" min="0" max="20" value="0" inputmode="numeric"> BPM/volta</label>
-          </div>
-        </section>
-      </div>
-
-      <div class="transport">
-        <div class="transport-in">
-          <button id="rit-play" type="button" class="play" aria-label="Tocar">
-            <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path id="rit-play-icon" d="M7 4l14 8-14 8z" fill="currentColor"/></svg>
-          </button>
-          <div class="tempo-row">
-            <button id="rit-bpm-down" type="button" aria-label="Diminuir andamento">−</button>
-            <div class="bpm"><output id="rit-bpm-val">96</output><small>BPM</small></div>
-            <button id="rit-bpm-up" type="button" aria-label="Aumentar andamento">+</button>
-            <button id="rit-tap" type="button" class="ghost">Tap</button>
-            <div id="rit-beats" class="beats" aria-hidden="true"></div>
-          </div>
-        </div>
-      </div>
-
-      <dialog id="rit-editor" class="rit-dlg">
-        <form id="rit-editor-form" method="dialog">
-          <h2>Editar progressão</h2>
-          <label class="field"><span>Título</span><input id="rit-ed-title" type="text" required maxlength="60"></label>
-          <label class="field"><span>Cifra</span>
-            <textarea id="rit-ed-text" rows="8" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea>
-          </label>
-          <p class="hint">Um compasso entre barras: <code>| Dm7 | G7 | C7M | % |</code>. Dois acordes no mesmo compasso dividem os tempos: <code>| Dm7 G7 |</code>.
-            <code>%</code> repete o acorde anterior, <code>|: … :|</code> repete o trecho, <code>1.</code> e <code>2.</code> marcam as casas, <code>[A]</code> no começo da linha nomeia a parte. Aceita <code>7M</code> ou <code>maj7</code>, <code>m7(b5)</code>, <code>dim</code>, <code>7(b9)</code>, <code>6/9</code>, <code>C/E</code>.</p>
-          <p id="rit-ed-error" class="error" hidden></p>
-          <div class="dialog-actions">
-            <button id="rit-ed-delete" type="button" class="ghost danger">Excluir</button>
-            <span class="spacer"></span>
-            <button id="rit-ed-cancel" type="button" class="ghost">Cancelar</button>
-            <button id="rit-ed-save" type="submit" class="primary">Salvar</button>
-          </div>
-        </form>
-      </dialog>
-      </div>
     </section>
 
     <!-- MÉTODOS (biblioteca e detalhe de um método) -->
@@ -564,9 +457,6 @@
   <script src="conteudo.js"></script>
   <script src="metodos.js"></script>
   <script src="acervo.js"></script>
-  <script src="rit-music.js"></script>
-  <script src="rit-audio.js"></script>
   <script src="app.js"></script>
-  <script src="rit.js"></script>
 </body>
 </html>

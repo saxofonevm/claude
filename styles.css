@@ -1394,3 +1394,23 @@ details.recolhe > summary + * { margin-top: 2px; }
   border: 1px solid var(--line); border-radius: 999px; background: none; color: var(--muted); font-size: .82rem; font-weight: 600; margin: -4px auto 0; }
 .ajuda-topo .ic { width: 15px; height: 15px; color: var(--brass-soft); }
 .ajuda-topo:hover { color: var(--text); border-color: var(--brass); }
+
+/* ---------- naipe rit dentro da aba Tocar junto ---------- */
+.modo-tocar { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; padding: 4px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); margin-top: 6px; }
+.modo-tocar a { min-height: 44px; border-radius: 10px; color: var(--muted); font-weight: 700; font-size: .9rem; text-decoration: none; display: grid; place-items: center; }
+.modo-tocar a.ativo { background: var(--latao); color: var(--on-brass); }
+.modo-tocar a .rit-marca { color: inherit; }
+.modo-tocar a[href="#/tocar/base"].ativo .rit-marca { color: #f4f1fb; }
+body.com-rit { padding-bottom: 0; overflow: hidden; }
+.rit-marca { margin: 0; font-family: var(--f-display); font-stretch: 78%; font-weight: 800; letter-spacing: .1em; line-height: 1; color: #f4f1fb; white-space: nowrap; font-size: 1.05rem; }
+.rit-marca b { font-weight: 800; background: linear-gradient(90deg, #ff6b7a 0%, #ff8f6b 22%, #ffcb47 50%, #b9de5c 70%, #4fe0a0 100%); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 0 8px rgb(255 203 71 / .55)); animation: rit-brilho 2.8s ease-in-out infinite; }
+@keyframes rit-brilho { 50% { filter: drop-shadow(0 0 14px rgb(255 203 71 / .85)) drop-shadow(0 0 24px rgb(79 224 160 / .45)); } }
+@media (prefers-reduced-motion: reduce) { .rit-marca b { animation: none; } }
+.modo-tocar a[href="#/tocar/base"].ativo { background: radial-gradient(80% 120% at 50% 0%, #2a2440, #14121c); color: #f4f1fb;
+  box-shadow: 0 0 0 1px rgb(255 203 71 / .5), 0 0 18px -4px rgb(255 203 71 / .55); }
+.rit-embutido { display: flex; flex-direction: column; height: calc(100dvh - 61px - env(safe-area-inset-bottom, 0px)); }
+.rit-embutido .modo-tocar { flex: none; margin: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px; }
+.rit-quadro { flex: 1; width: 100%; border: 0; display: block; background: #0e0d14; }
+body.com-rit main { padding-bottom: 0; }
+body.com-rit #tela-tocar { padding: 0; }

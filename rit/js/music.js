@@ -339,8 +339,54 @@
     { id: 'p-baiao', title: 'Baião modal (mixolídio)', text: '[A] | D7(9) | % | C/D | % |\n[B] | G7 | % | D7(9) | % |' },
     { id: 'p-casas', title: 'Ritornelo com casas de 1ª e 2ª vez', text:
       '[A] |: C7M | A7 | Dm7 | G7 |\n| 1. Em7 A7 | Dm7 G7 :| 2. Gm7 C7 | F7M |\n[B] | Fm6 | C7M | Dm7 G7 | C6 |' },
-    { id: 'p-vamp', title: 'Um acorde só (vamp)', text: '| Dm7 | % | % | % |' }
+    { id: 'p-vamp', title: 'Um acorde só (vamp)', text: '| Dm7 | % | % | % |' },
+    /* Harmonias de músicas conhecidas, em tom de concerto (só os acordes). */
+    { id: 'm-ipanema', title: 'Garota de Ipanema', text:
+      '[A] |: F7M | % | G7 | % |\n| Gm7 | Gb7 | 1. F7M | Gb7 :| 2. F7M | % |\n' +
+      '[B] | Gb7M | % | B7 | % |\n| F#m7 | % | D7 | % |\n| Gm7 | % | Eb7 | % |\n| Am7 | D7(b9) | Gm7 | C7(b9) |\n' +
+      '[A] | F7M | % | G7 | % |\n| Gm7 | Gb7 | F7M | Gb7 |' },
+    { id: 'm-nota', title: 'Samba de Uma Nota Só', text:
+      '[A] |: Dm7 | Db7 | Cm7 | B7(b5) :|\n| Fm7 | Bb7 | Eb7M | Ab7 |\n| Dm7 | Db7 | Cm7 B7(b5) | Bb6 |\n' +
+      '[B] | Ebm7 | Ab7 | Db7M | % |\n| Dbm7 | Gb7 | B7M | Cm7(b5) B7(b5) |\n' +
+      '[A] | Dm7 | Db7 | Cm7 | B7(b5) |\n| Dm7 | Db7 | Cm7 | B7(b5) |\n| Fm7 | Bb7 | Eb7M | Ab7 |\n| Db7M | C7 | B7M | Bb6 |' },
+    { id: 'm-carnaval', title: 'Manhã de Carnaval', text:
+      '[A] | Am7 | Bm7(b5) E7(b9) | Am7 | Bm7(b5) E7(b9) |\n| Am7 | Dm7 G7 | C7M | C#dim |\n| Dm7 | G7 | C7M | F7M |\n| Bm7(b5) | E7(b9) | Am7 | Bm7(b5) E7(b9) |\n' +
+      '[B] | Am7 | Bm7(b5) E7(b9) | Am7 | Bm7(b5) E7(b9) |\n| Em7(b5) | A7(b9) | Dm7 | % |\n| Dm7 | Bm7(b5) E7(b9) | Am7 | F7M |\n| Bm7(b5) | E7(b9) | Am7 | % |' },
+    { id: 'm-bluebossa', title: 'Blue Bossa', text:
+      '| Cm7 | % | Fm7 | % |\n| Dm7(b5) | G7(b9) | Cm7 | % |\n| Ebm7 | Ab7 | Db7M | % |\n| Dm7(b5) | G7(b9) | Cm7 | Dm7(b5) G7(b9) |' },
+    { id: 'm-asabranca', title: 'Asa Branca', text:
+      '[A] |: G | C | G | % |\n| D7 | % | G | % :|\n[B] |: G7 | C | D7 | G :|' },
+    { id: 'm-autumn', title: 'Autumn Leaves', text:
+      '[A] |: Cm7 | F7 | Bb7M | Eb7M |\n| Am7(b5) | D7(b9) | Gm6 | % :|\n' +
+      '[B] | Am7(b5) | D7(b9) | Gm6 | % |\n| Cm7 | F7 | Bb7M | Eb7M |\n| Am7(b5) | D7(b9) | Gm7 C7 | Fm7 Bb7 |\n| Eb7M | D7(b9) | Gm6 | % |' },
+    { id: 'm-allofme', title: 'All of Me', text:
+      '[A] | C7M | % | E7 | % |\n| A7 | % | Dm7 | % |\n| E7 | % | Am7 | % |\n| D7 | % | Dm7 | G7 |\n' +
+      '[B] | C7M | % | E7 | % |\n| A7 | % | Dm7 | % |\n| F7M | Fm6 | C7M Em7 | A7 |\n| Dm7 | G7 | C6 | Dm7 G7 |' },
+    { id: 'm-flyme', title: 'Fly Me to the Moon', text:
+      '[A] | Am7 | Dm7 | G7 | C7M |\n| F7M | Bm7(b5) | E7(b9) | Am7 A7 |\n| Dm7 | G7 | C7M | Am7 |\n| Dm7 | G7 | C7M | Bm7(b5) E7(b9) |\n' +
+      '[B] | Am7 | Dm7 | G7 | C7M |\n| F7M | Bm7(b5) | E7(b9) | Am7 A7 |\n| Dm7 | G7 | Em7 | A7 |\n| Dm7 | G7 | C6 | Bm7(b5) E7(b9) |' },
+    { id: 'm-atrain', title: 'Take the A Train', text:
+      '[A] |: C6 | % | D7(#11) | % |\n| Dm7 | G7 | 1. C6 | Dm7 G7 :| 2. C6 | % |\n' +
+      '[B] | F7M | % | % | % |\n| D7 | % | Dm7 | G7 |\n[A] | C6 | % | D7(#11) | % |\n| Dm7 | G7 | C6 | Dm7 G7 |' },
+    { id: 'm-summertime', title: 'Summertime', text:
+      '| Am6 | E7 | Am6 | A7 |\n| Dm7 | % | E7 | Bm7(b5) E7 |\n| Am6 | E7 | Am6 | D7 |\n| C7M Am7 | Bm7(b5) E7 | Am6 | Bm7(b5) E7 |' },
+    { id: 'm-sowhat', title: 'So What', text:
+      '[A] |: Dm7 | % | % | % |\n| % | % | % | % :|\n[B] | Ebm7 | % | % | % |\n| % | % | % | % |\n[A] | Dm7 | % | % | % |\n| % | % | % | % |' },
+    { id: 'm-songfather', title: 'Song for My Father', text:
+      '[A] |: Fm7 | % | Eb7 | % |\n| Db7 | C7 | Fm7 | % :|\n[B] | Eb7 | % | Fm7 | % |\n| Eb7 Db7 | C7 | Fm7 | % |' },
+    { id: 'm-cantaloupe', title: 'Cantaloupe Island', text:
+      '| Fm7 | % | % | % |\n| Db7 | % | % | % |\n| Dm7 | % | % | % |\n| Fm7 | % | % | % |' },
+    { id: 'm-watermelon', title: 'Watermelon Man', text:
+      '| F7 | % | % | % |\n| Bb7 | % | F7 | % |\n| C7 | Bb7 | C7 | Bb7 |\n| C7 | Bb7 | F7 | % |' },
+    { id: 'm-rhythm', title: 'Rhythm Changes (I Got Rhythm)', text:
+      '[A] |: Bb6 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 |\n| Fm7 Bb7 | Eb7M Ab7 | Dm7 G7 | Cm7 F7 :|\n' +
+      '[B] | D7 | % | G7 | % |\n| C7 | % | F7 | % |\n[A] | Bb6 G7 | Cm7 F7 | Dm7 G7 | Cm7 F7 |\n| Fm7 Bb7 | Eb7M Ab7 | Cm7 F7 | Bb6 |' },
+    { id: 'm-sunny', title: 'Sunny', text:
+      '|: Am7 | C7 | F7M | Bm7(b5) E7 :|\n| Am7 | C7 | F7M | Bb7 |\n| Bm7(b5) | E7(#9) | Am7 | E7 |' },
+    { id: 'm-chameleon', title: 'Chameleon', text: '| Bbm7 | Eb7 | Bbm7 | Eb7 |' },
+    { id: 'm-standbyme', title: 'Stand by Me', text: '| A | % | F#m | % |\n| D | E | A | % |' }
   ];
+
 
   var api = {
     NOTES: NOTES, parseChord: parseChord, transposeSym: transposeSym, voicing: voicing,

@@ -1,6 +1,6 @@
 // Testes do núcleo musical:  node test/music.test.js
 const assert = require('assert');
-const M = require('../rit-music.js');
+const M = require('../js/music.js');
 
 const iv = (s) => M.parseChord(s).intervals;
 assert.deepStrictEqual(iv('C'), [0, 4, 7]);

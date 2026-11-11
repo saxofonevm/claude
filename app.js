@@ -373,7 +373,7 @@
     if (voltando) pilha.pop(); else pilha.push(novo);
     if (pilha.length > 50) pilha.splice(0, pilha.length - 50);
     lerRota(); mostrarTela(); renderTela();
-    if (rotaAtual.tela !== "tocar") pararBase();
+    if (rotaAtual.tela !== "tocar") fecharRit();
     // trocar entre Play-alongs e Naipe Rit não rola a tela para o topo
     if (antes.tela === "tocar" && rotaAtual.tela === "tocar") return;
     if (voltando) restaurarPosicao(novo); else window.scrollTo(0, 0);
@@ -802,35 +802,39 @@
     if (a) generoAberto = a.dataset.genero;
   });
 
-  // A aba Tocar junto tem dois modos: os play-alongs do acervo e o "Naipe Rit"
-  // (ritmo + harmonia sintetizados; markup em index.html, lógica em rit.js).
-  window.NaipeSax = () => estado.sax;
-  const pararBase = () => { if (window.NaipeRit) window.NaipeRit.parar(); };
-  document.addEventListener("rit:tocar", () => {
+  // A aba Tocar junto tem dois modos: os play-alongs do acervo e o naipe rit
+  // (pasta rit/, aberto num quadro dentro da aba).
+  const quadroRit = () => document.querySelector(".rit-quadro");
+  // Para o som do naipe rit (ao ligar o metrônomo ou a rádio)
+  const pararBase = () => { const f = quadroRit(); try { if (f) f.contentWindow.postMessage({ naipe: "parar" }, location.origin); } catch {} };
+  // Ao sair da aba, fecha o naipe rit
+  const fecharRit = () => { const f = quadroRit(); if (f) f.remove(); document.body.classList.remove("com-rit"); };
+  window.addEventListener("message", ev => {
+    if (ev.origin !== location.origin || !ev.data || ev.data.naipeRit !== "tocar") return;
     if (radio.tocando || radio.carregando) pausarRadio();
     if (met.tocando) pararMetronomo();
   });
 
   function renderTocar() {
     const alvo = $("#tocar-conteudo");
-    const base = rotaAtual.id === "base" && !temBloqueio();
-    const painel = $("#rit");
-    painel.hidden = !base;
-    if (!base) pararBase();
-    const modos = temBloqueio() ? "" : `<div class="modo-tocar" role="group" aria-label="Modo">
+    const base = rotaAtual.id === "base";
+    const modos = `<div class="modo-tocar" role="group" aria-label="Modo">
       <a href="#/tocar" class="${base ? "" : "ativo"}"${base ? "" : ' aria-current="page"'}>Play-alongs</a>
       <a href="#/tocar/base" class="${base ? "ativo" : ""}"${base ? ' aria-current="page"' : ""} aria-label="Naipe Rit"><span class="rit-marca mini" aria-hidden="true">naipe <b>rit</b></span></a></div>`;
-    const topo = `<header class="cabecalho"><p class="sobretitulo">${base ? "Ritmo e harmonia" : "Play-alongs"}</p><h1>Tocar junto</h1>
-      <p class="mudo">${base ? "Escolha o ritmo, a progressão e o andamento, e toque em cima. Dá para mudar o tom e ligar ou silenciar cada instrumento." : "Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação."}</p>
-      ${modos}</header>`;
     if (base) {
-      alvo.innerHTML = topo;
-      if (window.NaipeRit) window.NaipeRit.definirSax(estado.sax);
+      // Naipe Rit (pasta rit/) aberto dentro da aba, sem sair do app
+      alvo.innerHTML = `<div class="rit-embutido">${modos}
+        <iframe class="rit-quadro" src="rit/index.html" title="Naipe Rit: ritmo e harmonia" allow="autoplay"></iframe></div>`;
+      document.body.classList.add("com-rit");
       return;
     }
+    document.body.classList.remove("com-rit");
+    const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
+      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p>
+      ${modos}</header>`;
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
-        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto, e o Naipe Rit, a base de ritmo e harmonia para montar o seu acompanhamento. Disponível no Naipe completo.</p>
+        <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. No naipe rit, Samba, Bossa Nova e Jazz Swing já estão abertos. Tudo disponível no Naipe completo.</p>
         <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
       return;
     }
