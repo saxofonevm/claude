@@ -157,6 +157,7 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
 .preco .parcela { display: block; font-family: var(--f-corpo); font-size: .88rem; font-weight: 500; color: var(--sobre-verde-mudo); margin-top: 8px; line-height: 1.4; }
 .plano ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .plano li { display: flex; gap: 10px; color: var(--sobre-verde-mudo); font-size: .95rem; }
+.plano li strong { color: var(--sobre-verde); }
 .plano li::before { content: "✓"; color: var(--ouro); font-weight: 700; }
 .plano .botao { width: 100%; }
 .garantia { display: flex; gap: 14px; align-items: center; color: var(--sobre-verde-mudo); font-size: .95rem; }
@@ -341,12 +342,25 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
     </div>
   </section>
 
+  <section class="secao" style="padding-top: 0">
+    <div class="miolo modulos">
+      <p class="rotulo">O diferencial</p>
+      <h2>Você estuda, <span class="serif">eu acompanho</span></h2>
+      <p>Nos planos com grupo ou mentoria, o app monta um relatório com tudo o que você estudou. Você me manda e eu respondo dizendo o que está bom e o que ajustar.</p>
+      <ol class="passos">
+        <li><div><strong>Você estuda com o app</strong><span>Os minutos, os exercícios concluídos e os andamentos ficam registrados sozinhos.</span></div></li>
+        <li><div><strong>Toca em "Relatório para o professor"</strong><span>O app abre o WhatsApp com o relatório da semana pronto. É só enviar.</span></div></li>
+        <li><div><strong>Recebe o meu feedback</strong><span>Eu leio o que você fez e te digo o próximo passo. Assim você não estuda sozinho.</span></div></li>
+      </ol>
+    </div>
+  </section>
+
   <section class="planos-faixa" id="planos">
     <div class="miolo secao planos">
       <div class="planos-topo">
         <p class="rotulo" style="color: var(--ouro)">Planos</p>
         <h2>Escolha como <span class="serif">quer estudar</span></h2>
-        <p>O app é seu para sempre. Se quiser o professor do seu lado, escolha o grupo ou a mentoria por 3 meses.</p>
+        <p>O app é seu para sempre. No grupo e na mentoria, você me manda o relatório do seu estudo e eu te dou o feedback.</p>
       </div>
       <p class="fundador-aviso" data-fundador-bloco><strong data-fundador-texto>Preço de fundador por tempo limitado</strong></p>
       <div class="grade-planos">
@@ -363,7 +377,7 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
           <h3>App + Grupo</h3>
           <p class="preco" data-preco="597" data-depois="797"></p>
           <p class="prazo">App vitalício + 3 meses de grupo</p>
-          <ul><li>Tudo do App Naipe</li><li>Encontro ao vivo em grupo toda semana, por 3 meses</li><li>Relatório semanal para o professor, direto do app</li><li>Grupo dos alunos para tirar dúvidas</li></ul>
+          <ul><li>Tudo do App Naipe</li><li><strong>Relatório do seu estudo com o meu feedback</strong></li><li>Aula ao vivo em grupo toda semana, por 3 meses</li><li>Grupo dos alunos para tirar dúvidas</li></ul>
           <p class="vagas" data-vagas>30 vagas de fundador</p>
           <a class="botao" href="#" data-link="grupo">Quero estudar em grupo</a>
         </article>
@@ -371,7 +385,7 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
           <h3>App + Mentoria</h3>
           <p class="preco" data-preco="1297" data-depois="1597"></p>
           <p class="prazo">App vitalício + 3 meses de mentoria</p>
-          <ul><li>Tudo do App Naipe</li><li>Aula individual ao vivo toda semana, por 3 meses</li><li>Correção das suas gravações</li><li>Relatório semanal para o professor, com retorno</li><li>Plano de estudo montado para você</li></ul>
+          <ul><li>Tudo do App Naipe</li><li><strong>Relatório do seu estudo com o meu feedback</strong></li><li>Aula individual ao vivo toda semana, por 3 meses</li><li>Correção das suas gravações</li><li>Plano de estudo montado para você</li></ul>
           <p class="vagas" data-vagas>10 vagas de fundador</p>
           <a class="botao" href="#" data-link="mentoria">Quero a mentoria</a>
         </article>
@@ -382,8 +396,8 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
           <tbody>
             <tr><td>App Naipe vitalício</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td></tr>
             <tr><td>naipe rit</td><td class="sim">✓</td><td class="sim">✓</td><td class="sim">✓</td></tr>
-            <tr><td>Relatório para o professor</td><td>–</td><td class="sim">✓</td><td class="sim">✓</td></tr>
-            <tr><td>Encontro ao vivo em grupo</td><td>–</td><td class="sim">✓</td><td>–</td></tr>
+            <tr><td>Relatório com o feedback do professor</td><td>–</td><td class="sim">✓</td><td class="sim">✓</td></tr>
+            <tr><td>Aula ao vivo em grupo</td><td>–</td><td class="sim">✓</td><td>–</td></tr>
             <tr><td>Aula individual</td><td>–</td><td>–</td><td class="sim">✓</td></tr>
             <tr><td>Correção de gravações</td><td>–</td><td>–</td><td class="sim">✓</td></tr>
           </tbody>
@@ -399,6 +413,7 @@ details ol li::marker { color: var(--cor); font-weight: 700; }
       <h2>Perguntas frequentes</h2>
       <div class="lista-modulos">
         <details><summary><span class="t">Posso testar antes de comprar?</span><span class="mais" aria-hidden="true">+</span></summary><p>Pode. O 1º pilar, Escuta, é aberto. Entre em <a href="https://naipesax.com.br/">naipesax.com.br</a> e use à vontade.</p></details>
+        <details><summary><span class="t">Como funciona o feedback do relatório?</span><span class="mais" aria-hidden="true">+</span></summary><p>Nos planos App + Grupo e App + Mentoria, você toca em "Relatório para o professor" no app e me manda pelo WhatsApp. Eu leio e respondo com o que está bom e o que ajustar. No plano só do app, o relatório não vem incluído.</p></details>
         <details><summary><span class="t">Serve para iniciante?</span><span class="mais" aria-hidden="true">+</span></summary><p>Serve para quem já tira as primeiras notas e quer um caminho organizado. Cada exercício começa num andamento lento e o app acompanha a sua evolução.</p></details>
         <details><summary><span class="t">Funciona para sax alto, tenor e soprano?</span><span class="mais" aria-hidden="true">+</span></summary><p>Sim. Os pilares valem para qualquer saxofone.</p></details>
         <details><summary><span class="t">O que quer dizer acesso vitalício?</span><span class="mais" aria-hidden="true">+</span></summary><p>Você paga uma vez e o app fica com você, com todas as atualizações. No grupo e na mentoria, os encontros e as aulas duram 3 meses. Depois disso o app continua seu.</p></details>
