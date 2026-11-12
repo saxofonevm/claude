@@ -102,7 +102,7 @@ window.CMA_METODOS = {
     ["bergonzi3", "Cap. 4 · pág. 23–26", "Antecipação harmônica", "ritmo-swing"],
     ["dorsey", "Sincopados · pág. 38–45", "Novos compassos e 15 estudos em ritmos sincopados", "ritmo-swing"],
     ["dorsey", "Colcheia pontuada e tercinas · pág. 33–34", "Colcheia pontuada com semicolcheia e tercinas", "ritmo-swing"],
-    ["aerobica", "Workouts 288–301 · pág. 84–87 (e 148–151 · pág. 44–45)", "Exercícios de ritmo: swing, rock e 12/8", "ritmo-swing"],
+    ["aerobica", "Workouts 288–301 · pág. 84–87", "Exercícios de ritmo: swing, rock e 12/8", "ritmo-swing"],
     ["klose", "p. 29–36", "30 pequenos solfejos fáceis", "melodia-metodo"],
     ["russo", "Primeiros estudos · pág. 13–18", "Séries de notas para os primeiros estudos", "melodia-metodo"],
     ["leme", "pág. 30–31, 45, 63, 74", "Composição", "melodia-metodo"],

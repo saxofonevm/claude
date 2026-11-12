@@ -656,6 +656,19 @@
     }).join("")}</div></div>`;
   }
 
+  // "Ex. 1–10 · pág. 5–6" → rótulos claros: EXERCÍCIOS 1 a 10 · PÁGINAS 5 a 6
+  function htmlOnde(onde) {
+    const plural = v => /[–,]| e /.test(v);
+    return `<span class="loc">${String(onde).split(" · ").map(p => {
+      let m, rot = "Onde", val = p;
+      if ((m = p.match(/^Ex\.\s*(.+)$/))) { rot = plural(m[1]) ? "Exercícios" : "Exercício"; val = m[1]; }
+      else if ((m = p.match(/^pág\.\s*(.+)$/))) { rot = plural(m[1]) ? "Páginas" : "Página"; val = m[1]; }
+      else if ((m = p.match(/^p\.\s*(.+)$/))) { rot = plural(m[1]) ? "Páginas do livro" : "Página do livro"; val = m[1]; }
+      val = val.replace(/(\d)\s*[–-]\s*(\d)/g, "$1 a $2");
+      return `<span class="loc-item"><small>${rot}</small><b>${escapar(val)}</b></span>`;
+    }).join("")}</span>`;
+  }
+
   // Lista "página tal → assunto". mostrarRamo: true = "Raiz › Ramificação", "ramo" = só a ramificação.
   function htmlIndicacoes(lista, { mostrarRamo = false, mostrarLivro = true } = {}) {
     return `<ul class="indicacoes">${lista.map(i => {
@@ -663,9 +676,9 @@
       const href = urlSegura(urlArquivo(livro.arquivo));
       const ramo = RAMO[i.ramo];
       const legenda = [mostrarLivro ? nomeLivro(livro) : "", mostrarRamo === "ramo" ? ramo.ram.titulo : mostrarRamo ? `${ramo.raiz.titulo} › ${ramo.ram.titulo}` : ""].filter(Boolean).join(" — ");
-      const miolo = `<span class="ind-onde">${escapar(i.onde)}</span>
-        <span class="ind-texto"><strong>${escapar(i.assunto)}</strong>${legenda ? `<span>${escapar(legenda)}</span>` : ""}</span>
-        ${href ? icone("externo", "ind-seta") : ""}`;
+      const miolo = `<span class="ind-texto"><strong>${escapar(i.assunto)}</strong>${legenda ? `<span>${escapar(legenda)}</span>` : ""}</span>
+        ${href ? `<span class="ind-abrir-txt">Abrir${icone("externo", "ind-seta")}</span>` : ""}
+        ${htmlOnde(i.onde)}`;
       return `<li>${href ? `<a class="indicacao" href="${escapar(href)}" target="_blank" rel="noopener">${miolo}</a>` : `<div class="indicacao">${miolo}</div>`}</li>`;
     }).join("")}</ul>`;
   }
@@ -683,9 +696,9 @@
       const nome = `${icone("pdf")}<span>${escapar(l.titulo)}${l.autor ? `<small>${escapar(l.autor)}</small>` : ""}</span>`;
       return `<div class="ind-grupo">
         ${href ? `<a class="ind-livro" href="${escapar(href)}" target="_blank" rel="noopener">${nome}${icone("externo", "material-seta")}</a>` : `<div class="ind-livro">${nome}</div>`}
-        <ul class="ind-linhas">${itens.map(i => href
-          ? `<li><a class="ind-linha" href="${escapar(href)}" target="_blank" rel="noopener" aria-label="Abrir ${escapar(l.titulo)} em ${escapar(i.onde)}"><span class="ind-onde"><span class="ind-onde-txt">${String(i.onde).split(" · ").map(escapar).join("<br>")}</span>${icone("externo", "ind-abrir")}</span><span>${escapar(i.assunto)}</span></a></li>`
-          : `<li><span class="ind-linha"><span class="ind-onde">${escapar(i.onde)}</span><span>${escapar(i.assunto)}</span></span></li>`).join("")}</ul>
+        <ul class="indicacoes">${itens.map(i => href
+          ? `<li><a class="indicacao" href="${escapar(href)}" target="_blank" rel="noopener" aria-label="Abrir ${escapar(l.titulo)}: ${escapar(i.assunto)}, ${escapar(i.onde)}"><span class="ind-texto"><strong>${escapar(i.assunto)}</strong></span><span class="ind-abrir-txt">Abrir${icone("externo", "ind-seta")}</span>${htmlOnde(i.onde)}</a></li>`
+          : `<li><div class="indicacao"><span class="ind-texto"><strong>${escapar(i.assunto)}</strong></span>${htmlOnde(i.onde)}</div></li>`).join("")}</ul>
       </div>`;
     }).join("");
   }
@@ -699,7 +712,7 @@
       <summary>${icone("livro")}<span><strong>Nos métodos</strong><span class="mudo">${lista.length
         ? `${lista.length} ${lista.length === 1 ? "indicação" : "indicações"} em ${livros} ${livros === 1 ? "método" : "métodos"}`
         : "Materiais na pasta do Drive"}</span></span>${icone("seta", "nos-seta")}</summary>
-      ${lista.length ? `<p class="dica">Toque no selo amarelo para abrir o método e vá à página ou ao exercício indicado. “pág.” é o número do leitor de PDF; “p.” é o número impresso no livro.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
+      ${lista.length ? `<p class="dica">Toque num assunto para abrir o método e vá à página ou ao exercício indicado. “pág.” é o número do leitor de PDF; “p.” é o número impresso no livro.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta Dica de Naipe no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
     </details>`;
   }

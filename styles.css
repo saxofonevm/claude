@@ -1493,3 +1493,20 @@ body.com-rit #tela-tocar { padding: 0; }
   .lista-livros { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
   .corpo, .cabecalho, .ajustes-corpo, .corpo-metodos, #lista-sessoes { padding-left: 0; padding-right: 0; }
 }
+
+/* ---------- Indicações dos métodos: leitura clara (sem selo amarelo) ---------- */
+.indicacoes { gap: 8px; }
+.indicacao {
+  grid-template-columns: 1fr auto; grid-template-areas: "texto abrir" "loc loc";
+  align-items: start; gap: 10px 12px; padding: 14px 14px 12px; border-radius: 12px;
+}
+.indicacao .ind-texto { grid-area: texto; border-bottom: 0; padding: 0; gap: 0; }
+.indicacao .ind-texto strong { font-size: 1rem; font-weight: 600; line-height: 1.35; }
+.indicacao .ind-texto span { font-size: .8rem; margin-top: 3px; }
+.ind-abrir-txt { grid-area: abrir; display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 600; color: var(--brass-soft, var(--brass)); padding-top: 2px; }
+.ind-abrir-txt .ind-seta { width: 14px; height: 14px; color: currentColor; }
+.loc { grid-area: loc; display: flex; flex-wrap: wrap; gap: 8px 22px; padding-top: 10px; border-top: 1px solid var(--line); }
+.loc-item { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.loc-item small { font-size: .66rem; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.loc-item b { font-family: var(--f-body); font-weight: 700; font-size: 1.02rem; line-height: 1.3; letter-spacing: .01em; color: var(--text); font-variant-numeric: tabular-nums; }
+a.indicacao:active { transform: scale(.99); }
