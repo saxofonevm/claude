@@ -95,8 +95,13 @@
           </div>
         </div>
 
-        <div class="stats linha">
-          <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span>dias seguidos</span></div>
+        <div class="cartao stats-boas" id="stats-boas" hidden>
+          <span class="stats-boas-ic" data-icone="nota"></span>
+          <p><strong>O seu primeiro dia começa hoje.</strong><span>Depois da primeira prática, os seus números aparecem aqui: dias de estudo, minutos e exercícios.</span></p>
+        </div>
+
+        <div class="stats linha" id="stats-linha">
+          <div class="stat"><span class="stat-valor" id="stat-sequencia">0</span><span class="stat-rotulo"><span data-icone="fogo"></span><span id="stat-sequencia-rotulo">dias seguidos</span></span></div>
           <div class="stat"><span class="stat-valor" id="stat-semana">0</span><span class="stat-rotulo"><span data-icone="relogio"></span>min na semana</span></div>
           <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
         </div>
@@ -360,7 +365,8 @@
       <span class="comemora-ic" id="comemora-ic"></span>
       <strong id="comemora-titulo"></strong>
       <span id="comemora-sub"></span>
-      <button class="btn primario" id="comemora-ok" type="button">Continuar</button>
+      <button class="btn primario" id="comemora-ir" type="button" hidden>Ir para o próximo</button>
+      <button class="btn" id="comemora-ok" type="button">Continuar aqui</button>
     </div>
   </div>
 

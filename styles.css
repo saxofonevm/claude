@@ -1436,3 +1436,15 @@ body.com-rit #tela-tocar { padding: 0; }
 #exercicio-conteudo .corpo { padding-bottom: 96px; }
 .hoje .estudo-dia { margin-top: 2px; padding-top: 0; border-top: 0; }
 .hoje .timer-visor { margin-top: 6px; }
+/* Sem cobrança: boas-vindas nos números, prazo para remarcar */
+.stats-boas { display: flex; gap: 14px; align-items: center; }
+.stats-boas[hidden] { display: none; }
+.stats-boas-ic { flex: none; width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: color-mix(in srgb, var(--brass) 18%, transparent); color: var(--brass-soft); }
+.stats-boas-ic .ic { width: 22px; height: 22px; }
+.stats-boas p { margin: 0; display: grid; gap: 3px; }
+.stats-boas strong { font-size: 1rem; }
+.stats-boas p span { color: var(--muted); font-size: .88rem; line-height: 1.4; }
+.stats.linha[hidden] { display: none; }
+.selo.remarcar { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+.comemora-cartao #comemora-ir[hidden] { display: none; }
+.comemora-cartao .btn + .btn { margin-top: 2px; }

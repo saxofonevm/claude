@@ -287,7 +287,7 @@
   function statusPrazo(iso, concluido) {
     if (concluido) return { texto: "Concluído", classe: "ok" };
     const dias = diasAte(iso);
-    if (dias < 0) return { texto: `Atrasado ${-dias} dia${dias === -1 ? "" : "s"}`, classe: "atrasado" };
+    if (dias < 0) return { texto: "Remarcar prazo", classe: "remarcar" };
     if (dias === 0) return { texto: "Vence hoje", classe: "urgente" };
     if (dias === 1) return { texto: "Vence amanhã", classe: "urgente" };
     return { texto: `Em ${dias} dias`, classe: dias <= 7 ? "proximo" : "" };
@@ -576,7 +576,13 @@
     $("#semana").innerHTML = html;
 
     $("#stat-semana").textContent = totalSemana;
-    $("#stat-sequencia").textContent = calcularSequencia(mapa);
+    const seq = calcularSequencia(mapa);
+    const comecou = estado.sessoes.length > 0 || Object.keys(estado.feitos).length > 0;
+    $("#stats-boas").hidden = comecou;
+    $("#stats-linha").hidden = !comecou;
+    // sem sequência no momento: convite em vez de um zero que soa como cobrança
+    $("#stat-sequencia").textContent = seq || "✦";
+    $("#stat-sequencia-rotulo").textContent = seq === 1 ? "dia seguido" : seq ? "dias seguidos" : "nova sequência hoje";
     $("#stat-exercicios").textContent = `${totalFeitos}/${TOTAL_EXERCICIOS}`;
 
     const pct = Math.min(100, Math.round((totalSemana / estado.metaSemanal) * 100));
@@ -1108,7 +1114,11 @@
         estado.feitos[id] = hojeISO();
         const raiz = EXERCICIO[id].raiz;
         if (progressoRaiz(raiz).completa) celebrar(`Pilar ${raiz.titulo} completo!`, "Todos os exercícios deste pilar foram concluídos.", "trofeu");
-        else celebrar("Exercício concluído", EXERCICIO[id].ex.titulo, "check");
+        else {
+          const prox = proximoExercicio();
+          celebrar("Muito bem!", prox ? `Próximo: ${prox.ex.titulo}` : "Exercício concluído.", "check",
+            prox ? { rotulo: "Ir para o próximo", href: `#/ex/${encodeURIComponent(prox.ex.id)}` } : null);
+        }
       }
       salvar(); renderTela();
     }
@@ -2280,7 +2290,7 @@
       .map(([chave, iso]) => {
         const id = chave.slice(2);
         const titulo = chave[0] === "e" ? EXERCICIO[id].ex.titulo : `Pilar ${RAIZ[id].titulo}`;
-        return `• ${titulo} (venceu em ${deISO(iso).toLocaleDateString("pt-BR")})`;
+        return `• ${titulo} (era ${deISO(iso).toLocaleDateString("pt-BR")})`;
       });
 
     const anotacoes = sessoes.filter(x => x.notas).slice(-3)
@@ -2303,7 +2313,7 @@
     }
     if (concluidos.length) l.push("", "✅ *Concluídos na semana:*", ...concluidos);
     if (andamentos.length) l.push("", "🎚 *Andamentos (atual de alvo):*", ...andamentos);
-    if (atrasados.length) l.push("", "⚠️ *Prazos atrasados:*", ...atrasados);
+    if (atrasados.length) l.push("", "📅 *Prazos para remarcar:*", ...atrasados);
     if (anotacoes.length) l.push("", "💬 *Anotações:*", ...anotacoes);
     l.push("", `📈 *Percurso:* ${totalFeitos} de ${TOTAL_EXERCICIOS} exercícios (${pctTotal}%)`);
     if (!sessoes.length) l.push("", "Não registrei prática nesta semana.");
@@ -2478,8 +2488,11 @@
   const reduzMovimento = () => window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   let confeteTimer = null;
 
-  function celebrar(titulo, sub, ic = "trofeu") {
+  function celebrar(titulo, sub, ic = "trofeu", proximo = null) {
     const el = $("#comemora");
+    const ir = $("#comemora-ir");
+    ir.hidden = !proximo;
+    if (proximo) { ir.textContent = proximo.rotulo; ir.dataset.href = proximo.href; }
     $("#comemora-ic").innerHTML = icone(ic);
     $("#comemora-titulo").textContent = titulo;
     $("#comemora-sub").textContent = sub || "";
@@ -2487,7 +2500,8 @@
     requestAnimationFrame(() => el.classList.add("visivel"));
     if (!reduzMovimento()) soltarConfete();
     clearTimeout(confeteTimer);
-    confeteTimer = setTimeout(fecharComemoracao, 4200);
+    // com um próximo passo, a janela espera o aluno escolher
+    confeteTimer = proximo ? 0 : setTimeout(fecharComemoracao, 4200);
   }
 
   function fecharComemoracao() {
@@ -2496,6 +2510,7 @@
     setTimeout(() => { el.hidden = true; }, 250);
   }
   $("#comemora-ok").addEventListener("click", fecharComemoracao);
+  $("#comemora-ir").addEventListener("click", ev => { const h = ev.currentTarget.dataset.href; fecharComemoracao(); if (h) location.hash = h; });
   $("#comemora").addEventListener("click", ev => { if (ev.target.id === "comemora" || ev.target.id === "confete") fecharComemoracao(); });
 
   function soltarConfete() {
