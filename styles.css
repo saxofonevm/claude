@@ -1419,3 +1419,20 @@ body.com-rit #tela-tocar { padding: 0; }
 .creditos-lista strong { color: var(--text); font-weight: 600; }
 .creditos-lista em { font-style: normal; color: var(--brass-soft); }
 .rever-bv { align-self: center; margin: -4px auto 0; display: block; }
+
+/* ---------- Orientação para quem chega ---------- */
+.bv-mapa { list-style: none; margin: 4px 0 6px; padding: 0; display: flex; flex-direction: column; gap: 12px; text-align: left; }
+.bv-mapa li { display: flex; gap: 12px; align-items: flex-start; }
+.bv-mapa-ic { flex: none; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: var(--latao); color: var(--on-brass); }
+.bv-mapa-ic .ic { width: 20px; height: 20px; }
+.bv-mapa strong { display: block; font-size: .95rem; }
+.bv-mapa small { display: block; color: var(--muted); font-size: .84rem; line-height: 1.4; }
+.como-pilar { list-style: none; margin: 0; padding: 14px 16px; display: grid; gap: 10px; border-radius: var(--raio); background: var(--surface); border: 1px dashed color-mix(in srgb, var(--c1, var(--brass)) 50%, var(--line)); }
+.como-pilar li { display: flex; gap: 12px; align-items: flex-start; font-size: .92rem; line-height: 1.4; }
+.como-pilar b { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; font-size: .8rem; background: color-mix(in srgb, var(--c1, var(--brass)) 30%, var(--surface-2)); color: var(--text); }
+.secao-sub { margin: -6px 0 2px; font-size: .9rem; }
+.secao-sub b { color: var(--brass-soft); }
+/* o conteúdo do exercício não fica escondido atrás da barra de ações */
+#exercicio-conteudo .corpo { padding-bottom: 96px; }
+.hoje .estudo-dia { margin-top: 2px; padding-top: 0; border-top: 0; }
+.hoje .timer-visor { margin-top: 6px; }

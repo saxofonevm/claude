@@ -699,7 +699,7 @@
     if (!livros.length && !pasta) {
       return `<section class="cartao metodos-pilar">${topo}<p class="mudo">Os métodos deste pilar serão publicados em breve pelo professor.</p></section>`;
     }
-    const VISIVEIS = 6;
+    const VISIVEIS = 3;
     const item = (k, i) => `<a class="mp-livro${i >= VISIVEIS ? " mp-extra" : ""}" href="#/metodo/${encodeURIComponent(k)}"${i >= VISIVEIS ? " hidden" : ""}>
         <span class="mp-livro-ic">${icone("pdf")}</span>
         <span class="mp-livro-txt"><strong>${escapar(LIVROS[k].titulo)}</strong>${LIVROS[k].autor ? `<small>${escapar(LIVROS[k].autor)}</small>` : ""}</span>
@@ -959,6 +959,12 @@
           <p>${escapar(raiz.porQue || raiz.descricao || raiz.resumo)}</p>
         </div>
 
+        <ol class="como-pilar" aria-label="Como estudar este pilar">
+          <li><b>1</b><span>Faça as <strong>Dicas de Naipe</strong> em ordem. O próximo exercício fica marcado.</span></li>
+          <li><b>2</b><span>Aprofunde nos <strong>métodos deste pilar</strong>, na página indicada.</span></li>
+          <li><b>3</b><span>Terminou um exercício? Toque em <strong>Concluí</strong>.</span></li>
+        </ol>
+
         ${htmlDrive(raiz)}
 
         <div class="cartao progresso-raiz">
@@ -970,6 +976,7 @@
         </div>
 
         <h2 class="secao">Dicas de Naipe</h2>
+        <p class="mudo secao-sub">Cada dica é um tema do pilar, com exercícios curtos. Comece pelo marcado como <b>Próximo</b>.</p>
         ${(raiz.ramificacoes || []).map((ram, j) => {
           const exs = ram.exercicios || [];
           const fe = exs.filter(e => feito(e.id)).length;
@@ -1075,7 +1082,7 @@
         <div class="barra-acoes">
           ${ex.andamento ? `<button class="btn acao-met" id="ex-metronomo-barra" aria-label="Metrônomo">${icone("metronomo")}</button>` : ""}
           <button class="btn ${concluido ? "" : "primario"}" id="ex-concluir">${icone("check")}${concluido ? "Desmarcar" : "Concluí"}</button>
-          <button class="btn" id="ex-praticar">${icone("diario")}Registrar</button>
+          <button class="btn" id="ex-praticar">${icone("diario")}Registrar prática</button>
         </div>
       </div>
     </article>`;
@@ -2566,7 +2573,7 @@
     if (!b) return;
     if (b.dataset.bvSax !== undefined) { bv.sax = b.dataset.bvSax; bv.passo = 3; mostrarPassoBV(); }
     else if (b.dataset.bvMeta) { bv.meta = Number(b.dataset.bvMeta); dlgBV.querySelectorAll("[data-bv-meta]").forEach(x => x.classList.toggle("ativo", x === b)); }
-    else if (b.hasAttribute("data-bv-prox")) { bv.passo = Math.min(3, bv.passo + 1); mostrarPassoBV(); }
+    else if (b.hasAttribute("data-bv-prox")) { bv.passo = Math.min(4, bv.passo + 1); mostrarPassoBV(); }
     else if (b.hasAttribute("data-bv-voltar")) { bv.passo = Math.max(1, bv.passo - 1); mostrarPassoBV(); }
     else if (b.hasAttribute("data-bv-fim")) concluirBoasVindas(true);
     else if (b.hasAttribute("data-bv-pular")) concluirBoasVindas(false);
