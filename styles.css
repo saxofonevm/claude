@@ -1457,3 +1457,39 @@ body.com-rit #tela-tocar { padding: 0; }
 .recolhe-convite strong { font-size: .95rem; }
 .recolhe-convite p span { color: var(--muted); font-size: .84rem; line-height: 1.4; }
 .recolhe-convite .link-acao { flex: none; color: var(--brass-soft); font-weight: 700; }
+
+/* ---------- Computador: menu lateral e conteúdo largo ---------- */
+@media (min-width: 1100px) {
+  :root { --lateral: 232px; }
+  body { padding-left: var(--lateral); padding-bottom: 24px; }
+  main { max-width: 1120px; padding-inline: 24px; }
+  .abas {
+    top: 0; bottom: 0; left: 0; right: auto; width: var(--lateral); transform: none;
+    display: flex; flex-direction: column; gap: 4px; padding: 28px 14px;
+    border-top: 0; border-left: 0; border-right: 1px solid var(--line); border-radius: 0;
+  }
+  .abas::before { content: "naipe"; font-family: "Outfit", var(--f-display); font-weight: 600; font-size: 2rem; color: var(--brass-soft, #F2C14E); padding: 0 12px 22px; letter-spacing: -.01em; }
+  .abas a { flex-direction: row; justify-content: flex-start; gap: 14px; min-height: 0; padding: 12px 14px; border-radius: 12px; font-size: .95rem; }
+  .abas a:hover { background: var(--surface); color: var(--text); }
+  .abas a.ativa { background: var(--surface); }
+  .abas a.ativa::before { top: 22%; bottom: 22%; left: 0; right: auto; width: 3px; height: auto; border-radius: 0 3px 3px 0; }
+  .radio { left: var(--lateral); right: 0; width: auto; bottom: 0; transform: none; border-radius: 0; }
+  .barra-acoes { left: var(--lateral); right: 0; width: auto; bottom: 0; transform: none; justify-content: center; }
+  .aviso { bottom: 24px; left: calc(50% + var(--lateral) / 2); }
+  .met-mini { left: calc(50% + var(--lateral) / 2); }
+  .rit-embutido { height: calc(100dvh - 24px); }
+
+  /* Início em duas colunas: percurso ao lado do "Hoje" */
+  .conteudo-inicio { display: grid; grid-template-columns: 1fr 1fr; align-items: start; gap: 18px; }
+  .conteudo-inicio > * { grid-column: 1 / -1; }
+  .conteudo-inicio > .percurso-cartao, .conteudo-inicio > #cartao-timer { grid-column: auto; }
+  .conteudo-inicio > .ajuda-topo { justify-self: center; }
+  .conteudo-inicio > details.recolhe { grid-column: auto; }
+  .conteudo-inicio > #btn-registrar { justify-self: center; width: auto; min-width: 340px; }
+  .hero-saudacao { font-size: 3.6rem; }
+  .hero, .banda { border-radius: 0 0 24px 24px; overflow: hidden; }
+
+  .grade-raizes { grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .lista-livros { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .corpo, .cabecalho, .ajustes-corpo, .corpo-metodos, #lista-sessoes { padding-left: 0; padding-right: 0; }
+}
