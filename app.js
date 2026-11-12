@@ -699,7 +699,7 @@
       <summary>${icone("livro")}<span><strong>Nos métodos</strong><span class="mudo">${lista.length
         ? `${lista.length} ${lista.length === 1 ? "indicação" : "indicações"} em ${livros} ${livros === 1 ? "método" : "métodos"}`
         : "Materiais na pasta do Drive"}</span></span>${icone("seta", "nos-seta")}</summary>
-      ${lista.length ? `<p class="dica">Toque no selo amarelo para abrir o método e vá direto à página ou ao exercício indicado.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
+      ${lista.length ? `<p class="dica">Toque no selo amarelo para abrir o método e vá à página ou ao exercício indicado. “pág.” é o número do leitor de PDF; “p.” é o número impresso no livro.</p>${htmlIndicacoesPorLivro(lista)}` : ""}
       ${pasta ? `<a class="material" href="${escapar(pasta)}" target="_blank" rel="noopener">${icone("pasta")}<span>Pasta desta Dica de Naipe no Drive</span>${icone("externo", "material-seta")}</a>` : ""}
     </details>`;
   }
@@ -806,6 +806,7 @@
         <p class="sobretitulo">${escapar(l.autor || "Material de apoio")}</p>
         <h1>${escapar(l.titulo)}</h1>
         ${l.nota ? `<p class="mudo">${escapar(l.nota)}</p>` : ""}
+        <p class="mudo">${l.paginas === "impressa" ? "As páginas (p.) são as impressas no livro." : "As páginas (pág.) são as do contador do PDF, o número que aparece no leitor (ex.: 12/34)."}</p>
       </header>
       <div class="corpo-metodos">
         ${href ? `<a class="btn primario largo" href="${escapar(href)}" target="_blank" rel="noopener">${icone("pdf")}Abrir o PDF</a>` : ""}
@@ -1087,7 +1088,7 @@
 
         ${indicacoesDoRamo(ram.id).length ? `<details class="cartao drive">
           <summary class="drive-topo">${icone("livro")}<span><strong>Onde estudar nos métodos</strong><small>${indicacoesDoRamo(ram.id).length} indicações · toque para ver</small></span>${icone("seta", "ram-seta")}</summary>
-          <p class="dica">Assuntos de “${escapar(ram.titulo)}”. Toque no nome do método para abrir o PDF e vá à página ou ao exercício indicado.</p>
+          <p class="dica">Assuntos de “${escapar(ram.titulo)}”. Toque no nome do método para abrir o PDF e vá à página ou ao exercício indicado (“pág.” = número do leitor de PDF).</p>
           ${htmlIndicacoesPorLivro(indicacoesDoRamo(ram.id))}
         </details>` : ""}
 
