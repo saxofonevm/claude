@@ -146,15 +146,23 @@
     return sha256(dados);
   }
 
+  // Planos: "acompanhamento" (grupo ou mentoria, com relatório para o professor) ou "app" (só o app).
+  // Quem liberou antes da divisão dos planos fica com acompanhamento.
+  const temAcompanhamento = () => !ACESSO || (estado.desbloqueado && estado.plano !== "app");
+
   async function tentarCodigo(bruto) {
     const codigo = String(bruto || "").trim().toUpperCase().replace(/\s+/g, "");
     if (!codigo) { avisar("Digite o código de acesso."); return false; }
-    let ok = false;
-    try { ok = ACESSO.codigos.includes(await impressao(codigo)); } catch { avisar("Não foi possível conferir o código neste navegador."); return false; }
-    if (!ok) { avisar("Código inválido. Confira com o professor."); return false; }
+    let impr;
+    try { impr = await impressao(codigo); } catch { avisar("Não foi possível conferir o código neste navegador."); return false; }
+    const acomp = ACESSO.codigos.includes(impr);
+    const soApp = (ACESSO.codigosApp || []).includes(impr);
+    if (!acomp && !soApp) { avisar("Código inválido. Confira com o professor."); return false; }
+    const jaTinhaAcomp = estado.desbloqueado && estado.plano !== "app";
     estado.desbloqueado = true;
+    estado.plano = acomp || jaTinhaAcomp ? "acompanhamento" : "app";
     salvar();
-    avisar("Naipe completo liberado!");
+    avisar(estado.plano === "acompanhamento" ? "Naipe completo com acompanhamento liberado!" : "Naipe completo liberado!");
     renderTela();
     return true;
   }
@@ -601,6 +609,9 @@
       </a></li>`;
     }).join("");
 
+    $("#cartao-relatorio").hidden = !temAcompanhamento();
+    const conv = $("#cartao-acomp");
+    if (conv) { conv.hidden = !(estado.desbloqueado && !temAcompanhamento()); const a = conv.querySelector("[data-conhecer-acomp]"); if (a) a.href = urlConhecer(); }
     if (PROFESSOR.nome) $("#btn-relatorio").textContent = `Enviar relatório para ${PROFESSOR.nome.split(" ")[0]}`;
 
     renderTimer();
@@ -1674,7 +1685,10 @@
     cartao.hidden = !ACESSO;
     if (ACESSO) {
       cartao.innerHTML = estado.desbloqueado
-        ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Naipe completo liberado neste aparelho.</p>`
+        ? (temAcompanhamento()
+          ? `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Naipe completo com acompanhamento do professor.</p>`
+          : `<h2>Acesso</h2><p class="acesso-ok">${icone("check")}Naipe completo (plano só o app).</p>
+             <p class="mudo">Entrou no grupo de estudo ou na mentoria? Digite o novo código para liberar o relatório para o professor.</p>${htmlCodigo()}`)
         : `<h2>Acesso</h2><p class="mudo">Você está na versão grátis: o pilar Escuta está aberto. Os outros cinco pilares fazem parte do Naipe completo.</p>
            <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}`;
     }
@@ -2614,7 +2628,7 @@
       if (!cod || !ACESSO) return;
       u.searchParams.delete("codigo");
       history.replaceState(null, "", u.pathname + u.search + u.hash);
-      if (!estado.desbloqueado) tentarCodigo(cod);
+      tentarCodigo(cod); // libera, ou passa do plano só app para o acompanhamento (nunca rebaixa)
     } catch {}
   })();
   renderTimer();

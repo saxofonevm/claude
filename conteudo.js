@@ -35,7 +35,10 @@ window.CMA = {
   // paginaVendas: link da página de vendas. Vazio = o botão abre o WhatsApp do professor.
   acesso: {
     gratis: ["escuta"],
-    codigos: ["7d654f52e6224d3ce4f0b54e5090b3f93478e0199034eb1ac203cf83aa72de41", "9d30d4b1245acf821f9fcdb8e99210d9d54ab96935f2c27867c4af414e2bc016"],
+    // codigos: plano COM acompanhamento (grupo ou mentoria): app completo + relatório para o professor.
+    codigos: ["394eaaa12f8e1be16dbfaf1d373f3b5187ec2450c37b578fd5d9ccaa8490d428", "dc27a20c56efcee32b23c3b3d0110298c10f1ff2412ff50108f968022495160f", "7d654f52e6224d3ce4f0b54e5090b3f93478e0199034eb1ac203cf83aa72de41", "9d30d4b1245acf821f9fcdb8e99210d9d54ab96935f2c27867c4af414e2bc016"],
+    // codigosApp: plano SÓ O APP: app completo, sem o relatório para o professor.
+    codigosApp: ["3c462247f630bd96f545a88bb5172e1cf9597936f525c7bdb9cd983382b4832f", "248f4df1ab2691ac7ee3ea93ae748872c180f4a948c04f0c380bccdf55ec6972"],
     paginaVendas: ""
   },
 

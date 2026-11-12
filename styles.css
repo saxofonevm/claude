@@ -1448,3 +1448,12 @@ body.com-rit #tela-tocar { padding: 0; }
 .selo.remarcar { color: var(--warn); border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
 .comemora-cartao #comemora-ir[hidden] { display: none; }
 .comemora-cartao .btn + .btn { margin-top: 2px; }
+#cartao-relatorio[hidden] { display: none; }
+.recolhe-convite { display: flex; align-items: center; gap: 12px; padding: 14px 16px; }
+.recolhe-convite[hidden] { display: none; }
+.recolhe-convite .rec-ic { flex: none; width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: color-mix(in srgb, var(--brass) 16%, transparent); color: var(--brass-soft); }
+.recolhe-convite .rec-ic .ic { width: 20px; height: 20px; }
+.recolhe-convite p { flex: 1; min-width: 0; margin: 0; display: grid; gap: 2px; }
+.recolhe-convite strong { font-size: .95rem; }
+.recolhe-convite p span { color: var(--muted); font-size: .84rem; line-height: 1.4; }
+.recolhe-convite .link-acao { flex: none; color: var(--brass-soft); font-weight: 700; }
