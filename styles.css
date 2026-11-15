@@ -1694,3 +1694,23 @@ a.indicacao:active { transform: scale(.99); }
 .tr-continuar .tr-no { left: 16px; background: var(--latao); color: var(--on-brass); box-shadow: 0 5px 0 #8a5f1e; }
 .tr-continuar strong { font-size: 1.15rem; }
 @media (min-width: 1100px) { #tr-inicio { grid-column: 1 / -1; } }
+
+/* ---------- Trilha: figuras novas e barra do pulso ---------- */
+.tr-nota .ponto { fill: #1c1c1c; }
+.tr-nota .trave { stroke: #1c1c1c; stroke-width: 4; }
+.tr-nota .bandeira { fill: none; stroke: #1c1c1c; stroke-width: 2.4; stroke-linecap: round; }
+.tr-nota.ativa .ponto { fill: #b5771c; } .tr-nota.ativa .trave, .tr-nota.ativa .bandeira { stroke: #b5771c; }
+.tr-ac { font: 700 15px var(--f-body); fill: #1c1c1c; }
+.tr-liga { fill: none; stroke: #1c1c1c; stroke-width: 1.5; stroke-linecap: round; }
+#tr-mel, #tr-partitura { display: flex; flex-direction: column; gap: 8px; }
+.tr-pulso { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); }
+.tr-pulso-luz { flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; background: var(--bg); color: var(--muted); border: 2px solid var(--line); transition: transform .08s; }
+.tr-pulso-luz.bate { background: var(--brass-soft); color: var(--on-brass); border-color: transparent; transform: scale(1.15); }
+.tr-pulso-bpm { display: flex; align-items: center; gap: 6px; }
+.tr-pulso-bpm strong { font-size: 1.25rem; min-width: 2.2ch; text-align: center; font-variant-numeric: tabular-nums; }
+.tr-pulso-bpm small, .tr-pulso-nota { font-size: .72rem; color: var(--muted); line-height: 1.1; }
+.tr-pulso-bpm button { width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: var(--bg); color: var(--text); font: inherit; font-size: 1.2rem; font-weight: 700; cursor: pointer; }
+.tr-pulso-liga { margin-left: auto; font: inherit; font-size: .85rem; font-weight: 700; padding: 9px 12px; border-radius: 99px; border: 1px solid var(--brass); background: transparent; color: var(--brass-soft); cursor: pointer; white-space: nowrap; }
+.tr-pulso-liga.ativo { background: var(--latao); color: var(--on-brass); border-color: transparent; }
+.tr-pulso-nota { margin-left: auto; text-align: right; }
+.tr-sax-des .mao { font: 600 8px var(--f-body); fill: var(--muted); }

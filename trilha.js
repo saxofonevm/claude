@@ -35,12 +35,24 @@
     la: { nome: "Lá", passo: 3, midi: 69, chaves: [1, 1, 0, 0, 0, 0], dica: "2 dedos da esquerda" },
     si: { nome: "Si", passo: 4, midi: 71, chaves: [1, 0, 0, 0, 0, 0], dica: "1 dedo da esquerda" },
     do: { nome: "Dó", passo: 5, midi: 72, chaves: [0, 1, 0, 0, 0, 0], dica: "só o dedo do meio" },
+    fas: { nome: "Fá♯", passo: 1, midi: 66, ac: "#", chaves: [1, 1, 1, 0, 1, 0], dica: "esquerda + dedo do meio da direita" },
+    fan: { nome: "Fá", passo: 1, midi: 65, ac: "n", chaves: [1, 1, 1, 1, 0, 0], dica: "esquerda + 1 dedo da direita" },
+    re2: { nome: "Ré agudo", passo: 6, midi: 74, oitava: true, chaves: [1, 1, 1, 1, 1, 1], dica: "tudo fechado + chave de oitava" },
+    mi2: { nome: "Mi agudo", passo: 7, midi: 76, oitava: true, chaves: [1, 1, 1, 1, 1, 0], dica: "Mi + chave de oitava" },
+    fas2: { nome: "Fá♯ agudo", passo: 8, midi: 78, ac: "#", oitava: true, chaves: [1, 1, 1, 0, 1, 0], dica: "Fá♯ + chave de oitava" },
+    sol2: { nome: "Sol agudo", passo: 9, midi: 79, oitava: true, chaves: [1, 1, 1, 0, 0, 0], dica: "Sol + chave de oitava" },
   };
   const P = "pausa"; // pausa na pauta e nas melodias
 
   // Melodias originais: [nota ou pausa, tempos]
   const PRIMEIRO_PASSO = [["si", 2], ["la", 2], ["sol", 4], ["si", 1], ["si", 1], ["la", 1], ["la", 1], ["sol", 4]];
   const CAMINHO_DE_CASA = [["sol", 1], ["la", 1], ["si", 1], ["do", 1], ["si", 2], ["sol", 1], [P, 1], ["fa", 1], ["mi", 1], ["re", 1], ["mi", 1], ["sol", 4]];
+
+  const L = "liga";
+  const RODA_DE_SABADO = [["sol", 0.5], ["la", 0.5], ["si", 1], ["si", 1], ["la", 1], ["sol", 0.5], ["la", 0.5], ["si", 1], ["la", 2], ["fa", 0.5], ["sol", 0.5], ["la", 1], ["la", 1], ["sol", 1], ["fa", 0.5], ["mi", 0.5], ["re", 1], ["sol", 2]];
+  const ESCALA_SOL = [["sol", 1], ["la", 1], ["si", 1], ["do", 1], ["re2", 1], ["mi2", 1], ["fas2", 1], ["sol2", 1], ["sol2", 1], ["fas2", 1], ["mi2", 1], ["re2", 1], ["do", 1], ["si", 1], ["la", 1], ["sol", 1]];
+  const MANHA_DE_SOL = [["sol", 1], ["si", 1], ["re2", 2], ["mi2", 1], ["re2", 1], ["si", 2], ["do", 0.5], ["si", 0.5], ["la", 1], ["fas", 1], ["la", 1], ["sol", 3], [P, 1]];
+  const BAIAO_DE_ESTREIA = [["sol", 1.5], ["si", 1.5], ["re2", 1], ["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 0.5], ["sol", 2], ["sol", 1.5], ["si", 1.5], ["re2", 1], ["fan", 1.5], ["la", 1.5], ["sol", 1], ["sol", 1.5], ["si", 1.5], ["re2", 1], ["mi2", 0.5], ["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 2], ["fan", 1.5], ["la", 1.5], ["si", 1], ["sol", 3], [P, 1]];
 
   const UNIDADES = [
     {
@@ -130,9 +142,9 @@
         {
           id: "compasso", titulo: "O compasso e a pausa", resumo: "Barras, 4 tempos e o silêncio que conta",
           passos: [
-            { tipo: "info", titulo: "A música em fatias", texto: ["As barras verticais dividem a música em compassos. Aqui, cada compasso tem 4 tempos.", "Contar “1, 2, 3, 4” e recomeçar a cada barra ajuda a não se perder."], pauta: [["sol", 2], ["la", 2], ["si", 1], ["si", 1], ["la", 2]], compassos: true },
+            { tipo: "info", ouvir: true, titulo: "A música em fatias", texto: ["As barras verticais dividem a música em compassos. Aqui, cada compasso tem 4 tempos.", "Contar “1, 2, 3, 4” e recomeçar a cada barra ajuda a não se perder."], pauta: [["sol", 2], ["la", 2], ["si", 1], ["si", 1], ["la", 2]], compassos: true },
             { tipo: "escolha", pergunta: "Quantos tempos cabem em cada compasso desta música?", pauta: [["sol", 2], ["la", 2], ["si", 4]], compassos: true, opcoes: ["Dois", "Três", "Quatro"], certa: 2 },
-            { tipo: "info", titulo: "A pausa de semínima", texto: ["Silêncio também é música. Este sinal é a pausa de semínima: um tempo sem som.", "Na pausa o pulso continua. Você conta, mas não toca."], pauta: [["sol", 1], [P, 1], ["sol", 1], [P, 1]] },
+            { tipo: "info", ouvir: true, titulo: "A pausa de semínima", texto: ["Silêncio também é música. Este sinal é a pausa de semínima: um tempo sem som.", "Na pausa o pulso continua. Você conta, mas não toca."], pauta: [["sol", 1], [P, 1], ["sol", 1], [P, 1]] },
             { tipo: "escolha", pergunta: "Quanto dura a pausa de semínima?", pauta: [[P, 1]], opcoes: ["Um tempo de silêncio", "Dois tempos de silêncio", "Não tem duração"], certa: 0 },
             { tipo: "ritmo", titulo: "Bata com pausa", texto: "Toque, toque, silêncio, toque. No terceiro tempo, não bata.", pauta: [["sol", 1], ["sol", 1], [P, 1], ["sol", 1]], padrao: [1, 1, -1, 1] },
             { tipo: "ritmo", titulo: "Mais uma", texto: "Toque, silêncio, toque, silêncio.", pauta: [["sol", 1], [P, 1], ["sol", 1], [P, 1]], padrao: [1, -1, 1, -1] },
@@ -168,7 +180,7 @@
         {
           id: "frase", titulo: "Uma frase inteira", resumo: "Ritmo primeiro, notas depois",
           passos: [
-            { tipo: "info", titulo: "O jeito Naipe de ler", texto: ["Diante de uma frase nova, siga sempre a mesma ordem: bata o ritmo, diga o nome das notas e só então toque.", "Parece mais lento. Na prática você acerta antes."], pauta: [["sol", 1], ["fa", 1], ["mi", 2]] },
+            { tipo: "info", ouvir: true, titulo: "O jeito Naipe de ler", texto: ["Diante de uma frase nova, siga sempre a mesma ordem: bata o ritmo, diga o nome das notas e só então toque.", "Parece mais lento. Na prática você acerta antes."], pauta: [["sol", 1], ["fa", 1], ["mi", 2]] },
             { tipo: "ritmo", titulo: "1. Bata o ritmo", texto: "Semínima, semínima, mínima.", pauta: [["sol", 1], ["fa", 1], ["mi", 2]], padrao: [1, 1, 2] },
             { tipo: "escolha", pergunta: "2. Diga as notas. Qual é a ordem?", pauta: [["sol", 1], ["fa", 1], ["mi", 2]], opcoes: ["Sol, Fá, Mi", "Sol, Lá, Si", "Mi, Fá, Sol"], certa: 0 },
             { tipo: "tocar", nota: "sol", segundos: 1, titulo: "3. Toque: Sol", texto: "Comece no Sol.", pauta: [["sol", 1], ["fa", 1], ["mi", 2]] },
@@ -190,9 +202,194 @@
         },
       ],
     },
+    {
+      titulo: "Colcheias e ligaduras", marco: "Leio e toco colcheias, pontos e ligaduras no saxofone.", licoes: [
+        {
+          id: "colcheia", titulo: "A colcheia", resumo: "Duas notas dentro de um tempo",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Meio tempo", texto: ["A colcheia dura meio tempo: cabem duas em cada pulso. Quando vêm em par, elas aparecem unidas por uma trave.", "Para contar, diga “1 e 2 e 3 e 4 e”. O número cai no clique, o “e” cai no meio."], pauta: [["sol", 1], ["sol", 0.5], ["sol", 0.5], ["sol", 1], ["sol", 1]] },
+            { tipo: "escolha", pergunta: "Quantas colcheias cabem em uma semínima?", opcoes: ["Uma", "Duas", "Quatro"], certa: 1 },
+            { tipo: "ritmo", titulo: "Bata as colcheias", texto: "Semínima, duas colcheias, semínima, semínima.", pauta: [["sol", 1], ["sol", 0.5], ["sol", 0.5], ["sol", 1], ["sol", 1]], padrao: [1, 0.5, 0.5, 1, 1] },
+            { tipo: "ritmo", titulo: "Colcheias no começo", texto: "Duas colcheias, semínima, mínima.", pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 1], ["sol", 2]], padrao: [0.5, 0.5, 1, 2] },
+            { tipo: "escolha", pergunta: "Na contagem “1 e 2 e”, onde cai a segunda colcheia de cada par?", opcoes: ["No número", "No “e”", "Depois do clique seguinte"], certa: 1 },
+            { tipo: "ritmo", titulo: "Quatro colcheias seguidas", texto: "Quatro colcheias e uma mínima. Mantenha as colcheias iguais.", pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 2]], padrao: [0.5, 0.5, 0.5, 0.5, 2] },
+          ],
+        },
+        {
+          id: "colcheias-notas", titulo: "Colcheias com notas", resumo: "Dedos e língua no meio do tempo",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Língua leve", texto: ["Em colcheias, a língua toca a palheta de leve em cada nota, sem parar o ar.", "Ouça a frase com o pulso antes de tocar."], pauta: [["sol", 0.5], ["la", 0.5], ["si", 1], ["la", 0.5], ["sol", 0.5], ["la", 1]] },
+            { tipo: "ritmo", titulo: "Primeiro o ritmo", texto: "Bata o ritmo da frase.", pauta: [["sol", 0.5], ["la", 0.5], ["si", 1], ["la", 0.5], ["sol", 0.5], ["la", 1]], padrao: [0.5, 0.5, 1, 0.5, 0.5, 1] },
+            { tipo: "escolha", pergunta: "Qual é a ordem das notas?", pauta: [["sol", 0.5], ["la", 0.5], ["si", 1], ["la", 0.5], ["sol", 0.5], ["la", 1]], opcoes: ["Sol, Lá, Si, Lá, Sol, Lá", "Sol, Lá, Si, Si, Lá, Sol", "Si, Lá, Sol, Lá, Si, Lá"], certa: 0 },
+            { tipo: "tocar", nota: "si", segundos: 1, titulo: "Toque até o Si", texto: "Ligue o pulso, toque Sol, Lá em colcheias e pare no Si.", pauta: [["sol", 0.5], ["la", 0.5], ["si", 1]] },
+            { tipo: "tocar", nota: "la", segundos: 1, titulo: "A frase inteira", texto: "Agora a frase toda. Ela termina no Lá.", pauta: [["sol", 0.5], ["la", 0.5], ["si", 1], ["la", 0.5], ["sol", 0.5], ["la", 1]] },
+          ],
+        },
+        {
+          id: "pontuada", titulo: "A mínima pontuada", resumo: "O ponto que soma metade",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O ponto de aumento", texto: ["Um ponto ao lado da nota soma metade do valor dela. A mínima vale 2, então a mínima pontuada vale 3 tempos."], pauta: [["sol", 3], ["sol", 1]] },
+            { tipo: "escolha", pergunta: "Quantos tempos dura a mínima pontuada?", pauta: [["la", 3]], opcoes: ["Dois", "Dois e meio", "Três"], certa: 2 },
+            { tipo: "ritmo", titulo: "Três e um", texto: "Mínima pontuada e semínima: toque no 1 e no 4.", pauta: [["sol", 3], ["sol", 1]], padrao: [3, 1] },
+            { tipo: "ritmo", titulo: "Um e três", texto: "Semínima e mínima pontuada: toque no 1 e no 2.", pauta: [["sol", 1], ["sol", 3]], padrao: [1, 3] },
+            { tipo: "tocar", nota: "la", segundos: 3, titulo: "Sustente por três tempos", texto: "Ligue o pulso e segure o Lá por três cliques.", pauta: [["la", 3], [P, 1]] },
+          ],
+        },
+        {
+          id: "ligadura", titulo: "A ligadura", resumo: "Somar durações e tocar ligado",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Ligadura de valor", texto: ["Uma linha curva entre duas notas iguais soma as durações. Você toca a primeira e segura até o fim da segunda, sem dar nova língua."], pauta: [["sol", 2, L], ["sol", 1], ["la", 1]] },
+            { tipo: "escolha", pergunta: "Mínima ligada a uma semínima da mesma nota. Quanto dura o som?", pauta: [["si", 2, L], ["si", 1]], opcoes: ["Dois tempos", "Três tempos", "Um tempo"], certa: 1 },
+            { tipo: "ritmo", titulo: "Bata com a ligadura", texto: "A nota ligada não ganha batida nova: toque no 1 e no 4.", pauta: [["sol", 2, L], ["sol", 1], ["la", 1]], padrao: [3, 1] },
+            { tipo: "info", ouvir: true, titulo: "Ligadura de expressão", texto: ["Quando a curva une notas diferentes, ela pede legato: língua só na primeira, e as outras saem no mesmo sopro.", "É assim que uma melodia soa cantada."], pauta: [["sol", 1, L], ["la", 1, L], ["si", 2]] },
+            { tipo: "escolha", pergunta: "Em três notas ligadas, quantas vezes a língua toca a palheta?", opcoes: ["Uma vez, na primeira", "Três vezes", "Nenhuma"], certa: 0 },
+            { tipo: "tocar", nota: "si", segundos: 2, titulo: "Toque ligado", texto: "Sol, Lá e Si num sopro só. Sustente o Si.", pauta: [["sol", 1, L], ["la", 1, L], ["si", 2]] },
+          ],
+        },
+        {
+          id: "frases3", titulo: "Frases com tudo", resumo: "Colcheias, pontos e ligaduras juntos",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Ler em blocos", texto: ["Em vez de ler nota por nota, olhe o tempo inteiro de uma vez: um par de colcheias é um bloco, uma mínima é outro.", "Ouça e acompanhe com os olhos."], pauta: [["fa", 0.5], ["sol", 0.5], ["la", 1], ["sol", 2], ["mi", 0.5], ["fa", 0.5], ["sol", 3]], compassos: true },
+            { tipo: "ritmo", titulo: "O ritmo do primeiro compasso", texto: "Duas colcheias, semínima, mínima.", pauta: [["fa", 0.5], ["sol", 0.5], ["la", 1], ["sol", 2]], padrao: [0.5, 0.5, 1, 2] },
+            { tipo: "ritmo", titulo: "O ritmo do segundo compasso", texto: "Duas colcheias e mínima pontuada.", pauta: [["mi", 0.5], ["fa", 0.5], ["sol", 3]], padrao: [0.5, 0.5, 3] },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["mi", "la", "fa", "sol"] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Primeiro compasso", texto: "Fá, Sol, Lá e pare no Sol.", pauta: [["fa", 0.5], ["sol", 0.5], ["la", 1], ["sol", 2]] },
+            { tipo: "tocar", nota: "sol", segundos: 3, titulo: "Segundo compasso", texto: "Mi, Fá e sustente o Sol por três tempos.", pauta: [["mi", 0.5], ["fa", 0.5], ["sol", 3]] },
+          ],
+        },
+        {
+          id: "musica3", titulo: "Terceira música", resumo: "“Roda de Sábado”, com colcheias", melodia: RODA_DE_SABADO,
+          passos: [
+            { tipo: "info", titulo: "Roda de Sábado", texto: ["Uma melodia que anda: quase todo compasso começa com um par de colcheias.", "Escolha um andamento confortável, ouça com o pulso e só depois toque."], melodia: true },
+            { tipo: "ritmo", titulo: "O ritmo do primeiro compasso", texto: "Duas colcheias e três semínimas.", pauta: [["sol", 0.5], ["la", 0.5], ["si", 1], ["si", 1], ["la", 1]], padrao: [0.5, 0.5, 1, 1, 1] },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música inteira no andamento que você escolheu." },
+            { tipo: "gravar", chave: "u3", comparar: true, titulo: "Antes e depois", texto: "Grave “Roda de Sábado” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
+    {
+      titulo: "A escala de Sol maior", marco: "Toco a escala de Sol maior inteira no saxofone.", licoes: [
+        {
+          id: "oitava", titulo: "A chave de oitava", resumo: "Ré e Mi agudos com o polegar esquerdo",
+          passos: [
+            { tipo: "info", titulo: "O mesmo dedilhado, uma oitava acima", texto: ["Atrás do sax, o polegar esquerdo descansa sobre uma chave: a chave de oitava.", "Apertando ela, a mesma digitação soa uma oitava acima. Ré com a chave vira Ré agudo."], dedos: ["re", "re2"] },
+            { tipo: "info", titulo: "Na pauta", texto: ["Depois do Dó, a escada continua: Ré agudo na 4ª linha e Mi agudo no 4º espaço.", "Repare que a haste dessas notas aponta para baixo. É só para caber melhor na pauta."], pauta: [["do", 2], ["re2", 2], ["mi2", 2]], rotulos: true },
+            { tipo: "ondefica", nota: "re2", titulo: "Coloque o Ré agudo na pauta", texto: "Ele fica uma nota acima do Dó." },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Mi agudo?", nota: "mi2", notas: ["mi", "mi2", "re2"] },
+            { tipo: "tocar", nota: "re2", segundos: 2, titulo: "Toque o Ré agudo", texto: "Tudo fechado e o polegar na chave de oitava. Ar rápido, sem morder." },
+            { tipo: "tocar", nota: "mi2", segundos: 2, titulo: "Toque o Mi agudo", texto: "Levante o anelar da direita, sem soltar a chave de oitava." },
+            { tipo: "info", titulo: "A passagem Dó–Ré", texto: ["Do Dó para o Ré agudo, quase todos os dedos fecham de uma vez e o polegar aperta a oitava.", "É a troca mais trabalhosa até aqui. Faça devagar, com os dedos perto das chaves."] },
+            { tipo: "tocar", nota: "do", segundos: 1, titulo: "Dó…", texto: "Comece no Dó." },
+            { tipo: "tocar", nota: "re2", segundos: 1, titulo: "…Ré agudo", texto: "Feche tudo junto, sem parar o ar." },
+          ],
+        },
+        {
+          id: "sustenido", titulo: "O sustenido e o Fá♯", resumo: "Meio tom acima",
+          passos: [
+            { tipo: "info", titulo: "O sinal ♯", texto: ["O sustenido, escrito antes da nota, sobe o som meio tom. Fá com sustenido é Fá♯: um pouco mais agudo que o Fá.", "Ele vale até o fim do compasso em que aparece."], pauta: [["fa", 2], ["fas", 2]], rotulos: true },
+            { tipo: "info", titulo: "A digitação do Fá♯", texto: ["No Fá você fecha o indicador da mão direita. No Fá♯, troque pelo dedo do meio."], dedos: ["fa", "fas"] },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Fá♯?", nota: "fas", notas: ["fa", "fas", "mi"] },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual é o Fá♯?", sons: ["fa", "fas"], opcoes: ["O primeiro", "O segundo"], certa: 1, explica: "O Fá♯ é o mais agudo dos dois." },
+            { tipo: "tocar", nota: "fas", segundos: 2, titulo: "Toque o Fá♯", texto: "Mão esquerda fechada e o dedo do meio da direita." },
+            { tipo: "tocar", nota: "sol", segundos: 1, titulo: "Fá♯ para Sol", texto: "Agora solte o dedo e chegue no Sol." },
+          ],
+        },
+        {
+          id: "agudos", titulo: "Fá♯ e Sol agudos", resumo: "O topo da escala",
+          passos: [
+            { tipo: "info", titulo: "Mais dois degraus", texto: ["Com a chave de oitava, o Fá♯ e o Sol também ganham a versão aguda.", "Fá♯ agudo na 5ª linha, Sol agudo logo acima da pauta."], pauta: [["mi2", 2], ["fas2", 2], ["sol2", 2]], rotulos: true, dedos: ["fas2", "sol2"] },
+            { tipo: "ondefica", nota: "sol2", titulo: "Coloque o Sol agudo na pauta", texto: "Ele fica logo acima da última linha." },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["re2", "sol2", "mi2", "fas2"] },
+            { tipo: "tocar", nota: "fas2", segundos: 2, titulo: "Toque o Fá♯ agudo", texto: "A digitação do Fá♯ com a chave de oitava." },
+            { tipo: "tocar", nota: "sol2", segundos: 2, titulo: "Toque o Sol agudo", texto: "Garganta aberta. Pense no som indo para a frente, sem apertar a boquilha." },
+          ],
+        },
+        {
+          id: "escala", titulo: "A escala de Sol maior", resumo: "Oito notas em ordem, de Sol a Sol",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O que é uma escala", texto: ["Escala é uma fila de notas vizinhas, de uma nota até a mesma nota uma oitava acima.", "A de Sol maior tem um único sustenido: o Fá♯. É ele que dá o som de “dó-ré-mi” começando no Sol."], pauta: [["sol", 1], ["la", 1], ["si", 1], ["do", 1], ["re2", 1], ["mi2", 1], ["fas2", 1], ["sol2", 1]], compassos: true },
+            { tipo: "escolha", pergunta: "Qual nota da escala de Sol maior leva sustenido?", opcoes: ["O Dó", "O Fá", "O Si"], certa: 1 },
+            { tipo: "tocar", nota: "do", segundos: 1, titulo: "A primeira metade", texto: "Sol, Lá, Si, Dó. Pare no Dó.", pauta: [["sol", 1], ["la", 1], ["si", 1], ["do", 1]] },
+            { tipo: "tocar", nota: "sol2", segundos: 1, titulo: "A segunda metade", texto: "Ré, Mi, Fá♯, Sol, todos com a chave de oitava. Pare no Sol agudo.", pauta: [["re2", 1], ["mi2", 1], ["fas2", 1], ["sol2", 1]] },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. A escala está subindo ou descendo?", sons: ["mi2", "re2"], opcoes: ["Subindo", "Descendo"], certa: 1, explica: "Foi do Mi agudo para o Ré agudo: descendo." },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "E a volta", texto: "Desça do Sol agudo até o Sol grave. Sustente a chegada.", pauta: [["sol2", 1], ["fas2", 1], ["mi2", 1], ["re2", 1], ["do", 1], ["si", 1], ["la", 1], ["sol", 1]] },
+          ],
+        },
+        {
+          id: "escala-pulso", titulo: "A escala no pulso", resumo: "Subir e descer sem parar", melodia: ESCALA_SOL,
+          passos: [
+            { tipo: "info", titulo: "Devagar se vai longe", texto: ["Escala se estuda no pulso, num andamento em que nenhuma nota tropeça.", "Comece em 60. Só aumente quando subir e descer sair limpo duas vezes seguidas."], melodia: true },
+            { tipo: "ritmo", titulo: "Sinta as quatro semínimas", texto: "Bata um compasso da escala.", padrao: [1, 1, 1, 1] },
+            { tipo: "musica", titulo: "Suba e desça com o pulso", texto: "Depois da contagem, toque a escala inteira, uma nota por clique." },
+          ],
+        },
+        {
+          id: "musica4", titulo: "Quarta música", resumo: "“Manhã de Sol”, em Sol maior", melodia: MANHA_DE_SOL,
+          passos: [
+            { tipo: "info", titulo: "Manhã de Sol", texto: ["Uma melodia em Sol maior que sobe até o Mi agudo e desce passando pelo Fá♯.", "Ouça com o pulso e repare na mínima pontuada do final."], melodia: true },
+            { tipo: "escolha", pergunta: "Qual é a nota mais aguda desta música?", melodia: true, opcoes: ["Ré agudo", "Mi agudo", "Sol agudo"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música inteira." },
+            { tipo: "gravar", chave: "u4", comparar: true, titulo: "Antes e depois", texto: "Grave “Manhã de Sol” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
+    {
+      titulo: "Primeira música brasileira", marco: "Toquei meu primeiro baião no saxofone.", licoes: [
+        {
+          id: "sem-pontuada", titulo: "A semínima pontuada", resumo: "Um tempo e meio",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O ponto, de novo", texto: ["O ponto soma metade do valor. A semínima vale 1, então a semínima pontuada vale 1 tempo e meio.", "Quase sempre ela vem seguida de uma colcheia, que completa os 2 tempos."], pauta: [["sol", 1.5], ["sol", 0.5], ["sol", 2]] },
+            { tipo: "escolha", pergunta: "Quanto dura a semínima pontuada?", opcoes: ["Um tempo", "Um tempo e meio", "Dois tempos"], certa: 1 },
+            { tipo: "ritmo", titulo: "Longa e curta", texto: "Semínima pontuada, colcheia e mínima. A colcheia cai no “e” do 2.", pauta: [["sol", 1.5], ["sol", 0.5], ["sol", 2]], padrao: [1.5, 0.5, 2] },
+            { tipo: "ritmo", titulo: "Duas vezes", texto: "Pontuada e colcheia, pontuada e colcheia.", pauta: [["sol", 1.5], ["sol", 0.5], ["sol", 1.5], ["sol", 0.5]], padrao: [1.5, 0.5, 1.5, 0.5] },
+          ],
+        },
+        {
+          id: "baiao", titulo: "O ritmo do baião", resumo: "Três, três e dois",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O sotaque do Nordeste", texto: ["O baião divide os 4 tempos em três partes desiguais: um tempo e meio, um tempo e meio e um tempo.", "É a batida da zabumba. Ouça com o pulso: os acentos não caem todos no clique."], pauta: [["sol", 1.5], ["sol", 1.5], ["sol", 1]] },
+            { tipo: "ritmo", titulo: "Bata a célula do baião", texto: "Longa, longa, curta. A segunda batida cai entre o 2 e o 3.", pauta: [["sol", 1.5], ["sol", 1.5], ["sol", 1]], padrao: [1.5, 1.5, 1] },
+            { tipo: "escolha", pergunta: "No baião, onde cai a segunda batida da célula?", opcoes: ["No tempo 2", "No “e” do 2", "No tempo 3"], certa: 1 },
+            { tipo: "ritmo", titulo: "Dois compassos seguidos", texto: "Repita a célula sem perder o pulso.", pauta: [["sol", 1.5], ["sol", 1.5], ["sol", 1], ["sol", 1.5], ["sol", 1.5], ["sol", 1]], padrao: [1.5, 1.5, 1, 1.5, 1.5, 1] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "A célula no sax", texto: "Ligue o pulso e toque o Sol no ritmo do baião: longa, longa, curta.", pauta: [["sol", 1.5], ["sol", 1.5], ["sol", 1]] },
+          ],
+        },
+        {
+          id: "bequadro", titulo: "O Fá natural e o bequadro", resumo: "A cor da escala do baião",
+          passos: [
+            { tipo: "info", titulo: "O sinal ♮", texto: ["O bequadro cancela um sustenido: a nota volta a ser natural.", "O baião costuma usar a escala de Sol com o Fá natural no lugar do Fá♯. Essa única nota muda toda a cor da melodia."], pauta: [["fas", 2], ["fan", 2]], rotulos: true },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual é o Fá natural?", sons: ["fas", "fan"], opcoes: ["O primeiro", "O segundo"], certa: 1, explica: "O Fá natural é o mais grave dos dois." },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Fá natural?", nota: "fan", notas: ["fas", "fan", "sol"] },
+            { tipo: "tocar", nota: "fan", segundos: 2, titulo: "Toque o Fá natural", texto: "Mão esquerda fechada e o indicador da direita." },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Fá para Sol", texto: "Suba do Fá natural para o Sol. Esse passo é a assinatura do baião." },
+          ],
+        },
+        {
+          id: "frases-baiao", titulo: "Frases de baião", resumo: "A célula com notas",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Sol, Si, Ré", texto: ["A melodia do baião gosta de saltar pelas notas do acorde: Sol, Si e Ré.", "Ouça a frase e repare que o ritmo é a célula que você já bateu."], pauta: [["sol", 1.5], ["si", 1.5], ["re2", 1]] },
+            { tipo: "ritmo", titulo: "O ritmo da resposta", texto: "Quatro colcheias e uma mínima.", pauta: [["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 0.5], ["sol", 2]], padrao: [0.5, 0.5, 0.5, 0.5, 2] },
+            { tipo: "tocar", nota: "re2", segundos: 1, titulo: "A pergunta", texto: "Sol, Si e chegue no Ré agudo.", pauta: [["sol", 1.5], ["si", 1.5], ["re2", 1]] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "A resposta", texto: "Desça em colcheias do Ré até o Sol e sustente.", pauta: [["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 0.5], ["sol", 2]] },
+            { tipo: "tocar", nota: "sol", segundos: 1, titulo: "A frase do Fá natural", texto: "Fá, Lá e Sol, no ritmo da célula.", pauta: [["fan", 1.5], ["la", 1.5], ["sol", 1]] },
+          ],
+        },
+        {
+          id: "musica5", titulo: "Baião de Estreia", resumo: "Sua primeira música brasileira", melodia: BAIAO_DE_ESTREIA,
+          passos: [
+            { tipo: "info", titulo: "Baião de Estreia", texto: ["Um baião com tudo o que você aprendeu: a célula, as colcheias, a chave de oitava e o Fá natural.", "Ouça com o pulso em 60 antes de tocar. Depois, experimente junto com o ritmo de Baião no naipe rit."], melodia: true },
+            { tipo: "escolha", pergunta: "Que ritmo abre quase todos os compassos desta música?", melodia: true, opcoes: ["Quatro semínimas", "A célula do baião: longa, longa, curta", "Duas mínimas"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque o baião inteiro no andamento que você escolheu." },
+            { tipo: "gravar", chave: "u5", comparar: true, titulo: "Antes e depois", texto: "Grave o “Baião de Estreia” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
   ];
   const LICOES = UNIDADES.flatMap(u => u.licoes);
-  const PROXIMAS = ["Unidade 3 · Colcheias e ligaduras", "Unidade 4 · A escala de Sol maior e o Fá sustenido", "Unidade 5 · Sua primeira música brasileira"];
+  const PROXIMAS = ["Unidade 6 · Dó grave, Si♭ e a escala de Fá maior", "Unidade 7 · Semicolcheias e a síncope do choro", "Unidade 8 · Seu primeiro choro"];
 
   // ---------- Estado ----------
   const CHAVE = "naipe.trilha.v1";
@@ -208,38 +405,57 @@
   // ---------- Desenhos ----------
   const CLAVE = "M12.6 47.5c-2.9 0-5-1.7-5-4 0-1.6 1.2-2.8 2.7-2.8 1.4 0 2.5 1 2.5 2.4 0 1.2-.8 2-1.9 2.2.5.5 1.2.7 2 .7 2.6 0 4-2 3.6-5.6l-.5-4.2c-.9.2-1.9.3-2.9.3-5.300 0-9.5-3.900-9.500-9 0-4.200 2.700-7.300 6.200-10.600l2.300-2.200c-.4-2.400-.6-4-.6-5.800 0-3.900 1.900-7.600 4.600-8.900 1.600 2 2.600 5 2.600 7.800 0 4-1.900 7.100-4.800 10l.900 5.300c.3 0 .7-.1 1-.1 4 0 6.900 3 6.900 6.800 0 3.200-2 5.800-5.200 6.900l.5 4.100c.6 4.700-1.700 7.700-5.400 7.700zm3.100-13.300l-1.300-9.400c-2.300.4-3.800 2.200-3.800 4.200 0 1.400.7 2.500 1.900 3.200-.2.300-.4.500-.6.600-2-1-3.200-2.900-3.200-5.100 0-3.100 2.200-5.600 5.300-6.200l-.7-4.600-1.700 1.600c-3 2.900-5 5.400-5 8.700 0 4.100 3.300 7.300 7.500 7.300.6 0 1.100-.1 1.600-.3zm1.200-9.400l1.200 8.800c2.200-.9 3.600-2.800 3.600-4.900 0-2.200-1.800-3.900-4.800-3.900zm-1.600-9.900c2.300-2.300 3.900-4.900 3.900-7.700 0-1.300-.4-2.600-1.100-3.300-1.900 1-3.300 3.700-3.300 7 0 1.300.2 2.700.5 4z";
 
-  // Pauta com notas: itens = [[nota, tempos], ...]. destaque = índice da nota ativa.
+  // Pauta com notas: itens = [[nota, tempos, "liga"?], ...]. destaque = índice da nota ativa.
+  // Figuras: 4 semibreve, 3 mínima pontuada, 2 mínima, 1.5 semínima pontuada, 1 semínima, 0.5 colcheia.
+  const passoX = t => (t <= 0.5 ? 32 : 44);
+  const largPauta = itens => 70 + itens.reduce((a, [, t]) => a + passoX(t), 0) + 16;
   function svgPauta(itens, { rotulos = false, destaque = -1, compassos = false, minLarg = 220 } = {}) {
-    const larg = Math.max(minLarg, 70 + itens.length * 46 + 16);
-    let x = 74, tempos = 0, corpo = "";
-    itens.forEach(([n, t], i) => {
-      if (n === P) {
-        corpo += `<path class="tr-pausa${i === destaque ? " ativa" : ""}" d="M${x - 3} 36l6 8-5 6 6 8c-5-2-9 0-6 6-6-4-7-9-2-12l-5-7 5-5z"/>`;
-        tempos += t; x += 46;
-        if (compassos && tempos % 4 === 0 && i < itens.length - 1) corpo += `<line x1="${x - 20}" y1="30" x2="${x - 20}" y2="70" class="tr-barra"/>`;
-        return;
+    const larg = Math.max(minLarg, largPauta(itens));
+    let x = 74, tempos = 0, corpo = "", arcos = "";
+    const pos = [];
+    itens.forEach(([n, t], i) => { pos.push({ x, ini: tempos }); tempos += t; x += passoX(t); });
+    // Direção das hastes; colcheias em par usam a mesma direção.
+    const paraBaixo = itens.map(([n]) => n !== P && NOTA[n].passo >= 5);
+    const ehPar = i => itens[i] && itens[i + 1] && itens[i][1] === 0.5 && itens[i + 1][1] === 0.5 && itens[i][0] !== P && itens[i + 1][0] !== P && pos[i].ini % 1 === 0;
+    itens.forEach((it, i) => { if (ehPar(i)) { const d = NOTA[it[0]].passo + NOTA[itens[i + 1][0]].passo >= 9; paraBaixo[i] = paraBaixo[i + 1] = d; } });
+    const ponta = i => { const y = 70 - NOTA[itens[i][0]].passo * 5; return { hx: paraBaixo[i] ? pos[i].x - 6 : pos[i].x + 6, hy: paraBaixo[i] ? y + 32 : y - 32 }; };
+    const barra = i => (compassos && (pos[i].ini + itens[i][1]) % 4 === 0 && i < itens.length - 1 ? `<line x1="${pos[i].x + passoX(itens[i][1]) - 18}" y1="30" x2="${pos[i].x + passoX(itens[i][1]) - 18}" y2="70" class="tr-barra"/>` : "");
+    itens.forEach(([n, t, liga], i) => {
+      const x = pos[i].x;
+      if (n === P) { corpo += `<path class="tr-pausa${i === destaque ? " ativa" : ""}" d="M${x - 3} 36l6 8-5 6 6 8c-5-2-9 0-6 6-6-4-7-9-2-12l-5-7 5-5z"/>` + barra(i); return; }
+      const nt = NOTA[n], y = 70 - nt.passo * 5, cheio = t <= 1.5, baixo = paraBaixo[i], { hx, hy } = ponta(i);
+      const cls = i === destaque ? "tr-nota ativa" : i < destaque ? "tr-nota feita" : "tr-nota";
+      let extra = "";
+      if (t < 4) extra += `<line x1="${hx}" y1="${y + (baixo ? 1.5 : -1.5)}" x2="${hx}" y2="${hy}" class="haste"/>`;
+      if (t === 3 || t === 1.5) extra += `<circle cx="${x + 11}" cy="${nt.passo % 2 === 0 ? y - 3 : y}" r="1.8" class="ponto"/>`;
+      if (t === 0.5) {
+        const par = ehPar(i), dePar = i > 0 && ehPar(i - 1);
+        if (par) { const o = ponta(i + 1); extra += `<line x1="${hx}" y1="${hy}" x2="${o.hx}" y2="${o.hy}" class="trave"/>`; }
+        else if (!dePar) extra += `<path class="bandeira" d="M${hx} ${hy} q9 ${baixo ? -6 : 6} 6 ${baixo ? -16 : 16}"/>`;
       }
-      const nt = NOTA[n], y = 70 - nt.passo * 5, cheio = t === 1, cls = i === destaque ? "tr-nota ativa" : i < destaque ? "tr-nota feita" : "tr-nota";
-      corpo += `<g class="${cls}"><ellipse cx="${x}" cy="${y}" rx="6.6" ry="4.7" transform="rotate(-20 ${x} ${y})" ${cheio ? "" : 'fill="none" stroke-width="2"'} class="${cheio ? "cab cheia" : "cab oca"}"/>${t < 4 ? `<line x1="${x + 6}" y1="${y - 1.5}" x2="${x + 6}" y2="${y - 32}" class="haste"/>` : ""}${rotulos ? `<text x="${x}" y="98" text-anchor="middle" class="tr-rot">${nt.nome}</text>` : ""}</g>`;
-      tempos += t; x += 46;
-      if (compassos && tempos % 4 === 0 && i < itens.length - 1) { corpo += `<line x1="${x - 20}" y1="30" x2="${x - 20}" y2="70" class="tr-barra"/>`; }
+      if (nt.ac) extra += `<text x="${x - 16}" y="${y + 4}" class="tr-ac">${nt.ac === "#" ? "♯" : "♮"}</text>`;
+      if (liga && itens[i + 1]) { const x2 = pos[i + 1].x, y2 = 70 - NOTA[itens[i + 1][0]].passo * 5, d = baixo ? -9 : 9; arcos += `<path class="tr-liga" d="M${x + 3} ${y + d} Q${(x + x2) / 2} ${(y + y2) / 2 + d * 2.2} ${x2 - 3} ${y2 + d}"/>`; }
+      corpo += `<g class="${cls}"><ellipse cx="${x}" cy="${y}" rx="6.6" ry="4.7" transform="rotate(-20 ${x} ${y})" ${cheio ? "" : 'fill="none" stroke-width="2"'} class="${cheio ? "cab cheia" : "cab oca"}"/>${extra}${rotulos ? `<text x="${x}" y="98" text-anchor="middle" class="tr-rot">${nt.nome}</text>` : ""}</g>` + barra(i);
     });
     const linhas = [30, 40, 50, 60, 70].map(y => `<line x1="6" y1="${y}" x2="${larg - 6}" y2="${y}"/>`).join("");
-    return `<svg class="tr-pauta" viewBox="0 0 ${larg} ${rotulos ? 106 : 92}" role="img" aria-label="Pauta musical"><g class="tr-linhas">${linhas}<line x1="${larg - 6}" y1="30" x2="${larg - 6}" y2="70"/></g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/>${corpo}</svg>`;
+    return `<svg class="tr-pauta" viewBox="0 0 ${larg} ${rotulos ? 106 : 96}" role="img" aria-label="Pauta musical"><g class="tr-linhas">${linhas}<line x1="${larg - 6}" y1="30" x2="${larg - 6}" y2="70"/></g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/>${arcos}${corpo}</svg>`;
   }
 
-  // Melodia longa: quebra em linhas de 2 compassos para as notas ficarem legíveis.
+  // Melodia longa: quebra em linhas, sempre numa barra de compasso, para as notas ficarem legíveis.
   function svgMelodia(mel, destaque = -1) {
-    const linhas = []; let atual = [], tempos = 0, base = 0;
-    mel.forEach((it, i) => { atual.push(it); tempos += it[1]; if (tempos >= 8 || i === mel.length - 1) { linhas.push({ itens: atual, base }); base = i + 1; atual = []; tempos = 0; } });
-    const minLarg = Math.max(...linhas.map(l => 70 + l.itens.length * 46 + 16));
+    const linhas = []; let atual = [], tempos = 0, total = 0, base = 0;
+    mel.forEach((it, i) => {
+      atual.push(it); tempos += it[1]; total += it[1];
+      if ((total % 4 === 0 && (tempos >= 8 || atual.length >= 7)) || i === mel.length - 1) { linhas.push({ itens: atual, base }); base = i + 1; atual = []; tempos = 0; }
+    });
+    const minLarg = Math.max(...linhas.map(l => largPauta(l.itens)));
     return linhas.map(l => svgPauta(l.itens, { compassos: true, minLarg, destaque: destaque >= l.base && destaque < l.base + l.itens.length ? destaque - l.base : destaque >= l.base + l.itens.length ? 99 : -1 })).join("");
   }
 
   // Saxofone desenhado (o mesmo traço da marca), com as chaves fechadas acesas.
   function svgSax(n) {
     const nt = NOTA[n];
-    return `<svg class="tr-sax-des" viewBox="0 0 150 250" aria-hidden="true"><g transform="translate(8 6) scale(2.55)" fill="none" stroke-linecap="round" stroke-linejoin="round"><g class="corpo" stroke-width="9"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g><path class="brilho" stroke-width="1.6" d="M21.4 26 L21.4 66"/></g><rect class="boquilha" x="14" y="14" width="26" height="12" rx="5" transform="rotate(27 27 20)"/>${nt.chaves.map((f, i) => `<circle cx="69.2" cy="${80 + i * 17.5 + (i > 2 ? 9 : 0)}" r="7.4" class="${f ? "chave fechada" : "chave"}"/>`).join("")}</svg>`;
+    return `<svg class="tr-sax-des" viewBox="0 0 150 250" aria-hidden="true"><g transform="translate(8 6) scale(2.55)" fill="none" stroke-linecap="round" stroke-linejoin="round"><g class="corpo" stroke-width="9"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g><path class="brilho" stroke-width="1.6" d="M21.4 26 L21.4 66"/></g><rect class="boquilha" x="14" y="14" width="26" height="12" rx="5" transform="rotate(27 27 20)"/><circle cx="52" cy="62" r="6" class="${nt.oitava ? "chave fechada" : "chave"}"/>${nt.oitava ? `<text x="42" y="65" text-anchor="end" class="mao">oitava</text>` : ""}${nt.chaves.map((f, i) => `<circle cx="69.2" cy="${80 + i * 17.5 + (i > 2 ? 9 : 0)}" r="7.4" class="${f ? "chave fechada" : "chave"}"/>`).join("")}</svg>`;
   }
   function svgDedos(notas) {
     return `<div class="tr-dedos">${notas.map(n => `<figure>${svgSax(n)}<figcaption><strong>${NOTA[n].nome}</strong>${NOTA[n].dica}</figcaption></figure>`).join("")}</div>`;
@@ -272,12 +488,50 @@
     });
   }
   // Som real que o sax produz para a nota escrita (alto: 9 semitons abaixo; tenor: 14 abaixo).
-  const somReal = midi => midi - (saxDoApp() === "Sib" ? 14 : 9);
+  // Alto e barítono: 9 semitons abaixo do escrito. Tenor e soprano: 2 abaixo (região do soprano, mais clara no celular).
+  const somReal = midi => midi - (saxDoApp() === "Sib" ? 2 : 9);
+  let onda = null;
+  // Timbre de palheta: harmônicos fortes, ataque suave e um leve vibrato. Soa claro até em alto-falante pequeno.
   function tom(midi, quando, dur) {
-    const a = audio(), o = a.createOscillator(), g = a.createGain();
-    o.type = "triangle"; o.frequency.value = 440 * Math.pow(2, (somReal(midi) - 69) / 12);
-    g.gain.setValueAtTime(0.0001, quando); g.gain.exponentialRampToValueAtTime(0.25, quando + 0.03); g.gain.setValueAtTime(0.25, quando + dur - 0.08); g.gain.exponentialRampToValueAtTime(0.0001, quando + dur);
-    o.connect(g).connect(a.destination); o.start(quando); o.stop(quando + dur + 0.02);
+    const a = audio();
+    if (!onda) { const re = new Float32Array([0, 1, 0.72, 0.55, 0.42, 0.3, 0.22, 0.16, 0.1, 0.07, 0.05]), im = new Float32Array(re.length); onda = a.createPeriodicWave(re, im); }
+    const o = a.createOscillator(), g = a.createGain(), f = a.createBiquadFilter(), vib = a.createOscillator(), vg = a.createGain();
+    const freq = 440 * Math.pow(2, (somReal(midi) - 69) / 12);
+    o.setPeriodicWave(onda); o.frequency.value = freq;
+    f.type = "lowpass"; f.frequency.value = 3400; f.Q.value = 0.7;
+    vib.frequency.value = 5.2; vg.gain.setValueAtTime(0, quando); vg.gain.linearRampToValueAtTime(freq * 0.004, quando + Math.min(0.5, dur));
+    vib.connect(vg).connect(o.frequency);
+    const fim = Math.max(quando + 0.08, quando + dur);
+    g.gain.setValueAtTime(0.0001, quando); g.gain.exponentialRampToValueAtTime(0.34, quando + 0.035); g.gain.setValueAtTime(0.3, Math.max(quando + 0.04, fim - 0.06)); g.gain.exponentialRampToValueAtTime(0.0001, fim);
+    o.connect(f).connect(g).connect(a.destination);
+    o.start(quando); vib.start(quando); o.stop(fim + 0.03); vib.stop(fim + 0.03);
+  }
+
+  // ---------- Pulso (metrônomo das lições) ----------
+  const bpmAtual = () => Math.min(100, Math.max(40, Number(prog.bpm) || 60));
+  const pulso = { t: 0, prox: 0, n: 0 };
+  function pararPulso() { clearInterval(pulso.t); pulso.t = 0; const b = $("#tr-pulso-liga"); if (b) { b.textContent = "▶ Ouvir o pulso"; b.classList.remove("ativo"); } }
+  function ligarPulso() {
+    const a = audio(); pulso.prox = a.currentTime + 0.12; pulso.n = 0;
+    pulso.t = setInterval(() => {
+      const bt = 60 / bpmAtual();
+      while (pulso.prox < a.currentTime + 0.25) {
+        clique(pulso.prox, pulso.n % 4 === 0);
+        const n = pulso.n, espera = Math.max(0, (pulso.prox - a.currentTime) * 1000);
+        setTimeout(() => { const l = $("#tr-pulso-luz"); if (l && pulso.t) { l.textContent = (n % 4) + 1; l.classList.add("bate"); setTimeout(() => l.classList.remove("bate"), 110); } }, espera);
+        pulso.prox += bt; pulso.n++;
+      }
+    }, 40);
+    const b = $("#tr-pulso-liga"); if (b) { b.textContent = "■ Parar o pulso"; b.classList.add("ativo"); }
+  }
+  // Barra do pulso: escolher o andamento e, se "liga", ouvir o clique enquanto lê ou toca.
+  const htmlPulso = (liga = true) => `<div class="tr-pulso"><span class="tr-pulso-luz" id="tr-pulso-luz">♩</span><span class="tr-pulso-bpm"><button type="button" id="tr-bpm-menos" aria-label="Mais lento">−</button><strong id="tr-bpm">${bpmAtual()}</strong><small>por minuto</small><button type="button" id="tr-bpm-mais" aria-label="Mais rápido">+</button></span>${liga ? `<button type="button" class="tr-pulso-liga" id="tr-pulso-liga">▶ Ouvir o pulso</button>` : `<small class="tr-pulso-nota">andamento da contagem</small>`}</div>`;
+  function ativarPulso() {
+    if (!$("#tr-bpm")) return;
+    const muda = d => { prog.bpm = Math.min(100, Math.max(40, bpmAtual() + d)); salvar(); $("#tr-bpm").textContent = prog.bpm; };
+    $("#tr-bpm-menos").addEventListener("click", () => muda(-4));
+    $("#tr-bpm-mais").addEventListener("click", () => muda(4));
+    const b = $("#tr-pulso-liga"); if (b) b.addEventListener("click", () => (pulso.t ? pararPulso() : ligarPulso()));
   }
 
   // ---------- Microfone ----------
@@ -324,6 +578,7 @@
   let sessao = null; // { licao, i, erros }
   const temporizadores = [];
   function limpar() {
+    pararPulso();
     pararRec(); urls.splice(0).forEach(u => URL.revokeObjectURL(u));
     temporizadores.splice(0).forEach(clearTimeout);
     desligarMic();
@@ -336,7 +591,7 @@
     '<svg viewBox="0 0 120 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M14 35h14"/><path d="M40 22q10 13 0 26"/><path d="M54 14q16 21 0 42"/><path d="M68 6q22 29 0 58"/></g><circle cx="98" cy="35" r="7" fill="currentColor"/></svg>',
     '<svg viewBox="0 0 120 70" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" opacity=".55"><path d="M6 15h108M6 25h108M6 35h108M6 45h108M6 55h108"/></g><g fill="currentColor"><ellipse cx="20" cy="60" rx="6" ry="4.4"/><ellipse cx="34" cy="55" rx="6" ry="4.4"/><ellipse cx="48" cy="50" rx="6" ry="4.4"/><ellipse cx="62" cy="45" rx="6" ry="4.4"/><ellipse cx="76" cy="40" rx="6" ry="4.4"/><ellipse cx="90" cy="35" rx="6" ry="4.4"/><ellipse cx="104" cy="30" rx="6" ry="4.4"/></g></svg>',
   ];
-  const CORES = [["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"]];
+  const CORES = [["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"], ["#ee8a45", "#9a4a15"], ["#a678f0", "#5a3a9a"], ["#ef5f8a", "#962c50"]];
   const DESVIO = [8, 44, 64, 44, 8, 28];
 
   function htmlCaminho(u, n, atual, paga) {
@@ -367,7 +622,7 @@
       <header class="cabecalho">
         ${BETA ? "" : `<a class="btn-voltar" href="#/inicio">‹ Início</a>`}
         <p class="sobretitulo">Aprender · versão de teste</p>
-        <h1>Do zero à primeira música</h1>
+        <h1>Do zero ao primeiro baião</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
       <div class="corpo tr-corpo">
@@ -431,7 +686,7 @@
     if (sessao.i >= sessao.licao.passos.length) return concluir();
     passo();
   }
-  function limparPasso() { temporizadores.splice(0).forEach(clearTimeout); cancelAnimationFrame(mic.raf); }
+  function limparPasso() { temporizadores.splice(0).forEach(clearTimeout); cancelAnimationFrame(mic.raf); pararPulso(); }
 
   const melodiaAtual = () => (sessao && sessao.licao.melodia) || PRIMEIRO_PASSO;
   const apoio = p => (p.pauta ? svgPauta(p.pauta, { rotulos: p.rotulos, compassos: p.compassos }) : "") + (p.melodia ? svgMelodia(melodiaAtual()) : "") + (p.dedos ? svgDedos(p.dedos) : "") + (p.figuras ? htmlFiguras() : "");
@@ -441,10 +696,27 @@
     ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao })[p.tipo](p);
   }
 
+  // Toca a melodia com contagem de 4 e clique em cada tempo, acendendo a nota da vez em "alvo".
+  function ouvirMelodia(mel, alvo, aoFim) {
+    const a = audio(), bt = 60 / bpmAtual(), t0 = a.currentTime + 0.15, total = mel.reduce((x, [, d]) => x + d, 0);
+    for (let k = 0; k < 4 + Math.ceil(total); k++) clique(t0 + k * bt, k % 4 === 0);
+    let t = t0 + 4 * bt;
+    mel.forEach(([n, d, liga], i) => {
+      const anterior = mel[i - 1];
+      if (n !== P && !(anterior && anterior[2] === "liga" && anterior[0] === n)) { let dur = d; if (liga === "liga" && mel[i + 1] && mel[i + 1][0] === n) dur += mel[i + 1][1]; tom(NOTA[n].midi, t, dur * bt * 0.94); }
+      temporizadores.push(setTimeout(() => { const el = $(alvo); if (el) el.innerHTML = svgMelodia(mel, i); }, (t - a.currentTime) * 1000));
+      t += d * bt;
+    });
+    temporizadores.push(setTimeout(() => { const el = $(alvo); if (el) el.innerHTML = svgMelodia(mel); if (aoFim) aoFim(); }, (t - a.currentTime) * 1000 + 150));
+  }
+
   function passoInfo(p) {
-    moldura(`<h2>${esc(p.titulo)}</h2>${(p.texto || []).map(t => `<p>${esc(t)}</p>`).join("")}${p.lista ? `<ol class="tr-lista">${p.lista.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : ""}${apoio(p)}${p.melodia ? `<button class="btn" id="tr-ouvir" type="button">▶ Ouvir a música</button>` : ""}${p.video ? `<div class="tr-video"><span>▶</span>${esc(p.video)}<small>entra aqui na versão final</small></div>` : ""}`);
+    const lida = p.melodia ? melodiaAtual() : p.ouvir && p.pauta && p.pauta.length ? p.pauta : null;
+    const desenho = lida ? `<div id="tr-mel">${svgMelodia(lida)}</div>${p.dedos ? svgDedos(p.dedos) : ""}` : apoio(p);
+    moldura(`<h2>${esc(p.titulo)}</h2>${(p.texto || []).map(t => `<p>${esc(t)}</p>`).join("")}${p.lista ? `<ol class="tr-lista">${p.lista.map(t => `<li>${esc(t)}</li>`).join("")}</ol>` : ""}${desenho}${lida ? `${htmlPulso(false)}<button class="btn" id="tr-ouvir" type="button">▶ Ouvir com o pulso</button>` : ""}${p.video ? `<div class="tr-video"><span>▶</span>${esc(p.video)}<small>entra aqui na versão final</small></div>` : ""}`);
+    ativarPulso();
     const b = $("#tr-ouvir");
-    if (b) b.addEventListener("click", () => { let t = audio().currentTime + 0.1; const bt = 60 / 76; melodiaAtual().forEach(([n, d]) => { if (n !== P) tom(NOTA[n].midi, t, d * bt * 0.95); t += d * bt; }); });
+    if (b) b.addEventListener("click", () => { if (b.disabled) return; b.disabled = true; ouvirMelodia(lida, "#tr-mel", () => { b.disabled = false; }); });
   }
 
   function passoEscolha(p) {
@@ -510,15 +782,18 @@
   }
 
   function passoRitmo(p) {
-    const bpm = 72, bt = 60 / bpm, total = p.padrao.reduce((a, b) => a + Math.abs(b), 0);
-    const blocos = p.padrao.map(t => t < 0 ? `<span class="silencio" style="flex:${-t}">–<small>pausa</small></span>` : `<span style="flex:${t}">${t}<small>${t === 1 ? "tempo" : "tempos"}</small></span>`).join("");
-    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-ritmo-linha" id="tr-linha">${blocos}<i id="tr-cursor"></i></div><p class="tr-conta-voz" id="tr-voz">Toque em “Começar” e ouça a contagem de 4.</p><button class="tr-bater" id="tr-bater" type="button">Começar</button>`, { botao: "Bata o ritmo", pronto: false });
+    let bt = 60 / bpmAtual();
+    const total = p.padrao.reduce((a, b) => a + Math.abs(b), 0), fr = t => (t === 0.5 ? "½" : t === 1.5 ? "1½" : t);
+    const blocos = p.padrao.map(t => t < 0 ? `<span class="silencio" style="flex:${-t}">–<small>pausa</small></span>` : `<span style="flex:${t}">${fr(t)}<small>${t <= 1 ? "tempo" : "tempos"}</small></span>`).join("");
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-ritmo-linha" id="tr-linha">${blocos}<i id="tr-cursor"></i></div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz">Toque em “Começar” e ouça a contagem de 4.</p><button class="tr-bater" id="tr-bater" type="button">Começar</button>`, { botao: "Bata o ritmo", pronto: false });
+    ativarPulso();
     const bater = $("#tr-bater"), voz = $("#tr-voz");
     let fase = "espera", inicio = 0, toques = [];
     const esperados = []; p.padrao.reduce((t, d) => { if (d > 0) esperados.push(t); return t + Math.abs(d); }, 0);
     function comecar() {
+      bt = 60 / bpmAtual();
       const a = audio(); inicio = a.currentTime + 0.15 + 4 * bt; toques = []; fase = "contagem";
-      for (let k = 0; k < 4 + total; k++) clique(a.currentTime + 0.15 + k * bt, k % 4 === 0);
+      for (let k = 0; k < 4 + Math.ceil(total); k++) clique(a.currentTime + 0.15 + k * bt, k % 4 === 0);
       bater.textContent = "Toque aqui"; bater.classList.add("ativo");
       for (let k = 0; k < 4; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${k + 1}`; }, (0.15 + k * bt) * 1000));
       temporizadores.push(setTimeout(() => { fase = "valendo"; voz.textContent = "Agora!"; const c = $("#tr-cursor"); if (c) { c.style.transition = `left ${total * bt}s linear`; c.style.left = "100%"; } }, (0.15 + 4 * bt - 0.2) * 1000));
@@ -530,7 +805,7 @@
       esperados.forEach(e => {
         let melhor = -1, dist = 9;
         toques.forEach((t, i) => { const d = Math.abs(t - e * bt); if (!usados.has(i) && d < dist) { dist = d; melhor = i; } });
-        if (melhor >= 0 && dist < 0.28) { usados.add(melhor); certos++; soma += dist; }
+        if (melhor >= 0 && dist < Math.min(0.28, bt * 0.45)) { usados.add(melhor); certos++; soma += dist; }
       });
       const extras = toques.length - usados.size;
       if (certos === esperados.length && extras === 0) {
@@ -570,7 +845,8 @@
 
   function passoTocar(p) {
     const alvo = p.livre ? null : NOTA[p.nota];
-    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${p.pauta ? svgPauta(p.pauta) : alvo ? svgPauta([[p.nota, 4]], { rotulos: true }) : ""}${alvo ? svgDedos([p.nota]) : ""}${htmlMic(p)}`, { botao: "Toque para continuar", pronto: false });
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${p.pauta ? svgPauta(p.pauta) : alvo ? svgPauta([[p.nota, 4]], { rotulos: true }) : ""}${alvo ? svgDedos([p.nota]) : ""}${htmlPulso(true)}${htmlMic(p)}`, { botao: "Toque para continuar", pronto: false });
+    ativarPulso();
     ligarControlesMic(() => {
       let acumulado = 0, ultimo = performance.now(), anterior = -1, pronto = false;
       const ouvindo = $("#tr-ouvindo"), nivel = $("#tr-nivel");
@@ -591,14 +867,16 @@
   }
 
   function passoMusica(p) {
-    const bpm = 66, bt = 60 / bpm, MEL = melodiaAtual();
-    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-partitura">${svgMelodia(MEL)}</div><p class="tr-conta-voz" id="tr-voz"></p>${htmlMic(p)}`, { botao: "Toque a música", pronto: false });
+    let bt = 60 / bpmAtual(); const MEL = melodiaAtual();
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-partitura">${svgMelodia(MEL)}</div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz"></p>${htmlMic(p)}`, { botao: "Toque a música", pronto: false });
+    ativarPulso();
     ligarControlesMic(() => {
       const voz = $("#tr-voz"), ouvindo = $("#tr-ouvindo");
       ouvindo.innerHTML = `<button class="btn primario" id="tr-iniciar" type="button">Começar com contagem</button>`;
       $("#tr-iniciar").addEventListener("click", function iniciar() {
+        bt = 60 / bpmAtual();
         const a = audio(), t0 = a.currentTime + 0.2, total = MEL.reduce((s, [, d]) => s + d, 0);
-        for (let k = 0; k < 4 + total; k++) clique(t0 + k * bt, k % 4 === 0);
+        for (let k = 0; k < 4 + Math.ceil(total); k++) clique(t0 + k * bt, k % 4 === 0);
         ouvindo.textContent = "";
         for (let k = 0; k < 4; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${k + 1}`; }, (0.2 + k * bt) * 1000));
         const inicio = t0 + 4 * bt; let pos = 0; const janelas = MEL.map(([n, d]) => { const j = { n, de: pos * bt, ate: (pos + d) * bt, bons: 0, quadros: 0 }; pos += d; return j; });
@@ -637,7 +915,7 @@
   const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const urls = [];
   const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
-  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa" };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia" };
 
   const rec = { mr: null, stream: null, partes: [], t: 0 };
   function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
@@ -744,7 +1022,7 @@
 
   async function htmlAntesDepois() {
     const itens = [];
-    for (const k of ["primeira", "u1", "u2"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
     return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
   }
 
