@@ -379,13 +379,14 @@
     const telaId = { ex: "exercicio", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === `tela-${telaId}`));
     const deUmPilar = rotaAtual.tela === "metodo" && typeof pilha !== "undefined" && /^#\/(raiz|ex)\//.test(pilha[pilha.length - 2] || "");
-    const aba = { raiz: "raizes", ex: "raizes", metodo: deUmPilar ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
+    const beta = !!window.NAIPE_BETA; // na versão de teste, Métodos mora dentro de Pilares
+    const aba = { raiz: "raizes", ex: "raizes", metodo: deUmPilar || beta ? "raizes" : "metodos", metodos: beta ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".abas a").forEach(a => a.classList.toggle("ativa", a.dataset.aba === aba));
   }
 
   function renderTela() {
     switch (rotaAtual.tela) {
-      case "inicio": renderInicio(); break;
+      case "inicio": renderInicio(); if (window.NaipeTrilha) window.NaipeTrilha.inicio(); break;
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
       case "ex": renderExercicio(rotaAtual.id); renderGravador(rotaAtual.id); break;

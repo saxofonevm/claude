@@ -6,6 +6,24 @@
 (function () {
   "use strict";
 
+  // ---------- Versão de teste ----------
+  // naipesax.com.br/?beta=1 liga a nova organização (aba Aprender); ?beta=0 desliga.
+  try {
+    const q = new URLSearchParams(location.search).get("beta");
+    if (q === "1") localStorage.setItem("naipe.beta", "1");
+    if (q === "0") localStorage.removeItem("naipe.beta");
+  } catch { /* sem armazenamento */ }
+  let BETA = false;
+  try { BETA = localStorage.getItem("naipe.beta") === "1"; } catch { /* segue desligado */ }
+  window.NAIPE_BETA = BETA;
+  if (BETA) {
+    document.documentElement.classList.add("beta");
+    const aba = document.querySelector('.abas a[data-aba="metodos"]');
+    if (aba) { aba.href = "#/trilha"; aba.dataset.aba = "trilha"; aba.innerHTML = '<span data-icone="nota"></span>Aprender'; const pil = document.querySelector('.abas a[data-aba="raizes"]'); if (pil) pil.parentNode.insertBefore(aba, pil); }
+    const cab = document.querySelector("#tela-raizes .cabecalho");
+    if (cab) cab.insertAdjacentHTML("beforeend", '<a class="btn tr-biblioteca" href="#/metodos"><span data-icone="livro"></span>Biblioteca de métodos</a>');
+  }
+
   // ---------- Conteúdo ----------
   // Notas escritas (clave de sol). passo = posição na pauta a partir do Mi da 1ª linha.
   // chaves = [3 da mão esquerda, 3 da mão direita], 1 = fechada.
@@ -44,7 +62,7 @@
             { tipo: "info", titulo: "Cinco linhas, quatro espaços", texto: ["A música é escrita na pauta: cinco linhas e quatro espaços, contados de baixo para cima.", "Quanto mais alta a nota na pauta, mais agudo o som."], pauta: [] },
             { tipo: "escolha", pergunta: "Quantas linhas tem a pauta?", opcoes: ["Quatro", "Cinco", "Seis"], certa: 1 },
             { tipo: "info", titulo: "A clave de sol", texto: ["O sinal no começo da pauta é a clave de sol. Ela marca a 2ª linha: a nota escrita nessa linha se chama Sol.", "A partir do Sol você encontra todas as outras."], pauta: [["sol", 4]] },
-            { tipo: "escolha", pergunta: "Em qual linha fica a nota Sol?", opcoes: ["1ª linha", "2ª linha", "3ª linha"], certa: 1, pauta: [["sol", 4]] },
+            { tipo: "ondefica", nota: "sol", titulo: "Coloque o Sol na pauta", texto: "Toque na linha onde a nota Sol mora." },
             { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual é o mais agudo?", sons: ["sol", "si"], opcoes: ["O primeiro", "O segundo"], certa: 1, explica: "O segundo som era o Si, que fica acima do Sol na pauta." },
           ],
         },
@@ -53,9 +71,10 @@
           passos: [
             { tipo: "info", titulo: "Três notas, três dedos", texto: ["As primeiras notas usam só a mão esquerda. Cada dedo que você fecha deixa o som mais grave."], dedos: ["si", "la", "sol"] },
             { tipo: "info", titulo: "Na pauta", texto: ["Sol na 2ª linha, Lá no espaço logo acima, Si na 3ª linha. Sobem como degraus."], pauta: [["sol", 4], ["la", 4], ["si", 4]], rotulos: true },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["la", 4]], opcoes: ["Sol", "Lá", "Si"], certa: 1 },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["si", "sol", "la"] },
+            { tipo: "ondefica", nota: "la", titulo: "Coloque o Lá na pauta", texto: "Toque no lugar onde o Lá fica." },
             { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["si", 4]], opcoes: ["Sol", "Lá", "Si"], certa: 2 },
-            { tipo: "escolha", pergunta: "Quantos dedos da mão esquerda fecham para tocar o Sol?", opcoes: ["Um", "Dois", "Três"], certa: 2 },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Sol?", nota: "sol", notas: ["si", "la", "sol"] },
             { tipo: "tocar", nota: "si", segundos: 2, titulo: "Toque o Si", texto: "Um dedo fechado. Sustente por 2 segundos." },
             { tipo: "tocar", nota: "la", segundos: 2, titulo: "Toque o Lá", texto: "Dois dedos fechados." },
             { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Toque o Sol", texto: "Três dedos fechados." },
@@ -124,9 +143,9 @@
           passos: [
             { tipo: "info", titulo: "Agora as duas mãos", texto: ["Com a mão esquerda fechada no Sol, cada dedo da mão direita que você fecha desce mais uma nota: Fá, Mi e Ré.", "Quanto mais grave, mais ar quente e garganta aberta."], dedos: ["fa", "mi", "re"] },
             { tipo: "info", titulo: "Na pauta", texto: ["Descendo a partir do Sol: Fá no 1º espaço, Mi na 1ª linha e Ré pendurado logo abaixo dela."], pauta: [["sol", 4], ["fa", 4], ["mi", 4], ["re", 4]], rotulos: true },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["mi", 4]], opcoes: ["Ré", "Mi", "Fá"], certa: 1 },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["re", 4]], opcoes: ["Ré", "Mi", "Fá"], certa: 0 },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["fa", 4]], opcoes: ["Ré", "Mi", "Fá"], certa: 2 },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["mi", "re", "fa"] },
+            { tipo: "ondefica", nota: "mi", titulo: "Coloque o Mi na pauta", texto: "Toque no lugar onde o Mi fica." },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Fá?", nota: "fa", notas: ["mi", "fa", "sol"] },
             { tipo: "tocar", nota: "fa", segundos: 2, titulo: "Toque o Fá", texto: "Mão esquerda fechada e o indicador da direita." },
             { tipo: "tocar", nota: "mi", segundos: 2, titulo: "Toque o Mi", texto: "Mais o dedo do meio da direita." },
             { tipo: "tocar", nota: "re", segundos: 2, titulo: "Toque o Ré", texto: "As duas mãos fechadas. Ar quente e contínuo." },
@@ -136,8 +155,10 @@
           id: "sete", titulo: "De Ré a Dó", resumo: "Ler as sete notas misturadas",
           passos: [
             { tipo: "info", titulo: "A escada inteira", texto: ["Você já tem sete notas seguidas. Subindo: Ré, Mi, Fá, Sol, Lá, Si, Dó.", "Linha, espaço, linha, espaço: as notas vizinhas sempre alternam."], pauta: [["re", 1], ["mi", 1], ["fa", 1], ["sol", 1], ["la", 1], ["si", 1], ["do", 1]], rotulos: true },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["fa", 2]], opcoes: ["Mi", "Fá", "Lá"], certa: 1 },
-            { tipo: "escolha", pergunta: "Que nota é esta?", pauta: [["do", 2]], opcoes: ["Dó", "Si", "Lá"], certa: 0 },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["do", "fa", "re", "la"] },
+            { tipo: "ondefica", nota: "do", titulo: "Coloque o Dó na pauta", texto: "Toque no lugar onde o Dó fica." },
+            { tipo: "ondefica", nota: "re", titulo: "Coloque o Ré na pauta", texto: "Agora a nota mais grave que você conhece." },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Mi?", nota: "mi", notas: ["re", "mi", "fa"] },
             { tipo: "ouvir", pergunta: "Ouça os dois sons. A melodia sobe ou desce?", sons: ["la", "fa"], opcoes: ["Sobe", "Desce"], certa: 1, explica: "Foi do Lá para o Fá: desceu." },
             { tipo: "escolha", pergunta: "Estas três notas estão…", pauta: [["mi", 1], ["fa", 1], ["sol", 1]], opcoes: ["Subindo por degraus", "Descendo por degraus", "Repetindo a mesma nota"], certa: 0 },
             { tipo: "ouvir", pergunta: "Ouça os dois sons. A melodia sobe ou desce?", sons: ["sol", "do"], opcoes: ["Sobe", "Desce"], certa: 0, explica: "Foi do Sol para o Dó: subiu." },
@@ -215,12 +236,13 @@
     return linhas.map(l => svgPauta(l.itens, { compassos: true, minLarg, destaque: destaque >= l.base && destaque < l.base + l.itens.length ? destaque - l.base : destaque >= l.base + l.itens.length ? 99 : -1 })).join("");
   }
 
-  // Digitação: 3 chaves da mão esquerda e 3 da direita.
+  // Saxofone desenhado (o mesmo traço da marca), com as chaves fechadas acesas.
+  function svgSax(n) {
+    const nt = NOTA[n];
+    return `<svg class="tr-sax-des" viewBox="0 0 150 250" aria-hidden="true"><g transform="translate(8 6) scale(2.55)" fill="none" stroke-linecap="round" stroke-linejoin="round"><g class="corpo" stroke-width="9"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g><path class="brilho" stroke-width="1.6" d="M21.4 26 L21.4 66"/></g><rect class="boquilha" x="14" y="14" width="26" height="12" rx="5" transform="rotate(27 27 20)"/>${nt.chaves.map((f, i) => `<circle cx="69.2" cy="${80 + i * 17.5 + (i > 2 ? 9 : 0)}" r="7.4" class="${f ? "chave fechada" : "chave"}"/>`).join("")}</svg>`;
+  }
   function svgDedos(notas) {
-    return `<div class="tr-dedos">${notas.map(n => {
-      const nt = NOTA[n];
-      return `<figure><svg viewBox="0 0 40 170" aria-hidden="true"><rect x="14" y="4" width="12" height="162" rx="6" class="tubo"/>${nt.chaves.map((f, i) => `<circle cx="20" cy="${20 + i * 24 + (i > 2 ? 14 : 0)}" r="9.5" class="${f ? "chave fechada" : "chave"}"/>`).join("")}</svg><figcaption><strong>${nt.nome}</strong>${nt.dica}</figcaption></figure>`;
-    }).join("")}</div>`;
+    return `<div class="tr-dedos">${notas.map(n => `<figure>${svgSax(n)}<figcaption><strong>${NOTA[n].nome}</strong>${NOTA[n].dica}</figcaption></figure>`).join("")}</div>`;
   }
 
   function htmlFiguras() {
@@ -240,6 +262,14 @@
     o.frequency.value = forte ? 1320 : 880; o.type = "square";
     g.gain.setValueAtTime(0.0001, quando); g.gain.exponentialRampToValueAtTime(forte ? 0.22 : 0.14, quando + 0.004); g.gain.exponentialRampToValueAtTime(0.0001, quando + 0.07);
     o.connect(g).connect(a.destination); o.start(quando); o.stop(quando + 0.09);
+  }
+  function somRetorno(ok) {
+    const a = audio(), t = a.currentTime + 0.01;
+    (ok ? [[660, 0], [990, 0.09]] : [[196, 0]]).forEach(([f, d]) => {
+      const o = a.createOscillator(), g = a.createGain(); o.type = ok ? "sine" : "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t + d); g.gain.exponentialRampToValueAtTime(0.16, t + d + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + d + (ok ? 0.16 : 0.22));
+      o.connect(g).connect(a.destination); o.start(t + d); o.stop(t + d + 0.25);
+    });
   }
   // Som real que o sax produz para a nota escrita (alto: 9 semitons abaixo; tenor: 14 abaixo).
   const somReal = midi => midi - (saxDoApp() === "Sib" ? 14 : 9);
@@ -302,28 +332,40 @@
 
   const completo = () => { try { return !!JSON.parse(localStorage.getItem("cma.v1") || "{}").desbloqueado; } catch { return false; } };
 
+  const ARTE = [
+    '<svg viewBox="0 0 120 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M14 35h14"/><path d="M40 22q10 13 0 26"/><path d="M54 14q16 21 0 42"/><path d="M68 6q22 29 0 58"/></g><circle cx="98" cy="35" r="7" fill="currentColor"/></svg>',
+    '<svg viewBox="0 0 120 70" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" opacity=".55"><path d="M6 15h108M6 25h108M6 35h108M6 45h108M6 55h108"/></g><g fill="currentColor"><ellipse cx="20" cy="60" rx="6" ry="4.4"/><ellipse cx="34" cy="55" rx="6" ry="4.4"/><ellipse cx="48" cy="50" rx="6" ry="4.4"/><ellipse cx="62" cy="45" rx="6" ry="4.4"/><ellipse cx="76" cy="40" rx="6" ry="4.4"/><ellipse cx="90" cy="35" rx="6" ry="4.4"/><ellipse cx="104" cy="30" rx="6" ry="4.4"/></g></svg>',
+  ];
+  const CORES = [["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"]];
+  const DESVIO = [8, 44, 64, 44, 8, 28];
+
+  function htmlCaminho(u, n, atual, paga) {
+    const passo = 92, pts = u.licoes.map((l, k) => [DESVIO[k % DESVIO.length] + 30, 46 + k * passo]);
+    const curva = pts.map((pt, k) => k === 0 ? `M${pt[0]} ${pt[1]}` : `C${pts[k - 1][0]} ${pts[k - 1][1] + passo / 2} ${pt[0]} ${pt[1] - passo / 2} ${pt[0]} ${pt[1]}`).join(" ");
+    return `<ol class="tr-caminho" style="height:${u.licoes.length * passo}px"><svg class="tr-fio" viewBox="0 0 120 ${u.licoes.length * passo}" preserveAspectRatio="none" aria-hidden="true"><path d="${curva}"/></svg>${u.licoes.map((l, k) => {
+      const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = !paga && (feita || i === atual || atual === -1), ehAtual = aberta && !feita;
+      const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
+      return `<li class="${feita ? "feita" : ehAtual ? "atual" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
+    }).join("")}</ol>`;
+  }
+
   function renderTrilha() {
     if (!prog.porqueVisto) return renderPorque();
     limpar(); sessao = null;
     const atual = LICOES.findIndex(l => !prog.feitas[l.id]);
     const unidades = UNIDADES.map((u, n) => {
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
-      const paga = n > 0 && !completo();
-      return `<section class="cartao tr-unidade">
-          <div class="tr-unidade-topo"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}</span><h2>${esc(u.titulo)}</h2></div><span class="tr-conta">${feitas} de ${u.licoes.length}</span></div>
-          <div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>
+      const paga = n > 0 && !completo(), cor = CORES[n % CORES.length];
+      return `<section class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}">
+          <div class="tr-faixa"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${feitas} de ${u.licoes.length} lições</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div></div>
           ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo. A Unidade 1 é livre para você experimentar.</p>` : ""}
+          ${htmlCaminho(u, n, atual, paga)}
           ${unidadeCompleta(n) ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
-          <ol class="tr-licoes">${u.licoes.map(l => {
-            const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = !paga && (feita || i === atual || atual === -1);
-            const miolo = `<span class="tr-num">${feita ? "✓" : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small></span><span class="tr-lic-acao">${feita ? "Refazer" : aberta ? "Começar" : paga ? "Completo" : "Bloqueada"}</span>`;
-            return `<li class="${feita ? "feita" : aberta ? "atual" : "fechada"}">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
-          }).join("")}</ol>
         </section>`;
     }).join("");
     raiz().innerHTML = `
       <header class="cabecalho">
-        <a class="btn-voltar" href="#/inicio">‹ Início</a>
+        ${BETA ? "" : `<a class="btn-voltar" href="#/inicio">‹ Início</a>`}
         <p class="sobretitulo">Aprender · versão de teste</p>
         <h1>Do zero à primeira música</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
@@ -337,6 +379,22 @@
       </div>`;
     $("#tr-editar-porque").addEventListener("click", renderPorque);
     htmlAntesDepois().then(h => { const el = $("#tr-antes"); if (el) el.innerHTML = h; });
+  }
+
+  // Cartão no Início (só na versão de teste): pergunta de entrada e "continuar a lição".
+  function cartaoInicio() {
+    if (!BETA) return;
+    const pai = document.querySelector(".conteudo-inicio"); if (!pai) return;
+    let el = document.getElementById("tr-inicio");
+    if (!el) { el = document.createElement("div"); el.id = "tr-inicio"; const ref = pai.querySelector(".percurso-cartao"); pai.insertBefore(el, ref || pai.firstChild); }
+    const prox = LICOES.find(l => !prog.feitas[l.id]);
+    if (!prog.perfil) {
+      el.innerHTML = `<section class="cartao tr-entrada"><span class="rotulo">Para começar</span><h2>Você já toca saxofone?</h2><div class="tr-entrada-ops"><button type="button" data-perfil="zero"><strong>Estou começando do zero</strong><small>Aprender a ler e tocar, passo a passo</small></button><button type="button" data-perfil="toca"><strong>Já toco</strong><small>Organizar o estudo pelos pilares</small></button></div></section>`;
+      el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { prog.perfil = b.dataset.perfil; salvar(); if (prog.perfil === "zero") location.hash = "#/trilha"; else cartaoInicio(); }));
+    } else if (prox && (prog.perfil === "zero" || Object.keys(prog.feitas).length)) {
+      const i = LICOES.indexOf(prox), n = UNIDADES.findIndex(u => u.licoes.includes(prox)), paga = n > 0 && !completo();
+      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">Aprender · lição ${i + 1} de ${LICOES.length}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
+    } else el.innerHTML = "";
   }
 
   function renderLicao(id) {
@@ -364,6 +422,7 @@
   function liberar(texto, ok = true) {
     const r = $("#tr-retorno"), b = $("#tr-avancar");
     if (r) { r.textContent = texto || ""; r.className = "tr-retorno " + (ok ? "ok" : "nao"); }
+    if (ok) somRetorno(true);
     if (b) { b.disabled = false; b.textContent = "Continuar"; }
   }
   function avancar() {
@@ -379,7 +438,7 @@
 
   function passo() {
     const p = sessao.licao.passos[sessao.i];
-    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar })[p.tipo](p);
+    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao })[p.tipo](p);
   }
 
   function passoInfo(p) {
@@ -400,9 +459,53 @@
         raiz().querySelectorAll(".tr-opcoes button").forEach(x => { x.disabled = true; });
         liberar(p.explica || "Isso mesmo.");
       } else {
-        b.classList.add("errada"); b.disabled = true; sessao.erros++;
+        b.classList.add("errada"); b.disabled = true; sessao.erros++; somRetorno(false);
         const r = $("#tr-retorno"); r.textContent = "Ainda não. Olhe de novo e tente outra."; r.className = "tr-retorno nao";
       }
+    }));
+  }
+
+  const embaralhar = v => { const a = v.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  // Ligar pares: nota na pauta ↔ nome.
+  function passoPares(p) {
+    const nomes = embaralhar(p.notas);
+    moldura(`<h2>${esc(p.titulo)}</h2><p>Toque numa nota e depois no nome dela.</p><div class="tr-pares"><div>${p.notas.map(n => `<button type="button" class="tr-par pauta" data-n="${n}">${svgPauta([[n, 4]], { minLarg: 150 })}</button>`).join("")}</div><div>${nomes.map(n => `<button type="button" class="tr-par nome" data-n="${n}">${NOTA[n].nome}</button>`).join("")}</div></div>`, { botao: "Ligue os pares", pronto: false });
+    let marcado = null, feitos = 0;
+    raiz().querySelectorAll(".tr-par").forEach(b => b.addEventListener("click", () => {
+      if (b.classList.contains("certa")) return;
+      if (!marcado || marcado.classList.contains("pauta") === b.classList.contains("pauta")) { if (marcado) marcado.classList.remove("marcada"); marcado = b; b.classList.add("marcada"); return; }
+      const a = marcado; marcado = null; a.classList.remove("marcada");
+      if (a.dataset.n === b.dataset.n) {
+        [a, b].forEach(x => { x.classList.add("certa"); x.disabled = true; }); feitos++;
+        if (feitos === p.notas.length) liberar("Todos os pares certos."); else somRetorno(true);
+      } else { sessao.erros++; somRetorno(false); [a, b].forEach(x => { x.classList.add("errada"); setTimeout(() => x.classList.remove("errada"), 500); }); }
+    }));
+  }
+
+  // Tocar na pauta, no lugar da nota pedida.
+  function passoOndeFica(p) {
+    const alvo = NOTA[p.nota], linhas = [30, 40, 50, 60, 70].map(y => `<line x1="6" y1="${y}" x2="254" y2="${y}"/>`).join("");
+    const zonas = []; for (let ps = -1; ps <= 9; ps++) zonas.push(`<rect class="tr-zona" data-p="${ps}" x="66" y="${70 - ps * 5 - 2.5}" width="184" height="5"/>`);
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><svg class="tr-pauta tr-pauta-toque" viewBox="0 0 260 96" role="img" aria-label="Pauta para tocar"><g class="tr-linhas">${linhas}</g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/><g id="tr-posta"></g>${zonas.join("")}</svg>`, { botao: "Toque na pauta", pronto: false });
+    let fim = false;
+    raiz().querySelectorAll(".tr-zona").forEach(z => z.addEventListener("click", () => {
+      if (fim) return;
+      const ps = Number(z.dataset.p), y = 70 - ps * 5, certo = ps === alvo.passo;
+      $("#tr-posta").innerHTML = `<ellipse cx="158" cy="${y}" rx="7.4" ry="5.2" transform="rotate(-20 158 ${y})" fill="none" stroke-width="2.2" class="${certo ? "posta certa" : "posta errada"}"/>`;
+      if (certo) { fim = true; liberar(`Isso. O ${alvo.nome} fica ${ps % 2 === 0 ? "na " + (ps / 2 + 1) + "ª linha" : ps < 0 ? "logo abaixo da 1ª linha" : "no " + ((ps + 1) / 2) + "º espaço"}.`); }
+      else { sessao.erros++; somRetorno(false); const r = $("#tr-retorno"); r.textContent = ps > alvo.passo ? "Mais para baixo." : "Mais para cima."; r.className = "tr-retorno nao"; }
+    }));
+  }
+
+  // Escolher o desenho do sax com a digitação certa.
+  function passoDigitacao(p) {
+    const ops = embaralhar(p.notas);
+    moldura(`<h2>${esc(p.pergunta)}</h2><div class="tr-digitacoes">${ops.map(n => `<button type="button" data-n="${n}">${svgSax(n)}</button>`).join("")}</div>`, { botao: "Escolha um desenho", pronto: false });
+    raiz().querySelectorAll(".tr-digitacoes button").forEach(b => b.addEventListener("click", () => {
+      if (raiz().querySelector(".tr-digitacoes .certa")) return;
+      if (b.dataset.n === p.nota) { b.classList.add("certa"); liberar(`${NOTA[p.nota].nome}: ${NOTA[p.nota].dica}.`); }
+      else { b.classList.add("errada"); b.disabled = true; sessao.erros++; somRetorno(false); const r = $("#tr-retorno"); r.textContent = `Essa é a digitação do ${NOTA[b.dataset.n].nome}.`; r.className = "tr-retorno nao"; }
     }));
   }
 
@@ -659,5 +762,5 @@
   }
 
   window.addEventListener("hashchange", () => { if (!/^#\/trilha/.test(location.hash)) limpar(); });
-  window.NaipeTrilha = { render: id => (id ? renderLicao(id) : renderTrilha()) };
+  window.NaipeTrilha = { render: id => (id ? renderLicao(id) : renderTrilha()), inicio: cartaoInicio };
 })();
