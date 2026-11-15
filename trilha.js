@@ -26,7 +26,7 @@
 
   const UNIDADES = [
     {
-      titulo: "Primeiro som", licoes: [
+      titulo: "Primeiro som", marco: "Toquei minha primeira música no saxofone.", licoes: [
         {
           id: "som", titulo: "O primeiro som", resumo: "Respiração, embocadura e uma nota longa",
           passos: [
@@ -34,6 +34,7 @@
             { tipo: "info", titulo: "Embocadura em 3 pontos", lista: ["Dentes de cima apoiados na boquilha, a cerca de 1 cm da ponta.", "Lábio de baixo levemente dobrado sobre os dentes, como uma almofada.", "Cantos da boca firmes, para o ar não escapar. Bochechas sem inflar."], video: "Vídeo do Tiago: embocadura e postura" },
             { tipo: "escolha", pergunta: "Na respiração para tocar, o que deve acontecer com os ombros?", opcoes: ["Sobem a cada respiração", "Ficam parados e relaxados", "Vão para a frente"], certa: 1, explica: "O ar entra pela boca e enche a parte baixa do tronco. Ombro subindo é sinal de tensão." },
             { tipo: "tocar", livre: true, segundos: 3, titulo: "Sua vez: uma nota longa", texto: "Toque qualquer nota e sustente o som por 3 segundos, sem tremer." },
+            { tipo: "gravar", chave: "primeira", titulo: "Guarde este momento", texto: "Grave alguns segundos do seu som de hoje. Daqui a algumas semanas você vai ouvir de novo e perceber o quanto mudou." },
             { tipo: "escolha", pergunta: "Para começar o som, a língua…", opcoes: ["Bate forte na palheta", "Encosta de leve, como quem diz “tu”", "Não participa"], certa: 1, explica: "A língua solta o ar com um “tu” leve. Quem faz o som é o ar." },
           ],
         },
@@ -88,12 +89,13 @@
             { tipo: "info", titulo: "Primeiro Passo", texto: ["Esta é a sua primeira música. Ela usa só o que você aprendeu: três notas e três figuras.", "Ouça uma vez acompanhando a partitura com os olhos."], melodia: true },
             { tipo: "escolha", pergunta: "Com que nota a música termina?", melodia: true, opcoes: ["Si", "Lá", "Sol"], certa: 2 },
             { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música. O app acompanha cada nota pelo microfone." },
+            { tipo: "gravar", chave: "u1", comparar: true, titulo: "Antes e depois", texto: "Grave “Primeiro Passo” e compare com o som do seu primeiro dia." },
           ],
         },
       ],
     },
     {
-      titulo: "Sete notas", licoes: [
+      titulo: "Sete notas", marco: "Já leio partitura e toco sete notas no saxofone.", licoes: [
         {
           id: "do", titulo: "O Dó", resumo: "Uma nota acima do Si, com um dedo só",
           passos: [
@@ -162,6 +164,7 @@
             { tipo: "escolha", pergunta: "Em qual compasso está a pausa?", melodia: true, opcoes: ["No primeiro", "No segundo", "No terceiro"], certa: 1 },
             { tipo: "ritmo", titulo: "O ritmo do segundo compasso", texto: "Mínima, semínima e pausa.", pauta: [["si", 2], ["sol", 1], [P, 1]], padrao: [2, 1, -1] },
             { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música inteira. Respire na pausa." },
+            { tipo: "gravar", chave: "u2", comparar: true, titulo: "Antes e depois", texto: "Grave “Caminho de Casa” e compare com o som do seu primeiro dia." },
           ],
         },
       ],
@@ -291,6 +294,7 @@
   let sessao = null; // { licao, i, erros }
   const temporizadores = [];
   function limpar() {
+    pararRec(); urls.splice(0).forEach(u => URL.revokeObjectURL(u));
     temporizadores.splice(0).forEach(clearTimeout);
     desligarMic();
     if (ctx && ctx.state === "running") ctx.suspend();
@@ -299,6 +303,7 @@
   const completo = () => { try { return !!JSON.parse(localStorage.getItem("cma.v1") || "{}").desbloqueado; } catch { return false; } };
 
   function renderTrilha() {
+    if (!prog.porqueVisto) return renderPorque();
     limpar(); sessao = null;
     const atual = LICOES.findIndex(l => !prog.feitas[l.id]);
     const unidades = UNIDADES.map((u, n) => {
@@ -308,6 +313,7 @@
           <div class="tr-unidade-topo"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}</span><h2>${esc(u.titulo)}</h2></div><span class="tr-conta">${feitas} de ${u.licoes.length}</span></div>
           <div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>
           ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo. A Unidade 1 é livre para você experimentar.</p>` : ""}
+          ${unidadeCompleta(n) ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
           <ol class="tr-licoes">${u.licoes.map(l => {
             const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = !paga && (feita || i === atual || atual === -1);
             const miolo = `<span class="tr-num">${feita ? "✓" : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small></span><span class="tr-lic-acao">${feita ? "Refazer" : aberta ? "Começar" : paga ? "Completo" : "Bloqueada"}</span>`;
@@ -323,13 +329,19 @@
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
       <div class="corpo tr-corpo">
+        <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${LICOES.filter(l => prog.feitas[l.id]).length} de ${LICOES.length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
         ${unidades}
+        <div id="tr-antes"></div>
         <section class="cartao tr-proximas"><span class="rotulo">Em seguida</span><ul>${PROXIMAS.map(p => `<li>${esc(p)}</li>`).join("")}</ul><p class="mudo">Em construção. Cada unidade termina com uma música.</p></section>
         ${prog.pontos ? `<p class="mudo tr-pontos">${prog.pontos} pontos de estudo nesta trilha</p>` : ""}
       </div>`;
+    $("#tr-editar-porque").addEventListener("click", renderPorque);
+    htmlAntesDepois().then(h => { const el = $("#tr-antes"); if (el) el.innerHTML = h; });
   }
 
   function renderLicao(id) {
+    const m = /^marco-(\d+)$/.exec(id);
+    if (m) return renderMarco(Number(m[1]));
     const licao = LICOES.find(l => l.id === id);
     if (!licao) return renderTrilha();
     if (UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = "#/trilha"; return; }
@@ -367,7 +379,7 @@
 
   function passo() {
     const p = sessao.licao.passos[sessao.i];
-    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica })[p.tipo](p);
+    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar })[p.tipo](p);
   }
 
   function passoInfo(p) {
@@ -511,13 +523,138 @@
     });
   }
 
+  // ---------- Gravações (antes e depois) ----------
+  const bd = () => new Promise((ok, no) => {
+    const r = indexedDB.open("naipe-trilha", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("grav");
+    r.onsuccess = () => ok(r.result); r.onerror = () => no(r.error);
+  });
+  const gravLer = async chave => { try { const b = await bd(); return await new Promise(ok => { const r = b.transaction("grav").objectStore("grav").get(chave); r.onsuccess = () => ok(r.result || null); r.onerror = () => ok(null); }); } catch { return null; } };
+  const gravGuardar = async (chave, valor) => { const b = await bd(); return new Promise((ok, no) => { const t = b.transaction("grav", "readwrite"); t.objectStore("grav").put(valor, chave); t.oncomplete = ok; t.onerror = () => no(t.error); }); };
+  const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
+  const urls = [];
+  const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa" };
+
+  const rec = { mr: null, stream: null, partes: [], t: 0 };
+  function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
+
+  async function passoGravar(p) {
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-gravs"></div><div class="tr-mic"><p class="tr-ouvindo" id="tr-ouvindo"></p><button class="tr-rec" id="tr-rec" type="button"><i></i><span>Gravar</span></button><button class="link-acao" id="tr-pular" type="button">Agora não: pular</button></div>`, { botao: "Grave para continuar", pronto: false });
+    const caixa = $("#tr-gravs"), botao = $("#tr-rec"), txt = $("#tr-ouvindo");
+    async function mostrar() {
+      const primeira = p.comparar ? await gravLer("primeira") : null, minha = await gravLer(p.chave);
+      if (!$("#tr-gravs")) return;
+      caixa.innerHTML = (primeira ? htmlAudio(primeira, "Primeiro dia") : "") + (minha ? htmlAudio(minha, p.comparar ? "Hoje" : ROTULO_GRAV[p.chave]) : "");
+      if (minha) { botao.querySelector("span").textContent = p.chave === "primeira" ? "Gravado" : "Gravar de novo"; if (p.chave === "primeira") botao.hidden = true; liberar(p.comparar && primeira ? "Ouça as duas. Essa diferença é sua." : "Guardado. Você vai ouvir de novo no fim da unidade."); }
+    }
+    mostrar();
+    $("#tr-pular").addEventListener("click", () => { pararRec(); liberar("Tudo bem. Você pode gravar quando refizer esta lição.", false); });
+    botao.addEventListener("click", async () => {
+      if (rec.mr && rec.mr.state === "recording") return pararRec();
+      if (!window.MediaRecorder) { txt.textContent = "Este navegador não grava áudio."; return; }
+      try { rec.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }); }
+      catch { txt.textContent = "Não consegui usar o microfone. Libere o acesso nas permissões do navegador."; return; }
+      rec.partes = []; rec.mr = new MediaRecorder(rec.stream);
+      rec.mr.ondataavailable = e => { if (e.data.size) rec.partes.push(e.data); };
+      rec.mr.onstop = async () => {
+        botao.classList.remove("gravando");
+        const blob = new Blob(rec.partes, { type: rec.mr.mimeType || "audio/webm" });
+        if (blob.size < 800) { txt.textContent = "A gravação ficou vazia. Tente de novo."; return; }
+        try { await gravGuardar(p.chave, { blob, data: new Date().toISOString() }); txt.textContent = ""; mostrar(); }
+        catch { txt.textContent = "Não consegui guardar a gravação neste aparelho."; }
+      };
+      rec.mr.start(); botao.classList.add("gravando");
+      const limite = p.comparar ? 30 : 12; let seg = 0;
+      botao.querySelector("span").textContent = "Parar"; txt.textContent = `Gravando… 0 s de ${limite}`;
+      rec.t = setInterval(() => { seg++; txt.textContent = `Gravando… ${seg} s de ${limite}`; if (seg >= limite) pararRec(); }, 1000);
+    });
+  }
+
+  // ---------- Meu porquê e a música-sonho ----------
+  const PORQUES = ["Tocar na igreja", "Tocar para a família e os amigos", "Tocar numa banda ou numa roda", "Realizar um sonho antigo", "Voltar a tocar depois de anos"];
+  function renderPorque() {
+    limpar();
+    raiz().innerHTML = `<div class="tr-licao"><div class="tr-passo">
+        <p class="sobretitulo">Antes de começar</p>
+        <h2>Por que você quer tocar saxofone?</h2>
+        <p>Guardar o seu motivo ajuda nos dias em que o estudo pesa. Ele fica só neste aparelho.</p>
+        <div class="tr-opcoes" id="tr-porques">${PORQUES.map(t => `<button type="button" class="${prog.porque === t ? "certa" : ""}">${esc(t)}</button>`).join("")}</div>
+        <label class="tr-campo"><span>Ou escreva com as suas palavras</span><input id="tr-porque-livre" type="text" maxlength="80" value="${PORQUES.includes(prog.porque || "") ? "" : esc(prog.porque || "")}"></label>
+        <label class="tr-campo"><span>Qual música você sonha em tocar?</span><input id="tr-sonho" type="text" maxlength="60" placeholder="Ex.: Carinhoso" value="${esc(prog.sonho || "")}"></label>
+      </div><div class="tr-rodape"><button class="btn primario largo" id="tr-porque-ok" type="button">Guardar e começar</button><button class="link-acao" id="tr-porque-pular" type="button">Prefiro não dizer</button></div></div>`;
+    let escolhido = PORQUES.includes(prog.porque || "") ? prog.porque : "";
+    raiz().querySelectorAll("#tr-porques button").forEach(b => b.addEventListener("click", () => { escolhido = b.textContent; $("#tr-porque-livre").value = ""; raiz().querySelectorAll("#tr-porques button").forEach(x => x.classList.toggle("certa", x === b)); }));
+    $("#tr-porque-livre").addEventListener("input", () => { escolhido = ""; raiz().querySelectorAll("#tr-porques button").forEach(x => x.classList.remove("certa")); });
+    const fechar = () => { prog.porqueVisto = true; salvar(); location.hash === "#/trilha" ? renderTrilha() : (location.hash = "#/trilha"); };
+    $("#tr-porque-ok").addEventListener("click", () => { prog.porque = $("#tr-porque-livre").value.trim() || escolhido; prog.sonho = $("#tr-sonho").value.trim(); fechar(); });
+    $("#tr-porque-pular").addEventListener("click", fechar);
+    window.scrollTo(0, 0);
+  }
+
+  // ---------- Marco da unidade (imagem para compartilhar) ----------
+  const nomeAluno = () => { try { return (JSON.parse(localStorage.getItem("cma.v1") || "{}").nome || "").trim(); } catch { return ""; } };
+  const unidadeCompleta = n => UNIDADES[n].licoes.every(l => prog.feitas[l.id]);
+  function quebrar(c, texto, larg) {
+    const linhas = []; let atual = "";
+    texto.split(" ").forEach(pal => { const t = atual ? atual + " " + pal : pal; if (c.measureText(t).width > larg && atual) { linhas.push(atual); atual = pal; } else atual = t; });
+    if (atual) linhas.push(atual);
+    return linhas;
+  }
+  async function desenharMarco(n) {
+    try { await Promise.all([document.fonts.load('600 120px "Outfit"'), document.fonts.load('700 60px "Figtree"')]); } catch { /* usa a fonte do sistema */ }
+    const L = 1080, A = 1350, cv = document.createElement("canvas"); cv.width = L; cv.height = A;
+    const c = cv.getContext("2d"), corpo = '"Figtree", system-ui, sans-serif';
+    const g = c.createLinearGradient(0, 0, L, A); g.addColorStop(0, "#0b241b"); g.addColorStop(1, "#16483a"); c.fillStyle = g; c.fillRect(0, 0, L, A);
+    c.strokeStyle = "#d9a547"; c.lineWidth = 4; c.strokeRect(44, 44, L - 88, A - 88);
+    c.textAlign = "center"; c.fillStyle = "#f2c14e"; c.font = '600 128px "Outfit", ' + corpo; c.fillText("naipe", L / 2, 250);
+    c.fillStyle = "#d9a547"; c.font = "700 30px " + corpo; c.fillText(`M A R C O   ·   U N I D A D E   ${n + 1}`, L / 2, 400);
+    c.fillStyle = "#f4efe3"; c.font = "700 76px " + corpo;
+    const linhas = quebrar(c, UNIDADES[n].marco, L - 220); let y = 640 - (linhas.length - 1) * 48;
+    linhas.forEach(l => { c.fillText(l, L / 2, y); y += 96; });
+    c.fillStyle = "#d9a547"; c.fillRect(L / 2 - 60, y - 20, 120, 4);
+    const data = prog.marcos && prog.marcos[n] ? prog.marcos[n] : new Date().toISOString();
+    c.fillStyle = "#f4efe3"; c.font = "600 44px " + corpo; c.fillText(nomeAluno() || "Estudante de saxofone", L / 2, y + 80);
+    c.fillStyle = "#b9c4bd"; c.font = "500 34px " + corpo; c.fillText(dataCurta(data), L / 2, y + 134);
+    if (prog.sonho) { c.font = "500 34px " + corpo; quebrar(c, `A caminho de “${prog.sonho}”`, L - 240).forEach((l, i) => c.fillText(l, L / 2, y + 230 + i * 46)); }
+    c.fillStyle = "#d9a547"; c.font = "600 34px " + corpo; c.fillText("naipesax.com.br   ·   @naipesax", L / 2, A - 120);
+    return cv;
+  }
+  async function renderMarco(n) {
+    limpar();
+    if (!UNIDADES[n] || !unidadeCompleta(n)) return renderTrilha();
+    raiz().innerHTML = `<div class="tr-licao"><div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Voltar para a trilha">✕</a><span class="tr-conta">Meu marco · Unidade ${n + 1}</span></div><div class="tr-passo tr-marco"><p class="mudo" id="tr-marco-espera">Preparando a imagem…</p></div><div class="tr-rodape"><button class="btn primario largo" id="tr-marco-enviar" type="button" disabled>Compartilhar meu marco</button><a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    const cv = await desenharMarco(n);
+    if (!$("#tr-marco-espera")) return;
+    const blob = await new Promise(ok => cv.toBlob(ok, "image/png"));
+    const u = URL.createObjectURL(blob); urls.push(u);
+    raiz().querySelector(".tr-marco").innerHTML = `<img src="${u}" alt="${esc(UNIDADES[n].marco)}" width="1080" height="1350">`;
+    const b = $("#tr-marco-enviar"); b.disabled = false;
+    b.addEventListener("click", async () => {
+      const arq = new File([blob], `naipe-marco-unidade-${n + 1}.png`, { type: "image/png" });
+      try { if (navigator.canShare && navigator.canShare({ files: [arq] })) { await navigator.share({ files: [arq], text: `${UNIDADES[n].marco} #naipesax` }); return; } }
+      catch (e) { if (e && e.name === "AbortError") return; }
+      const a = document.createElement("a"); a.href = u; a.download = arq.name; document.body.appendChild(a); a.click(); a.remove();
+    });
+    window.scrollTo(0, 0);
+  }
+
+  async function htmlAntesDepois() {
+    const itens = [];
+    for (const k of ["primeira", "u1", "u2"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
+  }
+
   function concluir() {
     const { licao, erros } = sessao, primeira = !prog.feitas[licao.id];
     const ganho = primeira ? 10 + (erros === 0 ? 5 : 0) : 2;
-    prog.feitas[licao.id] = true; prog.pontos += ganho; salvar();
-    limpar();
-    const i = LICOES.indexOf(licao), prox = LICOES[i + 1];
-    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">Lição concluída</p><h2>${esc(licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${!prox || UNIDADES.some(u => u.licoes[0] === prox) ? `<p>Unidade completa. ${!prox ? "Você já lê e toca sete notas, com pausas e compassos." : "Você já lê e toca três notas com três figuras."}</p>` : ""}</div><div class="tr-rodape">${prox ? `<a class="btn primario largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    prog.feitas[licao.id] = true; prog.pontos += ganho;
+    const i = LICOES.indexOf(licao), prox = LICOES[i + 1], n = UNIDADES.findIndex(u => u.licoes.includes(licao));
+    const fechou = UNIDADES[n].licoes[UNIDADES[n].licoes.length - 1] === licao;
+    if (fechou) { prog.marcos = prog.marcos || {}; if (!prog.marcos[n]) prog.marcos[n] = new Date().toISOString(); }
+    salvar(); limpar();
+    const sonho = prog.sonho ? `<p class="mudo">Mais um passo em direção a “${esc(prog.sonho)}”.</p>` : "";
+    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">${fechou ? `Unidade ${n + 1} completa` : "Lição concluída"}</p><h2>${esc(fechou ? UNIDADES[n].marco : licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${sonho}</div><div class="tr-rodape">${fechou ? `<a class="btn primario largo" href="#/trilha/marco-${n}">Ver e compartilhar meu marco</a>` : ""}${prox ? `<a class="btn ${fechou ? "" : "primario "}largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
     sessao = null; window.scrollTo(0, 0);
   }
 
