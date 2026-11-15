@@ -1753,6 +1753,7 @@
     const copia = { ...estado, timer: { inicio: null, acumulado: 0 }, ultimoBackup: hojeISO() };
     delete copia.backupAdiado;
     const pacote = { app: "CMA", versao: 1, criadoEm: new Date().toISOString(), dados: copia };
+    try { pacote.trilha = JSON.parse(localStorage.getItem("naipe.trilha.v1") || "null"); } catch { /* sem trilha */ }
     const nome = `CMA-backup-${(estado.nome || "aluno").normalize("NFD").replace(/[^\w]/g, "")}-${hojeISO()}.json`;
     const texto = JSON.stringify(pacote, null, 2);
     let feito = false;
@@ -1793,6 +1794,7 @@
     try {
       const bruto = JSON.parse(await arquivo.text());
       dados = bruto && bruto.app === "CMA" && bruto.dados ? bruto.dados : bruto; // aceita também o formato antigo
+      if (bruto && bruto.trilha && typeof bruto.trilha === "object") var trilhaDoArquivo = bruto.trilha;
       if (!dados || typeof dados !== "object" || !Array.isArray(dados.sessoes)) throw new Error("formato");
     } catch {
       avisar("Este arquivo não é um backup do CMA.");
@@ -1803,6 +1805,7 @@
     const liberado = estado.desbloqueado;
     estado = { ...estadoPadrao(), ...dados };
     if (liberado) estado.desbloqueado = true; // nunca perde o acesso já liberado
+    if (typeof trilhaDoArquivo !== "undefined") { try { localStorage.setItem("naipe.trilha.v1", JSON.stringify(trilhaDoArquivo)); } catch { /* segue */ } }
     salvar(); aplicarTema(); renderTela(); renderTimer();
     avisar("Backup restaurado.");
   });

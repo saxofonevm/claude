@@ -1597,3 +1597,8 @@ a.indicacao:active { transform: scale(.99); }
 .tr-fim .tr-passo { align-items: center; text-align: center; justify-content: center; }
 .tr-selo { width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center; font-size: 2.2rem; font-weight: 800; background: var(--latao); color: var(--on-brass); }
 .tr-ganho { font-weight: 700; color: var(--brass-soft); }
+.tr-pausa { fill: #1c1c1c; } .tr-pausa.ativa { fill: #b5771c; }
+.tr-dedos svg { width: 40px; height: 170px; }
+.tr-dedos figcaption { max-width: 9ch; text-align: center; line-height: 1.25; }
+.tr-ritmo-linha .silencio { background: transparent; border-style: dashed; color: var(--muted); }
+.tr-paga { margin-bottom: 10px; }
