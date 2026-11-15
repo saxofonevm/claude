@@ -367,7 +367,7 @@
 
   function lerRota() {
     const [, tela = "inicio", id = null] = location.hash.replace(/^#/, "").split("/");
-    const validas = ["inicio", "raizes", "raiz", "ex", "tocar", "metodos", "metodo", "diario", "ajustes"];
+    const validas = ["inicio", "raizes", "raiz", "ex", "tocar", "metodos", "metodo", "diario", "ajustes", "trilha"];
     rotaAtual = validas.includes(tela) ? { tela, id: id && decodeURIComponent(id) } : { tela: "inicio", id: null };
     if (rotaAtual.tela === "raiz" && !RAIZ[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "ex" && !EXERCICIO[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
@@ -394,6 +394,7 @@
       case "metodo": renderMetodo(rotaAtual.id); break;
       case "diario": renderDiario(); break;
       case "ajustes": renderAjustes(); break;
+      case "trilha": if (window.NaipeTrilha) window.NaipeTrilha.render(rotaAtual.id); break;
     }
   }
 
