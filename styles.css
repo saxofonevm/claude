@@ -1714,3 +1714,17 @@ a.indicacao:active { transform: scale(.99); }
 .tr-pulso-liga.ativo { background: var(--latao); color: var(--on-brass); border-color: transparent; }
 .tr-pulso-nota { margin-left: auto; text-align: right; }
 .tr-sax-des .mao { font: 600 8px var(--f-body); fill: var(--muted); }
+
+/* ---------- Trilha: unidades recolhidas, semicolcheias e linhas suplementares ---------- */
+details.tr-unidade { display: block; }
+details.tr-unidade > summary { list-style: none; cursor: pointer; }
+details.tr-unidade > summary::-webkit-details-marker { display: none; }
+details.tr-unidade[open] > summary { margin-bottom: 14px; }
+details.tr-unidade > .tr-ver-marco { margin-top: 12px; }
+.tr-seta { position: absolute; right: 14px; top: 10px; font-size: 1.3rem; line-height: 1; color: rgb(255 255 255 / .85); transition: transform .2s; }
+details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
+.tr-unidade.trancada .tr-faixa { filter: grayscale(.85) brightness(.7); }
+.tr-supl { stroke: #2a2a2a; stroke-width: 1.2; }
+.trave { stroke: #1c1c1c; stroke-width: 4; }
+.trave.ativa { stroke: #b5771c; }
+.tr-sax-des rect.chave.fechada { fill: #fff; stroke: #fff; }
