@@ -1,5 +1,5 @@
 /*
- * Naipe — Trilha "Aprender" (protótipo da Unidade 1)
+ * Naipe — Teoria (as 16 unidades de leitura) e Estudo (plano de estudos com o professor virtual)
  * Lições curtas em passos: ler, ritmo, ouvir e tocar (o app escuta pelo microfone).
  * Fica em #/trilha e #/trilha/<lição>. O progresso é salvo em localStorage "naipe.trilha.v1".
  */
@@ -7,7 +7,7 @@
   "use strict";
 
   // ---------- Versão de teste ----------
-  // naipesax.com.br/?beta=1 liga a nova organização (aba Aprender); ?beta=0 desliga.
+  // naipesax.com.br/?beta=1 liga a nova organização (abas Teoria e Estudo); ?beta=0 desliga.
   try {
     const q = new URLSearchParams(location.search).get("beta");
     if (q === "1") localStorage.setItem("naipe.beta", "1");
@@ -25,7 +25,11 @@
   if (BETA) {
     document.documentElement.classList.add("beta");
     const aba = document.querySelector('.abas a[data-aba="metodos"]');
-    if (aba) { aba.href = "#/trilha"; aba.dataset.aba = "trilha"; aba.innerHTML = '<span data-icone="nota"></span>Aprender'; const pil = document.querySelector('.abas a[data-aba="raizes"]'); if (pil) pil.parentNode.insertBefore(aba, pil); }
+    if (aba) {
+      aba.href = "#/trilha"; aba.dataset.aba = "trilha"; aba.innerHTML = '<span data-icone="nota"></span>Teoria';
+      const est = document.createElement("a"); est.href = "#/estudo"; est.dataset.aba = "estudo"; est.innerHTML = '<span data-icone="calendario"></span>Estudo';
+      const pil = document.querySelector('.abas a[data-aba="raizes"]'); if (pil) { pil.parentNode.insertBefore(aba, pil); pil.parentNode.insertBefore(est, pil); }
+    }
     const cab = document.querySelector("#tela-raizes .cabecalho");
     if (cab) cab.insertAdjacentHTML("beforeend", '<a class="btn tr-biblioteca" href="#/metodos"><span data-icone="livro"></span>Biblioteca de métodos</a>');
   }
@@ -1156,7 +1160,7 @@
       ],
     },
     {
-      titulo: "Formatura", marco: "Concluí a trilha Aprender do Naipe: leio partitura e toco com expressão.", licoes: [
+      titulo: "Formatura", marco: "Concluí a Teoria do Naipe: leio partitura e toco com expressão.", licoes: [
         {
           id: "revisao-leitura", titulo: "Revisão: leitura", resumo: "Tudo o que a partitura diz",
           passos: [
@@ -1196,7 +1200,7 @@
             { tipo: "info", titulo: "Formatura", texto: ["Oito compassos com tudo o que a trilha ensinou: armadura, síncope, tercina, staccato, acento e dinâmica.", "Ouça com o pulso. Depois, toque como quem conta uma história."], melodia: true },
             { tipo: "musica", titulo: "Toque junto com o pulso", texto: "O app confere as notas. A expressão é sua." },
             { tipo: "gravar", chave: "u16", comparar: true, titulo: "O antes e o depois", texto: "Grave a sua “Formatura” e ouça ao lado do som do primeiro dia. Esse é o caminho que você fez." },
-            { tipo: "info", titulo: "E agora?", texto: ["Você terminou a trilha. A partir daqui, o estudo continua nos Pilares: as Dicas de Naipe e os métodos aprofundam cada assunto, do som ao ornamento.", "Com o que você já lê e toca, eles estão ao seu alcance."], link: { rotulo: "Conhecer os Pilares", href: "#/raizes" } },
+            { tipo: "info", titulo: "E agora?", texto: ["Você terminou a Teoria. A partir daqui, o estudo continua na aba Estudo: um plano com os métodos da biblioteca, em que o professor virtual escolhe o exercício e o andamento de cada sessão.", "Com o que você já lê e toca, os métodos estão ao seu alcance."], link: { rotulo: "Começar o plano de estudos", href: "#/estudo" } },
           ],
         },
       ],
@@ -1485,41 +1489,63 @@
     }).join("")}</ol>`;
   }
 
-  function renderTrilha() {
-    if (!prog.porqueVisto && !REVISAR) return renderPorque();
+  // Teoria (#/trilha) reúne as 16 unidades de leitura; Estudo (#/estudo) reúne o plano de estudos.
+  const ehPlano = licao => !!(licao && licao.sessao);
+  const baseDe = licao => (ehPlano(licao) ? "#/estudo" : "#/trilha");
+  const abaDe = id => { if (!id) return null; const m = /^marco-(\d+)$/.exec(id); if (m) return UNIDADES[Number(m[1])] && UNIDADES[Number(m[1])].plano ? "estudo" : "trilha"; return ehPlano(LICOES.find(l => l.id === id)) ? "estudo" : "trilha"; };
+
+  function renderTrilha(modo = "teoria") {
+    const estudo = modo === "estudo";
+    if (!prog.porqueVisto && !REVISAR && !estudo) return renderPorque();
     limpar(); sessao = null;
     const primeiraAberta = lista => { const l = lista.find(x => !prog.feitas[x.id]); return l ? LICOES.indexOf(l) : -1; };
     const atual = primeiraAberta(PRINCIPAIS);
     const unidades = UNIDADES.map((u, n) => {
-      if (u.pilar) return "";
+      if (u.pilar || !!u.plano !== estudo) return "";
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
       const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
       const unAtual = atual < 0 ? -1 : UNIDADES.findIndex(x => x.licoes.includes(LICOES[atual]));
       const livreParaQuemToca = u.plano && prog.perfil === "toca";
       const completa = unidadeCompleta(n), futura = !REVISAR && unAtual >= 0 && n > unAtual && !(livreParaQuemToca && (n === UNIDADES.indexOf(UNIDADES_PLANO[0]) || unidadeCompleta(n - 1)));
-      const estado = completa ? "Completa · toque para rever" : futura ? `Abre ao concluir a Unidade ${n}` : `${feitas} de ${u.licoes.length} lições`;
-      const faixa = `<div class="tr-faixa"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : u.plano ? " · Plano de estudos" : ""}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
+      const primeiraDoPlano = n === UNIDADES.indexOf(UNIDADES_PLANO[0]);
+      const estado = completa ? "Completa · toque para rever" : futura ? (u.plano ? (primeiraDoPlano ? "Abre ao concluir a Teoria" : "Abre ao concluir a semana anterior") : `Abre ao concluir a Unidade ${n}`) : `${feitas} de ${u.licoes.length} ${u.plano ? "sessões" : "lições"}`;
+      const faixa = `<div class="tr-faixa"><div><span class="rotulo">${u.plano ? `Mês ${Math.floor(UNIDADES_PLANO.indexOf(u) / 4) + 1}` : `Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}`}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
       if (futura) return `<section class="tr-unidade trancada" style="--u1:${cor[0]};--u2:${cor[1]}">${faixa}</section>`;
-      return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}"${(n === unAtual && !(prog.perfil === "toca" && !u.plano)) || (livreParaQuemToca && !futura && !completa && !UNIDADES_PLANO.slice(0, UNIDADES_PLANO.indexOf(u)).some(x => !unidadeCompleta(UNIDADES.indexOf(x)))) ? " open" : ""}>
+      return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}">
           <summary>${faixa}</summary>
           ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo. A Unidade 1 é livre para você experimentar.</p>` : ""}
           ${u.plano && u.texto ? `<p class="mudo tr-semana-txt">${esc(u.texto)}</p>` : ""}
           ${htmlCaminho(u, n, livreParaQuemToca ? primeiraAberta(u.licoes) : atual, paga)}
-          ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
+          ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco ${u.plano ? "desta semana" : "desta unidade"}</a>` : ""}
         </details>`;
     }).join("");
+    const modoTxt = REVISAR ? "modo de revisão do professor" : "versão de teste";
+    if (estudo) {
+      const pl = estadoPlano(), teoriaFeita = PRINCIPAIS.filter(l => !l.sessao).every(l => prog.feitas[l.id]), bloqueado = !REVISAR && prog.perfil !== "toca" && !teoriaFeita;
+      raiz().innerHTML = `
+      <header class="cabecalho">
+        <p class="sobretitulo">Estudo · ${modoTxt}</p>
+        <h1>Plano de estudos</h1>
+        <p class="mudo">Sessões de 30 a 40 minutos com os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento.</p>
+      </header>
+      <div class="corpo tr-corpo">
+        ${bloqueado ? `<section class="cartao tr-porque"><span class="rotulo">Quando começar</span><p class="mudo">O plano abre quando você conclui a Teoria. Se você já lê partitura e toca, pode começar agora.</p><button class="btn" id="tr-ja-toco" type="button">Já toco, quero começar o plano</button></section>` : pl.n ? `<section class="cartao tr-porque"><span class="rotulo">Meu plano</span><p class="mudo"><strong>${pl.n}</strong> ${pl.n === 1 ? "sessão feita" : "sessões feitas"}. O tempo de cada sessão fica no seu Diário.</p></section>` : ""}
+        ${unidades}
+      </div>`;
+      const jt = $("#tr-ja-toco"); if (jt) jt.addEventListener("click", () => { prog.perfil = "toca"; salvar(); renderTrilha("estudo"); });
+      return;
+    }
     raiz().innerHTML = `
       <header class="cabecalho">
-        ${BETA ? "" : `<a class="btn-voltar" href="#/inicio">‹ Início</a>`}
-        <p class="sobretitulo">Aprender · ${REVISAR ? "modo de revisão do professor" : "versão de teste"}</p>
+        <p class="sobretitulo">Teoria · ${modoTxt}</p>
         <h1>Do zero à formatura</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
       <div class="corpo tr-corpo">
-        <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${PRINCIPAIS.filter(l => prog.feitas[l.id]).length} de ${PRINCIPAIS.length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
+        <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${PRINCIPAIS.filter(l => !l.sessao && prog.feitas[l.id]).length} de ${PRINCIPAIS.filter(l => !l.sessao).length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
         ${unidades}
         <div id="tr-antes"></div>
-        <section class="cartao tr-proximas"><span class="rotulo">Depois da trilha</span><p class="mudo">Ao concluir as 16 unidades, o estudo continua nos Pilares, com as Dicas de Naipe e os métodos.</p><a class="link-acao" href="#/raizes">Ver os Pilares</a></section>
+        <section class="cartao tr-proximas"><span class="rotulo">Depois da Teoria</span><p class="mudo">Ao concluir as 16 unidades, siga para a aba Estudo: um plano de estudos com os métodos, guiado pelo professor virtual.</p><a class="link-acao" href="#/estudo">Ver o plano de estudos</a></section>
         ${prog.pontos ? `<p class="mudo tr-pontos">${prog.pontos} pontos de estudo nesta trilha</p>` : ""}
       </div>`;
     $("#tr-editar-porque").addEventListener("click", renderPorque);
@@ -1535,10 +1561,10 @@
     const lista = prog.perfil === "toca" ? PLANO_LICOES : PRINCIPAIS, prox = lista.find(l => !prog.feitas[l.id]);
     if (!prog.perfil) {
       el.innerHTML = `<section class="cartao tr-entrada"><span class="rotulo">Para começar</span><h2>Você já toca saxofone?</h2><div class="tr-entrada-ops"><button type="button" data-perfil="zero"><strong>Estou começando do zero</strong><small>Aprender a ler e tocar, passo a passo</small></button><button type="button" data-perfil="toca"><strong>Já toco</strong><small>Seguir um plano de estudos com os métodos</small></button></div></section>`;
-      el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { prog.perfil = b.dataset.perfil; salvar(); if (prog.perfil === "zero") location.hash = "#/trilha"; else cartaoInicio(); }));
+      el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { prog.perfil = b.dataset.perfil; salvar(); location.hash = prog.perfil === "zero" ? "#/trilha" : "#/estudo"; }));
     } else if (prox && (prog.perfil === "zero" || prog.perfil === "toca" || Object.keys(prog.feitas).length)) {
       const i = LICOES.indexOf(prox), n = UNIDADES.findIndex(u => u.licoes.includes(prox)), paga = n > 0 && !completo();
-      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">${prox.sessao ? `Plano de estudos · Semana ${prox.sessao.semana + 1}` : `Aprender · lição ${i + 1} de ${PRINCIPAIS.length - PLANO_LICOES.length}`}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
+      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">${prox.sessao ? `Estudo · Semana ${prox.sessao.semana + 1}` : `Teoria · lição ${i + 1} de ${PRINCIPAIS.length - PLANO_LICOES.length}`}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
     } else el.innerHTML = "";
   }
 
@@ -1547,7 +1573,7 @@
     if (m) return renderMarco(Number(m[1]));
     const licao = LICOES.find(l => l.id === id);
     if (!licao) return renderTrilha();
-    if (!REVISAR && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = "#/trilha"; return; }
+    if (!REVISAR && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = baseDe(licao); return; }
     limpar();
     sessao = { licao, i: 0, erros: 0 };
     if (licao.sessao) gerarSessao(licao);
@@ -1558,7 +1584,7 @@
     const { licao, i } = sessao;
     raiz().innerHTML = `
       <div class="tr-licao">
-        <div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Sair da lição">✕</a><div class="tr-barra-prog"><span style="width:${Math.round(i / licao.passos.length * 100)}%"></span></div><span class="tr-conta">${i + 1}/${licao.passos.length}</span></div>
+        <div class="tr-topo"><a class="tr-fechar" href="${baseDe(licao)}" aria-label="Sair da lição">✕</a><div class="tr-barra-prog"><span style="width:${Math.round(i / licao.passos.length * 100)}%"></span></div><span class="tr-conta">${i + 1}/${licao.passos.length}</span></div>
         <div class="tr-passo">${miolo}</div>
         <div class="tr-rodape"><p class="tr-retorno" id="tr-retorno" aria-live="polite"></p><button class="btn primario largo" id="tr-avancar" type="button" ${pronto || REVISAR ? "" : "disabled"}>${pronto || !REVISAR ? botao : "Continuar (revisão)"}</button></div>
       </div>`;
@@ -2092,7 +2118,7 @@
   async function renderMarco(n) {
     limpar();
     if (!UNIDADES[n] || !unidadeCompleta(n)) return renderTrilha();
-    raiz().innerHTML = `<div class="tr-licao"><div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Voltar para a trilha">✕</a><span class="tr-conta">Meu marco · ${UNIDADES[n].pilar ? esc(UNIDADES[n].pilar) : `Unidade ${n + 1}`}</span></div><div class="tr-passo tr-marco"><p class="mudo" id="tr-marco-espera">Preparando a imagem…</p></div><div class="tr-rodape"><button class="btn primario largo" id="tr-marco-enviar" type="button" disabled>Compartilhar meu marco</button><a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    raiz().innerHTML = `<div class="tr-licao"><div class="tr-topo"><a class="tr-fechar" href="${UNIDADES[n].plano ? "#/estudo" : "#/trilha"}" aria-label="Voltar">✕</a><span class="tr-conta">Meu marco · ${UNIDADES[n].pilar ? esc(UNIDADES[n].pilar) : `Unidade ${n + 1}`}</span></div><div class="tr-passo tr-marco"><p class="mudo" id="tr-marco-espera">Preparando a imagem…</p></div><div class="tr-rodape"><button class="btn primario largo" id="tr-marco-enviar" type="button" disabled>Compartilhar meu marco</button><a class="btn largo" href="${UNIDADES[n].plano ? "#/estudo" : "#/trilha"}">Voltar</a></div></div>`;
     const cv = await desenharMarco(n);
     if (!$("#tr-marco-espera")) return;
     const blob = await new Promise(ok => cv.toBlob(ok, "image/png"));
@@ -2116,8 +2142,8 @@
 
   function concluir() {
     if (REVISAR) { // revisão: não mexe no progresso de ninguém
-      const prox = LICOES[LICOES.indexOf(sessao.licao) + 1], t = sessao.licao.titulo; limpar(); sessao = null;
-      raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><p class="sobretitulo">Fim da lição · revisão</p><h2>${esc(t)}</h2><p class="mudo">No modo de revisão o progresso não é salvo.</p></div><div class="tr-rodape">${prox ? `<a class="btn primario largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+      const lr = sessao.licao, prox = LICOES[LICOES.indexOf(lr) + 1], t = lr.titulo; limpar(); sessao = null;
+      raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><p class="sobretitulo">Fim da lição · revisão</p><h2>${esc(t)}</h2><p class="mudo">No modo de revisão o progresso não é salvo.</p></div><div class="tr-rodape">${prox ? `<a class="btn primario largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="${baseDe(lr)}">Voltar</a></div></div>`;
       window.scrollTo(0, 0); return;
     }
     const { licao, erros } = sessao, primeira = !prog.feitas[licao.id];
@@ -2128,10 +2154,10 @@
     if (fechou) { prog.marcos = prog.marcos || {}; if (!prog.marcos[n]) prog.marcos[n] = new Date().toISOString(); }
     salvar(); limpar();
     const sonho = prog.sonho ? `<p class="mudo">Mais um passo em direção a “${esc(prog.sonho)}”.</p>` : "";
-    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">${fechou ? (UNIDADES[n].pilar ? `${esc(UNIDADES[n].pilar)} · unidade completa` : `Unidade ${n + 1} completa`) : "Lição concluída"}</p><h2>${esc(fechou ? UNIDADES[n].marco : licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${sonho}</div><div class="tr-rodape">${fechou ? `<a class="btn primario largo" href="#/trilha/marco-${n}">Ver e compartilhar meu marco</a>` : ""}${prox ? `<a class="btn ${fechou ? "" : "primario "}largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">${fechou ? (UNIDADES[n].pilar ? `${esc(UNIDADES[n].pilar)} · unidade completa` : `Unidade ${n + 1} completa`) : "Lição concluída"}</p><h2>${esc(fechou ? UNIDADES[n].marco : licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${sonho}</div><div class="tr-rodape">${fechou ? `<a class="btn primario largo" href="#/trilha/marco-${n}">Ver e compartilhar meu marco</a>` : ""}${prox ? `<a class="btn ${fechou ? "" : "primario "}largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="${baseDe(licao)}">${ehPlano(licao) ? "Voltar para o plano" : "Voltar para a Teoria"}</a></div></div>`;
     sessao = null; window.scrollTo(0, 0);
   }
 
-  window.addEventListener("hashchange", () => { if (!/^#\/trilha/.test(location.hash)) limpar(); });
-  window.NaipeTrilha = { render: id => (id ? renderLicao(id) : renderTrilha()), inicio: cartaoInicio };
+  window.addEventListener("hashchange", () => { if (!/^#\/(trilha|estudo)/.test(location.hash)) limpar(); });
+  window.NaipeTrilha = { render: (id, modo) => (id ? renderLicao(id) : renderTrilha(modo)), inicio: cartaoInicio, aba: abaDe };
 })();

@@ -367,7 +367,7 @@
 
   function lerRota() {
     const [, tela = "inicio", id = null] = location.hash.replace(/^#/, "").split("/");
-    const validas = ["inicio", "raizes", "raiz", "ex", "tocar", "metodos", "metodo", "diario", "ajustes", "trilha"];
+    const validas = ["inicio", "raizes", "raiz", "ex", "tocar", "metodos", "metodo", "diario", "ajustes", "trilha", "estudo"];
     rotaAtual = validas.includes(tela) ? { tela, id: id && decodeURIComponent(id) } : { tela: "inicio", id: null };
     if (rotaAtual.tela === "raiz" && !RAIZ[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
     if (rotaAtual.tela === "ex" && !EXERCICIO[rotaAtual.id]) rotaAtual = { tela: "raizes", id: null };
@@ -376,11 +376,12 @@
   }
 
   function mostrarTela() {
-    const telaId = { ex: "exercicio", metodo: "metodos" }[rotaAtual.tela] || rotaAtual.tela;
+    const telaId = { ex: "exercicio", metodo: "metodos", estudo: "trilha" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === `tela-${telaId}`));
     const deUmPilar = rotaAtual.tela === "metodo" && typeof pilha !== "undefined" && /^#\/(raiz|ex)\//.test(pilha[pilha.length - 2] || "");
     const beta = !!window.NAIPE_BETA; // na versão de teste, Métodos mora dentro de Pilares
-    const aba = { raiz: "raizes", ex: "raizes", metodo: deUmPilar || beta ? "raizes" : "metodos", metodos: beta ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
+    const abaTrilha = rotaAtual.tela === "trilha" && window.NaipeTrilha && window.NaipeTrilha.aba ? window.NaipeTrilha.aba(rotaAtual.id) : null;
+    const aba = abaTrilha || { raiz: "raizes", ex: "raizes", metodo: deUmPilar || beta ? "raizes" : "metodos", metodos: beta ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".abas a").forEach(a => a.classList.toggle("ativa", a.dataset.aba === aba));
   }
 
@@ -396,6 +397,7 @@
       case "diario": renderDiario(); break;
       case "ajustes": renderAjustes(); break;
       case "trilha": if (window.NaipeTrilha) window.NaipeTrilha.render(rotaAtual.id); break;
+      case "estudo": if (window.NaipeTrilha) window.NaipeTrilha.render(null, "estudo"); break;
     }
   }
 
