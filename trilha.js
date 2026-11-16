@@ -106,17 +106,41 @@
       ["demetrio", "Lição 1, Ex. 1–3 · pág. 4–5", "Notas curtas, notas tenutas e o som senoidal. Respire com calma entre os exercícios.", null],
       ["marienthal", "Parte 1 · pág. 1", "Notas longas cromáticas. Uma nota por respiração, o mais estável possível.", [60, 72]],
       ["demetrio", "Lições 2–3 · pág. 6–7", "Intervalos e exercícios para a mão direita, devagar e ligados.", null],
+      ["demetrio", "Lição 10 · pág. 21–22", "Notas graves: maxilar solto, garganta aberta, ar quente.", null],
+      ["sonoridade-tv", "Seções A–E", "Sonoridade em intervalos, agora com crescendo e diminuendo em cada nota longa.", [60, 60]],
+      ["demetrio", "Lição 12 · pág. 27", "Agudos: ar rápido, sem morder a boquilha.", null],
+      ["marienthal", "Parte 1 · pág. 1", "Notas longas cromáticas, cada uma em pianíssimo e depois em forte.", [60, 72]],
     ] },
     tecnica: { nome: "Técnica", dica: "Divida o exercício em grupos de quatro notas e repita cada grupo três vezes antes de juntar.", itens: [
       ["klose25", "Ex. 1 · pág. 2", "Exercício diário de mecanismo. Dedos perto das chaves, colcheias iguais.", [60, 92]],
-      ["klose25", "Ex. 2 · pág. 3", "Exercício diário de mecanismo. Comece ligado, depois articule.", [60, 92]],
-      ["klose25", "Ex. 3 · pág. 4", "Exercício diário de mecanismo.", [60, 92]],
-      ["klose25", "Ex. 4 · pág. 5", "Exercício diário de mecanismo.", [60, 96]],
-      ["klose25", "Ex. 5 · pág. 6", "Exercício diário de mecanismo.", [60, 96]],
+      ["klose25", "Ex. 2 · pág. 2", "Exercício diário de mecanismo.", [60, 92]],
+      ["klose25", "Ex. 3 · pág. 3", "Exercício diário de mecanismo.", [60, 92]],
+      ["klose25", "Ex. 4 · pág. 4", "Exercício diário de mecanismo.", [60, 96]],
+      ["klose25", "Ex. 5 · pág. 5", "Exercício diário de mecanismo.", [60, 96]],
       ["marienthal", "Parte 2 · pág. 2–5", "Exercício cromático. Uma linha por vez, sem pular a respiração.", [80, 120]],
-      ["klose25", "Ex. 6 · pág. 7", "Exercício diário de mecanismo.", [60, 100]],
-      ["klose25", "Ex. 7 · pág. 8", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 6 · pág. 6", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 7 · pág. 7", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 8 · pág. 8", "Exercício diário de mecanismo.", [60, 100]],
       ["rubank-int", "Daily Studies · pág. 8", "Estudos diários para a técnica.", [60, 100]],
+      ["klose25", "Ex. 9 · pág. 9", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 10 · pág. 10", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 11 · pág. 11", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 12 · pág. 12", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 13 · pág. 13", "Exercício diário de mecanismo.", [60, 100]],
+      ["rubank-int", "Daily Technical Study · pág. 19", "Estudo técnico diário.", [60, 104]],
+      ["klose25", "Ex. 14 · pág. 14", "Exercício diário de mecanismo.", [60, 104]],
+      ["klose25", "Ex. 15 · pág. 15", "Exercício diário de mecanismo.", [60, 104]],
+      ["klose25", "Ex. 16 · pág. 16", "Exercício diário de mecanismo.", [60, 104]],
+      ["klose25", "Ex. 17 · pág. 17", "Exercício diário de mecanismo.", [60, 104]],
+      ["klose25", "Ex. 18 · pág. 18", "Exercício diário de mecanismo.", [60, 104]],
+      ["klose25", "Ex. 19 · pág. 19", "Exercício diário de mecanismo.", [60, 104]],
+      ["rubank-int", "4 Etudes for the Development of Technic · pág. 42", "Quatro estudos de técnica. Um por sessão.", [60, 104]],
+      ["klose25", "Ex. 20 · pág. 20", "Exercício diário de mecanismo.", [60, 108]],
+      ["klose25", "Ex. 21 · pág. 21", "Exercício diário de mecanismo.", [60, 108]],
+      ["klose25", "Ex. 22 · pág. 22", "Exercício diário de mecanismo.", [60, 108]],
+      ["klose25", "Ex. 23 · pág. 23", "Exercício diário de mecanismo.", [60, 108]],
+      ["klose25", "Ex. 24 · pág. 24", "Exercício diário de mecanismo.", [60, 108]],
+      ["klose25", "Ex. 25 · pág. 25", "Exercício diário de mecanismo.", [60, 108]],
     ] },
     escalas: { nome: "Escalas e arpejos", dica: "Toque primeiro em semínimas, depois em colcheias. Escala bonita é escala igual.", itens: [
       ["alfabeto", "Ex. 48 · pág. 15", "Sol maior: escala, arpejo e acorde de 7ª de dominante.", [60, 100]],
@@ -126,6 +150,11 @@
       ["alfabeto", "Ex. 92 · pág. 25", "Lá maior: escala, arpejo e acorde de 7ª de dominante. Tom novo: confira a armadura.", [56, 96]],
       ["alfabeto", "Ex. 94 · pág. 26", "Mi♭ maior: escala, arpejo e acorde de 7ª de dominante. Tom novo: confira a armadura.", [56, 96]],
       ["alfabeto", "Ex. 82–84 · pág. 23", "A escala cromática: um dia ligada, outro dia destacada.", [60, 100]],
+      ["rubank-int", "Major Scales on Steps of the Diatonic Scale · pág. 44", "Escalas maiores a partir de cada grau.", [60, 100]],
+      ["rubank-int", "Major Chords and Scales on Steps · pág. 47", "Acordes e escalas sobre os graus. Ouça o acorde antes de tocar a escala.", [60, 100]],
+      ["rubank-int", "Minor Key Studies · pág. 24", "Escalas menores: natural, harmônica e melódica.", [56, 92]],
+      ["rubank-int", "Chromatic Studies · pág. 29", "Estudos cromáticos.", [60, 104]],
+      ["marienthal", "Parte 3 · pág. 6–7", "Escalas maiores em todos os tons, subindo e descendo a extensão toda.", [80, 132]],
     ] },
     leitura: { nome: "Leitura", dica: "Antes de tocar, bata o ritmo e diga o nome das notas da primeira linha.", itens: [
       ["dantas", "pág. 3", "Lições progressivas. Leia a página inteira devagar, sem parar nos erros.", [60, 80]],
@@ -134,8 +163,22 @@
       ["dantas", "pág. 6", "Lições progressivas.", [60, 84]],
       ["dantas", "pág. 7", "Lições progressivas.", [60, 88]],
       ["dantas", "pág. 8", "Lições progressivas.", [60, 88]],
-      ["dantas", "pág. 9", "Lições progressivas.", [60, 88]],
+      ["dantas", "pág. 9", "Lições progressivas.", [60, 92]],
       ["dantas", "pág. 10", "Lições progressivas.", [60, 92]],
+      ["dantas", "pág. 11", "Lições progressivas.", [60, 96]],
+      ["dantas", "pág. 12", "Lições progressivas.", [60, 96]],
+      ["dantas", "pág. 13", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 14", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 15", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 16", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 17", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 18", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 19", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 20", "Lições progressivas.", [60, 100]],
+      ["dantas", "pág. 21–22", "Duetos: toque a primeira voz. Se tiver companhia, troquem de voz.", [60, 92]],
+      ["dantas", "pág. 23–24", "Duetos: agora a segunda voz.", [60, 92]],
+      ["dantas", "pág. 25–26", "Trios: escolha uma voz por sessão.", [60, 92]],
+      ["dantas", "pág. 27–28", "Trios: escolha uma voz por sessão.", [60, 92]],
     ] },
     ritmo: { nome: "Ritmo", dica: "Bata e conte em voz alta antes de tocar. Se o ritmo não sai batido, não vai sair tocado.", itens: [
       ["rubank-int", "Rhythmic Review · pág. 3", "Revisão rítmica. Conte em voz alta.", [60, 88]],
@@ -145,6 +188,13 @@
       ["rubank-int", "Triplet Studies · pág. 22", "Estudos de tercinas.", [56, 84]],
       ["rubank-int", "6/8 Rhythm · pág. 15", "O compasso composto: conte as seis colcheias, sinta dois tempos.", [50, 72]],
       ["rubank-int", "Syncopation Etude · pág. 23", "Estudo sincopado.", [60, 88]],
+      ["alfabeto", "Ex. 106–112 · pág. 30–31", "Tercinas: três notas iguais por tempo.", [56, 88]],
+      ["alfabeto", "Ex. 114–117 · pág. 32", "Semicolcheias em grupos de quatro.", [56, 88]],
+      ["alfabeto", "Ex. 118–124 · pág. 33", "Figuras rítmicas com semicolcheias.", [56, 88]],
+      ["alfabeto", "Ex. 126–128 · pág. 34", "Compassos compostos: 6/8, 9/8 e 12/8.", [50, 76]],
+      ["alfabeto", "Ex. 129–131 · pág. 35", "A síncope e o 6/8.", [56, 88]],
+      ["dorsey", "Ritmos sincopados · pág. 39–41", "Estudos em ritmos sincopados. Conte as colcheias em voz alta.", [56, 88]],
+      ["dorsey", "Ritmos sincopados · pág. 42–45", "Estudos em ritmos sincopados, continuação.", [56, 92]],
     ] },
     articulacao: { nome: "Articulação", dica: "Toque primeiro só com o ar, tudo ligado. Depois acrescente a língua do jeito escrito.", itens: [
       ["pronuncias", "Todo o material", "As sílabas da articulação: RA, TU, TURI, FU-TURI, FUDU e TU-RURURU.", [60, 80]],
@@ -154,6 +204,10 @@
       ["rubank-int", "Legato Duet · pág. 9", "Legato: uma linha só, sem buracos entre as notas.", [60, 84]],
       ["rubank-int", "Staccato Studies · pág. 10", "Staccato leve, com o ar sempre pronto.", [60, 88]],
       ["alfabeto", "Ex. 75–78 · pág. 21", "Détaché: notas separadas e iguais.", [60, 92]],
+      ["rubank-int", "Articulation Etude · pág. 40", "Estudo de articulação: siga cada ligadura e cada ponto.", [60, 96]],
+      ["marienthal", "Parte 3 · pág. 6–7", "As escalas com quatro articulações diferentes, uma por dia.", [72, 120]],
+      ["dorsey", "Staccato e legato · pág. 27–30", "Staccato e legato, separados e misturados.", [60, 100]],
+      ["dorsey", "Golpe de língua · pág. 31–32", "Golpe de língua duplo e triplo. Comece bem devagar, só com a sílaba.", [52, 92]],
     ] },
     repertorio: { nome: "Repertório", dica: "Escolha os quatro compassos mais difíceis e estude só eles. Depois toque a música inteira.", itens: [
       ["leme", "pág. 32–33", "Estudo melódico de polca. Cante a melodia antes de tocar.", [60, 96]],
@@ -161,6 +215,15 @@
       ["leme", "pág. 47–48", "Estudo melódico de schottisch.", [60, 96]],
       ["leme", "pág. 64–66", "Estudo melódico de maxixe: a síncope em ação.", [56, 92]],
       ["leme", "pág. 75–77", "Estudo melódico de choro.", [56, 92]],
+      ["rubank-int", "Lullaby (Brahms) · pág. 14", "Canção de ninar: som cheio e legato, sem pressa.", [56, 72]],
+      ["rubank-int", "Austrian Melody · pág. 26", "Melodia austríaca: frases longas, respire nas pausas.", [60, 92]],
+      ["rubank-int", "Andante (Gluck) · pág. 32", "Andante: cante cada frase antes de tocar.", [56, 76]],
+      ["rubank-int", "Sharpshooters March · pág. 35", "Marcha: staccato leve e tempo firme.", [72, 108]],
+      ["rubank-int", "Loreley · pág. 39", "Loreley: valsa lenta, com dinâmica.", [60, 92]],
+      ["rubank-int", "Farewell · pág. 41", "Despedida: expressão e vibrato nas notas longas.", [56, 80]],
+      ["rubank-int", "Memories · pág. 45", "Valsa em swing leve.", [72, 112]],
+      ["rubank-adv", "The Swan (Saint-Saëns) · pág. 68", "O Cisne: o primeiro solo clássico. Notas longas, vibrato e muita respiração.", [50, 66]],
+      ["rubank-adv", "On Wings of Song (Mendelssohn) · pág. 69", "Nas Asas da Canção: legato e frase longa.", [56, 72]],
     ] },
     jazz: { nome: "Jazz", dica: "Ouça uma gravação de swing antes e cante a frase. O balanço vem do ouvido.", itens: [
       ["niehaus1", "Exercise 1 · pág. 5", "Colcheias com swing, articulação do jazz. Leia a introdução nas pág. 3–4.", [60, 108]],
@@ -169,6 +232,19 @@
       ["niehaus1", "Exercise 4 · pág. 8", "Colcheias com swing.", [60, 112]],
       ["mintzer", "Est. I · pág. 3–4", "Primeiro estudo de Mintzer: um blues em swing médio.", [60, 112]],
       ["niehaus1", "Exercise 5 · pág. 9", "Colcheias com swing.", [66, 116]],
+      ["niehaus1", "Exercise 6 · pág. 10", "Colcheias com swing.", [66, 116]],
+      ["mintzer", "Est. II · pág. 5–6", "Swingin’: swing médio. Toque a melodia e depois improvise sobre o blues.", [66, 120]],
+      ["niehaus1", "Exercise 7 · pág. 11", "Colcheias com swing.", [66, 120]],
+      ["niehaus1", "Exercise 8 · pág. 12", "Colcheias com swing.", [66, 120]],
+      ["mintzer", "Est. VII · pág. 15–16", "Bossa nova: colcheias iguais, sem swing.", [72, 120]],
+      ["niehaus1", "Exercise 9 · pág. 13", "Colcheias com swing.", [72, 126]],
+      ["niehaus1", "Exercise 10 · pág. 14", "Colcheias com swing.", [72, 126]],
+      ["mintzer", "Est. V · pág. 11–12", "Balada: som, vibrato e respiração.", [56, 72]],
+      ["niehaus1", "Exercise 11 · pág. 15", "Colcheias com swing.", [72, 132]],
+      ["niehaus1", "Exercise 12 · pág. 16", "Colcheias com swing.", [72, 132]],
+      ["niehaus1", "Having a Ball · pág. 18", "Primeiro tema completo de Niehaus.", [72, 132]],
+      ["mintzer", "Est. VIII · pág. 17–18", "Shuffle médio-rápido.", [80, 132]],
+      ["niehaus1", "Fancy Free · pág. 19", "Tema em swing.", [72, 132]],
     ] },
   };
 
@@ -181,13 +257,29 @@
       sessoes: [[["aquecimento", 5], ["tecnica", 10], ["jazz", 10], ["leitura", 10]], [["aquecimento", 5], ["escalas", 10], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["articulacao", 10], ["jazz", 10], ["repertorio", 10]], [["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["jazz", 10]]] },
     { foco: "Fechar o mês", texto: "Última semana do primeiro mês. Todos os trilhos aparecem, e a última sessão termina com uma gravação para você comparar com o começo.",
       sessoes: [[["aquecimento", 5], ["tecnica", 10], ["leitura", 10], ["ritmo", 10]], [["aquecimento", 5], ["escalas", 10], ["articulacao", 10], ["jazz", 10]], [["aquecimento", 5], ["ritmo", 10], ["repertorio", 15]], [["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["repertorio", 15]]] },
+    { foco: "Segundo mês: mais repertório", texto: "Começa o segundo mês. O repertório ganha mais tempo e entram as peças do Rubank. Os outros assuntos continuam exatamente de onde você parou.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["leitura", 10], ["repertorio", 10]], [["aquecimento", 5], ["escalas", 10], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["articulacao", 10], ["leitura", 10], ["repertorio", 10]], [["aquecimento", 5], ["tecnica", 10], ["ritmo", 10], ["repertorio", 10]]] },
+    { foco: "Leitura à primeira vista", texto: "Esta semana a leitura pesa mais. Leia cada página uma vez do começo ao fim sem parar, e só depois volte nos trechos difíceis. É assim que se treina a primeira vista.",
+      sessoes: [[["aquecimento", 5], ["leitura", 15], ["tecnica", 10], ["ritmo", 5]], [["aquecimento", 5], ["leitura", 15], ["escalas", 10], ["jazz", 5]], [["aquecimento", 5], ["leitura", 15], ["articulacao", 10], ["repertorio", 5]], [["aquecimento", 5], ["leitura", 10], ["ritmo", 10], ["repertorio", 10]]] },
+    { foco: "Do choro ao swing", texto: "Uma semana de estilo: síncope brasileira de um lado, swing do jazz do outro. Repare como a mesma colcheia muda de jeito em cada um.",
+      sessoes: [[["aquecimento", 5], ["ritmo", 10], ["repertorio", 10], ["jazz", 10]], [["aquecimento", 5], ["tecnica", 10], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["escalas", 10], ["repertorio", 10], ["jazz", 10]], [["aquecimento", 5], ["articulacao", 10], ["ritmo", 10], ["repertorio", 10]]] },
+    { foco: "Fechar o segundo mês", texto: "Última semana do segundo mês. A última sessão termina com uma gravação: escolha a peça do repertório de que você mais gostou.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["leitura", 10]], [["aquecimento", 5], ["articulacao", 10], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["leitura", 10], ["repertorio", 15]], [["aquecimento", 5], ["tecnica", 10], ["repertorio", 20]]] },
+    { foco: "Terceiro mês: sessões de 40 minutos", texto: "As sessões crescem para cerca de 40 minutos. Se num dia o tempo for curto, faça só o aquecimento e os dois primeiros blocos: regularidade vale mais que duração.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["leitura", 10], ["ritmo", 5]], [["aquecimento", 5], ["articulacao", 10], ["jazz", 10], ["repertorio", 15]], [["aquecimento", 5], ["tecnica", 10], ["ritmo", 10], ["leitura", 10], ["jazz", 5]], [["aquecimento", 5], ["escalas", 10], ["articulacao", 10], ["repertorio", 15]]] },
+    { foco: "Som e expressão", texto: "O aquecimento ganha mais tempo e o repertório pede vibrato, dinâmica e frase. Grave um trecho no gravador do app e ouça antes de avaliar o bloco.",
+      sessoes: [[["aquecimento", 10], ["repertorio", 15], ["tecnica", 10], ["leitura", 5]], [["aquecimento", 10], ["escalas", 10], ["repertorio", 15], ["articulacao", 5]], [["aquecimento", 10], ["jazz", 10], ["repertorio", 15], ["ritmo", 5]], [["aquecimento", 10], ["tecnica", 10], ["repertorio", 15], ["escalas", 5]]] },
+    { foco: "Estilo e repertório", texto: "Choro, valsa, marcha, balada e swing na mesma semana. O objetivo é tocar cada estilo com o sotaque certo, e não só as notas certas.",
+      sessoes: [[["aquecimento", 5], ["repertorio", 15], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["tecnica", 10], ["repertorio", 15], ["articulacao", 10]], [["aquecimento", 5], ["escalas", 10], ["jazz", 15], ["leitura", 10]], [["aquecimento", 5], ["ritmo", 10], ["repertorio", 15], ["jazz", 10]]] },
+    { foco: "Fechar o trimestre", texto: "Última semana do terceiro mês. Na sessão final, grave o seu melhor repertório e ouça ao lado do som do primeiro dia: são três meses de estudo organizado.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["leitura", 10], ["ritmo", 5]], [["aquecimento", 5], ["articulacao", 10], ["jazz", 15], ["repertorio", 10]], [["aquecimento", 5], ["leitura", 10], ["ritmo", 10], ["repertorio", 15]], [["aquecimento", 10], ["tecnica", 10], ["repertorio", 20]]] },
   ];
   const UNIDADES_PLANO = SEMANAS.map((sem, w) => ({
     plano: true, titulo: `Semana ${w + 1} · ${sem.foco}`, foco: sem.foco, texto: sem.texto,
-    marco: w === SEMANAS.length - 1 ? "Completei o primeiro mês do meu plano de estudos no saxofone." : `Completei a semana ${w + 1} do meu plano de estudos.`,
+    marco: w === 3 ? "Completei o primeiro mês do meu plano de estudos no saxofone." : w === 7 ? "Completei o segundo mês do meu plano de estudos no saxofone." : w === 11 ? "Completei três meses de estudo organizado no saxofone." : `Completei a semana ${w + 1} do meu plano de estudos.`,
     licoes: sem.sessoes.map((blocos, k) => ({
       id: `s${w + 1}-${k + 1}`, titulo: `Sessão ${k + 1}`, resumo: blocos.map(([t]) => TRILHOS[t].nome).join(" · ") + ` · cerca de ${blocos.reduce((a, b) => a + b[1], 0)} min`,
-      sessao: { semana: w, blocos, gravar: k === sem.sessoes.length - 1 ? `s${w + 1}` : null }, passos: [],
+      sessao: { semana: w, blocos, gravar: k === sem.sessoes.length - 1 && w % 4 === 3 ? `s${w + 1}` : null }, passos: [],
     })),
   }));
 
@@ -1794,7 +1886,7 @@
     const tr = TRILHOS[id], st = trilho(id), it = itemAtual(id);
     const nome = `${livroInfo(it.livro).titulo}, ${it.onde.split(" · ")[0]}`;
     if (tr.gira) { st.i++; const prox = itemAtual(id); return `Aquecimento feito. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}.`; }
-    const avanca = () => { st.i++; st.bpm = null; if (st.i >= tr.itens.length) return `Você concluiu a sequência de ${tr.nome.toLowerCase()} deste mês. Siga revisando o último exercício até o próximo mês.`; const prox = itemAtual(id); return `Meta alcançada em ${nome}. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}${prox.bpm ? `, começando em ${prox.bpm[0]}` : ""}.`; };
+    const avanca = () => { st.i++; st.bpm = null; if (st.i >= tr.itens.length) return `Você concluiu toda a sequência de ${tr.nome.toLowerCase()} do plano. Siga revisando o último exercício, agora com a meta de andamento mais alta.`; const prox = itemAtual(id); return `Meta alcançada em ${nome}. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}${prox.bpm ? `, começando em ${prox.bpm[0]}` : ""}.`; };
     if (!it.bpm) { if (ev === 3) return avanca(); return ev === 2 ? `Mais uma sessão em ${nome} antes de seguir.` : `Vamos repetir ${nome}. ${tr.dica}`; }
     const [ini, meta] = it.bpm, r = alcancado || it.inicio;
     if (ev === 3 && r >= meta) return avanca();
@@ -1807,7 +1899,7 @@
   function gerarSessao(licao) {
     const se = licao.sessao;
     licao.passos = [{ tipo: "plano" }, ...se.blocos.map(([t, min], k) => ({ tipo: "bloco", trilho: t, min, k }))];
-    if (se.gravar) licao.passos.push({ tipo: "gravar", chave: se.gravar, comparar: true, titulo: "A gravação da semana", texto: "Grave um trecho do repertório ou da leitura de hoje. Ouça ao lado do som do primeiro dia." });
+    if (se.gravar) licao.passos.push({ tipo: "gravar", chave: se.gravar, comparar: true, titulo: "A gravação do mês", texto: "Grave a peça do repertório de que você mais gostou neste mês. Ouça ao lado do som do primeiro dia." });
     licao.passos.push({ tipo: "fechamento" });
     sessao.res = {};
   }
@@ -1911,7 +2003,7 @@
   const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const urls = [];
   const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
-  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura", s1: "Semana 1", s2: "Semana 2", s3: "Semana 3", s4: "Fim do primeiro mês" };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura", s4: "Fim do primeiro mês", s8: "Fim do segundo mês", s12: "Fim do terceiro mês" };
 
   const rec = { mr: null, stream: null, partes: [], t: 0 };
   function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
@@ -2018,7 +2110,7 @@
 
   async function htmlAntesDepois() {
     const itens = [];
-    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "s1", "s2", "s3", "s4"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "s4", "s8", "s12"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
     return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
   }
 
