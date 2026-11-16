@@ -1797,123 +1797,143 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 
 /* =====================================================================
    Visual moderno (naipesax.com.br/?visual=moderno · ?visual=classico volta)
-   Base preta e branca como no TIDAL, verde de ação como no Spotify e o
-   degradê do Instagram só nos destaques: logo, progresso, aba ativa e o
-   "anel de story" da próxima lição.
+   Verde profundo com luz neon no fundo, dourado espelhado nas ações e na
+   marca, lilás de ágata nos destaques. Superfícies de vidro com borda de
+   luz, tipografia limpa, sem caixa alta.
    ===================================================================== */
 :root.moderno, :root.moderno[data-tema] {
-  --bg: #000;
-  --surface: #121212;
-  --surface-2: #1c1c1c;
-  --line: #2a2a2a;
-  --text: #fff;
-  --muted: #a7a7a7;
-  --faint: #6a6a6a;
-  --verde-play: #1ed760;
-  --ig: linear-gradient(45deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%);
-  --brass: #1ed760;
-  --brass-soft: #1ed760;
-  --latao: var(--ig);
+  --bg: #04170f;
+  --surface: rgb(210 255 235 / .045);
+  --surface-2: rgb(210 255 235 / .075);
+  --line: rgb(140 255 205 / .13);
+  --text: #effff8;
+  --muted: #9cc1b1;
+  --faint: #5f8577;
+  --neon: #3dffb0;
+  --ouro: linear-gradient(135deg, #fff4c9 0%, #f0cf6b 26%, #b9862b 52%, #f6dd8a 76%, #c8952f 100%);
+  --ouro-solido: #e9c45c;
+  --lilas: #c29bff;
+  --ametista: linear-gradient(135deg, #e3a6ff 0%, #b06cf0 40%, #7a2fd0 75%, #d14fb4 100%);
+  --brass: #e9c45c;
+  --brass-soft: #f2d47c;
+  --latao: var(--ametista);
   --on-brass: #fff;
-  --ok: #1ed760;
-  --danger: #ff5a5f;
-  --warn: #ffb020;
+  --ok: #3dffb0;
+  --danger: #ff6b8a;
+  --warn: #ffc857;
   --f-display: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --raio: 14px;
-  --mistura: #0a0a0a;
-  --visor: #0a0a0a;
+  --raio: 20px;
+  --mistura: #052016;
+  --visor: rgb(0 0 0 / .25);
+  --vidro: blur(18px) saturate(140%);
+  --borda-luz: inset 0 1px 0 rgb(255 255 255 / .06), 0 0 0 1px var(--line);
 }
-.moderno body { background: #000; }
+.moderno body {
+  background:
+    radial-gradient(70% 45% at 10% -5%, rgb(61 255 176 / .20), transparent 65%),
+    radial-gradient(55% 40% at 105% 20%, rgb(194 155 255 / .13), transparent 70%),
+    radial-gradient(60% 45% at 50% 110%, rgb(61 255 176 / .10), transparent 70%),
+    linear-gradient(180deg, #062419 0%, #04170f 45%, #03110b 100%);
+  background-attachment: fixed;
+}
 
-/* Tipografia: sem caixa alta nos títulos, peso forte e espaçamento justo */
+/* Tipografia limpa */
 .moderno :is(h1, h2, h3, .raiz-titulo, .hero-saudacao, .banda h1, .tr-faixa h2) {
   font-family: var(--f-body); font-stretch: 100%; text-transform: none; letter-spacing: -.025em; font-weight: 800;
 }
 .moderno h1 { font-size: 2rem; line-height: 1.08; }
-.moderno :is(.rotulo, .sobretitulo, .banda-sobre, .frase-dia figcaption) { font-family: var(--f-body); font-stretch: 100%; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+.moderno :is(.rotulo, .sobretitulo, .banda-sobre, .frase-dia figcaption) { font-family: var(--f-body); font-stretch: 100%; letter-spacing: .12em; color: var(--neon); font-weight: 700; text-shadow: 0 0 12px rgb(61 255 176 / .45); }
 .moderno .serif, .moderno :is(.banda-frase, .tr-porque-txt) { font-family: var(--f-body); font-style: normal; font-weight: 600; letter-spacing: -.01em; }
 
-/* Logo e topo */
-.moderno .marca, .moderno .hero-topo .marca { font-family: "Outfit", var(--f-body); background: var(--ig); -webkit-background-clip: text; background-clip: text; color: transparent; }
-.moderno .marca .marca-simbolo { color: #d62976; }
-.moderno .hero { background: #000; border-bottom: 0; }
+/* Marca em dourado espelhado */
+.moderno .marca, .moderno .hero-topo .marca { font-family: "Outfit", var(--f-body); background: var(--ouro); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 10px rgb(233 196 92 / .35)); }
+.moderno .marca .marca-simbolo { color: var(--ouro-solido); }
+.moderno .hero { background: transparent; border-bottom: 0; }
 .moderno .hero-saudacao { font-size: 2.3rem; }
 .moderno .frase-dia blockquote { font-weight: 600; }
-.moderno .letreiro-radio { background: var(--surface-2); border-color: transparent; box-shadow: none; }
+.moderno .letreiro-radio { background: var(--surface); border: 0; box-shadow: var(--borda-luz); -webkit-backdrop-filter: var(--vidro); backdrop-filter: var(--vidro); }
+.moderno .letreiro-radio-play { background: var(--ouro); color: #1d1404; box-shadow: 0 0 14px rgb(233 196 92 / .45); }
 
-/* Cartões: superfícies lisas, sem brilho nem borda dourada */
-.moderno .cartao { background: var(--surface); border-color: transparent; box-shadow: none; }
-.moderno :is(.cartao, .raiz-card, .tr-unidade, .tr-faixa, .tr-bloco, .tr-recado, .tr-plano-hoje li, .tr-resumo li) { box-shadow: none; }
-
-/* Botões: pílula verde com texto preto; secundários em contorno discreto */
-.moderno .btn { border-radius: 999px; border-color: #3a3a3a; background: transparent; color: #fff; font-weight: 700; }
-.moderno .btn.primario { background: var(--verde-play); color: #000; border-color: transparent; box-shadow: none; }
-.moderno .btn.primario:hover { filter: none; background: #3be477; transform: scale(1.02); }
-.moderno .btn.primario[disabled] { background: #2a2a2a; color: #777; }
-
-/* Abas: preto puro, ativo em branco com o degradê do Instagram */
-.moderno .abas { background: rgb(0 0 0 / .94); border-top-color: #1a1a1a; }
-.moderno .abas a { color: #8a8a8a; }
-.moderno .abas a.ativa { color: #fff; }
-.moderno .abas a.ativa::before { background: var(--ig); box-shadow: none; height: 3px; border-radius: 0 0 3px 3px; }
-
-/* Controles de seleção (Play-alongs, Alto/Tenor, filtros): branco com texto preto */
-.moderno :is(.modo-tocar a.ativo, .filtro-sax button.ativo) { background: #fff; color: #000; box-shadow: none; }
-.moderno .modo-tocar, .moderno .filtro-sax { background: var(--surface-2); border-color: transparent; }
-
-/* Pilares: capas no estilo de playlist, cor sólida que some no preto */
-.moderno .raiz-card {
-  background: linear-gradient(160deg, color-mix(in srgb, var(--c1) 85%, #000), color-mix(in srgb, var(--c1) 28%, #000) 78%);
-  border: 0; border-radius: 12px;
+/* Vidro com borda de luz */
+.moderno :is(.cartao, .tr-bloco, .tr-recado, .tr-plano-hoje li, .tr-resumo li, .tr-crono, .tr-pulso, .tr-metodos a, .tr-opcoes button, .tr-continuar, .metodos-pilar) {
+  background: var(--surface); border: 0; box-shadow: var(--borda-luz); -webkit-backdrop-filter: var(--vidro); backdrop-filter: var(--vidro);
 }
-.moderno .raiz-card:hover { box-shadow: none; transform: translateY(-2px); }
-.moderno .raiz-titulo { font-size: 1.7rem; }
-.moderno .raiz-card .barra-preenchida { background: #fff; }
-.moderno .banda { background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 55%, #000), #000 92%); border-bottom: 0; }
-.moderno .banda-ilus { filter: none; }
+.moderno .cartao { border-radius: 22px; }
 
-/* Números e visores */
-.moderno .timer-visor { background: var(--surface); border-color: transparent; color: #fff; text-shadow: none; }
-.moderno :is(.barra, .tr-barra-prog) { background: #2a2a2a; }
-.moderno .barra-preenchida { background: var(--ig); }
+/* Botões: dourado espelhado no principal, vidro nos demais */
+.moderno .btn { border-radius: 999px; border: 0; background: var(--surface-2); box-shadow: var(--borda-luz); color: var(--text); font-weight: 700; }
+.moderno .btn.primario {
+  background: var(--ouro); color: #1d1404; border: 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .6), 0 0 0 1px rgb(255 230 150 / .35), 0 10px 28px -12px rgb(233 196 92 / .8);
+}
+.moderno .btn.primario:hover { filter: brightness(1.06); }
+.moderno .btn.primario[disabled], .moderno .tr-rodape .btn[disabled] { background: var(--surface-2); color: var(--faint); box-shadow: var(--borda-luz); opacity: 1; }
+.moderno #btn-registrar-2 { animation: none; }
+
+/* Abas: vidro, ativo em neon com traço lilás */
+.moderno .abas { background: rgb(4 23 15 / .72); -webkit-backdrop-filter: var(--vidro); backdrop-filter: var(--vidro); border-top: 1px solid var(--line); }
+.moderno .abas a { color: #7fa697; }
+.moderno .abas a.ativa { color: var(--neon); text-shadow: 0 0 12px rgb(61 255 176 / .6); }
+.moderno .abas a.ativa .ic { filter: drop-shadow(0 0 6px rgb(61 255 176 / .7)); }
+.moderno .abas a.ativa::before { background: var(--ametista); box-shadow: 0 0 14px rgb(194 155 255 / .9); height: 3px; border-radius: 0 0 3px 3px; }
+
+/* Seleções: lilás */
+.moderno :is(.modo-tocar a.ativo, .filtro-sax button.ativo) { background: var(--ametista); color: #fff; box-shadow: 0 0 18px -4px rgb(176 108 240 / .8); }
+.moderno .modo-tocar, .moderno .filtro-sax { background: var(--surface); border: 0; box-shadow: var(--borda-luz); }
+
+/* Pilares: capas translúcidas com a cor de cada pilar */
+.moderno .raiz-card {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--c1) 70%, transparent), color-mix(in srgb, var(--c1) 18%, transparent) 80%), rgb(255 255 255 / .03);
+  border: 0; border-radius: 22px; box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), 0 0 0 1px color-mix(in srgb, var(--c1) 45%, transparent), 0 14px 40px -24px var(--c1);
+  -webkit-backdrop-filter: var(--vidro); backdrop-filter: var(--vidro);
+}
+.moderno .raiz-titulo { font-size: 1.7rem; }
+.moderno .raiz-card .barra-preenchida { background: #fff; box-shadow: 0 0 10px rgb(255 255 255 / .6); }
+.moderno .banda { background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 45%, transparent), transparent 92%); border-bottom: 0; }
+
+/* Barras e visores */
+.moderno :is(.barra, .tr-barra-prog) { background: rgb(255 255 255 / .08); }
+.moderno :is(.barra-preenchida, .tr-barra-prog span) { background: var(--ametista); box-shadow: 0 0 12px rgb(194 155 255 / .7); }
+.moderno .timer-visor { background: rgb(0 0 0 / .22); border: 0; box-shadow: var(--borda-luz); color: var(--neon); text-shadow: 0 0 18px rgb(61 255 176 / .55); }
+.moderno .metodos-pilar .mp-topo h2 { color: var(--text); text-transform: none; letter-spacing: -.02em; }
+.moderno .mp-ic { background: var(--ouro); color: #1d1404; box-shadow: 0 0 18px rgb(233 196 92 / .4); }
 
 /* Teoria e Estudo */
-.moderno .tr-faixa { background: linear-gradient(135deg, var(--u1), color-mix(in srgb, var(--u2) 70%, #000)); border-radius: 12px; }
-.moderno .tr-unidade.trancada .tr-faixa { filter: grayscale(1) brightness(.45); }
-.moderno .tr-fio path { stroke: #333; }
-.moderno .tr-no { background: #1a1a1a; color: #9a9a9a; box-shadow: none; }
-.moderno .tr-caminho .feita .tr-no { background: var(--verde-play); color: #000; box-shadow: none; }
-/* próxima lição: anel de story */
+.moderno .tr-faixa { background: linear-gradient(135deg, color-mix(in srgb, var(--u1) 75%, transparent), color-mix(in srgb, var(--u2) 35%, transparent)); border-radius: 22px; box-shadow: inset 0 1px 0 rgb(255 255 255 / .14), 0 0 0 1px color-mix(in srgb, var(--u1) 40%, transparent); -webkit-backdrop-filter: var(--vidro); backdrop-filter: var(--vidro); }
+.moderno .tr-faixa .rotulo { color: rgb(255 255 255 / .85); text-shadow: none; }
+.moderno .tr-faixa .tr-barra-prog span { background: #fff; box-shadow: 0 0 10px rgb(255 255 255 / .6); }
+.moderno .tr-unidade.trancada .tr-faixa { filter: grayscale(.9) brightness(.55); }
+.moderno .tr-fio path { stroke: rgb(140 255 205 / .25); }
+.moderno .tr-no { background: var(--surface-2); color: var(--muted); box-shadow: var(--borda-luz); }
+.moderno .tr-caminho .feita .tr-no { background: var(--neon); color: #03140c; box-shadow: 0 0 18px rgb(61 255 176 / .55); }
 .moderno :is(.tr-caminho .atual .tr-no, .tr-continuar .tr-no) {
-  background: radial-gradient(circle, #fff 0 55%, transparent 56%), var(--ig); color: #000; box-shadow: none;
-  border: 0; outline: 3px solid #000; outline-offset: -6px; animation: none;
+  background: radial-gradient(circle, #f4ecff 0 54%, transparent 55%), var(--ametista); color: #3a0f6b;
+  box-shadow: 0 0 22px rgb(194 155 255 / .75); border: 0;
 }
-.moderno .tr-caminho .livre .tr-no { box-shadow: inset 0 0 0 2px #fff; color: #fff; }
-.moderno .tr-continuar { border-color: transparent; background: var(--surface); }
-.moderno .tr-lic-txt em, .moderno .tr-lic-acao { color: var(--verde-play); }
-.moderno .tr-pauta { background: #fff; border-radius: 10px; }
-.moderno .tr-recado { background: var(--surface); border: 0; border-left: 3px solid transparent; border-image: var(--ig) 1; border-radius: 0 12px 12px 0; }
-.moderno .tr-recado .rotulo { color: #fff; }
-.moderno :is(.tr-bloco, .tr-plano-hoje li, .tr-resumo li, .tr-crono, .tr-pulso, .tr-opcoes button, .tr-metodos a) { background: var(--surface); border-color: transparent; }
-.moderno .tr-opcoes button { border: 1.5px solid #2a2a2a; }
-.moderno .tr-bloco-onde, .moderno .tr-plano-hoje b, .moderno .tr-meta-bpm b, .moderno .tr-met-onde { color: #fff; }
-.moderno .tr-selo { background: var(--verde-play); color: #000; }
-.moderno .tr-bater.ativo { background: var(--ig); color: #fff; box-shadow: none; }
-.moderno .tr-pulso-liga { border-color: #fff; color: #fff; }
-.moderno .tr-pulso-liga.ativo { background: #fff; color: #000; }
-.moderno .tr-pulso-luz.bate { background: var(--verde-play); color: #000; }
-.moderno .tr-dedos .tubo { fill: #2a2a2a; }
-.moderno .tr-sax-des .corpo { stroke: #e8e8e8; }
-.moderno .tr-sax-des .chave { fill: #000; stroke: #888; }
-.moderno .tr-sax-des .chave.fechada { fill: var(--verde-play); stroke: var(--verde-play); filter: none; }
-.moderno .tr-ganho { color: var(--verde-play); }
-.moderno .tr-faixa .rotulo { color: rgb(255 255 255 / .82); }
-.moderno .metodos-pilar { border: 0; background: var(--surface); }
-.moderno .mp-topo h2 { color: #fff; text-transform: none; letter-spacing: -.02em; }
-.moderno .mp-ic { box-shadow: none; }
-.moderno #btn-registrar-2 { animation: none; }
-.moderno .btn.primario[disabled], .moderno .tr-rodape .btn[disabled] { background: #242424; color: #8a8a8a; opacity: 1; }
+.moderno .tr-caminho .livre .tr-no { box-shadow: inset 0 0 0 2px var(--lilas); color: var(--text); }
+.moderno .tr-lic-txt em, .moderno .tr-lic-acao { color: var(--lilas); }
+.moderno .tr-pauta { background: #fbfaf5; border-radius: 14px; }
+.moderno .tr-recado { border-left: 0; box-shadow: var(--borda-luz), inset 3px 0 0 var(--lilas); }
+.moderno .tr-recado .rotulo { color: var(--lilas); text-shadow: 0 0 12px rgb(194 155 255 / .5); }
+.moderno .tr-opcoes button.certa { box-shadow: 0 0 0 1.5px var(--neon), 0 0 18px -4px rgb(61 255 176 / .6); background: rgb(61 255 176 / .10); }
+.moderno .tr-opcoes button.errada { box-shadow: 0 0 0 1.5px var(--danger); }
+.moderno :is(.tr-bloco-onde, .tr-plano-hoje b, .tr-meta-bpm b, .tr-met-onde) { color: var(--brass-soft); }
+.moderno .tr-selo { background: var(--ouro); color: #1d1404; box-shadow: 0 0 30px rgb(233 196 92 / .5); }
+.moderno .tr-bater.ativo { background: var(--ametista); color: #fff; box-shadow: 0 0 40px -6px rgb(176 108 240 / .9); }
+.moderno .tr-pulso-liga { border-color: var(--lilas); color: var(--lilas); }
+.moderno .tr-pulso-liga.ativo { background: var(--ametista); color: #fff; }
+.moderno .tr-pulso-luz.bate { background: var(--neon); color: #03140c; box-shadow: 0 0 16px var(--neon); }
+.moderno .tr-dedos .tubo { fill: rgb(255 255 255 / .08); }
+.moderno .tr-sax-des .corpo { stroke: var(--ouro-solido); }
+.moderno .tr-sax-des .chave { fill: #062419; stroke: #b9d9cb; }
+.moderno .tr-sax-des .chave.fechada { fill: var(--neon); stroke: var(--neon); filter: drop-shadow(0 0 5px var(--neon)); }
+.moderno .tr-ganho { color: var(--brass-soft); }
+.moderno .tr-medidor span, .moderno .tr-volume span { background: var(--neon); box-shadow: 0 0 10px var(--neon); }
+
 @media (min-width: 1100px) {
-  .moderno .abas::before { background: var(--ig); -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .moderno .abas a.ativa, .moderno .abas a:hover { background: #1a1a1a; }
+  .moderno .abas::before { background: var(--ouro); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .moderno .abas a.ativa, .moderno .abas a:hover { background: var(--surface-2); }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .moderno :is(.cartao, .abas, .raiz-card, .tr-faixa, .letreiro-radio) { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: #0a2a1e; }
 }

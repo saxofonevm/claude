@@ -7,7 +7,7 @@
   "use strict";
 
   // ---------- Visual moderno ----------
-  // naipesax.com.br/?visual=moderno liga o visual preto, branco e verde; ?visual=classico volta ao original.
+  // naipesax.com.br/?visual=moderno liga o visual verde neon, dourado e lilás; ?visual=classico volta ao original.
   try {
     const v = new URLSearchParams(location.search).get("visual");
     if (v === "moderno") localStorage.setItem("naipe.visual", "moderno");
