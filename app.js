@@ -2657,6 +2657,12 @@
     if (!document.hidden) { renderTimer(); renderTela(); }
   });
 
+  // A trilha (trilha.js) registra no Diário o tempo das sessões do plano de estudos.
+  window.NaipeRegistrarPratica = (minutos, avaliacao, notas) => {
+    estado.sessoes.push({ id: novoId(), data: hojeISO(), minutos: Math.max(1, Math.round(minutos)), raizId: null, exercicioId: null, avaliacao: avaliacao || null, notas: notas || "" });
+    salvar();
+  };
+
   if ("serviceWorker" in navigator && location.protocol !== "file:") {
     const tinhaVersao = !!navigator.serviceWorker.controller;
     let recarregou = false;

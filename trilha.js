@@ -94,7 +94,102 @@
   const DE_PONTA_A_PONTA = [["dob", 1], ["mi", 1], ["sol", 1], ["do", 1], ["mi2", 1], ["sol2", 1], ["do3", 2], ["si2", 0.5], ["la2", 0.5], ["sol2", 1], ["mi2", 0.5], ["re2", 0.5], ["do", 1], ["sol", 1], ["mi", 1], ["dob", 2]];
   const FORMATURA = [["sol", 1], ["si", 0.5], ["re2", 0.5], ["sol2", 1], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.25], ["mi2", 0.5], ["re2", 0.25], ["si", 1], ["la", 0.5], ["si", 0.5], ["re2", 1], ["do", 0.5], ["mi2", 0.5], ["re2", 0.5], ["do", 0.5], ["si", 1], ["la", 1], ["la", T], ["si", T], ["la", T], ["fas", 1], ["sol", 2], ["sol", 1], ["si", 0.5], ["re2", 0.5], ["sol2", 1], ["fas2", 0.5], ["mi2", 0.5], ["re2", 1, "st"], ["mi2", 1, "st"], ["fas2", 1, "st"], ["sol2", 1], ["la2", 2, "ac"], ["sol2", 0.5], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.5], ["si", 1], ["la", 1], ["sol", 2]];
 
-  const ESTUDO_SEIS_OITO = [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T], ["do", T], ["si", T], ["la", T], ["si", 1], ["la", T], ["si", T], ["do", T], ["re2", D], ["mi2", T], ["re2", 2], ["mi2", T], ["re2", T], ["do", T], ["si", D], ["sol", T], ["la", T], ["si", T], ["do", T], ["la", 1], ["si", D], ["la", T], ["sol", D], ["fas", T], ["sol", 2]];
+
+
+  // ---------- Plano de estudos (unidade 17 em diante) ----------
+  // Cada trilho é uma sequência de exercícios dos métodos. O professor virtual guarda até onde o aluno chegou
+  // e em que andamento, e só avança quando a meta é alcançada com facilidade.
+  // Item: [livro, onde, o que fazer, [andamento inicial, meta] ou null]
+  const TRILHOS = {
+    aquecimento: { nome: "Aquecimento", gira: true, dica: "Som antes de velocidade: notas longas, ar contínuo e ouvido atento à afinação.", itens: [
+      ["sonoridade-tv", "Seções A–E", "Sonoridade em intervalos. Notas longas e cheias, sem deixar o som cair no fim.", [60, 60]],
+      ["demetrio", "Lição 1, Ex. 1–3 · pág. 4–5", "Notas curtas, notas tenutas e o som senoidal. Respire com calma entre os exercícios.", null],
+      ["marienthal", "Parte 1 · pág. 1", "Notas longas cromáticas. Uma nota por respiração, o mais estável possível.", [60, 72]],
+      ["demetrio", "Lições 2–3 · pág. 6–7", "Intervalos e exercícios para a mão direita, devagar e ligados.", null],
+    ] },
+    tecnica: { nome: "Técnica", dica: "Divida o exercício em grupos de quatro notas e repita cada grupo três vezes antes de juntar.", itens: [
+      ["klose25", "Ex. 1 · pág. 2", "Exercício diário de mecanismo. Dedos perto das chaves, colcheias iguais.", [60, 92]],
+      ["klose25", "Ex. 2 · pág. 3", "Exercício diário de mecanismo. Comece ligado, depois articule.", [60, 92]],
+      ["klose25", "Ex. 3 · pág. 4", "Exercício diário de mecanismo.", [60, 92]],
+      ["klose25", "Ex. 4 · pág. 5", "Exercício diário de mecanismo.", [60, 96]],
+      ["klose25", "Ex. 5 · pág. 6", "Exercício diário de mecanismo.", [60, 96]],
+      ["marienthal", "Parte 2 · pág. 2–5", "Exercício cromático. Uma linha por vez, sem pular a respiração.", [80, 120]],
+      ["klose25", "Ex. 6 · pág. 7", "Exercício diário de mecanismo.", [60, 100]],
+      ["klose25", "Ex. 7 · pág. 8", "Exercício diário de mecanismo.", [60, 100]],
+      ["rubank-int", "Daily Studies · pág. 8", "Estudos diários para a técnica.", [60, 100]],
+    ] },
+    escalas: { nome: "Escalas e arpejos", dica: "Toque primeiro em semínimas, depois em colcheias. Escala bonita é escala igual.", itens: [
+      ["alfabeto", "Ex. 48 · pág. 15", "Sol maior: escala, arpejo e acorde de 7ª de dominante.", [60, 100]],
+      ["alfabeto", "Ex. 67 · pág. 19", "Fá maior: escala, arpejo e acorde de 7ª de dominante.", [60, 100]],
+      ["alfabeto", "Ex. 73 · pág. 20", "Ré maior: escala, arpejo e acorde de 7ª de dominante.", [60, 100]],
+      ["alfabeto", "Ex. 80 · pág. 22", "Si♭ maior: escala, arpejo e acorde de 7ª de dominante.", [60, 100]],
+      ["alfabeto", "Ex. 92 · pág. 25", "Lá maior: escala, arpejo e acorde de 7ª de dominante. Tom novo: confira a armadura.", [56, 96]],
+      ["alfabeto", "Ex. 94 · pág. 26", "Mi♭ maior: escala, arpejo e acorde de 7ª de dominante. Tom novo: confira a armadura.", [56, 96]],
+      ["alfabeto", "Ex. 82–84 · pág. 23", "A escala cromática: um dia ligada, outro dia destacada.", [60, 100]],
+    ] },
+    leitura: { nome: "Leitura", dica: "Antes de tocar, bata o ritmo e diga o nome das notas da primeira linha.", itens: [
+      ["dantas", "pág. 3", "Lições progressivas. Leia a página inteira devagar, sem parar nos erros.", [60, 80]],
+      ["dantas", "pág. 4", "Lições progressivas.", [60, 80]],
+      ["dantas", "pág. 5", "Lições progressivas.", [60, 84]],
+      ["dantas", "pág. 6", "Lições progressivas.", [60, 84]],
+      ["dantas", "pág. 7", "Lições progressivas.", [60, 88]],
+      ["dantas", "pág. 8", "Lições progressivas.", [60, 88]],
+      ["dantas", "pág. 9", "Lições progressivas.", [60, 88]],
+      ["dantas", "pág. 10", "Lições progressivas.", [60, 92]],
+    ] },
+    ritmo: { nome: "Ritmo", dica: "Bata e conte em voz alta antes de tocar. Se o ritmo não sai batido, não vai sair tocado.", itens: [
+      ["rubank-int", "Rhythmic Review · pág. 3", "Revisão rítmica. Conte em voz alta.", [60, 88]],
+      ["rubank-int", "Syncopation · pág. 11", "Melodia sincopada.", [60, 88]],
+      ["rubank-int", "16th Note Rhythm · pág. 16", "Estudos de semicolcheias.", [56, 80]],
+      ["rubank-int", "Dotted Eighth · pág. 21", "Colcheia pontuada e semicolcheia.", [56, 80]],
+      ["rubank-int", "Triplet Studies · pág. 22", "Estudos de tercinas.", [56, 84]],
+      ["rubank-int", "6/8 Rhythm · pág. 15", "O compasso composto: conte as seis colcheias, sinta dois tempos.", [50, 72]],
+      ["rubank-int", "Syncopation Etude · pág. 23", "Estudo sincopado.", [60, 88]],
+    ] },
+    articulacao: { nome: "Articulação", dica: "Toque primeiro só com o ar, tudo ligado. Depois acrescente a língua do jeito escrito.", itens: [
+      ["pronuncias", "Todo o material", "As sílabas da articulação: RA, TU, TURI, FU-TURI, FUDU e TU-RURURU.", [60, 80]],
+      ["rubank-int", "Studies in Accents · pág. 6", "Acentos: impulso de ar, não de língua dura.", [60, 88]],
+      ["rubank-int", "Articulation and Expression · pág. 7", "Articulação e expressão.", [60, 88]],
+      ["alfabeto", "Ex. 37–43 · pág. 12–13", "Notas repetidas: o ar não para, a língua só toca a palheta.", [60, 92]],
+      ["rubank-int", "Legato Duet · pág. 9", "Legato: uma linha só, sem buracos entre as notas.", [60, 84]],
+      ["rubank-int", "Staccato Studies · pág. 10", "Staccato leve, com o ar sempre pronto.", [60, 88]],
+      ["alfabeto", "Ex. 75–78 · pág. 21", "Détaché: notas separadas e iguais.", [60, 92]],
+    ] },
+    repertorio: { nome: "Repertório", dica: "Escolha os quatro compassos mais difíceis e estude só eles. Depois toque a música inteira.", itens: [
+      ["leme", "pág. 32–33", "Estudo melódico de polca. Cante a melodia antes de tocar.", [60, 96]],
+      ["leme", "pág. 40–41", "Estudo melódico de valsa. Apoio no primeiro tempo.", [60, 108]],
+      ["leme", "pág. 47–48", "Estudo melódico de schottisch.", [60, 96]],
+      ["leme", "pág. 64–66", "Estudo melódico de maxixe: a síncope em ação.", [56, 92]],
+      ["leme", "pág. 75–77", "Estudo melódico de choro.", [56, 92]],
+    ] },
+    jazz: { nome: "Jazz", dica: "Ouça uma gravação de swing antes e cante a frase. O balanço vem do ouvido.", itens: [
+      ["niehaus1", "Exercise 1 · pág. 5", "Colcheias com swing, articulação do jazz. Leia a introdução nas pág. 3–4.", [60, 108]],
+      ["niehaus1", "Exercise 2 · pág. 6", "Colcheias com swing.", [60, 108]],
+      ["niehaus1", "Exercise 3 · pág. 7", "Colcheias com swing.", [60, 112]],
+      ["niehaus1", "Exercise 4 · pág. 8", "Colcheias com swing.", [60, 112]],
+      ["mintzer", "Est. I · pág. 3–4", "Primeiro estudo de Mintzer: um blues em swing médio.", [60, 112]],
+      ["niehaus1", "Exercise 5 · pág. 9", "Colcheias com swing.", [66, 116]],
+    ] },
+  };
+
+  const SEMANAS = [
+    { foco: "Montar a rotina", texto: "Esta semana o objetivo é criar o hábito: quatro sessões de cerca de 30 minutos, sempre na mesma ordem. Avalie cada bloco com sinceridade. É assim que eu ajusto o próximo passo.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["leitura", 10], ["ritmo", 5]], [["aquecimento", 5], ["escalas", 10], ["articulacao", 10], ["repertorio", 5]], [["aquecimento", 5], ["tecnica", 10], ["ritmo", 10], ["leitura", 5]], [["aquecimento", 5], ["escalas", 10], ["repertorio", 15]]] },
+    { foco: "Ganhar regularidade", texto: "As sessões ficam um pouco mais longas. Repare no andamento que eu sugiro em cada bloco: ele vem do que você me contou na semana passada.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["leitura", 10], ["ritmo", 10]], [["aquecimento", 5], ["escalas", 10], ["articulacao", 10], ["repertorio", 10]], [["aquecimento", 5], ["tecnica", 10], ["ritmo", 10], ["repertorio", 10]], [["aquecimento", 5], ["escalas", 10], ["leitura", 10], ["articulacao", 10]]] },
+    { foco: "Entra o jazz", texto: "Um trilho novo começa: colcheias com swing pelos exercícios de Lennie Niehaus. O resto da rotina continua de onde você parou.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["jazz", 10], ["leitura", 10]], [["aquecimento", 5], ["escalas", 10], ["ritmo", 10], ["jazz", 10]], [["aquecimento", 5], ["articulacao", 10], ["jazz", 10], ["repertorio", 10]], [["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["jazz", 10]]] },
+    { foco: "Fechar o mês", texto: "Última semana do primeiro mês. Todos os trilhos aparecem, e a última sessão termina com uma gravação para você comparar com o começo.",
+      sessoes: [[["aquecimento", 5], ["tecnica", 10], ["leitura", 10], ["ritmo", 10]], [["aquecimento", 5], ["escalas", 10], ["articulacao", 10], ["jazz", 10]], [["aquecimento", 5], ["ritmo", 10], ["repertorio", 15]], [["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["repertorio", 15]]] },
+  ];
+  const UNIDADES_PLANO = SEMANAS.map((sem, w) => ({
+    plano: true, titulo: `Semana ${w + 1} · ${sem.foco}`, foco: sem.foco, texto: sem.texto,
+    marco: w === SEMANAS.length - 1 ? "Completei o primeiro mês do meu plano de estudos no saxofone." : `Completei a semana ${w + 1} do meu plano de estudos.`,
+    licoes: sem.sessoes.map((blocos, k) => ({
+      id: `s${w + 1}-${k + 1}`, titulo: `Sessão ${k + 1}`, resumo: blocos.map(([t]) => TRILHOS[t].nome).join(" · ") + ` · cerca de ${blocos.reduce((a, b) => a + b[1], 0)} min`,
+      sessao: { semana: w, blocos, gravar: k === sem.sessoes.length - 1 ? `s${w + 1}` : null }, passos: [],
+    })),
+  }));
 
   const UNIDADES = [
     {
@@ -1014,66 +1109,10 @@
         },
       ],
     },
-    {
-      pilar: "Figuras Rítmicas", cor: ["#ee8a45", "#9a4a15"], titulo: "O compasso composto", marco: "Leio e toco em 6 por 8, com pausas de colcheia.", licoes: [
-        {
-          id: "ap-composto", titulo: "O tempo que se divide em três", resumo: "Simples e composto", composto: true, comp: 2, formula: true,
-          passos: [
-            { tipo: "info", composto: false, comp: 2, formula: 2, ouvir: true, titulo: "Você já conhece o simples", texto: ["Até aqui cada tempo se dividia em duas colcheias. Isso é o compasso simples.", "Ouça dois tempos divididos em dois."], pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5]] },
-            { tipo: "info", ouvir: true, titulo: "No composto, cada tempo tem três", texto: ["No 6 por 8, o compasso tem seis colcheias, agrupadas de três em três. São dois tempos, e cada tempo vale três colcheias.", "O clique marca os dois tempos. Conte “1-2-3, 4-5-6”, com apoio no 1 e no 4."], pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]] },
-            { tipo: "escolha", pergunta: "No 6 por 8, quantas colcheias formam um tempo?", opcoes: ["Duas", "Três", "Seis"], certa: 1 },
-            { tipo: "escolha", pergunta: "E quantos tempos tem um compasso de 6 por 8?", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]], opcoes: ["Dois", "Três", "Seis"], certa: 0, explica: "Seis colcheias, em dois grupos de três. O pulso bate duas vezes por compasso." },
-            { tipo: "ritmo", titulo: "Bata as seis colcheias", texto: "A contagem são dois compassos. Depois bata seis colcheias iguais, três em cada clique.", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]], padrao: [T, T, T, T, T, T] },
-            { tipo: "info", titulo: "Não é tercina", texto: ["O som é parecido com o da tercina, mas a escrita é outra: aqui as três colcheias são a divisão normal do tempo, sem o 3 em cima.", "Quando a música inteira balança em três, o compositor escolhe o compasso composto."] },
-          ],
-        },
-        {
-          id: "ap-figuras68", titulo: "As figuras do 6 por 8", resumo: "A semínima pontuada vale um tempo", composto: true, comp: 2, formula: true,
-          passos: [
-            { tipo: "info", ouvir: true, titulo: "Um tempo inteiro", texto: ["Se o tempo vale três colcheias, a figura que enche um tempo é a semínima pontuada.", "E a mínima pontuada enche o compasso inteiro: dois tempos."], pauta: [["sol", 1], ["sol", 1], ["sol", 2]], compassos: true },
-            { tipo: "ritmo", titulo: "Bata os tempos", texto: "Duas semínimas pontuadas: uma batida em cada clique.", pauta: [["sol", 1], ["sol", 1]], padrao: [1, 1] },
-            { tipo: "info", ouvir: true, titulo: "Longa e curta", texto: ["Semínima e colcheia dentro do mesmo tempo: duas colcheias de som e mais uma. É o balanço da tarantela e da cantiga de roda.", "Diga “tááá-ta, tááá-ta”."], pauta: [["sol", D], ["sol", T], ["sol", D], ["sol", T]] },
-            { tipo: "ritmo", titulo: "Bata longa e curta", texto: "Semínima e colcheia, duas vezes.", pauta: [["sol", D], ["sol", T], ["sol", D], ["sol", T]], padrao: [D, T, D, T] },
-            { tipo: "ritmo", titulo: "Misture", texto: "Três colcheias e depois longa e curta.", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", D], ["sol", T]], padrao: [T, T, T, D, T] },
-            { tipo: "escolha", pergunta: "Qual figura vale um tempo no 6 por 8?", opcoes: ["A semínima", "A semínima pontuada", "A colcheia"], certa: 1 },
-            { tipo: "ritmo", titulo: "Dois compassos", texto: "Longa e curta, três colcheias e uma mínima pontuada.", pauta: [["sol", D], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", 2]], compassos: true, padrao: [D, T, T, T, T, 2] },
-          ],
-        },
-        {
-          id: "ap-pausa-colcheia", titulo: "A pausa de colcheia", resumo: "O silêncio dentro do tempo",
-          passos: [
-            { tipo: "info", ouvir: true, titulo: "Meio tempo de silêncio", texto: ["A pausa de colcheia tem o desenho de um 7 com uma bolinha. No compasso simples, ela vale meio tempo.", "Quando ela cai no clique, a nota entra no contratempo: você sente o pulso e toca depois dele."], pauta: [[P, 0.5], ["sol", 0.5], [P, 0.5], ["sol", 0.5], ["sol", 2]] },
-            { tipo: "ritmo", titulo: "Bata no contratempo", texto: "Silêncio no clique, batida no “e”. Duas vezes, e depois a mínima.", pauta: [[P, 0.5], ["sol", 0.5], [P, 0.5], ["sol", 0.5], ["sol", 2]], padrao: [-0.5, 0.5, -0.5, 0.5, 2] },
-            { tipo: "escolha", pergunta: "Quando a pausa de colcheia cai no clique, onde entra a nota?", opcoes: ["Junto com o clique", "No contratempo, depois do clique", "No tempo seguinte"], certa: 1 },
-            { tipo: "info", composto: true, comp: 2, formula: 2, ouvir: true, titulo: "A pausa no 6 por 8", texto: ["No composto, a pausa de colcheia vale uma das três partes do tempo.", "Aqui ela ocupa o meio do tempo: nota, silêncio, nota."], pauta: [["sol", T], [P, T], ["sol", T], ["sol", T], [P, T], ["sol", T]] },
-            { tipo: "ritmo", composto: true, comp: 2, formula: 2, titulo: "Nota, silêncio, nota", texto: "Bata a primeira e a terceira colcheia de cada tempo.", pauta: [["sol", T], [P, T], ["sol", T], ["sol", T], [P, T], ["sol", T]], padrao: [T, -T, T, T, -T, T] },
-            { tipo: "ritmo", composto: true, comp: 2, formula: 2, titulo: "Entrando depois do clique", texto: "Silêncio na primeira colcheia, duas batidas, e uma semínima pontuada.", pauta: [[P, T], ["sol", T], ["sol", T], ["sol", 1]], padrao: [-T, T, T, 1] },
-          ],
-        },
-        {
-          id: "ap-frases68", titulo: "Frases em 6 por 8", resumo: "O ritmo com notas", composto: true, comp: 2, formula: true, arm: "sol",
-          passos: [
-            { tipo: "info", ouvir: true, titulo: "Ler por grupos", texto: ["No 6 por 8, leia de três em três colcheias: cada grupo é um tempo, e a trave mostra isso.", "Ouça a frase com o pulso."], pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T], ["do", T], ["si", T], ["la", T], ["si", 1]], compassos: true },
-            { tipo: "ritmo", titulo: "O ritmo do primeiro compasso", texto: "Três colcheias, depois longa e curta.", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]], padrao: [T, T, T, D, T] },
-            { tipo: "escolha", pergunta: "Qual é a ordem das notas do primeiro compasso?", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]], opcoes: ["Sol, Lá, Si, Ré, Si", "Sol, Lá, Si, Dó, Si", "Si, Lá, Sol, Ré, Si"], certa: 0 },
-            { tipo: "tocar", nota: "si", segundos: 1, titulo: "O primeiro compasso", texto: "Ligue o pulso e toque até o Si.", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]] },
-            { tipo: "tocar", nota: "si", segundos: 1, titulo: "O segundo compasso", texto: "Dó, Si, Lá e repouse no Si, por um tempo inteiro.", pauta: [["do", T], ["si", T], ["la", T], ["si", 1]] },
-          ],
-        },
-        {
-          id: "ap-estudo68", titulo: "Estudo em 6 por 8", resumo: "Oito compassos para o seu caderno", composto: true, comp: 2, formula: true, arm: "sol", melodia: ESTUDO_SEIS_OITO,
-          passos: [
-            { tipo: "info", titulo: "Estudo em 6 por 8", texto: ["Um estudo completo em Sol maior. Ele usa as três figuras que você praticou: grupos de três colcheias, longa e curta, e a semínima pontuada.", "Comece em 50. Só aumente o andamento quando os grupos saírem iguais."], melodia: true },
-            { tipo: "escolha", pergunta: "Qual figura fecha o quarto e o oitavo compassos?", melodia: true, opcoes: ["A semínima pontuada", "A mínima pontuada", "Três colcheias"], certa: 1 },
-            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque o estudo inteiro. O clique marca os dois tempos de cada compasso." },
-            { tipo: "gravar", chave: "ap-ritmo-1", comparar: true, titulo: "Guarde este estudo", texto: "Grave o “Estudo em 6 por 8”. Daqui a um mês, grave de novo e compare." },
-            { tipo: "metodos", titulo: "Agora nos métodos", texto: ["O compasso composto aparece em vários livros da biblioteca. Com o que você treinou aqui, estas páginas ficam ao seu alcance."], itens: [["rubank-int", "pág. 15", "6/8 Rhythm: estudos em 6 por 8"], ["alfabeto", "Ex. 126–128 · pág. 34", "Os compassos compostos: 6/8, 9/8 e 12/8"], ["pozzoli", "2ª Parte, Séries 8–14", "Ditado em compassos compostos, com pausas e ligaduras"], ["viola3", "p. 63–82", "Compassos simples e compostos, com mudanças de compasso"]] },
-          ],
-        },
-      ],
-    },
   ];
+  UNIDADES.push(...UNIDADES_PLANO);
   const LICOES = UNIDADES.flatMap(u => u.licoes);
+  const PLANO_LICOES = UNIDADES_PLANO.flatMap(u => u.licoes);
   const PRINCIPAIS = UNIDADES.filter(u => !u.pilar).flatMap(u => u.licoes); // a trilha do zero à formatura
   const PROXIMAS = [];
 
@@ -1081,7 +1120,7 @@
   const CHAVE = "naipe.trilha.v1";
   let prog = { feitas: {}, pontos: 0 };
   try { prog = Object.assign(prog, JSON.parse(localStorage.getItem(CHAVE) || "{}")); } catch { /* sem armazenamento */ }
-  const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(prog)); } catch { /* segue sem salvar */ } };
+  const salvar = () => { if (REVISAR) return; try { localStorage.setItem(CHAVE, JSON.stringify(prog)); } catch { /* segue sem salvar */ } };
   const saxDoApp = () => { try { return (JSON.parse(localStorage.getItem("cma.v1") || "{}").sax) || prog.sax || ""; } catch { return prog.sax || ""; } };
 
   const $ = s => document.querySelector(s);
@@ -1258,7 +1297,7 @@
   }
 
   // ---------- Pulso (metrônomo das lições) ----------
-  const bpmAtual = () => Math.min(100, Math.max(40, Number(prog.bpm) || 60));
+  const bpmAtual = () => Math.min(208, Math.max(40, Number(prog.bpm) || 60));
   const pulso = { t: 0, prox: 0, n: 0 };
   function pararPulso() { clearInterval(pulso.t); pulso.t = 0; const b = $("#tr-pulso-liga"); if (b) { b.textContent = "▶ Ouvir o pulso"; b.classList.remove("ativo"); } }
   function ligarPulso() {
@@ -1278,7 +1317,7 @@
   const htmlPulso = (liga = true) => `${SWING ? `<p class="tr-swing">♪ Colcheias com swing: a primeira longa, a segunda curta</p>` : ""}<div class="tr-pulso"><span class="tr-pulso-luz" id="tr-pulso-luz">♩</span><span class="tr-pulso-bpm"><button type="button" id="tr-bpm-menos" aria-label="Mais lento">−</button><strong id="tr-bpm">${bpmAtual()}</strong><small>por minuto</small><button type="button" id="tr-bpm-mais" aria-label="Mais rápido">+</button></span>${liga ? `<button type="button" class="tr-pulso-liga" id="tr-pulso-liga">▶ Ouvir o pulso</button>` : `<small class="tr-pulso-nota">andamento da contagem</small>`}</div>`;
   function ativarPulso() {
     if (!$("#tr-bpm")) return;
-    const muda = d => { prog.bpm = Math.min(100, Math.max(40, bpmAtual() + d)); salvar(); $("#tr-bpm").textContent = prog.bpm; };
+    const muda = d => { prog.bpm = Math.min(208, Math.max(40, bpmAtual() + d)); salvar(); $("#tr-bpm").textContent = prog.bpm; };
     $("#tr-bpm-menos").addEventListener("click", () => muda(-4));
     $("#tr-bpm-mais").addEventListener("click", () => muda(4));
     const b = $("#tr-pulso-liga"); if (b) b.addEventListener("click", () => (pulso.t ? pararPulso() : ligarPulso()));
@@ -1349,7 +1388,7 @@
     const curva = pts.map((pt, k) => k === 0 ? `M${pt[0]} ${pt[1]}` : `C${pts[k - 1][0]} ${pts[k - 1][1] + passo / 2} ${pt[0]} ${pt[1] - passo / 2} ${pt[0]} ${pt[1]}`).join(" ");
     return `<ol class="tr-caminho" style="height:${u.licoes.length * passo}px"><svg class="tr-fio" viewBox="0 0 120 ${u.licoes.length * passo}" preserveAspectRatio="none" aria-hidden="true"><path d="${curva}"/></svg>${u.licoes.map((l, k) => {
       const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = REVISAR || (!paga && (feita || i === atual || atual === -1)), ehAtual = aberta && !feita && (!REVISAR || i === atual);
-      const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : u.pilar ? k + 1 : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
+      const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : u.pilar || u.plano ? k + 1 : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
       return `<li class="${feita ? "feita" : ehAtual ? "atual" : aberta ? "livre" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
     }).join("")}</ol>`;
   }
@@ -1364,14 +1403,16 @@
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
       const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
       const unAtual = atual < 0 ? -1 : UNIDADES.findIndex(x => x.licoes.includes(LICOES[atual]));
-      const completa = unidadeCompleta(n), futura = !REVISAR && unAtual >= 0 && n > unAtual;
+      const livreParaQuemToca = u.plano && prog.perfil === "toca";
+      const completa = unidadeCompleta(n), futura = !REVISAR && unAtual >= 0 && n > unAtual && !(livreParaQuemToca && (n === UNIDADES.indexOf(UNIDADES_PLANO[0]) || unidadeCompleta(n - 1)));
       const estado = completa ? "Completa · toque para rever" : futura ? `Abre ao concluir a Unidade ${n}` : `${feitas} de ${u.licoes.length} lições`;
-      const faixa = `<div class="tr-faixa"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
+      const faixa = `<div class="tr-faixa"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : u.plano ? " · Plano de estudos" : ""}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
       if (futura) return `<section class="tr-unidade trancada" style="--u1:${cor[0]};--u2:${cor[1]}">${faixa}</section>`;
-      return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}"${n === unAtual ? " open" : ""}>
+      return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}"${(n === unAtual && !(prog.perfil === "toca" && !u.plano)) || (livreParaQuemToca && !futura && !completa && !UNIDADES_PLANO.slice(0, UNIDADES_PLANO.indexOf(u)).some(x => !unidadeCompleta(UNIDADES.indexOf(x)))) ? " open" : ""}>
           <summary>${faixa}</summary>
           ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo. A Unidade 1 é livre para você experimentar.</p>` : ""}
-          ${htmlCaminho(u, n, atual, paga)}
+          ${u.plano && u.texto ? `<p class="mudo tr-semana-txt">${esc(u.texto)}</p>` : ""}
+          ${htmlCaminho(u, n, livreParaQuemToca ? primeiraAberta(u.licoes) : atual, paga)}
           ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
         </details>`;
     }).join("");
@@ -1385,18 +1426,6 @@
       <div class="corpo tr-corpo">
         <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${PRINCIPAIS.filter(l => prog.feitas[l.id]).length} de ${PRINCIPAIS.length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
         ${unidades}
-        <header class="tr-secao"><p class="sobretitulo">Aprofundar · por pilar</p><h2>Depois da leitura, o estudo</h2><p class="mudo">Unidades ligadas aos seus Pilares. Cada uma explica o assunto, traz um estudo para tocar aqui e mostra em que página dos métodos continuar.</p></header>
-        ${UNIDADES.map((u, n) => {
-          if (!u.pilar) return "";
-          const feitas = u.licoes.filter(l => prog.feitas[l.id]).length, paga = !REVISAR && !completo(), completa = unidadeCompleta(n);
-          return `<details class="tr-unidade" style="--u1:${u.cor[0]};--u2:${u.cor[1]}"${feitas && !completa ? " open" : ""}>
-            <summary><div class="tr-faixa"><div><span class="rotulo">${esc(u.pilar)}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${completa ? "✓ Completa · toque para rever" : `${feitas} de ${u.licoes.length} lições`}</span></div><span class="tr-arte">${ARTE[0]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div><span class="tr-seta" aria-hidden="true">⌄</span></div></summary>
-            ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo.</p>` : ""}
-            ${htmlCaminho(u, n, primeiraAberta(u.licoes), paga)}
-            ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
-          </details>`;
-        }).join("")}
-        <p class="mudo tr-em-breve">Em preparação: Escuta, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.</p>
         <div id="tr-antes"></div>
         <section class="cartao tr-proximas"><span class="rotulo">Depois da trilha</span><p class="mudo">Ao concluir as 16 unidades, o estudo continua nos Pilares, com as Dicas de Naipe e os métodos.</p><a class="link-acao" href="#/raizes">Ver os Pilares</a></section>
         ${prog.pontos ? `<p class="mudo tr-pontos">${prog.pontos} pontos de estudo nesta trilha</p>` : ""}
@@ -1411,13 +1440,13 @@
     const pai = document.querySelector(".conteudo-inicio"); if (!pai) return;
     let el = document.getElementById("tr-inicio");
     if (!el) { el = document.createElement("div"); el.id = "tr-inicio"; const ref = pai.querySelector(".percurso-cartao"); pai.insertBefore(el, ref || pai.firstChild); }
-    const prox = PRINCIPAIS.find(l => !prog.feitas[l.id]);
+    const lista = prog.perfil === "toca" ? PLANO_LICOES : PRINCIPAIS, prox = lista.find(l => !prog.feitas[l.id]);
     if (!prog.perfil) {
-      el.innerHTML = `<section class="cartao tr-entrada"><span class="rotulo">Para começar</span><h2>Você já toca saxofone?</h2><div class="tr-entrada-ops"><button type="button" data-perfil="zero"><strong>Estou começando do zero</strong><small>Aprender a ler e tocar, passo a passo</small></button><button type="button" data-perfil="toca"><strong>Já toco</strong><small>Organizar o estudo pelos pilares</small></button></div></section>`;
+      el.innerHTML = `<section class="cartao tr-entrada"><span class="rotulo">Para começar</span><h2>Você já toca saxofone?</h2><div class="tr-entrada-ops"><button type="button" data-perfil="zero"><strong>Estou começando do zero</strong><small>Aprender a ler e tocar, passo a passo</small></button><button type="button" data-perfil="toca"><strong>Já toco</strong><small>Seguir um plano de estudos com os métodos</small></button></div></section>`;
       el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { prog.perfil = b.dataset.perfil; salvar(); if (prog.perfil === "zero") location.hash = "#/trilha"; else cartaoInicio(); }));
-    } else if (prox && (prog.perfil === "zero" || Object.keys(prog.feitas).length)) {
+    } else if (prox && (prog.perfil === "zero" || prog.perfil === "toca" || Object.keys(prog.feitas).length)) {
       const i = LICOES.indexOf(prox), n = UNIDADES.findIndex(u => u.licoes.includes(prox)), paga = n > 0 && !completo();
-      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">Aprender · lição ${i + 1} de ${PRINCIPAIS.length}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
+      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">${prox.sessao ? `Plano de estudos · Semana ${prox.sessao.semana + 1}` : `Aprender · lição ${i + 1} de ${PRINCIPAIS.length - PLANO_LICOES.length}`}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
     } else el.innerHTML = "";
   }
 
@@ -1429,6 +1458,7 @@
     if (!REVISAR && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = "#/trilha"; return; }
     limpar();
     sessao = { licao, i: 0, erros: 0 };
+    if (licao.sessao) gerarSessao(licao);
     passo();
   }
 
@@ -1455,7 +1485,7 @@
     if (sessao.i >= sessao.licao.passos.length) return concluir();
     passo();
   }
-  function limparPasso() { temporizadores.splice(0).forEach(clearTimeout); cancelAnimationFrame(mic.raf); pararPulso(); }
+  function limparPasso() { temporizadores.splice(0).forEach(clearTimeout); cancelAnimationFrame(mic.raf); pararPulso(); if (sessao && sessao.paraCrono) { sessao.paraCrono(); sessao.paraCrono = null; } }
 
   const melodiaAtual = () => (sessao && sessao.licao.melodia) || PRIMEIRO_PASSO;
   const apoio = p => (p.pauta ? svgPauta(p.pauta, { rotulos: p.rotulos, compassos: p.compassos, din: p.din, forq: p.forq }) : "") + (p.melodia ? svgMelodia(melodiaAtual()) : "") + (p.dedos ? svgDedos(p.dedos) : "") + (p.figuras ? htmlFiguras() : "");
@@ -1468,7 +1498,7 @@
     ARM = ARMS[p.arm === undefined ? lic.arm : p.arm] || null;
     SWING = !!(p.swing === undefined ? lic.swing : p.swing);
     COMPOSTO = !!(p.composto === undefined ? lic.composto : p.composto);
-    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao, dinamica: passoDinamica, vibrato: passoVibrato, metodos: passoMetodos })[p.tipo](p);
+    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao, dinamica: passoDinamica, vibrato: passoVibrato, metodos: passoMetodos, plano: passoPlano, bloco: passoBloco, fechamento: passoFechamento })[p.tipo](p);
   }
 
   // Toca a melodia com contagem de 4 e clique em cada tempo, acendendo a nota da vez em "alvo".
@@ -1745,6 +1775,93 @@
     moldura(`<h2>${esc(p.titulo)}</h2>${(p.texto || []).map(t => `<p>${esc(t)}</p>`).join("")}<ul class="tr-metodos">${p.itens.map(([id, onde, assunto]) => { const l = livros[id] || { titulo: id, autor: "" }; return `<li><a href="#/metodo/${encodeURIComponent(id)}"><span class="tr-met-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.autor || "")}</small><em>${esc(assunto)}</em></span><span class="tr-met-onde">${esc(onde)}</span></a></li>`; }).join("")}</ul><p class="mudo">Toque num método para abrir a página dele. Para voltar a esta lição, use a aba Aprender.</p>`);
   }
 
+
+  // ---------- Professor virtual ----------
+  const NOTAS_AV = { 3: "Fácil, saiu limpo", 2: "Consegui, com alguns erros", 1: "Difícil" };
+  const estadoPlano = () => { prog.plano = prog.plano || { t: {}, n: 0, ultima: null }; return prog.plano; };
+  const trilho = id => { const pl = estadoPlano(); pl.t[id] = pl.t[id] || { i: 0, bpm: null }; return pl.t[id]; };
+  function itemAtual(id) {
+    const tr = TRILHOS[id], st = trilho(id), n = tr.itens.length;
+    const i = tr.gira ? st.i % n : Math.min(st.i, n - 1);
+    const [livro, onde, oque, bpm] = tr.itens[i];
+    return { i, livro, onde, oque, bpm, fim: !tr.gira && st.i >= n, inicio: bpm ? Math.max(bpm[0], Math.min(bpm[1], st.bpm || bpm[0])) : null };
+  }
+  const urlPdf = id => { const l = ((window.CMA_METODOS || {}).livros || {})[id]; return l && l.arquivo ? `https://drive.google.com/file/d/${l.arquivo}/view` : ""; };
+  const livroInfo = id => ((window.CMA_METODOS || {}).livros || {})[id] || { titulo: id, autor: "" };
+
+  // Decide o próximo passo do trilho a partir da avaliação (3 fácil, 2 com erros, 1 difícil) e do andamento alcançado.
+  function avaliarTrilho(id, ev, alcancado) {
+    const tr = TRILHOS[id], st = trilho(id), it = itemAtual(id);
+    const nome = `${livroInfo(it.livro).titulo}, ${it.onde.split(" · ")[0]}`;
+    if (tr.gira) { st.i++; const prox = itemAtual(id); return `Aquecimento feito. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}.`; }
+    const avanca = () => { st.i++; st.bpm = null; if (st.i >= tr.itens.length) return `Você concluiu a sequência de ${tr.nome.toLowerCase()} deste mês. Siga revisando o último exercício até o próximo mês.`; const prox = itemAtual(id); return `Meta alcançada em ${nome}. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}${prox.bpm ? `, começando em ${prox.bpm[0]}` : ""}.`; };
+    if (!it.bpm) { if (ev === 3) return avanca(); return ev === 2 ? `Mais uma sessão em ${nome} antes de seguir.` : `Vamos repetir ${nome}. ${tr.dica}`; }
+    const [ini, meta] = it.bpm, r = alcancado || it.inicio;
+    if (ev === 3 && r >= meta) return avanca();
+    if (ev === 3) { st.bpm = Math.min(meta, r + 8); return `Boa. Na próxima vez, ${nome} começa em ${st.bpm} (meta ${meta}).`; }
+    if (ev === 2) { st.bpm = Math.min(meta, Math.max(ini, r + 4)); return `Mais uma sessão em ${nome}, começando em ${st.bpm}. Corrija os trechos que falharam antes de subir.`; }
+    st.bpm = Math.max(ini, r - 8); return `Na próxima vez, ${nome} volta para ${st.bpm}. ${tr.dica}`;
+  }
+
+  // Gera os passos de uma sessão: recado e plano, um passo por bloco, gravação (no fim da semana) e resumo.
+  function gerarSessao(licao) {
+    const se = licao.sessao;
+    licao.passos = [{ tipo: "plano" }, ...se.blocos.map(([t, min], k) => ({ tipo: "bloco", trilho: t, min, k }))];
+    if (se.gravar) licao.passos.push({ tipo: "gravar", chave: se.gravar, comparar: true, titulo: "A gravação da semana", texto: "Grave um trecho do repertório ou da leitura de hoje. Ouça ao lado do som do primeiro dia." });
+    licao.passos.push({ tipo: "fechamento" });
+    sessao.res = {};
+  }
+
+  function passoPlano() {
+    const { licao } = sessao, se = licao.sessao, pl = estadoPlano(), un = UNIDADES_PLANO[se.semana];
+    const nome = nomeAluno().split(" ")[0];
+    const total = se.blocos.reduce((a, b) => a + b[1], 0);
+    const ultima = pl.ultima && pl.ultima.recados && pl.ultima.recados.length ? `<p>Da última sessão:</p><ul class="tr-recados">${pl.ultima.recados.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : `<p>${esc(un.texto)}</p>`;
+    const linhas = se.blocos.map(([t, min]) => { const it = itemAtual(t), l = livroInfo(it.livro); return `<li><span><strong>${esc(TRILHOS[t].nome)}</strong><small>${esc(l.titulo)} · ${esc(it.onde)}${it.inicio ? ` · ♩ ${it.inicio}` : ""}</small></span><b>${min} min</b></li>`; }).join("");
+    moldura(`<p class="sobretitulo">Semana ${se.semana + 1} · ${esc(un.foco)}</p><h2>${esc(licao.titulo)}</h2><div class="tr-recado"><span class="rotulo">Recado do professor</span><p>${nome ? `${esc(nome)}, ` : ""}${pl.n ? `esta é a sua sessão número ${pl.n + 1} do plano.` : "vamos começar o seu plano de estudos."}</p>${ultima}</div><p class="tr-hoje-titulo">Hoje, cerca de ${total} minutos:</p><ol class="tr-plano-hoje">${linhas}</ol><p class="mudo">Deixe o sax montado e os PDFs à mão. Cada bloco abre o método na página certa.</p>`, { botao: "Começar a sessão" });
+  }
+
+  function passoBloco(p) {
+    const it = itemAtual(p.trilho), tr = TRILHOS[p.trilho], l = livroInfo(it.livro), url = urlPdf(it.livro), nb = sessao.licao.sessao.blocos.length;
+    if (it.inicio) { prog.bpm = it.inicio; salvar(); }
+    moldura(`<p class="sobretitulo">Bloco ${p.k + 1} de ${nb} · cerca de ${p.min} min</p><h2>${esc(tr.nome)}</h2>
+      <div class="tr-bloco"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><strong>${esc(l.titulo)}</strong><p class="tr-bloco-onde">${esc(it.onde)}</p><p>${esc(it.oque)}</p>${url ? `<a class="btn primario" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}</div>
+      ${it.bpm ? `<p class="tr-meta-bpm">Comece em <b>${it.inicio}</b> · meta <b>${it.bpm[1]}</b>. Suba de 4 em 4 quando sair limpo.</p>${htmlPulso(true)}` : ""}
+      <div class="tr-crono"><span id="tr-crono">00:00</span><small>de ${String(p.min).padStart(2, "0")}:00</small><button class="btn" id="tr-crono-btn" type="button">Iniciar o bloco</button></div>
+      <p class="tr-hoje-titulo">Como foi?</p><div class="tr-opcoes tr-aval">${[3, 2, 1].map(v => `<button type="button" data-ev="${v}">${NOTAS_AV[v]}</button>`).join("")}</div>${it.bpm ? `<p class="mudo">O andamento marcado no pulso quando você avaliar é o que eu guardo como alcançado.</p>` : ""}`, { botao: "Avalie o bloco", pronto: false });
+    ativarPulso();
+    let ini = 0, acum = 0, tick = 0;
+    const mostra = () => { const sg = Math.floor((acum + (ini ? Date.now() - ini : 0)) / 1000), el = $("#tr-crono"); if (el) el.textContent = `${String(Math.floor(sg / 60)).padStart(2, "0")}:${String(sg % 60).padStart(2, "0")}`; if (ini && sg === p.min * 60) { somRetorno(true); const r = $("#tr-retorno"); if (r && !r.textContent) { r.textContent = "Tempo do bloco completo. Avalie quando terminar."; r.className = "tr-retorno ok"; } } };
+    $("#tr-crono-btn").addEventListener("click", ev => {
+      if (ini) { acum += Date.now() - ini; ini = 0; clearInterval(tick); ev.target.textContent = "Continuar o bloco"; }
+      else { ini = Date.now(); tick = setInterval(mostra, 250); ev.target.textContent = "Pausar"; }
+    });
+    sessao.paraCrono = () => { if (ini) { acum += Date.now() - ini; ini = 0; } clearInterval(tick); return Math.round(acum / 1000); };
+    raiz().querySelectorAll(".tr-aval button").forEach(b => b.addEventListener("click", () => {
+      if (sessao.res[p.k]) return;
+      const ev = Number(b.dataset.ev), alcancado = it.bpm ? bpmAtual() : null, seg = sessao.paraCrono();
+      const recado = avaliarTrilho(p.trilho, ev, alcancado);
+      sessao.res[p.k] = { trilho: p.trilho, titulo: `${l.titulo} · ${it.onde.split(" · ")[0]}`, ev, alcancado, seg, recado };
+      salvar();
+      b.classList.add("certa"); raiz().querySelectorAll(".tr-aval button").forEach(x => { x.disabled = true; });
+      liberar(recado, ev > 1);
+      if (ev === 1) { const r = $("#tr-retorno"); r.className = "tr-retorno nao"; }
+    }));
+  }
+
+  function passoFechamento() {
+    const { licao } = sessao, res = Object.values(sessao.res || {}), pl = estadoPlano();
+    const minutos = Math.round(res.reduce((a, r) => a + r.seg, 0) / 60);
+    const media = res.length ? res.reduce((a, r) => a + r.ev, 0) / res.length : 0;
+    if (!sessao.registrado) {
+      sessao.registrado = true;
+      pl.n++; pl.ultima = { data: new Date().toISOString(), recados: res.filter(r => !TRILHOS[r.trilho].gira).map(r => r.recado) };
+      salvar();
+      if (!REVISAR && minutos >= 1 && window.NaipeRegistrarPratica) window.NaipeRegistrarPratica(minutos, Math.max(1, Math.round(media / 3 * 5)), `Plano de estudos · ${licao.titulo} da Semana ${licao.sessao.semana + 1}: ${res.map(r => r.titulo).join("; ")}`);
+    }
+    moldura(`<p class="sobretitulo">Fim da sessão</p><h2>O que eu anotei</h2><ul class="tr-resumo">${res.map(r => `<li><span><strong>${esc(TRILHOS[r.trilho].nome)}</strong><small>${esc(r.titulo)}${r.alcancado ? ` · chegou a ♩ ${r.alcancado}` : ""} · ${esc(NOTAS_AV[r.ev])}</small></span><p>${esc(r.recado)}</p></li>`).join("") || "<li>Nenhum bloco avaliado.</li>"}</ul><p class="mudo">${minutos >= 1 ? `${minutos} minutos registrados no seu Diário.` : "Use o cronômetro de cada bloco para o tempo entrar no seu Diário."}</p>`, { botao: "Concluir a sessão" });
+  }
+
   function passoMusica(p) {
     let bt = 60 / bpmAtual(); const MEL = melodiaAtual();
     moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-partitura">${svgMelodia(MEL)}</div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz"></p>${htmlMic(p)}`, { botao: "Toque a música", pronto: false });
@@ -1794,7 +1911,7 @@
   const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const urls = [];
   const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
-  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura", "ap-ritmo-1": "Estudo em 6 por 8" };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura", s1: "Semana 1", s2: "Semana 2", s3: "Semana 3", s4: "Fim do primeiro mês" };
 
   const rec = { mr: null, stream: null, partes: [], t: 0 };
   function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
@@ -1901,7 +2018,7 @@
 
   async function htmlAntesDepois() {
     const itens = [];
-    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "ap-ritmo-1"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "s1", "s2", "s3", "s4"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
     return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
   }
 

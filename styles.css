@@ -1763,3 +1763,29 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .tr-met-txt small { color: var(--muted); font-size: .8rem; }
 .tr-met-txt em { font-style: normal; font-size: .9rem; margin-top: 4px; }
 .tr-met-onde { font-size: .8rem; font-weight: 700; color: var(--brass-soft); text-align: right; max-width: 12ch; }
+
+/* ---------- Plano de estudos e professor virtual ---------- */
+.tr-recado { border-radius: 14px; padding: 14px 16px; background: color-mix(in srgb, var(--brass) 12%, var(--surface-2)); border: 1px solid color-mix(in srgb, var(--brass) 40%, transparent); display: flex; flex-direction: column; gap: 8px; }
+.tr-recado .rotulo { color: var(--brass-soft); }
+.tr-recado p { font-size: 1rem !important; }
+.tr-recados { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: .95rem; line-height: 1.45; }
+.tr-hoje-titulo { font-weight: 700; margin-top: 4px; }
+.tr-plano-hoje, .tr-resumo { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.tr-plano-hoje li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); }
+.tr-plano-hoje li span, .tr-resumo li span { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tr-plano-hoje small, .tr-resumo small { color: var(--muted); font-size: .82rem; line-height: 1.35; }
+.tr-plano-hoje b { white-space: nowrap; color: var(--brass-soft); }
+.tr-resumo li { padding: 12px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); display: grid; gap: 6px; }
+.tr-resumo li p { font-size: .95rem !important; }
+.tr-bloco { display: flex; flex-direction: column; gap: 6px; padding: 16px; border-radius: 14px; background: var(--surface-2); border: 1px solid var(--line); }
+.tr-bloco strong { font-size: 1.1rem; }
+.tr-bloco-onde { font-size: 1.25rem !important; font-weight: 800; color: var(--brass-soft); }
+.tr-bloco .btn { margin-top: 6px; align-self: flex-start; }
+.tr-meta-bpm { font-size: .98rem !important; }
+.tr-meta-bpm b { color: var(--brass-soft); font-size: 1.1rem; }
+.tr-crono { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); }
+.tr-crono span { font-size: 1.6rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+.tr-crono small { color: var(--muted); }
+.tr-crono .btn { margin-left: auto; }
+.tr-aval button { text-align: center; }
+.tr-semana-txt { margin: 0 2px 14px; }
