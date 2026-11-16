@@ -1794,3 +1794,126 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .beta .abas { grid-template-columns: repeat(6, 1fr); }
 .beta .abas a { font-size: .64rem; letter-spacing: 0; }
 @media (max-width: 360px) { .beta .abas a { font-size: .58rem; } }
+
+/* =====================================================================
+   Visual moderno (naipesax.com.br/?visual=moderno · ?visual=classico volta)
+   Base preta e branca como no TIDAL, verde de ação como no Spotify e o
+   degradê do Instagram só nos destaques: logo, progresso, aba ativa e o
+   "anel de story" da próxima lição.
+   ===================================================================== */
+:root.moderno, :root.moderno[data-tema] {
+  --bg: #000;
+  --surface: #121212;
+  --surface-2: #1c1c1c;
+  --line: #2a2a2a;
+  --text: #fff;
+  --muted: #a7a7a7;
+  --faint: #6a6a6a;
+  --verde-play: #1ed760;
+  --ig: linear-gradient(45deg, #feda75 0%, #fa7e1e 25%, #d62976 50%, #962fbf 75%, #4f5bd5 100%);
+  --brass: #1ed760;
+  --brass-soft: #1ed760;
+  --latao: var(--ig);
+  --on-brass: #fff;
+  --ok: #1ed760;
+  --danger: #ff5a5f;
+  --warn: #ffb020;
+  --f-display: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --raio: 14px;
+  --mistura: #0a0a0a;
+  --visor: #0a0a0a;
+}
+.moderno body { background: #000; }
+
+/* Tipografia: sem caixa alta nos títulos, peso forte e espaçamento justo */
+.moderno :is(h1, h2, h3, .raiz-titulo, .hero-saudacao, .banda h1, .tr-faixa h2) {
+  font-family: var(--f-body); font-stretch: 100%; text-transform: none; letter-spacing: -.025em; font-weight: 800;
+}
+.moderno h1 { font-size: 2rem; line-height: 1.08; }
+.moderno :is(.rotulo, .sobretitulo, .banda-sobre, .frase-dia figcaption) { font-family: var(--f-body); font-stretch: 100%; letter-spacing: .06em; color: var(--muted); font-weight: 700; }
+.moderno .serif, .moderno :is(.banda-frase, .tr-porque-txt) { font-family: var(--f-body); font-style: normal; font-weight: 600; letter-spacing: -.01em; }
+
+/* Logo e topo */
+.moderno .marca, .moderno .hero-topo .marca { font-family: "Outfit", var(--f-body); background: var(--ig); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.moderno .marca .marca-simbolo { color: #d62976; }
+.moderno .hero { background: #000; border-bottom: 0; }
+.moderno .hero-saudacao { font-size: 2.3rem; }
+.moderno .frase-dia blockquote { font-weight: 600; }
+.moderno .letreiro-radio { background: var(--surface-2); border-color: transparent; box-shadow: none; }
+
+/* Cartões: superfícies lisas, sem brilho nem borda dourada */
+.moderno .cartao { background: var(--surface); border-color: transparent; box-shadow: none; }
+.moderno :is(.cartao, .raiz-card, .tr-unidade, .tr-faixa, .tr-bloco, .tr-recado, .tr-plano-hoje li, .tr-resumo li) { box-shadow: none; }
+
+/* Botões: pílula verde com texto preto; secundários em contorno discreto */
+.moderno .btn { border-radius: 999px; border-color: #3a3a3a; background: transparent; color: #fff; font-weight: 700; }
+.moderno .btn.primario { background: var(--verde-play); color: #000; border-color: transparent; box-shadow: none; }
+.moderno .btn.primario:hover { filter: none; background: #3be477; transform: scale(1.02); }
+.moderno .btn.primario[disabled] { background: #2a2a2a; color: #777; }
+
+/* Abas: preto puro, ativo em branco com o degradê do Instagram */
+.moderno .abas { background: rgb(0 0 0 / .94); border-top-color: #1a1a1a; }
+.moderno .abas a { color: #8a8a8a; }
+.moderno .abas a.ativa { color: #fff; }
+.moderno .abas a.ativa::before { background: var(--ig); box-shadow: none; height: 3px; border-radius: 0 0 3px 3px; }
+
+/* Controles de seleção (Play-alongs, Alto/Tenor, filtros): branco com texto preto */
+.moderno :is(.modo-tocar a.ativo, .filtro-sax button.ativo) { background: #fff; color: #000; box-shadow: none; }
+.moderno .modo-tocar, .moderno .filtro-sax { background: var(--surface-2); border-color: transparent; }
+
+/* Pilares: capas no estilo de playlist, cor sólida que some no preto */
+.moderno .raiz-card {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--c1) 85%, #000), color-mix(in srgb, var(--c1) 28%, #000) 78%);
+  border: 0; border-radius: 12px;
+}
+.moderno .raiz-card:hover { box-shadow: none; transform: translateY(-2px); }
+.moderno .raiz-titulo { font-size: 1.7rem; }
+.moderno .raiz-card .barra-preenchida { background: #fff; }
+.moderno .banda { background: linear-gradient(180deg, color-mix(in srgb, var(--c1) 55%, #000), #000 92%); border-bottom: 0; }
+.moderno .banda-ilus { filter: none; }
+
+/* Números e visores */
+.moderno .timer-visor { background: var(--surface); border-color: transparent; color: #fff; text-shadow: none; }
+.moderno :is(.barra, .tr-barra-prog) { background: #2a2a2a; }
+.moderno .barra-preenchida { background: var(--ig); }
+
+/* Teoria e Estudo */
+.moderno .tr-faixa { background: linear-gradient(135deg, var(--u1), color-mix(in srgb, var(--u2) 70%, #000)); border-radius: 12px; }
+.moderno .tr-unidade.trancada .tr-faixa { filter: grayscale(1) brightness(.45); }
+.moderno .tr-fio path { stroke: #333; }
+.moderno .tr-no { background: #1a1a1a; color: #9a9a9a; box-shadow: none; }
+.moderno .tr-caminho .feita .tr-no { background: var(--verde-play); color: #000; box-shadow: none; }
+/* próxima lição: anel de story */
+.moderno :is(.tr-caminho .atual .tr-no, .tr-continuar .tr-no) {
+  background: radial-gradient(circle, #fff 0 55%, transparent 56%), var(--ig); color: #000; box-shadow: none;
+  border: 0; outline: 3px solid #000; outline-offset: -6px; animation: none;
+}
+.moderno .tr-caminho .livre .tr-no { box-shadow: inset 0 0 0 2px #fff; color: #fff; }
+.moderno .tr-continuar { border-color: transparent; background: var(--surface); }
+.moderno .tr-lic-txt em, .moderno .tr-lic-acao { color: var(--verde-play); }
+.moderno .tr-pauta { background: #fff; border-radius: 10px; }
+.moderno .tr-recado { background: var(--surface); border: 0; border-left: 3px solid transparent; border-image: var(--ig) 1; border-radius: 0 12px 12px 0; }
+.moderno .tr-recado .rotulo { color: #fff; }
+.moderno :is(.tr-bloco, .tr-plano-hoje li, .tr-resumo li, .tr-crono, .tr-pulso, .tr-opcoes button, .tr-metodos a) { background: var(--surface); border-color: transparent; }
+.moderno .tr-opcoes button { border: 1.5px solid #2a2a2a; }
+.moderno .tr-bloco-onde, .moderno .tr-plano-hoje b, .moderno .tr-meta-bpm b, .moderno .tr-met-onde { color: #fff; }
+.moderno .tr-selo { background: var(--verde-play); color: #000; }
+.moderno .tr-bater.ativo { background: var(--ig); color: #fff; box-shadow: none; }
+.moderno .tr-pulso-liga { border-color: #fff; color: #fff; }
+.moderno .tr-pulso-liga.ativo { background: #fff; color: #000; }
+.moderno .tr-pulso-luz.bate { background: var(--verde-play); color: #000; }
+.moderno .tr-dedos .tubo { fill: #2a2a2a; }
+.moderno .tr-sax-des .corpo { stroke: #e8e8e8; }
+.moderno .tr-sax-des .chave { fill: #000; stroke: #888; }
+.moderno .tr-sax-des .chave.fechada { fill: var(--verde-play); stroke: var(--verde-play); filter: none; }
+.moderno .tr-ganho { color: var(--verde-play); }
+.moderno .tr-faixa .rotulo { color: rgb(255 255 255 / .82); }
+.moderno .metodos-pilar { border: 0; background: var(--surface); }
+.moderno .mp-topo h2 { color: #fff; text-transform: none; letter-spacing: -.02em; }
+.moderno .mp-ic { box-shadow: none; }
+.moderno #btn-registrar-2 { animation: none; }
+.moderno .btn.primario[disabled], .moderno .tr-rodape .btn[disabled] { background: #242424; color: #8a8a8a; opacity: 1; }
+@media (min-width: 1100px) {
+  .moderno .abas::before { background: var(--ig); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .moderno .abas a.ativa, .moderno .abas a:hover { background: #1a1a1a; }
+}

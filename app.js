@@ -87,7 +87,7 @@
     if (tema === "verde") document.documentElement.dataset.tema = "verde";
     else delete document.documentElement.dataset.tema;
     const meta = document.querySelector('meta[name="theme-color"]');
-    if (meta) meta.setAttribute("content", tema === "verde" ? "#0b2a20" : "#0e0e11");
+    if (meta) meta.setAttribute("content", document.documentElement.classList.contains("moderno") ? "#000000" : tema === "verde" ? "#0b2a20" : "#0e0e11");
   }
   aplicarTema();
 
