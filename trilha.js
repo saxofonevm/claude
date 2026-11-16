@@ -62,6 +62,7 @@
   };
   const P = "pausa"; // pausa na pauta e nas melodias
   const T = 1 / 3; // colcheia de tercina
+  const D = 2 / 3; // semínima no compasso composto
 
   // Melodias originais: [nota ou pausa, tempos]
   const PRIMEIRO_PASSO = [["si", 2], ["la", 2], ["sol", 4], ["si", 1], ["si", 1], ["la", 1], ["la", 1], ["sol", 4]];
@@ -92,6 +93,8 @@
   const SERESTA = [["fa", 1], ["la", 1, "ap=sol"], ["do", 2], ["re2", 1], ["do", 0.5], ["sib", 0.5], ["la", 2, "tr1"], ["sol", 1, "ap=la"], ["sib", 1], ["la", 0.5], ["sol", 0.5], ["fa", 1], ["sol", 2, "tr"], ["fa", 2]];
   const DE_PONTA_A_PONTA = [["dob", 1], ["mi", 1], ["sol", 1], ["do", 1], ["mi2", 1], ["sol2", 1], ["do3", 2], ["si2", 0.5], ["la2", 0.5], ["sol2", 1], ["mi2", 0.5], ["re2", 0.5], ["do", 1], ["sol", 1], ["mi", 1], ["dob", 2]];
   const FORMATURA = [["sol", 1], ["si", 0.5], ["re2", 0.5], ["sol2", 1], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.25], ["mi2", 0.5], ["re2", 0.25], ["si", 1], ["la", 0.5], ["si", 0.5], ["re2", 1], ["do", 0.5], ["mi2", 0.5], ["re2", 0.5], ["do", 0.5], ["si", 1], ["la", 1], ["la", T], ["si", T], ["la", T], ["fas", 1], ["sol", 2], ["sol", 1], ["si", 0.5], ["re2", 0.5], ["sol2", 1], ["fas2", 0.5], ["mi2", 0.5], ["re2", 1, "st"], ["mi2", 1, "st"], ["fas2", 1, "st"], ["sol2", 1], ["la2", 2, "ac"], ["sol2", 0.5], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.5], ["si", 1], ["la", 1], ["sol", 2]];
+
+  const ESTUDO_SEIS_OITO = [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T], ["do", T], ["si", T], ["la", T], ["si", 1], ["la", T], ["si", T], ["do", T], ["re2", D], ["mi2", T], ["re2", 2], ["mi2", T], ["re2", T], ["do", T], ["si", D], ["sol", T], ["la", T], ["si", T], ["do", T], ["la", 1], ["si", D], ["la", T], ["sol", D], ["fas", T], ["sol", 2]];
 
   const UNIDADES = [
     {
@@ -1011,8 +1014,67 @@
         },
       ],
     },
+    {
+      pilar: "Figuras Rítmicas", cor: ["#ee8a45", "#9a4a15"], titulo: "O compasso composto", marco: "Leio e toco em 6 por 8, com pausas de colcheia.", licoes: [
+        {
+          id: "ap-composto", titulo: "O tempo que se divide em três", resumo: "Simples e composto", composto: true, comp: 2, formula: true,
+          passos: [
+            { tipo: "info", composto: false, comp: 2, formula: 2, ouvir: true, titulo: "Você já conhece o simples", texto: ["Até aqui cada tempo se dividia em duas colcheias. Isso é o compasso simples.", "Ouça dois tempos divididos em dois."], pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5]] },
+            { tipo: "info", ouvir: true, titulo: "No composto, cada tempo tem três", texto: ["No 6 por 8, o compasso tem seis colcheias, agrupadas de três em três. São dois tempos, e cada tempo vale três colcheias.", "O clique marca os dois tempos. Conte “1-2-3, 4-5-6”, com apoio no 1 e no 4."], pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]] },
+            { tipo: "escolha", pergunta: "No 6 por 8, quantas colcheias formam um tempo?", opcoes: ["Duas", "Três", "Seis"], certa: 1 },
+            { tipo: "escolha", pergunta: "E quantos tempos tem um compasso de 6 por 8?", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]], opcoes: ["Dois", "Três", "Seis"], certa: 0, explica: "Seis colcheias, em dois grupos de três. O pulso bate duas vezes por compasso." },
+            { tipo: "ritmo", titulo: "Bata as seis colcheias", texto: "A contagem são dois compassos. Depois bata seis colcheias iguais, três em cada clique.", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", T]], padrao: [T, T, T, T, T, T] },
+            { tipo: "info", titulo: "Não é tercina", texto: ["O som é parecido com o da tercina, mas a escrita é outra: aqui as três colcheias são a divisão normal do tempo, sem o 3 em cima.", "Quando a música inteira balança em três, o compositor escolhe o compasso composto."] },
+          ],
+        },
+        {
+          id: "ap-figuras68", titulo: "As figuras do 6 por 8", resumo: "A semínima pontuada vale um tempo", composto: true, comp: 2, formula: true,
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Um tempo inteiro", texto: ["Se o tempo vale três colcheias, a figura que enche um tempo é a semínima pontuada.", "E a mínima pontuada enche o compasso inteiro: dois tempos."], pauta: [["sol", 1], ["sol", 1], ["sol", 2]], compassos: true },
+            { tipo: "ritmo", titulo: "Bata os tempos", texto: "Duas semínimas pontuadas: uma batida em cada clique.", pauta: [["sol", 1], ["sol", 1]], padrao: [1, 1] },
+            { tipo: "info", ouvir: true, titulo: "Longa e curta", texto: ["Semínima e colcheia dentro do mesmo tempo: duas colcheias de som e mais uma. É o balanço da tarantela e da cantiga de roda.", "Diga “tááá-ta, tááá-ta”."], pauta: [["sol", D], ["sol", T], ["sol", D], ["sol", T]] },
+            { tipo: "ritmo", titulo: "Bata longa e curta", texto: "Semínima e colcheia, duas vezes.", pauta: [["sol", D], ["sol", T], ["sol", D], ["sol", T]], padrao: [D, T, D, T] },
+            { tipo: "ritmo", titulo: "Misture", texto: "Três colcheias e depois longa e curta.", pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", D], ["sol", T]], padrao: [T, T, T, D, T] },
+            { tipo: "escolha", pergunta: "Qual figura vale um tempo no 6 por 8?", opcoes: ["A semínima", "A semínima pontuada", "A colcheia"], certa: 1 },
+            { tipo: "ritmo", titulo: "Dois compassos", texto: "Longa e curta, três colcheias e uma mínima pontuada.", pauta: [["sol", D], ["sol", T], ["sol", T], ["sol", T], ["sol", T], ["sol", 2]], compassos: true, padrao: [D, T, T, T, T, 2] },
+          ],
+        },
+        {
+          id: "ap-pausa-colcheia", titulo: "A pausa de colcheia", resumo: "O silêncio dentro do tempo",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Meio tempo de silêncio", texto: ["A pausa de colcheia tem o desenho de um 7 com uma bolinha. No compasso simples, ela vale meio tempo.", "Quando ela cai no clique, a nota entra no contratempo: você sente o pulso e toca depois dele."], pauta: [[P, 0.5], ["sol", 0.5], [P, 0.5], ["sol", 0.5], ["sol", 2]] },
+            { tipo: "ritmo", titulo: "Bata no contratempo", texto: "Silêncio no clique, batida no “e”. Duas vezes, e depois a mínima.", pauta: [[P, 0.5], ["sol", 0.5], [P, 0.5], ["sol", 0.5], ["sol", 2]], padrao: [-0.5, 0.5, -0.5, 0.5, 2] },
+            { tipo: "escolha", pergunta: "Quando a pausa de colcheia cai no clique, onde entra a nota?", opcoes: ["Junto com o clique", "No contratempo, depois do clique", "No tempo seguinte"], certa: 1 },
+            { tipo: "info", composto: true, comp: 2, formula: 2, ouvir: true, titulo: "A pausa no 6 por 8", texto: ["No composto, a pausa de colcheia vale uma das três partes do tempo.", "Aqui ela ocupa o meio do tempo: nota, silêncio, nota."], pauta: [["sol", T], [P, T], ["sol", T], ["sol", T], [P, T], ["sol", T]] },
+            { tipo: "ritmo", composto: true, comp: 2, formula: 2, titulo: "Nota, silêncio, nota", texto: "Bata a primeira e a terceira colcheia de cada tempo.", pauta: [["sol", T], [P, T], ["sol", T], ["sol", T], [P, T], ["sol", T]], padrao: [T, -T, T, T, -T, T] },
+            { tipo: "ritmo", composto: true, comp: 2, formula: 2, titulo: "Entrando depois do clique", texto: "Silêncio na primeira colcheia, duas batidas, e uma semínima pontuada.", pauta: [[P, T], ["sol", T], ["sol", T], ["sol", 1]], padrao: [-T, T, T, 1] },
+          ],
+        },
+        {
+          id: "ap-frases68", titulo: "Frases em 6 por 8", resumo: "O ritmo com notas", composto: true, comp: 2, formula: true, arm: "sol",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Ler por grupos", texto: ["No 6 por 8, leia de três em três colcheias: cada grupo é um tempo, e a trave mostra isso.", "Ouça a frase com o pulso."], pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T], ["do", T], ["si", T], ["la", T], ["si", 1]], compassos: true },
+            { tipo: "ritmo", titulo: "O ritmo do primeiro compasso", texto: "Três colcheias, depois longa e curta.", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]], padrao: [T, T, T, D, T] },
+            { tipo: "escolha", pergunta: "Qual é a ordem das notas do primeiro compasso?", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]], opcoes: ["Sol, Lá, Si, Ré, Si", "Sol, Lá, Si, Dó, Si", "Si, Lá, Sol, Ré, Si"], certa: 0 },
+            { tipo: "tocar", nota: "si", segundos: 1, titulo: "O primeiro compasso", texto: "Ligue o pulso e toque até o Si.", pauta: [["sol", T], ["la", T], ["si", T], ["re2", D], ["si", T]] },
+            { tipo: "tocar", nota: "si", segundos: 1, titulo: "O segundo compasso", texto: "Dó, Si, Lá e repouse no Si, por um tempo inteiro.", pauta: [["do", T], ["si", T], ["la", T], ["si", 1]] },
+          ],
+        },
+        {
+          id: "ap-estudo68", titulo: "Estudo em 6 por 8", resumo: "Oito compassos para o seu caderno", composto: true, comp: 2, formula: true, arm: "sol", melodia: ESTUDO_SEIS_OITO,
+          passos: [
+            { tipo: "info", titulo: "Estudo em 6 por 8", texto: ["Um estudo completo em Sol maior. Ele usa as três figuras que você praticou: grupos de três colcheias, longa e curta, e a semínima pontuada.", "Comece em 50. Só aumente o andamento quando os grupos saírem iguais."], melodia: true },
+            { tipo: "escolha", pergunta: "Qual figura fecha o quarto e o oitavo compassos?", melodia: true, opcoes: ["A semínima pontuada", "A mínima pontuada", "Três colcheias"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque o estudo inteiro. O clique marca os dois tempos de cada compasso." },
+            { tipo: "gravar", chave: "ap-ritmo-1", comparar: true, titulo: "Guarde este estudo", texto: "Grave o “Estudo em 6 por 8”. Daqui a um mês, grave de novo e compare." },
+            { tipo: "metodos", titulo: "Agora nos métodos", texto: ["O compasso composto aparece em vários livros da biblioteca. Com o que você treinou aqui, estas páginas ficam ao seu alcance."], itens: [["rubank-int", "pág. 15", "6/8 Rhythm: estudos em 6 por 8"], ["alfabeto", "Ex. 126–128 · pág. 34", "Os compassos compostos: 6/8, 9/8 e 12/8"], ["pozzoli", "2ª Parte, Séries 8–14", "Ditado em compassos compostos, com pausas e ligaduras"], ["viola3", "p. 63–82", "Compassos simples e compostos, com mudanças de compasso"]] },
+          ],
+        },
+      ],
+    },
   ];
   const LICOES = UNIDADES.flatMap(u => u.licoes);
+  const PRINCIPAIS = UNIDADES.filter(u => !u.pilar).flatMap(u => u.licoes); // a trilha do zero à formatura
   const PROXIMAS = [];
 
   // ---------- Estado ----------
@@ -1032,7 +1094,9 @@
   // Pauta com notas: itens = [[nota, tempos, "liga"?], ...]. destaque = índice da nota ativa.
   // Figuras: 4 semibreve, 3 mínima pontuada, 2 mínima, 1.5 semínima pontuada, 1 semínima, 0.5 colcheia.
   // Compasso do passo atual (tempos por compasso), contagem inicial, fórmula visível e marcas de expressão.
-  let COMP = 4, CONT = 4, FORMULA = 0, MARCAS = {}, ARM = null, SWING = false;
+  let COMP = 4, CONT = 4, FORMULA = 0, MARCAS = {}, ARM = null, SWING = false, COMPOSTO = false;
+  // No compasso composto (6 por 8) o tempo é a semínima pontuada: 1 = semínima pontuada, T = colcheia, 2T = semínima, 2 = mínima pontuada.
+  const S6 = 1 / 6;
   const q = x => Math.round(x * 12) / 12; // soma de tempos sem erro de arredondamento
   // Armaduras de clave: letra alterada (0 Mi, 1 Fá, 2 Sol, 3 Lá, 4 Si, 5 Dó, 6 Ré) e onde desenhar cada acidente.
   const ARMS = {
@@ -1057,7 +1121,8 @@
     itens.forEach(([n, t], i) => { pos.push({ x, ini: tempos, y: n === P ? 0 : 70 - NOTA[n].passo * 5 }); tempos = q(tempos + t); x += esp(t); });
     // Hastes: sozinha, a nota decide a direção; notas curtas do mesmo tempo formam um grupo com trave reta.
     const haste = itens.map(([n], i) => { const baixo = n !== P && NOTA[n].passo >= 5; return { baixo, hx: baixo ? pos[i].x - 6 : pos[i].x + 6, yb: baixo ? pos[i].y + 32 : pos[i].y - 32, grupo: false }; });
-    const curta = i => itens[i] && itens[i][0] !== P && itens[i][1] < 1;
+    const curta = i => itens[i] && itens[i][0] !== P && itens[i][1] < (COMPOSTO ? 0.5 : 1);
+    const semi = t => Math.abs(t - (COMPOSTO ? S6 : 0.25)) < 0.01; // semicolcheia
     for (let i = 0; i < itens.length; i++) {
       if (!curta(i)) continue;
       const tempo = Math.floor(pos[i].ini + 1e-6); let f = i;
@@ -1068,13 +1133,13 @@
         const yb = baixo ? Math.max(...idx.map(k => pos[k].y)) + 30 : Math.min(...idx.map(k => pos[k].y)) - 30;
         idx.forEach(k => { haste[k] = { baixo, hx: baixo ? pos[k].x - 6 : pos[k].x + 6, yb, grupo: true }; });
         const cls = idx.includes(destaque) ? "trave ativa" : "trave";
-        if (idx.every(k => Math.abs(itens[k][1] - T) < 0.01)) traves += `<text x="${(haste[i].hx + haste[f].hx) / 2}" y="${baixo ? yb + 13 : yb - 5}" text-anchor="middle" class="tr-tres">3</text>`;
+        if (!COMPOSTO && idx.every(k => Math.abs(itens[k][1] - T) < 0.01)) traves += `<text x="${(haste[i].hx + haste[f].hx) / 2}" y="${baixo ? yb + 13 : yb - 5}" text-anchor="middle" class="tr-tres">3</text>`;
         traves += `<line x1="${haste[i].hx}" y1="${yb}" x2="${haste[f].hx}" y2="${yb}" class="${cls}"/>`;
         const y2 = baixo ? yb - 6.5 : yb + 6.5;
         idx.forEach(k => {
-          if (itens[k][1] !== 0.25) return;
-          if (k < f && itens[k + 1][1] === 0.25) traves += `<line x1="${haste[k].hx}" y1="${y2}" x2="${haste[k + 1].hx}" y2="${y2}" class="${cls}"/>`;
-          else if (!(k > i && itens[k - 1][1] === 0.25)) traves += `<line x1="${haste[k].hx}" y1="${y2}" x2="${haste[k].hx + (k === i ? 9 : -9)}" y2="${y2}" class="${cls}"/>`;
+          if (!semi(itens[k][1])) return;
+          if (k < f && semi(itens[k + 1][1])) traves += `<line x1="${haste[k].hx}" y1="${y2}" x2="${haste[k + 1].hx}" y2="${y2}" class="${cls}"/>`;
+          else if (!(k > i && semi(itens[k - 1][1]))) traves += `<line x1="${haste[k].hx}" y1="${y2}" x2="${haste[k].hx + (k === i ? 9 : -9)}" y2="${y2}" class="${cls}"/>`;
         });
       }
       i = f;
@@ -1082,8 +1147,14 @@
     const barra = i => (compassos && q(pos[i].ini + itens[i][1]) % COMP === 0 && i < itens.length - 1 ? `<line x1="${pos[i].x + esp(itens[i][1]) - 14}" y1="30" x2="${pos[i].x + esp(itens[i][1]) - 14}" y2="70" class="tr-barra"/>` : "");
     itens.forEach((item, i) => {
       const [n, t] = item, liga = tem(item, "liga"), x = pos[i].x;
-      if (n === P) { corpo += `<path class="tr-pausa${i === destaque ? " ativa" : ""}" d="M${x - 3} 36l6 8-5 6 6 8c-5-2-9 0-6 6-6-4-7-9-2-12l-5-7 5-5z"/>` + barra(i); return; }
-      const nt = NOTA[n], y = pos[i].y, cheio = t <= 1.5, { baixo, hx, yb, grupo } = haste[i];
+      if (n === P) {
+        const cp = `tr-pausa${i === destaque ? " ativa" : ""}`;
+        // pausa de colcheia: uma bolinha e uma haste inclinada; as mais longas usam a pausa de semínima (com ponto no composto)
+        if (t < (COMPOSTO ? 0.5 : 1)) corpo += `<g class="${cp}"><circle cx="${x - 3}" cy="44" r="2.6"/><path class="tr-pausa-haste" d="M${x - 3} 46q5 1 8-4l-5 20"/></g>`;
+        else corpo += `<path class="${cp}" d="M${x - 3} 36l6 8-5 6 6 8c-5-2-9 0-6 6-6-4-7-9-2-12l-5-7 5-5z"/>${COMPOSTO && Math.abs(t - 1) < 0.01 ? `<circle cx="${x + 8}" cy="47" r="1.8" class="${cp}"/>` : ""}`;
+        corpo += barra(i); return;
+      }
+      const nt = NOTA[n], y = pos[i].y, cheio = COMPOSTO ? t < 1.9 : t <= 1.5, { baixo, hx, yb, grupo } = haste[i];
       const cls = i === destaque ? "tr-nota ativa" : i < destaque ? "tr-nota feita" : "tr-nota";
       let extra = "";
       if (nt.passo <= -2) extra += `<line x1="${x - 11}" y1="80" x2="${x + 11}" y2="80" class="tr-supl"/>`;
@@ -1091,8 +1162,8 @@
       if (nt.passo >= 12) extra += `<line x1="${x - 11}" y1="10" x2="${x + 11}" y2="10" class="tr-supl"/>`;
       if (nt.passo >= 10) extra += `<line x1="${x - 11}" y1="20" x2="${x + 11}" y2="20" class="tr-supl"/>`;
       if (t < 4) extra += `<line x1="${hx}" y1="${y + (baixo ? 1.5 : -1.5)}" x2="${hx}" y2="${yb}" class="haste"/>`;
-      if (t === 3 || t === 1.5 || t === 0.75) extra += `<circle cx="${x + 11}" cy="${nt.passo % 2 === 0 ? y - 3 : y}" r="1.8" class="ponto"/>`;
-      if (t < 1 && !grupo) { const f = (dy) => `<path class="bandeira" d="M${hx} ${yb + dy} q9 ${baixo ? -6 : 6} 6 ${baixo ? -16 : 16}"/>`; extra += f(0) + (t === 0.25 ? f(baixo ? -7 : 7) : ""); }
+      if (COMPOSTO ? (Math.abs(t - 1) < 0.01 || Math.abs(t - 2) < 0.01) : (t === 3 || t === 1.5 || t === 0.75)) extra += `<circle cx="${x + 11}" cy="${nt.passo % 2 === 0 ? y - 3 : y}" r="1.8" class="ponto"/>`;
+      if (t < (COMPOSTO ? 0.5 : 1) && !grupo) { const f = (dy) => `<path class="bandeira" d="M${hx} ${yb + dy} q9 ${baixo ? -6 : 6} 6 ${baixo ? -16 : 16}"/>`; extra += f(0) + (semi(t) ? f(baixo ? -7 : 7) : ""); }
       if (tem(item, "st")) extra += `<circle cx="${x}" cy="${baixo ? y - 9 : y + 9}" r="1.9" class="ponto"/>`;
       if (tem(item, "ac")) extra += `<path class="tr-acento" d="M${x - 5} ${(baixo ? y - 15 : Math.min(yb, 30) - 9) - 3.5}l10 3.5-10 3.5"/>`;
       // Acidente: com armadura, só aparece quando a nota foge do tom (e o bequadro aparece sozinho).
@@ -1111,7 +1182,7 @@
     (din || []).forEach(([i, txt]) => { if (pos[i]) marcas += `<text x="${pos[i].x - 4}" y="${yd + 5}" class="tr-din">${txt}</text>`; });
     (forq || []).forEach(([de, ate, tipo]) => { if (!pos[de] || !pos[ate]) return; const x1 = pos[de].x + (din && din.some(d => d[0] === de) ? 14 : -4), x2 = pos[ate].x + (de === ate ? 110 : 8); marcas += tipo === "cresc" ? `<path class="tr-forq" d="M${x2} ${yd - 5}L${x1} ${yd}L${x2} ${yd + 5}"/>` : `<path class="tr-forq" d="M${x1} ${yd - 5}L${x2} ${yd}L${x1} ${yd + 5}"/>`; });
     const armadura = ARM ? ARM.des.map(([ac, ps], k) => `<text x="${50 + k * 10}" y="${70 - ps * 5 + 4.5}" text-anchor="middle" class="tr-ac">${SIMBOLO[ac]}</text>`).join("") : "";
-    const fx = 57 + nArm * 10, numeros = armadura + (formula ? `<text x="${fx}" y="49" text-anchor="middle" class="tr-formula">${formula}</text><text x="${fx}" y="69" text-anchor="middle" class="tr-formula">4</text>` : "");
+    const fx = 57 + nArm * 10, numeros = armadura + (formula ? `<text x="${fx}" y="49" text-anchor="middle" class="tr-formula">${COMPOSTO ? formula * 3 : formula}</text><text x="${fx}" y="69" text-anchor="middle" class="tr-formula">${COMPOSTO ? 8 : 4}</text>` : "");
     const topo = itens.some(([n]) => n !== P && NOTA[n].passo >= 12) ? -18 : -4;
     const linhas = [30, 40, 50, 60, 70].map(y => `<line x1="6" y1="${y}" x2="${larg - 6}" y2="${y}"/>`).join("");
     return `<svg class="tr-pauta" viewBox="0 ${topo} ${larg} ${(rotulos ? 114 : 104) + (temDin ? 10 : 0) - 4 - topo}" role="img" aria-label="Pauta musical"><g class="tr-linhas">${linhas}<line x1="${larg - 6}" y1="30" x2="${larg - 6}" y2="70"/></g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/>${numeros}${arcos}${traves}${corpo}${marcas}</svg>`;
@@ -1278,7 +1349,7 @@
     const curva = pts.map((pt, k) => k === 0 ? `M${pt[0]} ${pt[1]}` : `C${pts[k - 1][0]} ${pts[k - 1][1] + passo / 2} ${pt[0]} ${pt[1] - passo / 2} ${pt[0]} ${pt[1]}`).join(" ");
     return `<ol class="tr-caminho" style="height:${u.licoes.length * passo}px"><svg class="tr-fio" viewBox="0 0 120 ${u.licoes.length * passo}" preserveAspectRatio="none" aria-hidden="true"><path d="${curva}"/></svg>${u.licoes.map((l, k) => {
       const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = REVISAR || (!paga && (feita || i === atual || atual === -1)), ehAtual = aberta && !feita && (!REVISAR || i === atual);
-      const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
+      const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : u.pilar ? k + 1 : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
       return `<li class="${feita ? "feita" : ehAtual ? "atual" : aberta ? "livre" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
     }).join("")}</ol>`;
   }
@@ -1286,8 +1357,10 @@
   function renderTrilha() {
     if (!prog.porqueVisto && !REVISAR) return renderPorque();
     limpar(); sessao = null;
-    const atual = LICOES.findIndex(l => !prog.feitas[l.id]);
+    const primeiraAberta = lista => { const l = lista.find(x => !prog.feitas[x.id]); return l ? LICOES.indexOf(l) : -1; };
+    const atual = primeiraAberta(PRINCIPAIS);
     const unidades = UNIDADES.map((u, n) => {
+      if (u.pilar) return "";
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
       const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
       const unAtual = atual < 0 ? -1 : UNIDADES.findIndex(x => x.licoes.includes(LICOES[atual]));
@@ -1310,8 +1383,20 @@
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
       <div class="corpo tr-corpo">
-        <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${LICOES.filter(l => prog.feitas[l.id]).length} de ${LICOES.length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
+        <section class="cartao tr-porque">${prog.porque || prog.sonho ? `<span class="rotulo">Meu porquê</span>${prog.porque ? `<p class="tr-porque-txt">${esc(prog.porque)}</p>` : ""}${prog.sonho ? `<p class="mudo">Música-sonho: <strong>${esc(prog.sonho)}</strong> · ${PRINCIPAIS.filter(l => prog.feitas[l.id]).length} de ${PRINCIPAIS.length} lições já feitas no caminho até ela</p>` : ""}` : `<span class="rotulo">Meu porquê</span><p class="mudo">Diga por que você quer tocar e qual música sonha em tocar.</p>`}<button class="link-acao" id="tr-editar-porque" type="button">${prog.porque || prog.sonho ? "Editar" : "Escrever"}</button></section>
         ${unidades}
+        <header class="tr-secao"><p class="sobretitulo">Aprofundar · por pilar</p><h2>Depois da leitura, o estudo</h2><p class="mudo">Unidades ligadas aos seus Pilares. Cada uma explica o assunto, traz um estudo para tocar aqui e mostra em que página dos métodos continuar.</p></header>
+        ${UNIDADES.map((u, n) => {
+          if (!u.pilar) return "";
+          const feitas = u.licoes.filter(l => prog.feitas[l.id]).length, paga = !REVISAR && !completo(), completa = unidadeCompleta(n);
+          return `<details class="tr-unidade" style="--u1:${u.cor[0]};--u2:${u.cor[1]}"${feitas && !completa ? " open" : ""}>
+            <summary><div class="tr-faixa"><div><span class="rotulo">${esc(u.pilar)}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${completa ? "✓ Completa · toque para rever" : `${feitas} de ${u.licoes.length} lições`}</span></div><span class="tr-arte">${ARTE[0]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div><span class="tr-seta" aria-hidden="true">⌄</span></div></summary>
+            ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo.</p>` : ""}
+            ${htmlCaminho(u, n, primeiraAberta(u.licoes), paga)}
+            ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco desta unidade</a>` : ""}
+          </details>`;
+        }).join("")}
+        <p class="mudo tr-em-breve">Em preparação: Escuta, Estudos Melódicos, Articulações, Dinâmicas e Ornamentos.</p>
         <div id="tr-antes"></div>
         <section class="cartao tr-proximas"><span class="rotulo">Depois da trilha</span><p class="mudo">Ao concluir as 16 unidades, o estudo continua nos Pilares, com as Dicas de Naipe e os métodos.</p><a class="link-acao" href="#/raizes">Ver os Pilares</a></section>
         ${prog.pontos ? `<p class="mudo tr-pontos">${prog.pontos} pontos de estudo nesta trilha</p>` : ""}
@@ -1326,13 +1411,13 @@
     const pai = document.querySelector(".conteudo-inicio"); if (!pai) return;
     let el = document.getElementById("tr-inicio");
     if (!el) { el = document.createElement("div"); el.id = "tr-inicio"; const ref = pai.querySelector(".percurso-cartao"); pai.insertBefore(el, ref || pai.firstChild); }
-    const prox = LICOES.find(l => !prog.feitas[l.id]);
+    const prox = PRINCIPAIS.find(l => !prog.feitas[l.id]);
     if (!prog.perfil) {
       el.innerHTML = `<section class="cartao tr-entrada"><span class="rotulo">Para começar</span><h2>Você já toca saxofone?</h2><div class="tr-entrada-ops"><button type="button" data-perfil="zero"><strong>Estou começando do zero</strong><small>Aprender a ler e tocar, passo a passo</small></button><button type="button" data-perfil="toca"><strong>Já toco</strong><small>Organizar o estudo pelos pilares</small></button></div></section>`;
       el.querySelectorAll("button").forEach(b => b.addEventListener("click", () => { prog.perfil = b.dataset.perfil; salvar(); if (prog.perfil === "zero") location.hash = "#/trilha"; else cartaoInicio(); }));
     } else if (prox && (prog.perfil === "zero" || Object.keys(prog.feitas).length)) {
       const i = LICOES.indexOf(prox), n = UNIDADES.findIndex(u => u.licoes.includes(prox)), paga = n > 0 && !completo();
-      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">Aprender · lição ${i + 1} de ${LICOES.length}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
+      el.innerHTML = paga ? "" : `<a class="cartao tr-continuar" href="#/trilha/${prox.id}"><span class="tr-no">▶</span><span class="tr-lic-txt"><span class="rotulo">Aprender · lição ${i + 1} de ${PRINCIPAIS.length}</span><strong>${esc(prox.titulo)}</strong><small>${esc(prox.resumo)}</small></span></a>`;
     } else el.innerHTML = "";
   }
 
@@ -1382,7 +1467,8 @@
     MARCAS = p.pauta ? { din: p.din, forq: p.forq } : { din: lic.din, forq: lic.forq };
     ARM = ARMS[p.arm === undefined ? lic.arm : p.arm] || null;
     SWING = !!(p.swing === undefined ? lic.swing : p.swing);
-    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao, dinamica: passoDinamica, vibrato: passoVibrato })[p.tipo](p);
+    COMPOSTO = !!(p.composto === undefined ? lic.composto : p.composto);
+    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao, dinamica: passoDinamica, vibrato: passoVibrato, metodos: passoMetodos })[p.tipo](p);
   }
 
   // Toca a melodia com contagem de 4 e clique em cada tempo, acendendo a nota da vez em "alvo".
@@ -1490,7 +1576,7 @@
   function passoRitmo(p) {
     let bt = 60 / bpmAtual();
     const total = p.padrao.reduce((a, b) => a + Math.abs(b), 0), fr = t => ({ 0.25: "¼", 0.5: "½", 0.75: "¾", 1.5: "1½" }[t] || (Math.abs(t - T) < 0.01 ? "⅓" : t));
-    const blocos = p.padrao.map(t => t < 0 ? `<span class="silencio" style="flex:${-t}">–<small>pausa</small></span>` : `<span style="flex:${t}">${fr(t)}<small>${t <= 1 ? "tempo" : "tempos"}</small></span>`).join("");
+    const blocos = p.padrao.map(t => t < 0 ? `<span class="silencio" style="flex:${-t}">–<small>pausa</small></span>` : (COMPOSTO ? `<span style="flex:${t}">${Math.round(t * 3)}<small>${Math.round(t * 3) === 1 ? "colcheia" : "colcheias"}</small></span>` : `<span style="flex:${t}">${fr(t)}<small>${t <= 1 ? "tempo" : "tempos"}</small></span>`)).join("");
     moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-ritmo-linha" id="tr-linha">${blocos}<i id="tr-cursor"></i></div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz">Toque em “Começar” e ouça a contagem.</p><button class="tr-bater" id="tr-bater" type="button">Começar</button>`, { botao: "Bata o ritmo", pronto: false });
     ativarPulso();
     const bater = $("#tr-bater"), voz = $("#tr-voz");
@@ -1511,7 +1597,7 @@
       esperados.forEach(e => {
         let melhor = -1, dist = 9;
         toques.forEach((t, i) => { const d = Math.abs(t - e * bt); if (!usados.has(i) && d < dist) { dist = d; melhor = i; } });
-        if (melhor >= 0 && dist < Math.min(SWING ? bt * 0.13 : 0.28, bt * 0.48 * Math.min(1, ...p.padrao.map(Math.abs)))) { usados.add(melhor); certos++; soma += dist; }
+        if (melhor >= 0 && dist < Math.min(SWING ? bt * 0.13 : 0.28, bt * 0.42 * Math.min(1, ...p.padrao.map(Math.abs)))) { usados.add(melhor); certos++; soma += dist; }
       });
       const extras = toques.length - usados.size;
       if (certos === esperados.length && extras === 0) {
@@ -1653,6 +1739,12 @@
     });
   }
 
+  // Ponte para os métodos: onde continuar o assunto nos livros da biblioteca.
+  function passoMetodos(p) {
+    const livros = (window.CMA_METODOS && window.CMA_METODOS.livros) || {};
+    moldura(`<h2>${esc(p.titulo)}</h2>${(p.texto || []).map(t => `<p>${esc(t)}</p>`).join("")}<ul class="tr-metodos">${p.itens.map(([id, onde, assunto]) => { const l = livros[id] || { titulo: id, autor: "" }; return `<li><a href="#/metodo/${encodeURIComponent(id)}"><span class="tr-met-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.autor || "")}</small><em>${esc(assunto)}</em></span><span class="tr-met-onde">${esc(onde)}</span></a></li>`; }).join("")}</ul><p class="mudo">Toque num método para abrir a página dele. Para voltar a esta lição, use a aba Aprender.</p>`);
+  }
+
   function passoMusica(p) {
     let bt = 60 / bpmAtual(); const MEL = melodiaAtual();
     moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-partitura">${svgMelodia(MEL)}</div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz"></p>${htmlMic(p)}`, { botao: "Toque a música", pronto: false });
@@ -1702,7 +1794,7 @@
   const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const urls = [];
   const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
-  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura" };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata", u12: "Cantiga em Ré", u13: "Swing do Naipe", u14: "Seresta", u15: "De Ponta a Ponta", u16: "Formatura", "ap-ritmo-1": "Estudo em 6 por 8" };
 
   const rec = { mr: null, stream: null, partes: [], t: 0 };
   function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
@@ -1776,7 +1868,7 @@
     const g = c.createLinearGradient(0, 0, L, A); g.addColorStop(0, "#0b241b"); g.addColorStop(1, "#16483a"); c.fillStyle = g; c.fillRect(0, 0, L, A);
     c.strokeStyle = "#d9a547"; c.lineWidth = 4; c.strokeRect(44, 44, L - 88, A - 88);
     c.textAlign = "center"; c.fillStyle = "#f2c14e"; c.font = '600 128px "Outfit", ' + corpo; c.fillText("naipe", L / 2, 250);
-    c.fillStyle = "#d9a547"; c.font = "700 30px " + corpo; c.fillText(`M A R C O   ·   U N I D A D E   ${n + 1}`, L / 2, 400);
+    c.fillStyle = "#d9a547"; c.font = "700 30px " + corpo; c.fillText(UNIDADES[n].pilar ? `A P R O F U N D A R   ·   ${UNIDADES[n].pilar.toUpperCase().split("").join(" ")}` : `M A R C O   ·   U N I D A D E   ${n + 1}`, L / 2, 400);
     c.fillStyle = "#f4efe3"; c.font = "700 76px " + corpo;
     const linhas = quebrar(c, UNIDADES[n].marco, L - 220); let y = 640 - (linhas.length - 1) * 48;
     linhas.forEach(l => { c.fillText(l, L / 2, y); y += 96; });
@@ -1791,7 +1883,7 @@
   async function renderMarco(n) {
     limpar();
     if (!UNIDADES[n] || !unidadeCompleta(n)) return renderTrilha();
-    raiz().innerHTML = `<div class="tr-licao"><div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Voltar para a trilha">✕</a><span class="tr-conta">Meu marco · Unidade ${n + 1}</span></div><div class="tr-passo tr-marco"><p class="mudo" id="tr-marco-espera">Preparando a imagem…</p></div><div class="tr-rodape"><button class="btn primario largo" id="tr-marco-enviar" type="button" disabled>Compartilhar meu marco</button><a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    raiz().innerHTML = `<div class="tr-licao"><div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Voltar para a trilha">✕</a><span class="tr-conta">Meu marco · ${UNIDADES[n].pilar ? esc(UNIDADES[n].pilar) : `Unidade ${n + 1}`}</span></div><div class="tr-passo tr-marco"><p class="mudo" id="tr-marco-espera">Preparando a imagem…</p></div><div class="tr-rodape"><button class="btn primario largo" id="tr-marco-enviar" type="button" disabled>Compartilhar meu marco</button><a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
     const cv = await desenharMarco(n);
     if (!$("#tr-marco-espera")) return;
     const blob = await new Promise(ok => cv.toBlob(ok, "image/png"));
@@ -1809,7 +1901,7 @@
 
   async function htmlAntesDepois() {
     const itens = [];
-    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11", "u12", "u13", "u14", "u15", "u16", "ap-ritmo-1"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
     return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
   }
 
@@ -1827,7 +1919,7 @@
     if (fechou) { prog.marcos = prog.marcos || {}; if (!prog.marcos[n]) prog.marcos[n] = new Date().toISOString(); }
     salvar(); limpar();
     const sonho = prog.sonho ? `<p class="mudo">Mais um passo em direção a “${esc(prog.sonho)}”.</p>` : "";
-    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">${fechou ? `Unidade ${n + 1} completa` : "Lição concluída"}</p><h2>${esc(fechou ? UNIDADES[n].marco : licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${sonho}</div><div class="tr-rodape">${fechou ? `<a class="btn primario largo" href="#/trilha/marco-${n}">Ver e compartilhar meu marco</a>` : ""}${prox ? `<a class="btn ${fechou ? "" : "primario "}largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+    raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><div class="tr-selo">✓</div><p class="sobretitulo">${fechou ? (UNIDADES[n].pilar ? `${esc(UNIDADES[n].pilar)} · unidade completa` : `Unidade ${n + 1} completa`) : "Lição concluída"}</p><h2>${esc(fechou ? UNIDADES[n].marco : licao.titulo)}</h2><p>${erros === 0 ? "Sem nenhum erro." : "Feita. Errar faz parte de aprender a ler."}</p><p class="tr-ganho">+${ganho} pontos de estudo</p>${sonho}</div><div class="tr-rodape">${fechou ? `<a class="btn primario largo" href="#/trilha/marco-${n}">Ver e compartilhar meu marco</a>` : ""}${prox ? `<a class="btn ${fechou ? "" : "primario "}largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
     sessao = null; window.scrollTo(0, 0);
   }
 

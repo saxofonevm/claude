@@ -1748,3 +1748,18 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .tr-onda line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 5; }
 .tr-onda polyline { fill: none; stroke: var(--brass-soft); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
 .tr-caminho .livre .tr-no { color: var(--text); box-shadow: 0 5px 0 color-mix(in srgb, var(--surface-2) 60%, #000), inset 0 0 0 2px var(--brass); }
+
+/* ---------- Trilha: Aprofundar por pilar ---------- */
+.tr-secao { margin-top: 18px; display: flex; flex-direction: column; gap: 6px; }
+.tr-secao h2 { font-size: 1.5rem; display: block; }
+.tr-em-breve { text-align: center; font-size: .85rem; }
+.tr-pausa circle { fill: #1c1c1c; }
+.tr-pausa-haste { fill: none; stroke: #1c1c1c; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.tr-pausa.ativa circle { fill: #b5771c; } .tr-pausa.ativa .tr-pausa-haste { stroke: #b5771c; }
+.tr-metodos { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.tr-metodos a { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--surface-2); color: inherit; text-decoration: none; }
+.tr-met-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.tr-met-txt strong { font-size: 1rem; line-height: 1.3; }
+.tr-met-txt small { color: var(--muted); font-size: .8rem; }
+.tr-met-txt em { font-style: normal; font-size: .9rem; margin-top: 4px; }
+.tr-met-onde { font-size: .8rem; font-weight: 700; color: var(--brass-soft); text-align: right; max-width: 12ch; }
