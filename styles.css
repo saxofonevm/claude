@@ -1736,3 +1736,14 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .tr-acento { fill: none; stroke: #1c1c1c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
 .tr-volume { height: 10px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
 .tr-volume span { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--brass-soft); transition: width .06s linear; }
+
+/* ---------- Trilha: tercina, ornamentos, swing e vibrato ---------- */
+.tr-tres { font: italic 700 11px Georgia, "Times New Roman", serif; fill: #1c1c1c; }
+.tr-trinado { font: italic 700 14px Georgia, "Times New Roman", serif; fill: #1c1c1c; }
+.tr-apoj ellipse { fill: #1c1c1c; }
+.tr-apoj line, .tr-apoj path { fill: none; stroke: #1c1c1c; stroke-width: 1.1; stroke-linecap: round; }
+.tr-swing { font-size: .88rem !important; font-weight: 700; color: var(--brass-soft) !important; text-align: center; }
+.tr-onda { border-radius: 12px; background: var(--surface-2); border: 1px solid var(--line); padding: 6px; }
+.tr-onda svg { display: block; width: 100%; height: 70px; }
+.tr-onda line { stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 5; }
+.tr-onda polyline { fill: none; stroke: var(--brass-soft); stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke; }
