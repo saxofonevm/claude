@@ -43,6 +43,10 @@
     sib: { nome: "Si♭", passo: 4, midi: 70, ac: "b", chaves: [1, 1, 0, 0, 0, 0], extra: "lateral", dica: "dedos do Lá + chave lateral" },
     fa2: { nome: "Fá agudo", passo: 8, midi: 77, oitava: true, chaves: [1, 1, 1, 1, 0, 0], dica: "Fá + chave de oitava" },
     dob: { nome: "Dó grave", passo: -2, midi: 60, chaves: [1, 1, 1, 1, 1, 1], extra: "mindinho", dica: "tudo fechado + mindinho direito" },
+    dos: { nome: "Dó♯", passo: 5, midi: 73, ac: "#", chaves: [0, 0, 0, 0, 0, 0], dica: "todas as chaves abertas" },
+    mib2: { nome: "Mi♭ agudo", passo: 7, midi: 75, ac: "b", oitava: true, chaves: [1, 1, 1, 1, 1, 1], extra: "mindinho", dica: "Ré agudo + mindinho direito" },
+    la2: { nome: "Lá agudo", passo: 10, midi: 81, oitava: true, chaves: [1, 1, 0, 0, 0, 0], dica: "Lá + chave de oitava" },
+    sib2: { nome: "Si♭ agudo", passo: 11, midi: 82, ac: "b", oitava: true, chaves: [1, 1, 0, 0, 0, 0], extra: "lateral", dica: "Si♭ + chave de oitava" },
     sol2: { nome: "Sol agudo", passo: 9, midi: 79, oitava: true, chaves: [1, 1, 1, 0, 0, 0], dica: "Sol + chave de oitava" },
   };
   const P = "pausa"; // pausa na pauta e nas melodias
@@ -63,6 +67,13 @@
   const CHORO_A = [["fa", 0.25], ["la", 0.5], ["fa", 0.25], ["do", 1], ["la", 0.5], ["do", 0.5], ["fa2", 1], ["mi2", 0.5], ["re2", 0.25], ["do", 0.25], ["sib", 1], ["la", 0.5], ["sol", 0.5], ["la", 1], ["sol", 0.25], ["sib", 0.5], ["sol", 0.25], ["re2", 1], ["do", 0.5], ["sib", 0.5], ["la", 1], ["sol", 0.75], ["la", 0.25], ["sib", 0.5], ["la", 0.5], ["sol", 2]];
   const CHORO_B = [["fa", 0.25], ["la", 0.5], ["fa", 0.25], ["do", 1], ["la", 0.5], ["do", 0.5], ["fa2", 1], ["mi2", 0.5], ["re2", 0.25], ["do", 0.25], ["sib", 1], ["la", 0.25], ["sib", 0.25], ["do", 0.25], ["re2", 0.25], ["do", 1], ["sib", 0.25], ["re2", 0.5], ["sib", 0.25], ["la", 1], ["sol", 0.5], ["mi", 0.5], ["sol", 1], ["fa", 0.75], ["mi", 0.25], ["fa", 1], ["fa", 2]];
   const CHORINHO_DE_ESTREIA = CHORO_A.concat(CHORO_B);
+
+  const VALSA_DE_DOMINGO = [["sol", 1], ["si", 1], ["re2", 1], ["re2", 2], ["si", 1], ["do", 1], ["la", 1], ["fas", 1], ["sol", 3], ["sol", 1], ["si", 1], ["re2", 1], ["mi2", 2], ["re2", 1], ["do", 0.5], ["si", 0.5], ["la", 1], ["fas", 1], ["sol", 3]];
+  const DOIS_POR_QUATRO = [["fa", 0.5], ["la", 0.5], ["do", 1], ["do", 0.25], ["re2", 0.5], ["do", 0.25], ["la", 1], ["sib", 0.5], ["la", 0.5], ["sol", 0.5], ["fa", 0.5], ["sol", 2], ["fa", 0.5], ["la", 0.5], ["do", 1], ["re2", 0.5], ["do", 0.25], ["sib", 0.25], ["la", 1], ["sol", 0.25], ["la", 0.5], ["sol", 0.25], ["mi", 1], ["fa", 2]];
+  const ESCALA_RE = [["re", 1], ["mi", 1], ["fas", 1], ["sol", 1], ["la", 1], ["si", 1], ["dos", 1], ["re2", 1], ["re2", 1], ["dos", 1], ["si", 1], ["la", 1], ["sol", 1], ["fas", 1], ["mi", 1], ["re", 1]];
+  const ESCALA_SIB = [["sib", 1], ["do", 1], ["re2", 1], ["mib2", 1], ["fa2", 1], ["sol2", 1], ["la2", 1], ["sib2", 1], ["sib2", 1], ["la2", 1], ["sol2", 1], ["fa2", 1], ["mib2", 1], ["re2", 1], ["do", 1], ["sib", 1]];
+  const FESTA_EM_RE = [["re", 0.5], ["fas", 0.5], ["la", 1], ["la", 0.5], ["si", 0.5], ["la", 1], ["dos", 0.5], ["re2", 0.5], ["dos", 1], ["la", 2], ["si", 0.5], ["la", 0.5], ["sol", 1], ["fas", 0.5], ["mi", 0.5], ["fas", 1], ["mi", 1], ["la", 1], ["re", 2]];
+  const SERENATA = [["fa", 1], ["la", 1], ["do", 2], ["re2", 1], ["do", 1], ["sib", 1], ["la", 1], ["fa2", 2, "ac"], ["mi2", 0.5, "st"], ["re2", 0.5, "st"], ["do", 1], ["sib", 1], ["sol", 1], ["fa", 2]];
 
   const UNIDADES = [
     {
@@ -568,9 +579,183 @@
         },
       ],
     },
+    {
+      titulo: "Compassos de 2 e de 3", marco: "Leio e toco em compassos de 2, 3 e 4 tempos.", licoes: [
+        {
+          id: "formula", titulo: "A fórmula de compasso", resumo: "Os dois números no começo da pauta",
+          passos: [
+            { tipo: "info", formula: 4, ouvir: true, titulo: "Quantos tempos por compasso", texto: ["Logo depois da clave aparecem dois números. O de cima diz quantos tempos cabem em cada compasso.", "O de baixo diz qual figura vale um tempo. O 4 quer dizer semínima. Até aqui você tocou sempre em 4 por 4."], pauta: [["sol", 1], ["la", 1], ["si", 1], ["la", 1], ["sol", 2], ["sol", 2]], compassos: true },
+            { tipo: "escolha", pergunta: "Na fórmula de compasso, o que diz o número de cima?", opcoes: ["O andamento da música", "Quantos tempos cabem em cada compasso", "Quantas notas a música tem"], certa: 1 },
+            { tipo: "info", formula: 3, comp: 3, ouvir: true, titulo: "Três por quatro", texto: ["Com o 3 em cima, cada compasso tem três tempos. O clique mais forte marca o primeiro.", "Ouça: forte, fraco, fraco. É o balanço da valsa."], pauta: [["sol", 1], ["si", 1], ["re2", 1], ["re2", 3]], compassos: true },
+            { tipo: "info", formula: 2, comp: 2, ouvir: true, titulo: "Dois por quatro", texto: ["Com o 2 em cima, cada compasso tem dois tempos: forte, fraco.", "É o compasso da marcha, do baião, do samba e do choro."], pauta: [["sol", 1], ["si", 1], ["re2", 2]], compassos: true },
+            { tipo: "escolha", pergunta: "Quantos tempos tem cada compasso desta música?", formula: 3, comp: 3, pauta: [["la", 1], ["la", 1], ["si", 1], ["la", 3]], compassos: true, opcoes: ["Dois", "Três", "Quatro"], certa: 1 },
+          ],
+        },
+        {
+          id: "tres", titulo: "O compasso de 3", resumo: "O balanço da valsa", comp: 3, formula: true,
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Um, dois, três", texto: ["Conte “1, 2, 3” e recomece. O primeiro tempo é o apoio, os outros dois são leves.", "A mínima pontuada, com seus três tempos, enche um compasso inteiro."], pauta: [["sol", 1], ["sol", 1], ["sol", 1], ["sol", 3]], compassos: true },
+            { tipo: "ritmo", titulo: "Bata três semínimas", texto: "A contagem agora é de três. Bata um compasso.", pauta: [["sol", 1], ["sol", 1], ["sol", 1]], padrao: [1, 1, 1] },
+            { tipo: "ritmo", titulo: "Mínima e semínima", texto: "Longa e curta: toque no 1 e no 3.", pauta: [["sol", 2], ["sol", 1]], padrao: [2, 1] },
+            { tipo: "ritmo", titulo: "Dois compassos", texto: "Três semínimas e uma mínima pontuada.", pauta: [["sol", 1], ["sol", 1], ["sol", 1], ["sol", 3]], compassos: true, padrao: [1, 1, 1, 3] },
+            { tipo: "tocar", nota: "re2", segundos: 3, titulo: "Uma frase em 3", texto: "Sol, Si, Ré e sustente o Ré agudo por um compasso inteiro.", pauta: [["sol", 1], ["si", 1], ["re2", 1], ["re2", 3]], compassos: true },
+          ],
+        },
+        {
+          id: "dois", titulo: "O compasso de 2", resumo: "Marcha, baião e choro", comp: 2, formula: true,
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "Um, dois", texto: ["No 2 por 4 as barras de compasso aparecem com mais frequência, mas o som é o mesmo: o que muda é onde cai o apoio.", "Os grupos de colcheias e semicolcheias continuam valendo um tempo cada."], pauta: [["fa", 0.5], ["la", 0.5], ["do", 1], ["sib", 0.5], ["la", 0.5], ["sol", 1]], compassos: true },
+            { tipo: "ritmo", titulo: "Bata em 2", texto: "A contagem são dois compassos: “1, 2, 1, 2”. Depois bata duas colcheias e uma semínima.", pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 1]], padrao: [0.5, 0.5, 1] },
+            { tipo: "ritmo", titulo: "A síncope em 2", texto: "Síncope e semínima: um compasso típico de choro.", pauta: [["sol", 0.25], ["sol", 0.5], ["sol", 0.25], ["sol", 1]], padrao: [0.25, 0.5, 0.25, 1] },
+            { tipo: "escolha", pergunta: "Quantos compassos há neste trecho?", pauta: [["fa", 0.5], ["la", 0.5], ["do", 1], ["sib", 0.5], ["la", 0.5], ["sol", 1], ["fa", 2]], compassos: true, opcoes: ["Dois", "Três", "Quatro"], certa: 1 },
+            { tipo: "tocar", nota: "sol", segundos: 1, titulo: "Uma frase em 2", texto: "Fá, Lá, Dó e desça até o Sol.", pauta: [["fa", 0.5], ["la", 0.5], ["do", 1], ["sib", 0.5], ["la", 0.5], ["sol", 1]], compassos: true },
+          ],
+        },
+        {
+          id: "valsa", titulo: "Valsa de Domingo", resumo: "Uma música em 3 por 4", comp: 3, formula: true, melodia: VALSA_DE_DOMINGO,
+          passos: [
+            { tipo: "info", titulo: "Valsa de Domingo", texto: ["Uma valsa em Sol maior: lembre do Fá♯.", "Ouça com o pulso e sinta o apoio no primeiro tempo de cada compasso."], melodia: true },
+            { tipo: "escolha", pergunta: "Quantos tempos dura a última nota da valsa?", melodia: true, opcoes: ["Dois", "Três", "Quatro"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem de três, toque a valsa inteira." },
+          ],
+        },
+        {
+          id: "musica9", titulo: "Dois por Quatro", resumo: "Uma música em 2 por 4, com síncope", comp: 2, formula: true, melodia: DOIS_POR_QUATRO,
+          passos: [
+            { tipo: "info", titulo: "Dois por Quatro", texto: ["Agora no compasso do choro. A melodia está em Fá maior e usa a síncope.", "Ouça devagar, em 52, antes de tocar."], melodia: true },
+            { tipo: "ritmo", titulo: "O ritmo do segundo compasso", texto: "Síncope e semínima.", pauta: [["do", 0.25], ["re2", 0.5], ["do", 0.25], ["la", 1]], padrao: [0.25, 0.5, 0.25, 1] },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música inteira." },
+            { tipo: "gravar", chave: "u9", comparar: true, titulo: "Antes e depois", texto: "Grave “Dois por Quatro” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
+    {
+      titulo: "Ré maior e Si bemol maior", marco: "Toco em quatro tons: Sol, Fá, Ré e Si bemol maior.", licoes: [
+        {
+          id: "do-sustenido", titulo: "O Dó♯", resumo: "A nota de mão aberta",
+          passos: [
+            { tipo: "info", titulo: "Nenhum dedo fechado", texto: ["O Dó♯ é a única nota desta região tocada com todas as chaves abertas.", "Sem dedos para firmar o instrumento, o apoio fica no polegar direito e na correia. Ele também tende a soar baixo: mantenha o ar firme."], pauta: [["do", 2], ["dos", 2]], rotulos: true, dedos: ["do", "dos"] },
+            { tipo: "digitacao", pergunta: "Qual é a digitação do Dó♯?", nota: "dos", notas: ["do", "dos", "si"] },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual é o Dó♯?", sons: ["dos", "do"], opcoes: ["O primeiro", "O segundo"], certa: 0, explica: "O Dó♯ é o mais agudo dos dois." },
+            { tipo: "tocar", nota: "dos", segundos: 2, titulo: "Toque o Dó♯", texto: "Solte todos os dedos, sem deixar o sax balançar." },
+            { tipo: "tocar", nota: "re2", segundos: 2, titulo: "Dó♯ para Ré agudo", texto: "Feche tudo de uma vez, com a chave de oitava." },
+          ],
+        },
+        {
+          id: "escala-re", titulo: "A escala de Ré maior", resumo: "Dois sustenidos: Fá♯ e Dó♯",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "De Ré a Ré", texto: ["A escala de Ré maior tem dois sustenidos: o Fá♯ e o Dó♯.", "Ela começa com as duas mãos fechadas e termina no Ré agudo."], pauta: [["re", 1], ["mi", 1], ["fas", 1], ["sol", 1], ["la", 1], ["si", 1], ["dos", 1], ["re2", 1]], compassos: true },
+            { tipo: "escolha", pergunta: "Quais notas levam sustenido em Ré maior?", opcoes: ["Fá e Dó", "Si e Mi", "Só o Fá"], certa: 0 },
+            { tipo: "tocar", nota: "sol", segundos: 1, titulo: "A primeira metade", texto: "Ré, Mi, Fá♯, Sol. Pare no Sol.", pauta: [["re", 1], ["mi", 1], ["fas", 1], ["sol", 1]] },
+            { tipo: "tocar", nota: "re2", segundos: 1, titulo: "A segunda metade", texto: "Lá, Si, Dó♯, Ré. Pare no Ré agudo.", pauta: [["la", 1], ["si", 1], ["dos", 1], ["re2", 1]] },
+            { tipo: "tocar", nota: "re", segundos: 2, titulo: "E a volta", texto: "Desça do Ré agudo ao Ré grave e sustente.", pauta: [["re2", 1], ["dos", 1], ["si", 1], ["la", 1], ["sol", 1], ["fas", 1], ["mi", 1], ["re", 1]] },
+          ],
+        },
+        {
+          id: "escala-re-pulso", titulo: "Ré maior no pulso", resumo: "Subir e descer sem parar", melodia: ESCALA_RE,
+          passos: [
+            { tipo: "info", titulo: "A terceira escala", texto: ["O jeito de estudar é o mesmo: devagar, no pulso, sem tropeçar.", "A passagem Si, Dó♯, Ré agudo é o ponto que pede mais cuidado."], melodia: true },
+            { tipo: "musica", titulo: "Suba e desça com o pulso", texto: "Depois da contagem, toque a escala inteira, uma nota por clique." },
+          ],
+        },
+        {
+          id: "agudos2", titulo: "Mi♭, Lá e Si♭ agudos", resumo: "Acima da pauta",
+          passos: [
+            { tipo: "info", titulo: "Linhas suplementares superiores", texto: ["Acima do Sol agudo, as notas ganham linhas suplementares para cima: o Lá agudo fica na primeira linha e o Si♭ agudo logo acima dela."], pauta: [["sol2", 2], ["la2", 2], ["sib2", 2]], rotulos: true },
+            { tipo: "info", titulo: "O Mi♭ agudo", texto: ["O Mi♭ usa a digitação do Ré agudo com o mindinho direito na chave de cima.", "Na pauta ele fica no lugar do Mi agudo, com o bemol na frente."], pauta: [["re2", 2], ["mib2", 2]], rotulos: true, dedos: ["re2", "mib2"] },
+            { tipo: "ondefica", nota: "la2", titulo: "Coloque o Lá agudo na pauta", texto: "Toque acima da última linha, no lugar da linha suplementar." },
+            { tipo: "pares", titulo: "Ligue cada nota ao seu nome", notas: ["la2", "mib2", "sib2", "sol2"] },
+            { tipo: "tocar", nota: "mib2", segundos: 2, titulo: "Toque o Mi♭ agudo", texto: "Ré agudo e o mindinho direito." },
+            { tipo: "tocar", nota: "la2", segundos: 2, titulo: "Toque o Lá agudo", texto: "Garganta aberta e ar rápido." },
+            { tipo: "tocar", nota: "sib2", segundos: 2, titulo: "Toque o Si♭ agudo", texto: "Lá agudo e a chave lateral." },
+          ],
+        },
+        {
+          id: "escala-sib", titulo: "A escala de Si♭ maior", resumo: "Dois bemóis: Si♭ e Mi♭", melodia: ESCALA_SIB,
+          passos: [
+            { tipo: "info", titulo: "De Si♭ a Si♭", texto: ["A escala de Si♭ maior tem dois bemóis: o Si♭ e o Mi♭.", "Ela sobe até a região aguda. Ouça com o pulso antes de tocar."], melodia: true },
+            { tipo: "escolha", pergunta: "Quais notas levam bemol em Si♭ maior?", opcoes: ["Si e Mi", "Si e Lá", "Mi e Lá"], certa: 0 },
+            { tipo: "tocar", nota: "mib2", segundos: 1, titulo: "A primeira metade", texto: "Si♭, Dó, Ré, Mi♭. Pare no Mi♭ agudo.", pauta: [["sib", 1], ["do", 1], ["re2", 1], ["mib2", 1]] },
+            { tipo: "tocar", nota: "sib2", segundos: 1, titulo: "A segunda metade", texto: "Fá, Sol, Lá, Si♭. Pare no Si♭ agudo.", pauta: [["fa2", 1], ["sol2", 1], ["la2", 1], ["sib2", 1]] },
+            { tipo: "musica", titulo: "Suba e desça com o pulso", texto: "Depois da contagem, toque a escala inteira, uma nota por clique." },
+          ],
+        },
+        {
+          id: "musica10", titulo: "Festa em Ré", resumo: "Uma música em Ré maior", melodia: FESTA_EM_RE,
+          passos: [
+            { tipo: "info", titulo: "Festa em Ré", texto: ["Uma melodia alegre em Ré maior. Atenção aos dois sustenidos: Fá♯ e Dó♯.", "Ouça com o pulso e repare na passagem Dó♯, Ré agudo, Dó♯ do segundo compasso."], melodia: true },
+            { tipo: "escolha", pergunta: "Com que nota a música termina?", melodia: true, opcoes: ["Lá", "Ré", "Fá♯"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "Depois da contagem, toque a música inteira." },
+            { tipo: "gravar", chave: "u10", comparar: true, titulo: "Antes e depois", texto: "Grave “Festa em Ré” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
+    {
+      titulo: "Dinâmica e expressão", marco: "Toco com dinâmica: do piano ao forte, com intenção.", licoes: [
+        {
+          id: "piano-forte", titulo: "Piano e forte", resumo: "As letras que pedem volume",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "p, mf, f", texto: ["As letras embaixo da pauta pedem a intensidade do som: p é piano (suave), mf é mezzo-forte (médio) e f é forte.", "A letra vale até aparecer outra. Ouça a mesma frase em piano e depois em forte."], pauta: [["sol", 1], ["la", 1], ["si", 2], ["sol", 1], ["la", 1], ["si", 2]], compassos: true, din: [[0, "p"], [3, "f"]] },
+            { tipo: "escolha", pergunta: "O que pede a letra p embaixo da pauta?", opcoes: ["Tocar mais rápido", "Tocar suave", "Fazer uma pausa"], certa: 1 },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual foi tocado em forte?", sons: [["sol", 0.35], ["sol", 1.4]], opcoes: ["O primeiro", "O segundo"], certa: 1, explica: "A nota era a mesma. Só a intensidade mudou." },
+            { tipo: "info", titulo: "Suave não é fraco", texto: ["No piano, o ar continua rápido e apoiado. O que muda é a quantidade.", "Se a nota falha ou desafina ao tocar suave, quase sempre faltou apoio, e não sobrou ar."] },
+            { tipo: "dinamica", modo: "pf", titulo: "Piano, depois forte", texto: "O app vai medir o volume do seu som nas duas vezes.", pauta: [["sol", 2], ["sol", 2]], din: [[0, "p"], [1, "f"]] },
+          ],
+        },
+        {
+          id: "crescendo", titulo: "Crescendo e diminuendo", resumo: "O som que muda no caminho",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "As forquilhas", texto: ["O sinal que abre pede crescendo: o som aumenta aos poucos. O sinal que fecha pede diminuendo.", "Ouça: a frase cresce na subida e diminui na descida."], pauta: [["sol", 1], ["la", 1], ["si", 1], ["do", 1], ["si", 1], ["la", 1], ["sol", 2]], compassos: true, din: [[0, "p"]], forq: [[0, 3, "cresc"], [4, 6, "dim"]] },
+            { tipo: "escolha", pergunta: "O que pede a forquilha que abre para a direita?", opcoes: ["Diminuir o som", "Aumentar o som aos poucos", "Acelerar"], certa: 1 },
+            { tipo: "dinamica", modo: "cresc", titulo: "Uma nota que cresce", texto: "Toque uma nota longa começando suave e terminando forte.", pauta: [["la", 4]], forq: [[0, 0, "cresc"]] },
+            { tipo: "dinamica", modo: "dim", titulo: "Uma nota que diminui", texto: "Agora o contrário: comece forte e vá sumindo, sem deixar a afinação cair.", pauta: [["la", 4]], forq: [[0, 0, "dim"]] },
+            { tipo: "escolha", pergunta: "No diminuendo, o que não pode acontecer?", opcoes: ["O som ficar mais suave", "A afinação cair junto com o volume", "A nota durar o tempo todo"], certa: 1 },
+          ],
+        },
+        {
+          id: "staccato", titulo: "O staccato", resumo: "Notas curtas e separadas",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O ponto em cima ou embaixo", texto: ["Um ponto junto da cabeça da nota pede staccato: a nota sai curta, separada da seguinte.", "A língua corta o som de leve. O ar continua pronto para a próxima."], pauta: [["sol", 1, "st"], ["la", 1, "st"], ["si", 1, "st"], ["la", 1, "st"], ["sol", 2], ["sol", 2]], compassos: true },
+            { tipo: "ouvir", pergunta: "Ouça os dois sons. Qual foi tocado em staccato?", sons: [["la", 1, 0.9], ["la", 1, 0.22]], opcoes: ["O primeiro", "O segundo"], certa: 1, explica: "O segundo foi curto: staccato." },
+            { tipo: "escolha", pergunta: "Não confunda: o ponto de staccato fica…", opcoes: ["Ao lado da nota, e aumenta a duração", "Em cima ou embaixo da cabeça, e encurta a nota", "No começo do compasso"], certa: 1 },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Quatro curtas e uma longa", texto: "Sol, Lá, Si, Lá em staccato e sustente o Sol.", pauta: [["sol", 1, "st"], ["la", 1, "st"], ["si", 1, "st"], ["la", 1, "st"], ["sol", 2]] },
+          ],
+        },
+        {
+          id: "acento", titulo: "O acento", resumo: "Uma nota com mais peso",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "O sinal >", texto: ["O acento pede que aquela nota comece com mais peso que as vizinhas.", "O impulso vem do ar, junto com a língua. Não é bater mais forte na palheta."], pauta: [["sol", 1, "ac"], ["la", 1], ["si", 1, "ac"], ["la", 1], ["sol", 2, "ac"], ["sol", 2]], compassos: true },
+            { tipo: "escolha", pergunta: "De onde vem o acento?", opcoes: ["De um impulso de ar com a língua", "De apertar a boquilha", "De tocar mais rápido"], certa: 0 },
+            { tipo: "ritmo", titulo: "Sinta o acento no 1 e no 3", texto: "Bata quatro semínimas, com mais intenção na primeira e na terceira.", pauta: [["sol", 1, "ac"], ["sol", 1], ["sol", 1, "ac"], ["sol", 1]], padrao: [1, 1, 1, 1] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Com acento", texto: "Sol acentuado, Lá, Si acentuado, Lá, e sustente o Sol.", pauta: [["sol", 1, "ac"], ["la", 1], ["si", 1, "ac"], ["la", 1], ["sol", 2, "ac"]] },
+          ],
+        },
+        {
+          id: "frase-expressiva", titulo: "A frase com intenção", resumo: "Ler tudo o que está escrito",
+          passos: [
+            { tipo: "info", ouvir: true, titulo: "As notas são só o começo", texto: ["Uma partitura completa traz notas, ritmo, dinâmica e articulação. Tocar bem é obedecer a tudo isso de uma vez.", "Ouça esta frase: ela começa suave, cresce e termina em notas curtas."], pauta: [["fa", 1], ["la", 1], ["do", 2], ["re2", 1, "ac"], ["do", 0.5, "st"], ["sib", 0.5, "st"], ["la", 2]], compassos: true, din: [[0, "p"], [3, "f"]], forq: [[1, 2, "cresc"]] },
+            { tipo: "escolha", pergunta: "Como a frase começa?", pauta: [["fa", 1], ["la", 1], ["do", 2], ["re2", 1, "ac"], ["do", 0.5, "st"], ["sib", 0.5, "st"], ["la", 2]], compassos: true, din: [[0, "p"], [3, "f"]], forq: [[1, 2, "cresc"]], opcoes: ["Forte", "Suave", "Em staccato"], certa: 1 },
+            { tipo: "escolha", pergunta: "Qual nota leva acento?", pauta: [["fa", 1], ["la", 1], ["do", 2], ["re2", 1, "ac"], ["do", 0.5, "st"], ["sib", 0.5, "st"], ["la", 2]], compassos: true, din: [[0, "p"], [3, "f"]], forq: [[1, 2, "cresc"]], opcoes: ["O Fá do começo", "O Ré agudo", "O Lá do final"], certa: 1 },
+            { tipo: "tocar", nota: "do", segundos: 2, titulo: "O primeiro compasso", texto: "Comece suave e cresça até o Dó.", pauta: [["fa", 1], ["la", 1], ["do", 2]], din: [[0, "p"]], forq: [[1, 2, "cresc"]] },
+            { tipo: "tocar", nota: "la", segundos: 2, titulo: "O segundo compasso", texto: "Ré acentuado, duas curtas e sustente o Lá.", pauta: [["re2", 1, "ac"], ["do", 0.5, "st"], ["sib", 0.5, "st"], ["la", 2]], din: [[0, "f"]] },
+          ],
+        },
+        {
+          id: "musica11", titulo: "Serenata", resumo: "Uma música para tocar com expressão", melodia: SERENATA, din: [[0, "p"], [7, "f"], [13, "p"]], forq: [[3, 6, "cresc"], [11, 12, "dim"]],
+          passos: [
+            { tipo: "info", titulo: "Serenata", texto: ["Esta música conta uma pequena história: começa suave, cresce até o ponto mais alto e volta ao silêncio.", "Ouça com o pulso. O exemplo já toca com a dinâmica escrita."], melodia: true },
+            { tipo: "escolha", pergunta: "Onde está o ponto mais forte da música?", melodia: true, opcoes: ["No primeiro compasso", "No terceiro compasso", "Na última nota"], certa: 1 },
+            { tipo: "musica", titulo: "Toque junto com o pulso", texto: "O app confere as notas. A dinâmica fica por sua conta: é ela que faz a música." },
+            { tipo: "gravar", chave: "u11", comparar: true, titulo: "Antes e depois", texto: "Grave a “Serenata” e compare com o som do seu primeiro dia." },
+          ],
+        },
+      ],
+    },
   ];
   const LICOES = UNIDADES.flatMap(u => u.licoes);
-  const PROXIMAS = ["Unidade 9 · Compassos de 2 e de 3 tempos", "Unidade 10 · Ré maior e Si♭ maior", "Unidade 11 · Dinâmica e expressão"];
+  const PROXIMAS = ["Unidade 12 · Armadura de clave", "Unidade 13 · Tercinas e o swing do jazz", "Unidade 14 · Vibrato e os primeiros ornamentos"];
 
   // ---------- Estado ----------
   const CHAVE = "naipe.trilha.v1";
@@ -588,11 +773,14 @@
 
   // Pauta com notas: itens = [[nota, tempos, "liga"?], ...]. destaque = índice da nota ativa.
   // Figuras: 4 semibreve, 3 mínima pontuada, 2 mínima, 1.5 semínima pontuada, 1 semínima, 0.5 colcheia.
+  // Compasso do passo atual (tempos por compasso), contagem inicial, fórmula visível e marcas de expressão.
+  let COMP = 4, CONT = 4, FORMULA = 0, MARCAS = {};
+  const tem = (it, f) => typeof it[2] === "string" && it[2].includes(f);
   const passoX = t => (t <= 0.25 ? 25 : t <= 0.75 ? 32 : 44);
   const largPauta = itens => 70 + itens.reduce((a, [, t]) => a + passoX(t), 0) + 16;
-  function svgPauta(itens, { rotulos = false, destaque = -1, compassos = false, minLarg = 220 } = {}) {
-    const larg = Math.max(minLarg, largPauta(itens));
-    let x = 74, tempos = 0, corpo = "", arcos = "", traves = "";
+  function svgPauta(itens, { rotulos = false, destaque = -1, compassos = false, minLarg = 220, din = null, forq = null, formula = FORMULA, recuo = FORMULA } = {}) {
+    const dx = recuo ? 18 : 0, larg = Math.max(minLarg, largPauta(itens)) + dx, temDin = !!((din && din.length) || (forq && forq.length));
+    let x = 74 + dx, tempos = 0, corpo = "", arcos = "", traves = "", marcas = "";
     const pos = [];
     itens.forEach(([n, t], i) => { pos.push({ x, ini: tempos, y: n === P ? 0 : 70 - NOTA[n].passo * 5 }); tempos += t; x += passoX(t); });
     // Hastes: sozinha, a nota decide a direção; notas curtas do mesmo tempo formam um grupo com trave reta.
@@ -618,37 +806,46 @@
       }
       i = f;
     }
-    const barra = i => (compassos && (pos[i].ini + itens[i][1]) % 4 === 0 && i < itens.length - 1 ? `<line x1="${pos[i].x + passoX(itens[i][1]) - 14}" y1="30" x2="${pos[i].x + passoX(itens[i][1]) - 14}" y2="70" class="tr-barra"/>` : "");
-    itens.forEach(([n, t, liga], i) => {
-      const x = pos[i].x;
+    const barra = i => (compassos && (pos[i].ini + itens[i][1]) % COMP === 0 && i < itens.length - 1 ? `<line x1="${pos[i].x + passoX(itens[i][1]) - 14}" y1="30" x2="${pos[i].x + passoX(itens[i][1]) - 14}" y2="70" class="tr-barra"/>` : "");
+    itens.forEach((item, i) => {
+      const [n, t] = item, liga = tem(item, "liga"), x = pos[i].x;
       if (n === P) { corpo += `<path class="tr-pausa${i === destaque ? " ativa" : ""}" d="M${x - 3} 36l6 8-5 6 6 8c-5-2-9 0-6 6-6-4-7-9-2-12l-5-7 5-5z"/>` + barra(i); return; }
       const nt = NOTA[n], y = pos[i].y, cheio = t <= 1.5, { baixo, hx, yb, grupo } = haste[i];
       const cls = i === destaque ? "tr-nota ativa" : i < destaque ? "tr-nota feita" : "tr-nota";
       let extra = "";
       if (nt.passo <= -2) extra += `<line x1="${x - 11}" y1="80" x2="${x + 11}" y2="80" class="tr-supl"/>`;
+      if (nt.passo >= 12) extra += `<line x1="${x - 11}" y1="10" x2="${x + 11}" y2="10" class="tr-supl"/>`;
       if (nt.passo >= 10) extra += `<line x1="${x - 11}" y1="20" x2="${x + 11}" y2="20" class="tr-supl"/>`;
       if (t < 4) extra += `<line x1="${hx}" y1="${y + (baixo ? 1.5 : -1.5)}" x2="${hx}" y2="${yb}" class="haste"/>`;
       if (t === 3 || t === 1.5 || t === 0.75) extra += `<circle cx="${x + 11}" cy="${nt.passo % 2 === 0 ? y - 3 : y}" r="1.8" class="ponto"/>`;
       if (t < 1 && !grupo) { const f = (dy) => `<path class="bandeira" d="M${hx} ${yb + dy} q9 ${baixo ? -6 : 6} 6 ${baixo ? -16 : 16}"/>`; extra += f(0) + (t === 0.25 ? f(baixo ? -7 : 7) : ""); }
+      if (tem(item, "st")) extra += `<circle cx="${x}" cy="${baixo ? y - 9 : y + 9}" r="1.9" class="ponto"/>`;
+      if (tem(item, "ac")) extra += `<path class="tr-acento" d="M${x - 5} ${(baixo ? y - 15 : Math.min(yb, 30) - 9) - 3.5}l10 3.5-10 3.5"/>`;
       if (nt.ac) extra += `<text x="${x - 16}" y="${y + 4}" class="tr-ac">${{ "#": "♯", n: "♮", b: "♭" }[nt.ac]}</text>`;
       if (liga && itens[i + 1] && itens[i + 1][0] !== P) { const x2 = pos[i + 1].x, y2 = pos[i + 1].y, d = baixo ? -9 : 9; arcos += `<path class="tr-liga" d="M${x + 3} ${y + d} Q${(x + x2) / 2} ${(y + y2) / 2 + d * 2.2} ${x2 - 3} ${y2 + d}"/>`; }
       corpo += `<g class="${cls}"><ellipse cx="${x}" cy="${y}" rx="6.6" ry="4.7" transform="rotate(-20 ${x} ${y})" ${cheio ? "" : 'fill="none" stroke-width="2"'} class="${cheio ? "cab cheia" : "cab oca"}"/>${extra}${rotulos ? `<text x="${x}" y="104" text-anchor="middle" class="tr-rot">${nt.nome}</text>` : ""}</g>` + barra(i);
     });
+    // Dinâmica: letras (p, mf, f) e forquilhas de crescendo e diminuendo, abaixo da pauta.
+    const yd = 100;
+    (din || []).forEach(([i, txt]) => { if (pos[i]) marcas += `<text x="${pos[i].x - 4}" y="${yd + 5}" class="tr-din">${txt}</text>`; });
+    (forq || []).forEach(([de, ate, tipo]) => { if (!pos[de] || !pos[ate]) return; const x1 = pos[de].x + (din && din.some(d => d[0] === de) ? 14 : -4), x2 = pos[ate].x + (de === ate ? 110 : 8); marcas += tipo === "cresc" ? `<path class="tr-forq" d="M${x2} ${yd - 5}L${x1} ${yd}L${x2} ${yd + 5}"/>` : `<path class="tr-forq" d="M${x1} ${yd - 5}L${x2} ${yd}L${x1} ${yd + 5}"/>`; });
+    const numeros = formula ? `<text x="${57}" y="49" text-anchor="middle" class="tr-formula">${formula}</text><text x="${57}" y="69" text-anchor="middle" class="tr-formula">4</text>` : "";
     const linhas = [30, 40, 50, 60, 70].map(y => `<line x1="6" y1="${y}" x2="${larg - 6}" y2="${y}"/>`).join("");
-    return `<svg class="tr-pauta" viewBox="0 -4 ${larg} ${rotulos ? 114 : 104}" role="img" aria-label="Pauta musical"><g class="tr-linhas">${linhas}<line x1="${larg - 6}" y1="30" x2="${larg - 6}" y2="70"/></g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/>${arcos}${traves}${corpo}</svg>`;
+    return `<svg class="tr-pauta" viewBox="0 -4 ${larg} ${(rotulos ? 114 : 104) + (temDin ? 10 : 0)}" role="img" aria-label="Pauta musical"><g class="tr-linhas">${linhas}<line x1="${larg - 6}" y1="30" x2="${larg - 6}" y2="70"/></g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/>${numeros}${arcos}${traves}${corpo}${marcas}</svg>`;
   }
 
   // Melodia longa: quebra em linhas, sempre numa barra de compasso, para as notas ficarem legíveis.
   function svgMelodia(mel, destaque = -1) {
     const linhas = []; let atual = [], tempos = 0, total = 0, base = 0;
     // Muitas notas por compasso (semicolcheias): um compasso por linha. Senão, dois.
-    const porLinha = mel.length / (mel.reduce((x, [, d]) => x + d, 0) / 4) > 5.5 ? 4 : 8;
+    const porLinha = mel.length / (mel.reduce((x, [, d]) => x + d, 0) / COMP) > 5.5 ? COMP : COMP * 2;
     mel.forEach((it, i) => {
       atual.push(it); tempos += it[1]; total += it[1];
-      if ((total % 4 === 0 && tempos >= porLinha) || i === mel.length - 1) { linhas.push({ itens: atual, base }); base = i + 1; atual = []; tempos = 0; }
+      if ((total % COMP === 0 && tempos >= porLinha) || i === mel.length - 1) { linhas.push({ itens: atual, base }); base = i + 1; atual = []; tempos = 0; }
     });
     const minLarg = Math.max(...linhas.map(l => largPauta(l.itens)));
-    return linhas.map(l => svgPauta(l.itens, { compassos: true, minLarg, destaque: destaque >= l.base && destaque < l.base + l.itens.length ? destaque - l.base : destaque >= l.base + l.itens.length ? 99 : -1 })).join("");
+    const local = (lista, l, pares) => (lista || []).filter(m => m[0] >= l.base && m[pares ? 1 : 0] < l.base + l.itens.length).map(m => (pares ? [m[0] - l.base, m[1] - l.base, m[2]] : [m[0] - l.base, m[1]]));
+    return linhas.map((l, k) => svgPauta(l.itens, { compassos: true, minLarg, formula: k === 0 ? FORMULA : 0, din: local(MARCAS.din, l, false), forq: local(MARCAS.forq, l, true), destaque: destaque >= l.base && destaque < l.base + l.itens.length ? destaque - l.base : destaque >= l.base + l.itens.length ? 99 : -1 })).join("");
   }
 
   // Saxofone desenhado (o mesmo traço da marca), com as chaves fechadas acesas.
@@ -691,7 +888,7 @@
   const somReal = midi => midi - (saxDoApp() === "Sib" ? 2 : 9);
   let onda = null;
   // Timbre de palheta: harmônicos fortes, ataque suave e um leve vibrato. Soa claro até em alto-falante pequeno.
-  function tom(midi, quando, dur) {
+  function tom(midi, quando, dur, ganho = 1) {
     const a = audio();
     if (!onda) { const re = new Float32Array([0, 1, 0.72, 0.55, 0.42, 0.3, 0.22, 0.16, 0.1, 0.07, 0.05]), im = new Float32Array(re.length); onda = a.createPeriodicWave(re, im); }
     const o = a.createOscillator(), g = a.createGain(), f = a.createBiquadFilter(), vib = a.createOscillator(), vg = a.createGain();
@@ -701,7 +898,7 @@
     vib.frequency.value = 5.2; vg.gain.setValueAtTime(0, quando); vg.gain.linearRampToValueAtTime(freq * 0.004, quando + Math.min(0.5, dur));
     vib.connect(vg).connect(o.frequency);
     const fim = Math.max(quando + 0.08, quando + dur);
-    g.gain.setValueAtTime(0.0001, quando); g.gain.exponentialRampToValueAtTime(0.34, quando + 0.035); g.gain.setValueAtTime(0.3, Math.max(quando + 0.04, fim - 0.06)); g.gain.exponentialRampToValueAtTime(0.0001, fim);
+    g.gain.setValueAtTime(0.0001, quando); g.gain.exponentialRampToValueAtTime(0.34 * ganho, quando + 0.035); g.gain.setValueAtTime(0.3 * ganho, Math.max(quando + 0.04, fim - 0.06)); g.gain.exponentialRampToValueAtTime(0.0001, fim);
     o.connect(f).connect(g).connect(a.destination);
     o.start(quando); vib.start(quando); o.stop(fim + 0.03); vib.stop(fim + 0.03);
   }
@@ -715,9 +912,9 @@
     pulso.t = setInterval(() => {
       const bt = 60 / bpmAtual();
       while (pulso.prox < a.currentTime + 0.25) {
-        clique(pulso.prox, pulso.n % 4 === 0);
+        clique(pulso.prox, pulso.n % COMP === 0);
         const n = pulso.n, espera = Math.max(0, (pulso.prox - a.currentTime) * 1000);
-        setTimeout(() => { const l = $("#tr-pulso-luz"); if (l && pulso.t) { l.textContent = (n % 4) + 1; l.classList.add("bate"); setTimeout(() => l.classList.remove("bate"), 110); } }, espera);
+        setTimeout(() => { const l = $("#tr-pulso-luz"); if (l && pulso.t) { l.textContent = (n % COMP) + 1; l.classList.add("bate"); setTimeout(() => l.classList.remove("bate"), 110); } }, espera);
         pulso.prox += bt; pulso.n++;
       }
     }, 40);
@@ -790,7 +987,7 @@
     '<svg viewBox="0 0 120 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M14 35h14"/><path d="M40 22q10 13 0 26"/><path d="M54 14q16 21 0 42"/><path d="M68 6q22 29 0 58"/></g><circle cx="98" cy="35" r="7" fill="currentColor"/></svg>',
     '<svg viewBox="0 0 120 70" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" opacity=".55"><path d="M6 15h108M6 25h108M6 35h108M6 45h108M6 55h108"/></g><g fill="currentColor"><ellipse cx="20" cy="60" rx="6" ry="4.4"/><ellipse cx="34" cy="55" rx="6" ry="4.4"/><ellipse cx="48" cy="50" rx="6" ry="4.4"/><ellipse cx="62" cy="45" rx="6" ry="4.4"/><ellipse cx="76" cy="40" rx="6" ry="4.4"/><ellipse cx="90" cy="35" rx="6" ry="4.4"/><ellipse cx="104" cy="30" rx="6" ry="4.4"/></g></svg>',
   ];
-  const CORES = [["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"], ["#ee8a45", "#9a4a15"], ["#a678f0", "#5a3a9a"], ["#ef5f8a", "#962c50"], ["#2bb3c4", "#136572"], ["#d9a547", "#8a5f1e"], ["#5b8def", "#2b4a8f"]];
+  const CORES = [["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"], ["#ee8a45", "#9a4a15"], ["#a678f0", "#5a3a9a"], ["#ef5f8a", "#962c50"], ["#2bb3c4", "#136572"], ["#d9a547", "#8a5f1e"], ["#5b8def", "#2b4a8f"], ["#3fbf8f", "#1d6b4f"], ["#ee8a45", "#9a4a15"], ["#a678f0", "#5a3a9a"]];
   const DESVIO = [8, 44, 64, 44, 8, 28];
 
   function htmlCaminho(u, n, atual, paga) {
@@ -826,7 +1023,7 @@
       <header class="cabecalho">
         ${BETA ? "" : `<a class="btn-voltar" href="#/inicio">‹ Início</a>`}
         <p class="sobretitulo">Aprender · versão de teste</p>
-        <h1>Do zero ao primeiro choro</h1>
+        <h1>Do zero à música com expressão</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
       <div class="corpo tr-corpo">
@@ -893,21 +1090,33 @@
   function limparPasso() { temporizadores.splice(0).forEach(clearTimeout); cancelAnimationFrame(mic.raf); pararPulso(); }
 
   const melodiaAtual = () => (sessao && sessao.licao.melodia) || PRIMEIRO_PASSO;
-  const apoio = p => (p.pauta ? svgPauta(p.pauta, { rotulos: p.rotulos, compassos: p.compassos }) : "") + (p.melodia ? svgMelodia(melodiaAtual()) : "") + (p.dedos ? svgDedos(p.dedos) : "") + (p.figuras ? htmlFiguras() : "");
+  const apoio = p => (p.pauta ? svgPauta(p.pauta, { rotulos: p.rotulos, compassos: p.compassos, din: p.din, forq: p.forq }) : "") + (p.melodia ? svgMelodia(melodiaAtual()) : "") + (p.dedos ? svgDedos(p.dedos) : "") + (p.figuras ? htmlFiguras() : "");
 
   function passo() {
-    const p = sessao.licao.passos[sessao.i];
-    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao })[p.tipo](p);
+    const p = sessao.licao.passos[sessao.i], lic = sessao.licao;
+    COMP = p.comp || lic.comp || 4; CONT = COMP === 2 ? 4 : COMP;
+    FORMULA = p.formula || (p.formula !== 0 && lic.formula ? COMP : 0);
+    MARCAS = p.pauta ? { din: p.din, forq: p.forq } : { din: lic.din, forq: lic.forq };
+    ({ info: passoInfo, escolha: passoEscolha, ouvir: passoEscolha, ritmo: passoRitmo, tocar: passoTocar, musica: passoMusica, gravar: passoGravar, pares: passoPares, ondefica: passoOndeFica, digitacao: passoDigitacao, dinamica: passoDinamica })[p.tipo](p);
   }
 
   // Toca a melodia com contagem de 4 e clique em cada tempo, acendendo a nota da vez em "alvo".
+  const GANHO = { pp: 0.22, p: 0.36, mp: 0.6, mf: 0.85, f: 1.3, ff: 1.6 };
+  // Volume de cada nota conforme as letras de dinâmica e as forquilhas.
+  function ganhos(mel) {
+    const g = new Array(mel.length).fill(GANHO.mf); let atual = GANHO.mf;
+    const letras = new Map((MARCAS.din || []).map(([i, t]) => [i, GANHO[t] || GANHO.mf]));
+    mel.forEach((_, i) => { if (letras.has(i)) atual = letras.get(i); g[i] = atual; });
+    (MARCAS.forq || []).forEach(([de, ate, tipo]) => { const ini = g[de], fim = letras.get(ate + 1) || (tipo === "cresc" ? ini * 2.2 : ini / 2.2); for (let i = de; i <= ate; i++) g[i] = ini + (fim - ini) * ((i - de + 1) / (ate - de + 2)); });
+    return g;
+  }
   function ouvirMelodia(mel, alvo, aoFim) {
-    const a = audio(), bt = 60 / bpmAtual(), t0 = a.currentTime + 0.15, total = mel.reduce((x, [, d]) => x + d, 0);
-    for (let k = 0; k < 4 + Math.ceil(total); k++) clique(t0 + k * bt, k % 4 === 0);
-    let t = t0 + 4 * bt;
-    mel.forEach(([n, d, liga], i) => {
-      const anterior = mel[i - 1];
-      if (n !== P && !(anterior && anterior[2] === "liga" && anterior[0] === n)) { let dur = d; if (liga === "liga" && mel[i + 1] && mel[i + 1][0] === n) dur += mel[i + 1][1]; tom(NOTA[n].midi, t, dur * bt * 0.94); }
+    const a = audio(), bt = 60 / bpmAtual(), t0 = a.currentTime + 0.15, total = mel.reduce((x, [, d]) => x + d, 0), vol = ganhos(mel);
+    for (let k = 0; k < CONT + Math.ceil(total); k++) clique(t0 + k * bt, k % COMP === 0);
+    let t = t0 + CONT * bt;
+    mel.forEach((item, i) => {
+      const [n, d] = item, anterior = mel[i - 1];
+      if (n !== P && !(anterior && tem(anterior, "liga") && anterior[0] === n)) { let dur = d; if (tem(item, "liga") && mel[i + 1] && mel[i + 1][0] === n) dur += mel[i + 1][1]; tom(NOTA[n].midi, t, dur * bt * (tem(item, "st") ? 0.4 : 0.94), vol[i] * (tem(item, "ac") ? 1.5 : 1)); }
       temporizadores.push(setTimeout(() => { const el = $(alvo); if (el) el.innerHTML = svgMelodia(mel, i); }, (t - a.currentTime) * 1000));
       t += d * bt;
     });
@@ -925,7 +1134,7 @@
 
   function passoEscolha(p) {
     moldura(`<h2>${esc(p.pergunta)}</h2>${apoio(p)}${p.tipo === "ouvir" ? `<button class="btn" id="tr-ouvir" type="button">▶ Ouvir</button>` : ""}<div class="tr-opcoes">${p.opcoes.map((o, i) => `<button type="button" data-i="${i}">${esc(o)}</button>`).join("")}</div>`, { botao: "Escolha uma resposta", pronto: false });
-    const tocarSons = () => { let t = audio().currentTime + 0.1; p.sons.forEach(n => { tom(NOTA[n].midi, t, 0.9); t += 1.1; }); };
+    const tocarSons = () => { let t = audio().currentTime + 0.1; p.sons.forEach(x => { const [n, g = 1, d = 0.9] = Array.isArray(x) ? x : [x]; tom(NOTA[n].midi, t, d, g); t += 1.1; }); };
     if (p.tipo === "ouvir") $("#tr-ouvir").addEventListener("click", tocarSons);
     raiz().querySelectorAll(".tr-opcoes button").forEach(b => b.addEventListener("click", () => {
       if (raiz().querySelector(".tr-opcoes .certa")) return;
@@ -962,8 +1171,8 @@
   // Tocar na pauta, no lugar da nota pedida.
   function passoOndeFica(p) {
     const alvo = NOTA[p.nota], linhas = [30, 40, 50, 60, 70].map(y => `<line x1="6" y1="${y}" x2="254" y2="${y}"/>`).join("");
-    const zonas = []; for (let ps = -2; ps <= 10; ps++) zonas.push(`<rect class="tr-zona" data-p="${ps}" x="66" y="${70 - ps * 5 - 2.5}" width="184" height="5"/>`);
-    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><svg class="tr-pauta tr-pauta-toque" viewBox="0 6 260 84" role="img" aria-label="Pauta para tocar"><g class="tr-linhas">${linhas}</g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/><g id="tr-posta"></g>${zonas.join("")}</svg>`, { botao: "Toque na pauta", pronto: false });
+    const zonas = []; for (let ps = -2; ps <= 11; ps++) zonas.push(`<rect class="tr-zona" data-p="${ps}" x="66" y="${70 - ps * 5 - 2.5}" width="184" height="5"/>`);
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><svg class="tr-pauta tr-pauta-toque" viewBox="0 2 260 88" role="img" aria-label="Pauta para tocar"><g class="tr-linhas">${linhas}</g><path class="tr-clave" transform="translate(12 13.5) scale(1.42)" d="${CLAVE}"/><g id="tr-posta"></g>${zonas.join("")}</svg>`, { botao: "Toque na pauta", pronto: false });
     let fim = false;
     raiz().querySelectorAll(".tr-zona").forEach(z => z.addEventListener("click", () => {
       if (fim) return;
@@ -989,19 +1198,19 @@
     let bt = 60 / bpmAtual();
     const total = p.padrao.reduce((a, b) => a + Math.abs(b), 0), fr = t => ({ 0.25: "¼", 0.5: "½", 0.75: "¾", 1.5: "1½" }[t] || t);
     const blocos = p.padrao.map(t => t < 0 ? `<span class="silencio" style="flex:${-t}">–<small>pausa</small></span>` : `<span style="flex:${t}">${fr(t)}<small>${t <= 1 ? "tempo" : "tempos"}</small></span>`).join("");
-    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-ritmo-linha" id="tr-linha">${blocos}<i id="tr-cursor"></i></div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz">Toque em “Começar” e ouça a contagem de 4.</p><button class="tr-bater" id="tr-bater" type="button">Começar</button>`, { botao: "Bata o ritmo", pronto: false });
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-ritmo-linha" id="tr-linha">${blocos}<i id="tr-cursor"></i></div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz">Toque em “Começar” e ouça a contagem.</p><button class="tr-bater" id="tr-bater" type="button">Começar</button>`, { botao: "Bata o ritmo", pronto: false });
     ativarPulso();
     const bater = $("#tr-bater"), voz = $("#tr-voz");
     let fase = "espera", inicio = 0, toques = [];
     const esperados = []; p.padrao.reduce((t, d) => { if (d > 0) esperados.push(t); return t + Math.abs(d); }, 0);
     function comecar() {
       bt = 60 / bpmAtual();
-      const a = audio(); inicio = a.currentTime + 0.15 + 4 * bt; toques = []; fase = "contagem";
-      for (let k = 0; k < 4 + Math.ceil(total); k++) clique(a.currentTime + 0.15 + k * bt, k % 4 === 0);
+      const a = audio(); inicio = a.currentTime + 0.15 + CONT * bt; toques = []; fase = "contagem";
+      for (let k = 0; k < CONT + Math.ceil(total); k++) clique(a.currentTime + 0.15 + k * bt, k % COMP === 0);
       bater.textContent = "Toque aqui"; bater.classList.add("ativo");
-      for (let k = 0; k < 4; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${k + 1}`; }, (0.15 + k * bt) * 1000));
-      temporizadores.push(setTimeout(() => { fase = "valendo"; voz.textContent = "Agora!"; const c = $("#tr-cursor"); if (c) { c.style.transition = `left ${total * bt}s linear`; c.style.left = "100%"; } }, (0.15 + 4 * bt - 0.2) * 1000));
-      temporizadores.push(setTimeout(avaliar, (0.15 + (4 + total) * bt + 0.25) * 1000));
+      for (let k = 0; k < CONT; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${(k % COMP) + 1}`; }, (0.15 + k * bt) * 1000));
+      temporizadores.push(setTimeout(() => { fase = "valendo"; voz.textContent = "Agora!"; const c = $("#tr-cursor"); if (c) { c.style.transition = `left ${total * bt}s linear`; c.style.left = "100%"; } }, (0.15 + CONT * bt - 0.2) * 1000));
+      temporizadores.push(setTimeout(avaliar, (0.15 + (CONT + total) * bt + 0.25) * 1000));
     }
     function avaliar() {
       fase = "espera"; bater.classList.remove("ativo");
@@ -1070,6 +1279,45 @@
     });
   }
 
+  function nivelMic() {
+    if (!mic.an) return 0;
+    mic.an.getFloatTimeDomainData(mic.buf);
+    let q = 0; for (let i = 0; i < mic.buf.length; i++) q += mic.buf[i] * mic.buf[i];
+    return Math.sqrt(q / mic.buf.length);
+  }
+  // Dinâmica pelo microfone. modo "pf": piano e depois forte. "cresc" e "dim": uma nota longa que cresce ou diminui.
+  function passoDinamica(p) {
+    moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p>${apoio(p)}<div class="tr-volume"><span id="tr-vol"></span></div>${htmlMic(p)}`, { botao: "Toque para continuar", pronto: false });
+    ligarControlesMic(() => {
+      const ouvindo = $("#tr-ouvindo"), barra = $("#tr-nivel"), vol = $("#tr-vol");
+      const SOM = 0.014, media = v => v.reduce((a, b) => a + b, 0) / Math.max(1, v.length);
+      let etapa = 0, amostras = [], guardado = 0, silencio = 0, fim = false;
+      const pede = () => { ouvindo.textContent = p.modo === "pf" ? (etapa === 0 ? "1 de 2: toque uma nota piano, bem suave, por 2 segundos." : "2 de 2: agora a mesma nota forte, por 2 segundos.") : p.modo === "cresc" ? "Comece suave e vá crescendo por 3 segundos." : "Comece forte e vá diminuindo por 3 segundos."; };
+      pede();
+      const alvoQ = p.modo === "pf" ? 110 : 160; // quadros de som (cerca de 2 e 3 segundos)
+      (function quadro() {
+        if (!$("#tr-vol") || fim) return;
+        const r = nivelMic();
+        vol.style.width = Math.min(100, r * 380) + "%";
+        if (r > SOM) { amostras.push(r); silencio = 0; } else if (++silencio > 25 && amostras.length < alvoQ) { if (amostras.length > 12) ouvindo.textContent = "O som parou antes da hora. Respire e tente de novo."; amostras = []; }
+        barra.style.width = Math.min(100, amostras.length / alvoQ * 100) + "%";
+        if (amostras.length >= alvoQ) {
+          if (p.modo === "pf") {
+            if (etapa === 0) { guardado = media(amostras); etapa = 1; amostras = []; silencio = 0; barra.style.width = "0"; pede(); }
+            else if (media(amostras) >= guardado * 1.5) { fim = true; return liberar("Deu para ouvir a diferença entre o piano e o forte."); }
+            else { sessao.erros++; somRetorno(false); etapa = 0; amostras = []; ouvindo.textContent = "Os dois saíram com volume parecido. Exagere: piano bem suave, forte bem cheio."; temporizadores.push(setTimeout(pede, 2600)); }
+          } else {
+            const t = Math.floor(amostras.length / 3), ini = media(amostras.slice(0, t)), fin = media(amostras.slice(-t));
+            const ok = p.modo === "cresc" ? fin >= ini * 1.4 : ini >= fin * 1.4;
+            if (ok) { fim = true; return liberar(p.modo === "cresc" ? "O som cresceu do começo ao fim." : "O som diminuiu sem quebrar."); }
+            sessao.erros++; somRetorno(false); amostras = []; ouvindo.textContent = p.modo === "cresc" ? "O volume ficou quase igual. Comece mais suave e solte mais ar no final." : "O volume ficou quase igual. Comece mais forte e vá soltando menos ar."; temporizadores.push(setTimeout(pede, 2600));
+          }
+        }
+        mic.raf = requestAnimationFrame(quadro);
+      })();
+    });
+  }
+
   function passoMusica(p) {
     let bt = 60 / bpmAtual(); const MEL = melodiaAtual();
     moldura(`<h2>${esc(p.titulo)}</h2><p>${esc(p.texto)}</p><div id="tr-partitura">${svgMelodia(MEL)}</div>${htmlPulso(false)}<p class="tr-conta-voz" id="tr-voz"></p>${htmlMic(p)}`, { botao: "Toque a música", pronto: false });
@@ -1080,10 +1328,10 @@
       $("#tr-iniciar").addEventListener("click", function iniciar() {
         bt = 60 / bpmAtual();
         const a = audio(), t0 = a.currentTime + 0.2, total = MEL.reduce((s, [, d]) => s + d, 0);
-        for (let k = 0; k < 4 + Math.ceil(total); k++) clique(t0 + k * bt, k % 4 === 0);
+        for (let k = 0; k < CONT + Math.ceil(total); k++) clique(t0 + k * bt, k % COMP === 0);
         ouvindo.textContent = "";
-        for (let k = 0; k < 4; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${k + 1}`; }, (0.2 + k * bt) * 1000));
-        const inicio = t0 + 4 * bt; let pos = 0; const janelas = MEL.map(([n, d]) => { const j = { n, de: pos * bt, ate: (pos + d) * bt, bons: 0, quadros: 0 }; pos += d; return j; });
+        for (let k = 0; k < CONT; k++) temporizadores.push(setTimeout(() => { voz.textContent = `Contagem: ${(k % COMP) + 1}`; }, (0.2 + k * bt) * 1000));
+        const inicio = t0 + CONT * bt; let pos = 0; const janelas = MEL.map(([n, d]) => { const j = { n, de: pos * bt, ate: (pos + d) * bt, bons: 0, quadros: 0 }; pos += d; return j; });
         let atual = -1;
         (function quadro() {
           if (!$("#tr-partitura")) return;
@@ -1119,7 +1367,7 @@
   const dataCurta = iso => new Date(iso).toLocaleDateString("pt-BR", { day: "numeric", month: "long", year: "numeric" });
   const urls = [];
   const htmlAudio = (g, rotulo) => { const u = URL.createObjectURL(g.blob); urls.push(u); return `<div class="tr-grav"><span><strong>${esc(rotulo)}</strong><small>${dataCurta(g.data)}</small></span><audio controls preload="metadata" src="${u}"></audio></div>`; };
-  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia" };
+  const ROTULO_GRAV = { primeira: "Meu primeiro som", u1: "Primeiro Passo", u2: "Caminho de Casa", u3: "Roda de Sábado", u4: "Manhã de Sol", u5: "Baião de Estreia", u6: "Tarde em Fá", u7: "Sincopado", u8: "Chorinho de Estreia", u9: "Dois por Quatro", u10: "Festa em Ré", u11: "Serenata" };
 
   const rec = { mr: null, stream: null, partes: [], t: 0 };
   function pararRec() { clearInterval(rec.t); if (rec.mr && rec.mr.state !== "inactive") rec.mr.stop(); if (rec.stream) rec.stream.getTracks().forEach(t => t.stop()); rec.stream = null; }
@@ -1226,7 +1474,7 @@
 
   async function htmlAntesDepois() {
     const itens = [];
-    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
+    for (const k of ["primeira", "u1", "u2", "u3", "u4", "u5", "u6", "u7", "u8", "u9", "u10", "u11"]) { const g = await gravLer(k); if (g) itens.push(htmlAudio(g, ROTULO_GRAV[k])); }
     return itens.length ? `<section class="cartao tr-antes"><span class="rotulo">Meu antes e depois</span>${itens.join("")}</section>` : "";
   }
 

@@ -1728,3 +1728,11 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .trave { stroke: #1c1c1c; stroke-width: 4; }
 .trave.ativa { stroke: #b5771c; }
 .tr-sax-des rect.chave.fechada { fill: #fff; stroke: #fff; }
+
+/* ---------- Trilha: fórmula de compasso, dinâmica e articulação ---------- */
+.tr-formula { font: 800 21px var(--f-body); fill: #1c1c1c; }
+.tr-din { font: italic 700 15px Georgia, "Times New Roman", serif; fill: #1c1c1c; }
+.tr-forq { fill: none; stroke: #1c1c1c; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+.tr-acento { fill: none; stroke: #1c1c1c; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.tr-volume { height: 10px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.tr-volume span { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--brass-soft); transition: width .06s linear; }
