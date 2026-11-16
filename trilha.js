@@ -12,7 +12,13 @@
     const q = new URLSearchParams(location.search).get("beta");
     if (q === "1") localStorage.setItem("naipe.beta", "1");
     if (q === "0") localStorage.removeItem("naipe.beta");
+    // ?revisar=1: modo do professor. Tudo aberto e "Continuar" sempre liberado, para ler o conteúdo inteiro.
+    const r = new URLSearchParams(location.search).get("revisar");
+    if (r === "1") { localStorage.setItem("naipe.revisar", "1"); localStorage.setItem("naipe.beta", "1"); }
+    if (r === "0") localStorage.removeItem("naipe.revisar");
   } catch { /* sem armazenamento */ }
+  let REVISAR = false;
+  try { REVISAR = localStorage.getItem("naipe.revisar") === "1"; } catch { /* segue desligado */ }
   let BETA = false;
   try { BETA = localStorage.getItem("naipe.beta") === "1"; } catch { /* segue desligado */ }
   window.NAIPE_BETA = BETA;
@@ -1271,21 +1277,21 @@
     const passo = 92, pts = u.licoes.map((l, k) => [DESVIO[k % DESVIO.length] + 30, 46 + k * passo]);
     const curva = pts.map((pt, k) => k === 0 ? `M${pt[0]} ${pt[1]}` : `C${pts[k - 1][0]} ${pts[k - 1][1] + passo / 2} ${pt[0]} ${pt[1] - passo / 2} ${pt[0]} ${pt[1]}`).join(" ");
     return `<ol class="tr-caminho" style="height:${u.licoes.length * passo}px"><svg class="tr-fio" viewBox="0 0 120 ${u.licoes.length * passo}" preserveAspectRatio="none" aria-hidden="true"><path d="${curva}"/></svg>${u.licoes.map((l, k) => {
-      const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = !paga && (feita || i === atual || atual === -1), ehAtual = aberta && !feita;
+      const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = REVISAR || (!paga && (feita || i === atual || atual === -1)), ehAtual = aberta && !feita && (!REVISAR || i === atual);
       const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
-      return `<li class="${feita ? "feita" : ehAtual ? "atual" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
+      return `<li class="${feita ? "feita" : ehAtual ? "atual" : aberta ? "livre" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
     }).join("")}</ol>`;
   }
 
   function renderTrilha() {
-    if (!prog.porqueVisto) return renderPorque();
+    if (!prog.porqueVisto && !REVISAR) return renderPorque();
     limpar(); sessao = null;
     const atual = LICOES.findIndex(l => !prog.feitas[l.id]);
     const unidades = UNIDADES.map((u, n) => {
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
-      const paga = n > 0 && !completo(), cor = CORES[n % CORES.length];
+      const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
       const unAtual = atual < 0 ? -1 : UNIDADES.findIndex(x => x.licoes.includes(LICOES[atual]));
-      const completa = unidadeCompleta(n), futura = unAtual >= 0 && n > unAtual;
+      const completa = unidadeCompleta(n), futura = !REVISAR && unAtual >= 0 && n > unAtual;
       const estado = completa ? "Completa · toque para rever" : futura ? `Abre ao concluir a Unidade ${n}` : `${feitas} de ${u.licoes.length} lições`;
       const faixa = `<div class="tr-faixa"><div><span class="rotulo">Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
       if (futura) return `<section class="tr-unidade trancada" style="--u1:${cor[0]};--u2:${cor[1]}">${faixa}</section>`;
@@ -1299,7 +1305,7 @@
     raiz().innerHTML = `
       <header class="cabecalho">
         ${BETA ? "" : `<a class="btn-voltar" href="#/inicio">‹ Início</a>`}
-        <p class="sobretitulo">Aprender · versão de teste</p>
+        <p class="sobretitulo">Aprender · ${REVISAR ? "modo de revisão do professor" : "versão de teste"}</p>
         <h1>Do zero à formatura</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
@@ -1335,7 +1341,7 @@
     if (m) return renderMarco(Number(m[1]));
     const licao = LICOES.find(l => l.id === id);
     if (!licao) return renderTrilha();
-    if (UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = "#/trilha"; return; }
+    if (!REVISAR && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = "#/trilha"; return; }
     limpar();
     sessao = { licao, i: 0, erros: 0 };
     passo();
@@ -1347,7 +1353,7 @@
       <div class="tr-licao">
         <div class="tr-topo"><a class="tr-fechar" href="#/trilha" aria-label="Sair da lição">✕</a><div class="tr-barra-prog"><span style="width:${Math.round(i / licao.passos.length * 100)}%"></span></div><span class="tr-conta">${i + 1}/${licao.passos.length}</span></div>
         <div class="tr-passo">${miolo}</div>
-        <div class="tr-rodape"><p class="tr-retorno" id="tr-retorno" aria-live="polite"></p><button class="btn primario largo" id="tr-avancar" type="button" ${pronto ? "" : "disabled"}>${botao}</button></div>
+        <div class="tr-rodape"><p class="tr-retorno" id="tr-retorno" aria-live="polite"></p><button class="btn primario largo" id="tr-avancar" type="button" ${pronto || REVISAR ? "" : "disabled"}>${pronto || !REVISAR ? botao : "Continuar (revisão)"}</button></div>
       </div>`;
     $("#tr-avancar").addEventListener("click", avancar);
     window.scrollTo(0, 0);
@@ -1808,6 +1814,11 @@
   }
 
   function concluir() {
+    if (REVISAR) { // revisão: não mexe no progresso de ninguém
+      const prox = LICOES[LICOES.indexOf(sessao.licao) + 1], t = sessao.licao.titulo; limpar(); sessao = null;
+      raiz().innerHTML = `<div class="tr-licao tr-fim"><div class="tr-passo"><p class="sobretitulo">Fim da lição · revisão</p><h2>${esc(t)}</h2><p class="mudo">No modo de revisão o progresso não é salvo.</p></div><div class="tr-rodape">${prox ? `<a class="btn primario largo" href="#/trilha/${prox.id}">Próxima: ${esc(prox.titulo)}</a>` : ""}<a class="btn largo" href="#/trilha">Voltar para a trilha</a></div></div>`;
+      window.scrollTo(0, 0); return;
+    }
     const { licao, erros } = sessao, primeira = !prog.feitas[licao.id];
     const ganho = primeira ? 10 + (erros === 0 ? 5 : 0) : 2;
     prog.feitas[licao.id] = true; prog.pontos += ganho;
