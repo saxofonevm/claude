@@ -1200,6 +1200,7 @@
     $("#met-compasso").value = String(compasso);
     $("#met-som").value = estado.metronomo.som || "analogico";
     $("#met-sub").value = String(estado.metronomo.sub || 1);
+    $("#met-piscar").checked = !!estado.metronomo.piscar;
     $("#met-tocar").innerHTML = met.tocando ? `${icone("stop")}Parar` : `${icone("play")}Tocar`;
     $("#met-salvar-bpm").hidden = !met.exId;
     $("#met-pulsos").innerHTML = Array.from({ length: compasso }, (_, i) => `<span class="pulso${i === 0 ? " forte" : ""}"></span>`).join("");
@@ -1371,6 +1372,19 @@
     } catch {}
   }
 
+  // Luz grande do metrônomo e, se o aluno quiser, a tela inteira piscando no tempo.
+  // Acima de 150 bpm a tela pisca só no primeiro tempo (nunca mais de 3 piscadas por segundo).
+  function reiniciarAnim(el, classes) {
+    if (!el) return;
+    el.classList.remove("bate", "forte"); void el.offsetWidth;
+    classes.forEach(c => el.classList.add(c));
+  }
+  function piscarTempo(forte, bpm) {
+    const cls = forte ? ["bate", "forte"] : ["bate"];
+    if (dlgMet.open) reiniciarAnim($("#met-luz"), cls);
+    if (estado.metronomo.piscar && (forte || bpm <= 150)) reiniciarAnim($("#met-flash"), cls);
+  }
+
   // Luzes dos tempos acompanham o áudio
   function animarPulsos() {
     if (!met.tocando) return;
@@ -1382,6 +1396,7 @@
         met.ultimaBatida = batida;
         const posicao = ((batida % compasso) + compasso) % compasso;
         document.querySelectorAll("#met-pulsos .pulso").forEach((p, i) => p.classList.toggle("ativo", i === posicao));
+        piscarTempo(posicao === 0, bpm);
         const mini = $("#met-mini");
         if (mini && !mini.hidden) { mini.classList.remove("bate", "forte"); void mini.offsetWidth; mini.classList.add("bate"); if (posicao === 0) mini.classList.add("forte"); }
       }
@@ -1441,6 +1456,7 @@
   });
   $("#met-salvar-bpm").addEventListener("click", () => salvarAndamento(met.exId, estado.metronomo.bpm));
   $("#met-som").addEventListener("change", ev => { estado.metronomo.som = ev.target.value; salvar(); refazerLoop(); });
+  $("#met-piscar").addEventListener("change", ev => { estado.metronomo.piscar = ev.target.checked; salvar(); });
   $("#met-sub").addEventListener("change", ev => { estado.metronomo.sub = Number(ev.target.value) || 1; salvar(); refazerLoop(); });
   // Toque no ritmo: o app calcula o andamento pelos toques
   const toques = [];
@@ -2419,8 +2435,11 @@
       $("#af-freq").textContent = `${f.toFixed(1)} Hz · som real ${NOTAS[((nota % 12) + 12) % 12]}`;
       $("#af-cents").textContent = cents > 0 ? `+${cents}` : String(cents);
       $("#af-agulha").style.transform = `rotate(${limitar(cents, -50, 50) * 0.9}deg)`;
-      const ok = Math.abs(cents) <= 5;
+      const ok = Math.abs(cents) <= 5, perto = !ok && Math.abs(cents) <= 15;
       dlgAf.classList.toggle("afinado", ok);
+      const luz = $("#af-luz");
+      luz.className = `af-luz ${ok ? "ok" : perto ? "perto" : "longe"}`;
+      $("#af-seta").textContent = ok ? "✓" : cents < 0 ? "▲" : "▼";
       $("#af-dica").textContent = ok ? "Afinado!" : cents < 0 ? "Baixo: empurre a boquilha para dentro" : "Alto: puxe a boquilha um pouco para fora";
     }
     afin.raf = requestAnimationFrame(quadroAfinador);
@@ -2465,6 +2484,7 @@
     if (afin.ctx) afin.ctx.close().catch(() => {});
     afin.stream = afin.ctx = null;
     dlgAf.classList.remove("afinado");
+    $("#af-luz").className = "af-luz"; $("#af-seta").textContent = "";
     $("#af-ligar").innerHTML = `${icone("play")}Ligar o microfone`;
   }
 

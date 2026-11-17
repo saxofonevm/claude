@@ -264,6 +264,7 @@
     <button class="radio-mais" id="radio-mais" type="button" aria-label="Estações">Estações</button>
   </div>
 
+  <div class="met-flash" id="met-flash" aria-hidden="true"></div>
   <div class="met-mini" id="met-mini" hidden>
     <button class="met-mini-abrir" id="met-mini-abrir" type="button" aria-label="Abrir o metrônomo">
       <span class="met-mini-ponto" aria-hidden="true"></span>
@@ -290,6 +291,7 @@
         <text x="22" y="92" class="af-txt">−50</text><text x="178" y="92" class="af-txt" text-anchor="end">+50</text>
         <g id="af-agulha" class="af-agulha"><line x1="100" y1="100" x2="100" y2="26"/><circle cx="100" cy="100" r="6"/></g>
       </svg>
+      <div class="af-luz" id="af-luz" aria-hidden="true"><span class="af-seta" id="af-seta"></span></div>
       <div class="af-nota"><span id="af-nota">–</span><sub id="af-oitava"></sub></div>
       <p class="af-cents"><span id="af-cents">0</span> cents</p>
       <p class="af-dica" id="af-dica">Toque uma nota longa</p>
@@ -464,7 +466,8 @@
         <button class="link-acao" id="met-fechar">Fechar</button>
       </div>
       <div class="met-pulsos" id="met-pulsos"></div>
-      <div class="met-bpm"><span id="met-bpm">80</span><small>bpm</small></div>
+      <div class="met-luz-caixa"><span class="met-luz" id="met-luz" aria-hidden="true"></span>
+        <div class="met-bpm"><span id="met-bpm">80</span><small>bpm</small></div></div>
       <p class="met-nome" id="met-nome"></p>
       <input type="range" id="met-slider" min="30" max="240" step="1" aria-label="Andamento">
       <div class="met-ajustes">
@@ -495,6 +498,7 @@
           <option value="6">6</option>
         </select>
       </label>
+      <label class="met-piscar"><input type="checkbox" id="met-piscar"><span><strong>Piscar a tela no tempo</strong><small>Para seguir o pulso em lugar barulhento ou tocando forte. Acima de 150 bpm, pisca só no primeiro tempo.</small></span></label>
       <button class="btn largo met-tap" id="met-tap" type="button"><span><strong>Toque no ritmo</strong><small>toque 4 vezes no tempo da música</small></span></button>
       <button class="btn primario largo" id="met-tocar">Tocar</button>
       <p class="met-dica-fundo" id="met-dica-fundo" hidden>Pode fechar e navegar pelo app: o metrônomo continua tocando.</p>
