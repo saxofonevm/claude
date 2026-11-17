@@ -6,14 +6,8 @@
 (function () {
   "use strict";
 
-  // ---------- Visual moderno ----------
-  // naipesax.com.br/?visual=moderno liga o visual verde neon, dourado e lilás; ?visual=classico volta ao original.
-  try {
-    const v = new URLSearchParams(location.search).get("visual");
-    if (v === "moderno") localStorage.setItem("naipe.visual", "moderno");
-    if (v === "classico") localStorage.removeItem("naipe.visual");
-    if (localStorage.getItem("naipe.visual") === "moderno") document.documentElement.classList.add("moderno");
-  } catch { /* sem armazenamento */ }
+  // ---------- Visual ----------
+  // O visual oficial (verde neon, dourado e lilás) é ligado logo no <head> do index.html.
 
   // ---------- Versão de teste ----------
   // naipesax.com.br/?beta=1 liga a nova organização (abas Teoria e Estudo); ?beta=0 desliga.

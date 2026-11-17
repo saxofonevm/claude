@@ -5,7 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>Naipe</title>
   <meta name="description" content="Naipe · meu estudo de saxofone na palma da mão">
-  <meta name="theme-color" content="#0b2a20">
+  <meta name="theme-color" content="#04170f">
+  <script>
+    // Visual oficial: verde neon, dourado e lilás. ?visual=classico volta ao visual antigo; ?visual=moderno retorna ao oficial.
+    (function () {
+      var raiz = document.documentElement, v = null;
+      try {
+        v = new URLSearchParams(location.search).get("visual");
+        if (v === "classico") localStorage.setItem("naipe.visual", "classico");
+        if (v === "moderno") localStorage.removeItem("naipe.visual");
+        if (localStorage.getItem("naipe.visual") !== "classico") raiz.classList.add("moderno");
+      } catch (e) { raiz.classList.add("moderno"); }
+    })();
+  </script>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icons/icon-192.png">

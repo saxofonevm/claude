@@ -1796,7 +1796,7 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 @media (max-width: 360px) { .beta .abas a { font-size: .58rem; } }
 
 /* =====================================================================
-   Visual moderno (naipesax.com.br/?visual=moderno · ?visual=classico volta)
+   Visual oficial (padrão). naipesax.com.br/?visual=classico mostra o visual antigo
    Verde profundo com luz neon no fundo, dourado espelhado nas ações e na
    marca, lilás de ágata nos destaques. Superfícies de vidro com borda de
    luz, tipografia limpa, sem caixa alta.
