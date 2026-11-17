@@ -2053,3 +2053,37 @@ dialog.tr-ficha::backdrop { background: rgb(0 0 0 / .6); -webkit-backdrop-filter
 .sessao-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: var(--surface-2, var(--surface)); color: var(--text); border: 1px solid color-mix(in srgb, var(--line) 70%, transparent); font-family: inherit; }
 .sessao-ouvir { cursor: pointer; color: var(--ok, #3dffb0); }
 .sessao-ouvir svg { width: 14px; height: 14px; }
+
+/* ---------- Melhorias de prioridade média ---------- */
+/* Ajustes: meta por dia útil e fim de semana */
+.aj-dias { display: flex; gap: 10px; align-items: center; cursor: pointer; }
+.aj-dias input { width: 20px; height: 20px; accent-color: var(--ok, #3dffb0); flex: none; }
+.aj-dias-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.aj-dias-campos p { grid-column: 1 / -1; margin: 0; font-size: .85rem; }
+/* Diário: semana dia a dia */
+.g-dias .g-barra { position: relative; overflow: visible; }
+.g-meta-dia { position: absolute; left: -3px; right: -3px; border-top: 2px dashed color-mix(in srgb, #3fbf8f 80%, transparent); z-index: 1; pointer-events: none; }
+.g-leg-dia { width: 18px; border-top: 2px dashed #3fbf8f; display: inline-block; vertical-align: middle; margin-right: 6px; }
+/* Teoria: conclusão de lições e unidades */
+.tr-caminho .feita .tr-lic-txt strong { color: color-mix(in srgb, var(--ok, #3dffb0) 75%, var(--text)); }
+.tr-caminho .feita .tr-lic-txt small::before { content: "Concluída · "; font-weight: 700; color: var(--ok, #3dffb0); }
+.tr-caminho .feita .tr-no { font-size: 1.5rem; }
+details.tr-unidade.completa > summary .tr-faixa { box-shadow: 0 0 0 2px color-mix(in srgb, var(--ok, #3dffb0) 70%, transparent), 0 0 24px -6px var(--ok, #3dffb0); }
+details.tr-unidade.completa .tr-conta { font-weight: 700; }
+/* Tocar junto: favoritos e em estudo */
+.tocar-lista li { display: flex; flex-direction: column; }
+.tocar-marcas { display: flex; gap: 8px; padding: 0 12px 10px; }
+.tocar-marca { background: none; border: 1px solid color-mix(in srgb, var(--line) 90%, transparent); border-radius: 99px; padding: 4px 10px; font: inherit; font-size: .78rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+.tocar-marca.ativo { color: #04170f; background: var(--ok, #3dffb0); border-color: transparent; }
+.tocar-marca[data-tipo="fav"].ativo { background: var(--brass, #e9c45c); }
+.tocar-lista li.marcado-fav { box-shadow: inset 3px 0 0 var(--brass, #e9c45c); }
+.tocar-lista li.marcado-estudo { box-shadow: inset 3px 0 0 var(--ok, #3dffb0); }
+.filtro-marca { margin-top: -4px; }
+.apoio-tocar h3 { display: flex; align-items: center; gap: 8px; margin: 0; }
+.apoio-tocar h3 svg { width: 20px; height: 20px; }
+/* Pilares: total de horas */
+.raizes-resumo { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 12px; padding: 14px 16px; margin: 0 16px 14px; border-radius: var(--raio); background: var(--surface); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.raizes-resumo div { display: flex; flex-direction: column; }
+.raizes-resumo strong { font-family: var(--f-display); font-size: 1.5rem; color: var(--brass-soft, #f2d47c); }
+.raizes-resumo span { color: var(--muted); font-size: .8rem; }
+.raizes-resumo .raizes-barra { grid-column: 1 / -1; }

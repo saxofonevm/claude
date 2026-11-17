@@ -1843,7 +1843,7 @@
       const estado = completa ? "Completa · toque para rever" : futura ? (u.plano ? (primeiraDoPlano ? "Abre ao concluir a Teoria" : "Abre ao concluir a semana anterior") : `Abre ao concluir a Unidade ${n}`) : `${feitas} de ${u.licoes.length} ${u.plano ? "sessões" : "lições"}`;
       const faixa = `<div class="tr-faixa"><div><span class="rotulo">${u.plano ? `Mês ${Math.floor(UNIDADES_PLANO.indexOf(u) / 4) + 1}` : `Unidade ${n + 1}${n === 0 && !LIVRE ? " · gratuita" : ""}`}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
       if (futura) return `<section class="tr-unidade trancada" style="--u1:${cor[0]};--u2:${cor[1]}">${faixa}</section>`;
-      return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}">
+      return `<details class="tr-unidade${completa ? " completa" : ""}" style="--u1:${cor[0]};--u2:${cor[1]}">
           <summary>${faixa}</summary>
           ${paga ? `<p class="mudo tr-paga">Esta unidade faz parte do Naipe completo. A Unidade 1 é livre para você experimentar.</p>` : ""}
           ${u.plano && u.texto ? `<p class="mudo tr-semana-txt">${esc(u.texto)}</p>` : ""}
@@ -1866,7 +1866,8 @@
         ${MODULOS.map((md, k) => {
           const us = UNIDADES_PLANO.slice(md.de, md.ate), lics = us.flatMap(u => u.licoes), feitas = lics.filter(l => prog.feitas[l.id]).length;
           const trancado = /tr-unidade trancada/.test(htmlUn[UNIDADES.indexOf(us[0])]), completo = feitas === lics.length;
-          const estado = completo ? "✓ Completo" : trancado ? `🔒 Abre ao concluir ${k ? `o ${MODULOS[k - 1].nome}` : "a Teoria"}` : `${feitas} de ${lics.length} sessões`;
+          const minMod = minutosModulo(md);
+          const estado = (completo ? "✓ Completo" : trancado ? `🔒 Abre ao concluir ${k ? `o ${MODULOS[k - 1].nome}` : "a Teoria"}` : `${feitas} de ${lics.length} sessões`) + (minMod ? ` · ${horasTxt(minMod)} praticadas` : "");
           return `<details class="tr-modulo${trancado ? " fechado" : ""}"><summary><span class="tr-mod-txt"><span class="rotulo">${md.periodo}</span><strong>${md.nome}</strong><small>${estado}</small></span><span class="tr-mod-prog" style="--p:${Math.round(feitas / lics.length * 100)}%"></span><span class="tr-seta" aria-hidden="true">⌄</span></summary><p class="mudo tr-mod-desc">${esc(md.texto)}</p>${us.map(u => htmlUn[UNIDADES.indexOf(u)]).join("")}</details>`;
         }).join("")}
         ${htmlRepertorio()}
@@ -2327,6 +2328,12 @@
     const avanca = () => { st.i++; st.bpm = null; if (st.i >= tr.itens.length) return `Você concluiu toda a sequência de ${tr.nome.toLowerCase()} do plano. Siga revisando o último exercício, agora com a meta de andamento mais alta.`; const prox = itemAtual(id); return `Meta alcançada em ${nome}. Na próxima sessão: ${livroInfo(prox.livro).titulo}, ${prox.onde.split(" · ")[0]}${prox.bpm ? `, começando em ${prox.bpm[0]}` : ""}.`; };
     if (!it.bpm) { if (ev === 3) return avanca(); return ev === 2 ? `Mais uma sessão em ${nome} antes de seguir.` : `Vamos repetir ${nome}. ${tr.dica}`; }
     const [ini, meta] = it.bpm, r = alcancado || it.inicio;
+    if (alcancado) { // histórico do andamento alcançado em cada exercício do plano
+      const pl = estadoPlano(); pl.hist = pl.hist || {};
+      const h = (pl.hist[`${id}:${it.i}`] = pl.hist[`${id}:${it.i}`] || []), hoje = new Date().toISOString().slice(0, 10);
+      if (h.length && h[h.length - 1].d === hoje) h[h.length - 1].b = Math.max(h[h.length - 1].b, alcancado); else h.push({ d: hoje, b: alcancado });
+      if (h.length > 30) h.splice(0, h.length - 30);
+    }
     if (ev === 3 && r >= meta) return avanca();
     if (ev === 3) { st.bpm = Math.min(meta, r + 8); return `Boa. Na próxima vez, ${nome} começa em ${st.bpm} (meta ${meta}).`; }
     if (ev === 2) { st.bpm = Math.min(meta, Math.max(ini, r + 4)); return `Mais uma sessão em ${nome}, começando em ${st.bpm}. Corrija os trechos que falharam antes de subir.`; }
@@ -2389,6 +2396,9 @@
     if (!sessao.registrado) {
       sessao.registrado = true;
       pl.n++; pl.ultima = { data: new Date().toISOString(), recados: res.filter(r => !TRILHOS[r.trilho].gira).map(r => r.recado) };
+      // horas acumuladas: o tempo medido nos blocos ou, sem cronômetro, a duração prevista da sessão
+      const previsto = licao.sessao.blocos.reduce((a, b) => a + b[1], 0);
+      pl.min = pl.min || {}; pl.min[licao.sessao.semana] = (pl.min[licao.sessao.semana] || 0) + (minutos >= 1 ? minutos : previsto);
       salvar();
       if (!REVISAR && minutos >= 1 && window.NaipeRegistrarPratica) window.NaipeRegistrarPratica(minutos, Math.max(1, Math.round(media / 3 * 5)), `Plano de estudos · ${licao.titulo} da Semana ${licao.sessao.semana + 1}: ${res.map(r => r.titulo).join("; ")}`);
     }
@@ -2575,5 +2585,18 @@
   }
 
   window.addEventListener("hashchange", () => { if (!/^#\/(trilha|estudo)/.test(location.hash)) limpar(); });
-  window.NaipeTrilha = { render: (id, modo) => (id ? renderLicao(id) : renderTrilha(modo)), inicio: cartaoInicio, aba: abaDe, usos: usosDoLivro };
+  // Evolução do andamento nos exercícios do plano (para o Diário).
+  function evolucaoPlano() {
+    const hist = (prog.plano && prog.plano.hist) || {};
+    return Object.entries(hist).filter(([, h]) => h.length).map(([k, h]) => {
+      const [tid, i] = k.split(":"), tr = TRILHOS[tid], it = tr && tr.itens[Number(i)];
+      if (!it || !it[3]) return null;
+      return { titulo: `${livroInfo(it[0]).titulo} · ${it[1].split(" · ")[0]}`, trilho: tr.nome, inicial: it[3][0], alvo: it[3][1], pontos: h.map(x => x.b), ultima: h[h.length - 1].d };
+    }).filter(Boolean).sort((a, b) => b.ultima.localeCompare(a.ultima)).slice(0, 6);
+  }
+  // Minutos de estudo registrados em cada módulo do plano.
+  function minutosModulo(md) { const m = (prog.plano && prog.plano.min) || {}; let t = 0; for (let w = md.de; w < md.ate; w++) t += m[w] || 0; return t; }
+  const horasTxt = min => min >= 60 ? `${Math.floor(min / 60)} h${min % 60 ? ` ${min % 60} min` : ""}` : `${min} min`;
+
+  window.NaipeTrilha = { render: (id, modo) => (id ? renderLicao(id) : renderTrilha(modo)), inicio: cartaoInicio, aba: abaDe, usos: usosDoLivro, evolucao: evolucaoPlano };
 })();

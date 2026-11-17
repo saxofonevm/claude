@@ -584,7 +584,7 @@
       const iso = dataISO(d);
       const min = mapa[iso] || 0;
       totalSemana += min;
-      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}"><div class="dia-ponto" title="${min} min"><span style="height:${Math.min(100, Math.round((min / Math.max(5, estado.metaSemanal / 7)) * 100))}%"></span></div>${DIAS_CURTOS[i]}</div>`;
+      html += `<div class="dia${min ? " praticou" : ""}${iso === hojeISO() ? " hoje" : ""}"><div class="dia-ponto" title="${min} min"><span style="height:${Math.min(100, Math.round((min / Math.max(5, metaDoDia(d))) * 100))}%"></span></div>${DIAS_CURTOS[i]}</div>`;
     }
     $("#semana").innerHTML = html;
 
@@ -625,6 +625,10 @@
   // ---------- Raízes ----------
 
   function renderRaizes() {
+    const totalMin = estado.sessoes.reduce((t, x) => t + (x.minutos || 0), 0);
+    const totEx = RAIZES.reduce((t, r) => t + progressoRaiz(r).total, 0), feitosEx = RAIZES.reduce((t, r) => t + progressoRaiz(r).feitos, 0);
+    const res = $("#raizes-resumo");
+    if (res) res.innerHTML = totalMin || feitosEx ? `<div class="raizes-resumo"><div><strong>${totalMin >= 60 ? `${Math.floor(totalMin / 60)} h${totalMin % 60 ? ` ${totalMin % 60} min` : ""}` : `${totalMin} min`}</strong><span>de estudo no total</span></div><div><strong>${feitosEx}/${totEx}</strong><span>exercícios dos pilares</span></div><div class="raizes-barra"><span class="barra clara"><span class="barra-preenchida" style="width:${totEx ? Math.round(feitosEx / totEx * 100) : 0}%"></span></span></div></div>` : "";
     $("#lista-raizes").innerHTML = RAIZES.map((raiz, i) => {
       const p = progressoRaiz(raiz);
       if (!liberada(raiz)) return `<a class="raiz-card bloqueada" href="#/raiz/${encodeURIComponent(raiz.id)}" style="${corRaiz(raiz)}">
@@ -902,6 +906,29 @@
     if (met.tocando) pararMetronomo();
   });
 
+  // Favoritos e "Em estudo" nos play-alongs (guardados no aparelho)
+  let filtroTocar = "";
+  const marcasTocar = () => (estado.tocarMarcas = estado.tocarMarcas || {});
+  function itemTocar(t) {
+    const href = urlSegura(urlPasta(t.id));
+    if (!href) return "";
+    const m = marcasTocar()[t.id] || "";
+    return `<li class="${m ? `marcado-${m}` : ""}"><a href="${escapar(href)}" target="_blank" rel="noopener"><span class="tocar-texto"><strong>${escapar(t.t)}</strong>
+      <span class="tocar-tags">${t.ind ? `<span class="tag ind">Indicado</span>` : ""}${(t.afin.length ? t.afin : ["Áudio e partituras"]).map(a => `<span class="tag">${escapar(a)}</span>`).join("")}</span></span>${icone("externo")}</a>
+      <span class="tocar-marcas"><button type="button" class="tocar-marca${m === "fav" ? " ativo" : ""}" data-marcar="${escapar(t.id)}" data-tipo="fav" aria-pressed="${m === "fav"}" aria-label="Favorito">${m === "fav" ? "★" : "☆"} Favorito</button><button type="button" class="tocar-marca${m === "estudo" ? " ativo" : ""}" data-marcar="${escapar(t.id)}" data-tipo="estudo" aria-pressed="${m === "estudo"}">${m === "estudo" ? "✓ " : ""}Em estudo</button></span></li>`;
+  }
+
+  // Gêneros do Tocar junto que combinam com cada assunto dos pilares
+  function generosDoRamo(ramId, raizId) {
+    const id = `${raizId} ${ramId}`;
+    if (/choro|samba/.test(id)) return ["Choro", "Samba, baião e MPB"];
+    if (/bossa/.test(id)) return ["Bossa nova e latin"];
+    if (/swing|jazz|popular|orn-/.test(id)) return ["Jazz standards", "Blues e funk"];
+    if (/musicas|emocao|melodia-metodo|estilos/.test(id)) return ["Baladas e pop", "Estudos com play-along"];
+    if (/ritmo/.test(id)) return ["Estudos com play-along", "Samba, baião e MPB"];
+    return [];
+  }
+
   function renderTocar() {
     const alvo = $("#tocar-conteudo");
     const base = rotaAtual.id === "base";
@@ -935,19 +962,36 @@
       if (!lista.length) return "";
       return `<details class="cartao genero"${generoAberto === g ? " open" : ""}><summary><h2>${escapar(g)}</h2><small>${lista.length}</small></summary>
         <ul class="tocar-lista">${lista.map(t => {
-          const href = urlSegura(urlPasta(t.id));
-          return href ? `<li><a href="${escapar(href)}" target="_blank" rel="noopener"><span class="tocar-texto"><strong>${escapar(t.t)}</strong>
-            <span class="tocar-tags">${t.ind ? `<span class="tag ind">Indicado</span>` : ""}${(t.afin.length ? t.afin : ["Áudio e partituras"]).map(a => `<span class="tag">${escapar(a)}</span>`).join("")}</span></span>${icone("externo")}</a></li>` : "";
+          return itemTocar(t);
         }).join("")}</ul></details>`;
     }).join("");
-    alvo.innerHTML = topo + `<div class="corpo-metodos">${filtro}
+    const marcados = TOCAR.filter(t => marcasTocar()[t.id] && serve(t));
+    const filtroMarca = filtroTocar === "fav" || filtroTocar === "estudo";
+    const listaMarcada = filtroMarca ? TOCAR.filter(t => marcasTocar()[t.id] === filtroTocar) : [];
+    const chips = `<div class="filtro-sax filtro-marca" role="group" aria-label="Mostrar">
+      ${[["", "Todos"], ["fav", `★ Favoritos · ${TOCAR.filter(t => marcasTocar()[t.id] === "fav").length}`], ["estudo", `Em estudo · ${TOCAR.filter(t => marcasTocar()[t.id] === "estudo").length}`]].map(([v, r]) => `<button type="button" data-filtro-tocar="${v}" class="${filtroTocar === v ? "ativo" : ""}" aria-pressed="${filtroTocar === v}">${r}</button>`).join("")}</div>`;
+    alvo.innerHTML = topo + `<div class="corpo-metodos">${filtro}${chips}
+      ${filtroMarca ? (listaMarcada.length ? `<section class="cartao genero aberto-fixo"><ul class="tocar-lista">${listaMarcada.map(itemTocar).join("")}</ul></section>` : `<p class="vazio-mini">${filtroTocar === "fav" ? "Toque na estrela de um play-along para guardá-lo aqui." : "Marque “Em estudo” nos play-alongs que você está praticando agora."}</p>`) : `
       ${ocultos ? `<p class="vazio-mini">${ocultos} ${ocultos === 1 ? "coleção em outra afinação está oculta" : "coleções em outras afinações estão ocultas"}.</p>` : ""}
-      ${secoes}
+      ${marcados.length ? `<p class="vazio-mini">${marcados.length} ${marcados.length === 1 ? "play-along marcado" : "play-alongs marcados"}: use os filtros acima para achar rápido.</p>` : ""}
+      ${secoes}`}
       <p class="vazio-mini">Os play-alongs abrem no Google Drive. Se aparecer “Acesso negado”, entre com o e-mail que você passou ao professor.</p></div>`;
     generoAberto = "";
   }
 
   $("#tocar-conteudo").addEventListener("click", ev => {
+    const mk = ev.target.closest("[data-marcar]");
+    if (mk) {
+      const id = mk.dataset.marcar, tipo = mk.dataset.tipo, marcas = marcasTocar();
+      if (marcas[id] === tipo) delete marcas[id]; else marcas[id] = tipo;
+      salvar();
+      const abertos = [...document.querySelectorAll("#tocar-conteudo details.genero[open] h2")].map(h => h.textContent);
+      renderTocar();
+      document.querySelectorAll("#tocar-conteudo details.genero").forEach(d => { if (abertos.includes(d.querySelector("h2").textContent)) d.open = true; });
+      return;
+    }
+    const fb = ev.target.closest("[data-filtro-tocar]");
+    if (fb) { filtroTocar = fb.dataset.filtroTocar; renderTocar(); return; }
     const b = ev.target.closest("[data-sax]");
     if (!b) return;
     estado.sax = b.dataset.sax;
@@ -1114,6 +1158,13 @@
 
         ${(ex.referencias || []).length ? `<div class="cartao">${htmlReferencias(ex.referencias)}</div>` : ""}
 
+        ${(() => {
+          const gens = generosDoRamo(ram.id, raiz.id);
+          if (!gens.length || temBloqueio()) return "";
+          const pls = TOCAR.filter(t => gens.includes(t.g) && (!estado.sax || !t.afin.length || t.afin.includes(estado.sax))).sort((a, b) => (b.ind ? 1 : 0) - (a.ind ? 1 : 0)).slice(0, 3);
+          if (!pls.length) return "";
+          return `<div class="cartao apoio-tocar"><h3>${icone("fone")}Para tocar junto</h3><p class="dica">Play-alongs do estilo deste exercício, no acervo.</p><ul class="tocar-lista">${pls.map(itemTocar).join("")}</ul><a class="link-acao" href="#/tocar">Ver todos no Tocar junto</a></div>`;
+        })()}
         ${indicacoesDoRamo(ram.id).length ? `<details class="cartao drive">
           <summary class="drive-topo">${icone("livro")}<span><strong>Onde estudar nos métodos</strong><small>${indicacoesDoRamo(ram.id).length} indicações · toque para ver</small></span>${icone("seta", "ram-seta")}</summary>
           <p class="dica">Assuntos de “${escapar(ram.titulo)}”. Toque no nome do método para abrir o PDF e vá à página ou ao exercício indicado (“pág.” = número do leitor de PDF).</p>
@@ -1175,7 +1226,7 @@
     salvarAndamento(rotaAtual.id, Number($("#inp-andamento").value));
   });
 
-  function salvarAndamento(exId, bpm) {
+  function salvarAndamento(exId, bpm, auto = false) {
     const ex = EXERCICIO[exId]?.ex;
     if (!ex || !bpm) return;
     const anterior = estado.andamentos[exId] || ex.andamento?.inicial || 0;
@@ -1192,7 +1243,7 @@
     if (ex.andamento && estado.andamentos[exId] >= ex.andamento.alvo && anterior < ex.andamento.alvo) {
       avisar("Andamento alvo alcançado.");
     } else {
-      avisar(`Andamento salvo: ${estado.andamentos[exId]} bpm`);
+      avisar(auto ? `Andamento de ${estado.andamentos[exId]} bpm guardado no histórico` : `Andamento salvo: ${estado.andamentos[exId]} bpm`);
     }
   }
 
@@ -1419,6 +1470,7 @@
     const a = elementoMetronomo();
     met.tocando = true;
     met.ultimaBatida = -1;
+    met.inicioToque = performance.now();
     // destrava o elemento de áudio no próprio toque (exigência do iPhone)
     met.trocando = true;
     met.ignorarPausaAte = performance.now() + 1500;
@@ -1445,6 +1497,10 @@
   }
 
   function pararMetronomo() {
+    // Exercício com metrônomo tocado por 30 s ou mais: o andamento entra sozinho no histórico.
+    if (met.tocando && met.exId && met.inicioToque && performance.now() - met.inicioToque >= 30000 && EXERCICIO[met.exId]?.ex.andamento &&
+        estado.metronomo.bpm !== estado.andamentos[met.exId]) salvarAndamento(met.exId, estado.metronomo.bpm, true);
+    met.inicioToque = 0;
     met.tocando = false;
     clearTimeout(refazerT);
     if (audioMet) { met.trocando = true; try { audioMet.pause(); } catch {} met.trocando = false; }
@@ -1501,12 +1557,12 @@
     const sep = `<span class="dois-pontos">:</span>`;
     $("#timer-visor").innerHTML = (h ? `${pad(h)}${sep}` : "") + `${pad(m)}${sep}${pad(s)}`;
 
-    // A barra mostra o quanto falta para a meta do dia (meta semanal ÷ 7)
-    const metaDia = Math.max(5, Math.round(estado.metaSemanal / 7));
+    // A barra mostra o quanto falta para a meta do dia (meta semanal ÷ 7, ou a meta de dia útil / fim de semana)
+    const metaDia = metaDoDia();
     const minutosHoje = (minutosPorDia()[hojeISO()] || 0) + total / 60;
-    const pct = Math.min(100, (minutosHoje / metaDia) * 100);
+    const pct = metaDia ? Math.min(100, (minutosHoje / metaDia) * 100) : (minutosHoje ? 100 : 0);
     $("#timer-meta-barra").style.width = `${pct.toFixed(1)}%`;
-    $("#timer-rotulo").textContent = pct >= 100 ? "Meta do dia cumprida" : `${Math.floor(minutosHoje)} de ${metaDia} min hoje`;
+    $("#timer-rotulo").textContent = !metaDia ? (minutosHoje ? `${Math.floor(minutosHoje)} min hoje · dia livre na sua meta` : "Hoje é dia livre na sua meta") : pct >= 100 ? "Meta do dia cumprida" : `${Math.floor(minutosHoje)} de ${metaDia} min hoje`;
 
     const rodando = !!t.inicio;
     const temTempo = rodando || t.acumulado > 0;
@@ -1754,16 +1810,41 @@
         <svg class="evol-graf" viewBox="-3 -3 ${W + 6} ${H + 6}" aria-hidden="true"><line x1="0" x2="${W}" y1="${ya}" y2="${ya}" class="evol-alvo"/><polyline points="${pts}" class="evol-linha"/>${pontos.length ? `<circle cx="${W}" cy="${H - ((atual - lo) / Math.max(1, hi - lo)) * H}" r="3.5" class="evol-ponto"/>` : ""}</svg>
       </a>`;
     }).join("");
+    // exercícios do plano de estudos (aba Estudo)
+    const evolPlano = ((window.NaipeTrilha && window.NaipeTrilha.evolucao) ? window.NaipeTrilha.evolucao() : []).map(e => {
+      const pontos = [e.inicial, ...e.pontos], atual = e.pontos[e.pontos.length - 1];
+      const lo = Math.min(...pontos), hi = Math.max(e.alvo, ...pontos), W = 120, H = 34;
+      const pts = pontos.map((v, i) => `${(i / Math.max(1, pontos.length - 1)) * W},${H - ((v - lo) / Math.max(1, hi - lo)) * H}`).join(" ");
+      const ya = H - ((e.alvo - lo) / Math.max(1, hi - lo)) * H;
+      const pct = e.alvo > e.inicial ? limitar(Math.round(((atual - e.inicial) / (e.alvo - e.inicial)) * 100), 0, 100) : 100;
+      return `<a class="evol" href="#/estudo">
+        <span class="evol-texto"><strong>${escapar(e.titulo)}</strong><small>${escapar(e.trilho)} · ${e.inicial} → <b>${atual}</b> de ${e.alvo} bpm · ${pct}%</small></span>
+        <svg class="evol-graf" viewBox="-3 -3 ${W + 6} ${H + 6}" aria-hidden="true"><line x1="0" x2="${W}" y1="${ya}" y2="${ya}" class="evol-alvo"/><polyline points="${pts}" class="evol-linha"/><circle cx="${W}" cy="${H - ((atual - lo) / Math.max(1, hi - lo)) * H}" r="3.5" class="evol-ponto"/></svg>
+      </a>`;
+    }).join("");
+    // esta semana, dia a dia
+    const ini = segunda(new Date());
+    const dias = Array.from({ length: 7 }, (_, i) => { const d = new Date(ini); d.setDate(d.getDate() + i); return { d, min: mapa[dataISO(d)] || 0, meta: metaDoDia(d), hoje: dataISO(d) === hojeISO() }; });
+    const maiorDia = Math.max(...dias.map(x => Math.max(x.min, x.meta)), 1);
+    const totalSemana = dias.reduce((t, x) => t + x.min, 0);
+    const barrasDias = dias.map((x, i) => `<div class="g-col${x.hoje ? " atual" : ""}${x.meta && x.min >= x.meta ? " meta" : ""}">
+        <span class="g-val">${x.min || ""}</span>
+        <div class="g-barra">${x.meta ? `<i class="g-meta-dia" style="bottom:${Math.round((x.meta / maiorDia) * 100)}%" title="Meta do dia: ${x.meta} min"></i>` : ""}<span style="height:${Math.round((x.min / maiorDia) * 100)}%"></span></div>
+        <span class="g-rot">${DIAS_CURTOS[i]}</span>
+      </div>`).join("");
     return `<section class="cartao graficos">
       <div class="g-resumo">
         <div><strong>${formatarMinutos(total)}</strong><span>de estudo</span></div>
         <div><strong>${estado.sessoes.length}</strong><span>${estado.sessoes.length === 1 ? "sessão" : "sessões"}</span></div>
         <div><strong>${media ? media.toFixed(1).replace(".", ",") : "–"}</strong><span>avaliação média</span></div>
       </div>
+      <h2>${icone("calendario")}Esta semana, dia a dia</h2>
+      <div class="g-semanas g-dias">${barrasDias}</div>
+      <p class="g-leg"><span class="g-leg-dia"></span>Meta de cada dia · ${totalSemana} de ${estado.metaSemanal} min na semana</p>
       <h2>${icone("relogio")}Minutos por semana</h2>
       <div class="g-semanas" style="--meta:${metaPct}%">${barras}<span class="g-meta" title="Meta semanal"></span></div>
       <p class="g-leg"><span class="g-leg-meta"></span>Meta de ${estado.metaSemanal} min por semana</p>
-      ${evol ? `<h2>${icone("metronomo")}Evolução do andamento</h2><div class="evol-lista">${evol}</div>` : `<p class="vazio-mini">Salve o seu andamento nos exercícios com metrônomo para acompanhar a evolução aqui.</p>`}
+      ${evol || evolPlano ? `<h2>${icone("metronomo")}Evolução do andamento</h2><div class="evol-lista">${evol}${evolPlano}</div>` : `<p class="vazio-mini">Toque um exercício com o metrônomo por 30 segundos (ou avalie um bloco do Estudo) e a evolução do andamento aparece aqui.</p>`}
     </section>`;
   }
 
@@ -1827,6 +1908,11 @@
   function renderAjustes() {
     $("#aj-nome").value = estado.nome;
     $("#aj-meta").value = estado.metaSemanal;
+    const md = estado.metaDias;
+    $("#aj-dias-on").checked = !!md;
+    $("#aj-util").value = md ? md.util : Math.max(5, Math.round(estado.metaSemanal / 7));
+    $("#aj-fds").value = md ? md.fds : Math.max(5, Math.round(estado.metaSemanal / 7));
+    atualizarMetaDias();
     $("#aj-sax").value = estado.sax || "";
     $("#aj-tema").value = estado.tema === "preto" ? "preto" : "verde";
     renderBackup();
@@ -1843,10 +1929,30 @@
     }
   }
 
+  function atualizarMetaDias() {
+    const on = $("#aj-dias-on").checked;
+    $("#aj-dias-campos").hidden = !on;
+    $("#aj-meta").disabled = on;
+    if (on) {
+      const u = Math.max(0, Number($("#aj-util").value) || 0), f = Math.max(0, Number($("#aj-fds").value) || 0);
+      $("#aj-meta").value = u * 5 + f * 2;
+      $("#aj-dias-total").textContent = `${u} min de segunda a sexta e ${f} min no sábado e no domingo: ${u * 5 + f * 2} min por semana.`;
+    }
+  }
+  ["#aj-dias-on", "#aj-util", "#aj-fds"].forEach(s => $(s).addEventListener("input", atualizarMetaDias));
+
   $("#form-ajustes").addEventListener("submit", ev => {
     ev.preventDefault();
     estado.nome = $("#aj-nome").value.trim();
-    estado.metaSemanal = Math.max(10, Number($("#aj-meta").value) || 150);
+    if ($("#aj-dias-on").checked) {
+      const u = Math.max(0, Math.round(Number($("#aj-util").value) || 0)), f = Math.max(0, Math.round(Number($("#aj-fds").value) || 0));
+      if (u * 5 + f * 2 < 10) { avisar("A meta da semana precisa ter pelo menos 10 minutos."); return; }
+      estado.metaDias = { util: u, fds: f };
+      estado.metaSemanal = u * 5 + f * 2;
+    } else {
+      estado.metaDias = null;
+      estado.metaSemanal = Math.max(10, Number($("#aj-meta").value) || 150);
+    }
     estado.sax = $("#aj-sax").value;
     estado.tema = $("#aj-tema").value;
     aplicarTema();
@@ -2728,6 +2834,14 @@
     })(inicio);
   }
 
+  // Meta do dia: a meta semanal dividida por 7, ou a meta separada de dias úteis e fim de semana.
+  const ehFimDeSemana = d => d.getDay() === 0 || d.getDay() === 6;
+  function metaDoDia(d = new Date()) {
+    const m = estado.metaDias;
+    if (m && (m.util || m.fds)) return ehFimDeSemana(d) ? (m.fds || 0) : (m.util || 0);
+    return Math.max(5, Math.round(estado.metaSemanal / 7));
+  }
+
   function resumoMetas() {
     const mapa = minutosPorDia();
     const inicioSemana = segunda(new Date());
@@ -2738,13 +2852,13 @@
 
   function comemorarPratica(antes) {
     const depois = resumoMetas();
-    const metaDia = Math.max(5, Math.round(estado.metaSemanal / 7));
+    const metaDia = metaDoDia();
     if (antes.semana < estado.metaSemanal && depois.semana >= estado.metaSemanal)
       return celebrar("Meta da semana batida!", `${depois.semana} minutos de estudo nesta semana.`, "alvo");
     const marcos = [3, 7, 14, 21, 30, 60, 100];
     if (depois.sequencia > antes.sequencia && marcos.includes(depois.sequencia))
       return celebrar(`${depois.sequencia} dias seguidos!`, "Constância é o que faz o som crescer.", "fogo");
-    if (antes.hoje < metaDia && depois.hoje >= metaDia)
+    if (metaDia && antes.hoje < metaDia && depois.hoje >= metaDia)
       return celebrar("Meta do dia cumprida", `${depois.hoje} minutos hoje. Até amanhã!`, "check");
     return false;
   }

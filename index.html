@@ -153,6 +153,7 @@
         <h1>Pilares</h1>
         <p class="mudo">Seis pilares para um som firme. Siga na ordem e no seu ritmo: cada pilar prepara o próximo.</p>
       </header>
+      <div id="raizes-resumo"></div>
       <div class="grade-raizes" id="lista-raizes"></div>
     </section>
 
@@ -222,6 +223,16 @@
         <label>Meta semanal (minutos)
           <input type="number" id="aj-meta" min="10" max="3000" step="10" required>
         </label>
+        <label class="aj-dias"><input type="checkbox" id="aj-dias-on"><span>Meta diferente nos dias úteis e no fim de semana</span></label>
+        <div class="aj-dias-campos" id="aj-dias-campos" hidden>
+          <label>Segunda a sexta (min por dia)
+            <input type="number" id="aj-util" min="0" max="600" step="5" inputmode="numeric">
+          </label>
+          <label>Sábado e domingo (min por dia)
+            <input type="number" id="aj-fds" min="0" max="600" step="5" inputmode="numeric">
+          </label>
+          <p class="mudo" id="aj-dias-total"></p>
+        </div>
         <button class="btn primario" type="submit">Salvar</button>
       </form>
 
