@@ -1790,7 +1790,7 @@ details.tr-unidade[open] .tr-seta { transform: rotate(180deg); }
 .tr-aval button { text-align: center; }
 .tr-semana-txt { margin: 0 2px 14px; }
 
-/* ---------- Versão de teste: seis abas (Teoria e Estudo) ---------- */
+/* ---------- Seis abas (Teoria e Estudo) ---------- */
 .beta .abas { grid-template-columns: repeat(6, 1fr); }
 .beta .abas a { font-size: .64rem; letter-spacing: 0; }
 @media (max-width: 360px) { .beta .abas a { font-size: .58rem; } }

@@ -9,21 +9,22 @@
   // ---------- Visual ----------
   // O visual oficial (verde neon, dourado e lilás) é ligado logo no <head> do index.html.
 
-  // ---------- Versão de teste ----------
+  // ---------- Abas Teoria e Estudo (oficiais; ?beta=0 esconde) ----------
   // naipesax.com.br/?beta=1 liga a nova organização (abas Teoria e Estudo); ?beta=0 desliga.
   try {
     const q = new URLSearchParams(location.search).get("beta");
-    if (q === "1") localStorage.setItem("naipe.beta", "1");
-    if (q === "0") localStorage.removeItem("naipe.beta");
+    // Teoria e Estudo agora são oficiais. ?beta=0 esconde as duas abas; ?beta=1 mostra de novo.
+    if (q === "1") localStorage.removeItem("naipe.beta");
+    if (q === "0") localStorage.setItem("naipe.beta", "0");
     // ?revisar=1: modo do professor. Tudo aberto e "Continuar" sempre liberado, para ler o conteúdo inteiro.
     const r = new URLSearchParams(location.search).get("revisar");
-    if (r === "1") { localStorage.setItem("naipe.revisar", "1"); localStorage.setItem("naipe.beta", "1"); }
+    if (r === "1") { localStorage.setItem("naipe.revisar", "1"); localStorage.removeItem("naipe.beta"); }
     if (r === "0") localStorage.removeItem("naipe.revisar");
   } catch { /* sem armazenamento */ }
   let REVISAR = false;
   try { REVISAR = localStorage.getItem("naipe.revisar") === "1"; } catch { /* segue desligado */ }
   let BETA = false;
-  try { BETA = localStorage.getItem("naipe.beta") === "1"; } catch { /* segue desligado */ }
+  try { BETA = localStorage.getItem("naipe.beta") !== "0"; } catch { BETA = true; }
   window.NAIPE_BETA = BETA;
   if (BETA) {
     document.documentElement.classList.add("beta");
@@ -1522,12 +1523,12 @@
           ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco ${u.plano ? "desta semana" : "desta unidade"}</a>` : ""}
         </details>`;
     }).join("");
-    const modoTxt = REVISAR ? "modo de revisão do professor" : "versão de teste";
+    const modoTxt = REVISAR ? " · modo de revisão do professor" : "";
     if (estudo) {
       const pl = estadoPlano(), teoriaFeita = PRINCIPAIS.filter(l => !l.sessao).every(l => prog.feitas[l.id]), bloqueado = !REVISAR && prog.perfil !== "toca" && !teoriaFeita;
       raiz().innerHTML = `
       <header class="cabecalho">
-        <p class="sobretitulo">Estudo · ${modoTxt}</p>
+        <p class="sobretitulo">Estudo${modoTxt}</p>
         <h1>Plano de estudos</h1>
         <p class="mudo">Sessões de 30 a 40 minutos com os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento.</p>
       </header>
@@ -1540,7 +1541,7 @@
     }
     raiz().innerHTML = `
       <header class="cabecalho">
-        <p class="sobretitulo">Teoria · ${modoTxt}</p>
+        <p class="sobretitulo">Teoria${modoTxt}</p>
         <h1>Do zero à formatura</h1>
         <p class="mudo">Lições de 3 a 5 minutos. Você lê, bate o ritmo, ouve e toca. O Naipe escuta o seu sax.</p>
       </header>
@@ -1555,7 +1556,7 @@
     htmlAntesDepois().then(h => { const el = $("#tr-antes"); if (el) el.innerHTML = h; });
   }
 
-  // Cartão no Início (só na versão de teste): pergunta de entrada e "continuar a lição".
+  // Cartão no Início (com as abas Teoria e Estudo): pergunta de entrada e "continuar a lição".
   function cartaoInicio() {
     if (!BETA) return;
     const pai = document.querySelector(".conteudo-inicio"); if (!pai) return;

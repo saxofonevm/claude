@@ -379,7 +379,7 @@
     const telaId = { ex: "exercicio", metodo: "metodos", estudo: "trilha" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".tela").forEach(t => t.classList.toggle("ativa", t.id === `tela-${telaId}`));
     const deUmPilar = rotaAtual.tela === "metodo" && typeof pilha !== "undefined" && /^#\/(raiz|ex)\//.test(pilha[pilha.length - 2] || "");
-    const beta = !!window.NAIPE_BETA; // na versão de teste, Métodos mora dentro de Pilares
+    const beta = !!window.NAIPE_BETA; // com as abas Teoria e Estudo, Métodos mora dentro de Pilares
     const abaTrilha = rotaAtual.tela === "trilha" && window.NaipeTrilha && window.NaipeTrilha.aba ? window.NaipeTrilha.aba(rotaAtual.id) : null;
     const aba = abaTrilha || { raiz: "raizes", ex: "raizes", metodo: deUmPilar || beta ? "raizes" : "metodos", metodos: beta ? "raizes" : "metodos" }[rotaAtual.tela] || rotaAtual.tela;
     document.querySelectorAll(".abas a").forEach(a => a.classList.toggle("ativa", a.dataset.aba === aba));
