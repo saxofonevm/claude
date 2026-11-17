@@ -1107,6 +1107,15 @@
     {
       titulo: "Ré maior e Si bemol maior", marco: "Toco em quatro tons: Sol, Fá, Ré e Si bemol maior.", licoes: [
         {
+          id: "aq10", titulo: "Aquecimento", resumo: "Nota longa, escala e oitavas antes dos agudos", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Aquecer antes de subir", texto: ["Nesta unidade aparecem notas agudas novas. Três minutos de aquecimento deixam o som pronto para elas."], lista: ["Uma nota longa, para acordar o ar.", "A escala de Sol maior, que você já conhece.", "Um salto de oitava, para preparar os agudos."] },
+            { tipo: "tocar", livre: true, segundos: 4, titulo: "Nota longa", texto: "Qualquer nota confortável. Sustente 4 segundos com o som parado." },
+            { tipo: "tocar", nota: "sol2", segundos: 2, titulo: "Escala de Sol maior", texto: "Suba a escala em colcheias e sustente o Sol agudo.", pauta: [["sol", 0.5], ["la", 0.5], ["si", 0.5], ["do", 0.5], ["re2", 0.5], ["mi2", 0.5], ["fas2", 0.5], ["sol2", 2]] },
+            { tipo: "tocar", nota: "la2", segundos: 2, titulo: "Oitava: Lá e Lá agudo", texto: "Ar rápido e só o polegar se mexe. Sem nova língua no Lá agudo.", pauta: [["la", 2, "liga"], ["la2", 2]] },
+          ],
+        },
+        {
           id: "do-sustenido", titulo: "O Dó♯", resumo: "A nota de mão aberta",
           passos: [
             { tipo: "info", titulo: "Nenhum dedo fechado", texto: ["O Dó♯ é a única nota desta região tocada com todas as chaves abertas.", "Sem dedos para firmar o instrumento, o apoio fica no polegar direito e na correia. Ele também tende a soar baixo: mantenha o ar firme."], pauta: [["do", 2], ["dos", 2]], rotulos: true, dedos: ["do", "dos"] },
@@ -1169,6 +1178,15 @@
     {
       titulo: "Dinâmica e expressão", marco: "Toco com dinâmica: do piano ao forte, com intenção.", licoes: [
         {
+          id: "aq11", titulo: "Aquecimento", resumo: "Som reto, crescendo e diminuendo", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Aquecer o som", texto: ["Antes de tocar com dinâmica, o som precisa estar firme. O aquecimento desta unidade treina o ar: parado, crescendo e diminuindo."] },
+            { tipo: "vibrato", modo: "reto", titulo: "Som reto", texto: "Uma nota confortável, sem ondular a afinação." },
+            { tipo: "dinamica", modo: "cresc", titulo: "Crescendo", texto: "Comece suave e cresça até forte, sem subir a afinação.", pauta: [["re2", 4]], forq: [[0, 0, "cresc"]] },
+            { tipo: "dinamica", modo: "dim", titulo: "Diminuendo", texto: "Comece forte e vá sumindo, com o ar sempre apoiado.", pauta: [["re2", 4]], forq: [[0, 0, "dim"]] },
+          ],
+        },
+        {
           id: "piano-forte", titulo: "Piano e forte", resumo: "As letras que pedem volume",
           passos: [
             { tipo: "info", ouvir: true, titulo: "p, mf, f", texto: ["As letras embaixo da pauta pedem a intensidade do som: p é piano (suave), mf é mezzo-forte (médio) e f é forte.", "A letra vale até aparecer outra. Ouça a mesma frase em piano e depois em forte."], pauta: [["sol", 1], ["la", 1], ["si", 2], ["sol", 1], ["la", 1], ["si", 2]], compassos: true, din: [[0, "p"], [3, "f"]] },
@@ -1230,6 +1248,15 @@
     {
       titulo: "A armadura de clave", marco: "Leio músicas com armadura de clave, em quatro tons.", licoes: [
         {
+          id: "aq12", titulo: "Aquecimento", resumo: "As escalas de Ré maior e Si♭ maior", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Escalas antes da armadura", texto: ["A armadura reúne os acidentes de uma escala. Tocar a escala antes de ler deixa os dedos prontos para o tom."] },
+            { tipo: "tocar", nota: "re2", segundos: 2, titulo: "Escala de Ré maior", texto: "Fá♯ e Dó♯ no caminho. Sustente o Ré no fim.", pauta: [["re", 0.5], ["mi", 0.5], ["fas", 0.5], ["sol", 0.5], ["la", 0.5], ["si", 0.5], ["dos", 0.5], ["re2", 2]] },
+            { tipo: "tocar", nota: "sib2", segundos: 2, titulo: "Escala de Si♭ maior", texto: "Si♭ e Mi♭ no caminho, até o Si♭ agudo.", pauta: [["sib", 0.5], ["do", 0.5], ["re2", 0.5], ["mib2", 0.5], ["fa2", 0.5], ["sol2", 0.5], ["la2", 0.5], ["sib2", 2]] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Escala de Sol maior, descendo", texto: "Agora descendo, com o Fá♯.", pauta: [["sol2", 0.5], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 0.5], ["sol", 2]] },
+          ],
+        },
+        {
           id: "armadura", titulo: "O que é a armadura", resumo: "Os acidentes que valem para a música toda",
           passos: [
             { tipo: "info", arm: "sol", ouvir: true, titulo: "Escrever uma vez só", texto: ["Em vez de repetir o sustenido em cada Fá, a partitura o coloca uma vez, logo depois da clave. Isso é a armadura de clave.", "Ela vale para a música inteira e para todas as oitavas: todo Fá passa a ser Fá♯."], pauta: [["sol", 1], ["la", 1], ["si", 1], ["do", 1], ["re2", 1], ["mi2", 1], ["fas2", 1], ["sol2", 1]], compassos: true },
@@ -1283,6 +1310,15 @@
     {
       titulo: "Tercinas e swing", marco: "Toco tercinas e colcheias com swing.", licoes: [
         {
+          id: "aq13", titulo: "Aquecimento", resumo: "Ritmo no corpo antes de tocar", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Ritmo antes das notas", texto: ["Tercina e swing dividem o tempo em três. Bata primeiro, depois toque: o ritmo precisa estar no corpo."] },
+            { tipo: "ritmo", titulo: "Colcheias e tercinas", texto: "Duas colcheias, uma tercina, duas colcheias, uma tercina e uma mínima.", pauta: [["sol", 0.5], ["sol", 0.5], ["sol", T], ["sol", T], ["sol", T], ["sol", 0.5], ["sol", 0.5], ["sol", T], ["sol", T], ["sol", T], ["sol", 2]], padrao: [0.5, 0.5, T, T, T, 0.5, 0.5, T, T, T, 2] },
+            { tipo: "ritmo", swing: true, titulo: "Colcheias com swing", texto: "Seis colcheias com balanço e uma semínima: “tuu-dá, tuu-dá, tuu-dá, tá”.", pauta: [["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 0.5], ["sol", 1]], padrao: [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 1] },
+            { tipo: "tocar", swing: true, nota: "sol", segundos: 2, titulo: "Escala com swing", texto: "Desça do Ré com swing, faça a tercina e pare no Sol.", pauta: [["re2", 0.5], ["do", 0.5], ["si", 0.5], ["la", 0.5], ["si", T], ["la", T], ["si", T], ["sol", 2]] },
+          ],
+        },
+        {
           id: "tercina", titulo: "A tercina", resumo: "Três notas no lugar de duas",
           passos: [
             { tipo: "info", ouvir: true, titulo: "Três num tempo", texto: ["A tercina divide o tempo em três partes iguais. Ela aparece como três colcheias unidas, com um 3 em cima.", "Para sentir, diga “pês-se-go, pês-se-go”, uma sílaba para cada nota."], pauta: [["sol", T], ["sol", T], ["sol", T], ["sol", 1], ["sol", 2]] },
@@ -1325,6 +1361,15 @@
     },
     {
       titulo: "Vibrato e ornamentos", marco: "Toco com vibrato, apojaturas e trinados.", licoes: [
+        {
+          id: "aq14", titulo: "Aquecimento", resumo: "Som parado, dedos leves", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Preparar o som e os dedos", texto: ["Vibrato pede um som parado e ornamento pede dedos leves. O aquecimento prepara os dois."] },
+            { tipo: "vibrato", modo: "reto", titulo: "Som reto", texto: "Uma nota longa e parada. É dela que nasce o vibrato." },
+            { tipo: "tocar", nota: "la", segundos: 2, titulo: "Notas vizinhas, rápidas", texto: "Lá e Si alternados em colcheias, dedos perto das chaves. Termine no Lá.", pauta: [["la", 0.5], ["si", 0.5], ["la", 0.5], ["si", 0.5], ["la", 0.5], ["si", 0.5], ["la", 0.5], ["si", 0.5], ["la", 2]] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Apojaturas", texto: "A notinha antes de cada nota é rápida e leve. Use o dedo, não a língua.", pauta: [["la", 1, "ap=si"], ["si", 1, "ap=do"], ["la", 1, "ap=si"], ["sol", 2]] },
+          ],
+        },
         {
           id: "som-reto", titulo: "Primeiro, o som reto", resumo: "A base de todo vibrato",
           passos: [
@@ -1373,6 +1418,15 @@
     },
     {
       titulo: "Do grave ao agudo", marco: "Toco do Si♭ grave ao Ré superagudo.", licoes: [
+        {
+          id: "aq15", titulo: "Aquecimento", resumo: "Graves, agudos e o caminho entre eles", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Grave e agudo pedem coisas diferentes", texto: ["Nos graves, o maxilar solto e a garganta aberta. Nos agudos, o ar mais rápido, sem morder a boquilha."], lista: ["Grave: ar quente, como quem embaça um vidro.", "Agudo: ar rápido e frio, como quem apaga uma vela de longe."] },
+            { tipo: "tocar", nota: "dob", segundos: 3, titulo: "Descer ao Dó grave", texto: "Desça devagar e sustente o Dó grave sem estourar.", pauta: [["sol", 1], ["mi", 1], ["dob", 2]] },
+            { tipo: "tocar", nota: "do3", segundos: 2, titulo: "Oitava: Dó e Dó agudo", texto: "Só o polegar se mexe. O som do Dó agudo deve ser igual ao do Dó do meio.", pauta: [["do", 2, "liga"], ["do3", 2]] },
+            { tipo: "tocar", nota: "re3", segundos: 2, titulo: "Até o Ré superagudo", texto: "Si, Dó e Ré agudos ligados. A mão encosta na chave da palma.", pauta: [["si2", 1], ["do3", 1], ["re3", 2]] },
+          ],
+        },
         {
           id: "si-grave", titulo: "Si e Si♭ graves", resumo: "As notas mais graves do saxofone",
           passos: [
@@ -1423,6 +1477,16 @@
     },
     {
       titulo: "Formatura", marco: "Concluí a Teoria do Naipe: leio partitura e toco com expressão.", licoes: [
+        {
+          id: "aq16", titulo: "Aquecimento da formatura", resumo: "Staccato, síncope, tercina, acento e agudos", aquecimento: true,
+          passos: [
+            { tipo: "info", titulo: "Tudo o que a peça pede", texto: ["A peça de formatura junta staccato, síncope, tercina, acento, dinâmica e notas agudas. Este aquecimento passa por cada um, em pequenos trechos."] },
+            { tipo: "tocar", nota: "sol2", segundos: 2, titulo: "Arpejo em staccato", texto: "Sol, Si e Ré curtos e leves, e sustente o Sol agudo.", pauta: [["sol", 1, "st"], ["si", 1, "st"], ["re2", 1, "st"], ["sol2", 2]] },
+            { tipo: "ritmo", titulo: "Síncope e tercina", texto: "Os dois ritmos mais difíceis da peça, um depois do outro.", pauta: [["re2", 0.25], ["mi2", 0.5], ["re2", 0.25], ["si", 1], ["la", T], ["si", T], ["la", T], ["fas", 1], ["sol", 1]], padrao: [0.25, 0.5, 0.25, 1, T, T, T, 1, 1] },
+            { tipo: "tocar", nota: "sol", segundos: 2, titulo: "Acento e descida", texto: "O Lá agudo com acento e desça até o Sol.", pauta: [["la2", 1, "ac"], ["sol2", 0.5], ["fas2", 0.5], ["mi2", 0.5], ["re2", 0.5], ["si", 1], ["sol", 2]] },
+            { tipo: "dinamica", modo: "cresc", titulo: "Crescendo final", texto: "A peça cresce perto do fim. Uma nota longa do piano ao forte.", pauta: [["re2", 4]], forq: [[0, 0, "cresc"]] },
+          ],
+        },
         {
           id: "revisao-leitura", titulo: "Revisão: leitura", resumo: "Tudo o que a partitura diz",
           passos: [
@@ -1478,6 +1542,8 @@
   const CHAVE = "naipe.trilha.v1";
   let prog = { feitas: {}, pontos: 0 };
   try { prog = Object.assign(prog, JSON.parse(localStorage.getItem(CHAVE) || "{}")); } catch { /* sem armazenamento */ }
+  // Aquecimentos das unidades 10 a 16 entraram depois: quem já tinha concluído o resto da unidade ganha o aquecimento como feito.
+  UNIDADES.forEach(u => { const aq = u.licoes.find(l => l.aquecimento); if (aq && !prog.feitas[aq.id] && u.licoes.every(l => l === aq || prog.feitas[l.id])) prog.feitas[aq.id] = true; });
   const salvar = () => { if (REVISAR) return; try { localStorage.setItem(CHAVE, JSON.stringify(prog)); } catch { /* segue sem salvar */ } };
   const saxDoApp = () => { try { return (JSON.parse(localStorage.getItem("cma.v1") || "{}").sax) || prog.sax || ""; } catch { return prog.sax || ""; } };
 
