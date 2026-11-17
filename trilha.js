@@ -254,6 +254,102 @@
       ["mintzer", "Est. VIII · pág. 17–18", "Shuffle médio-rápido.", [80, 132]],
       ["niehaus1", "Fancy Free · pág. 19", "Tema em swing.", [72, 132]],
     ] },
+
+    // ----- Módulo 2 (meses 4 a 6): trilhos novos, que começam do zero e vão mais longe -----
+    som: { nome: "Som e aquecimento", gira: true, dica: "Grave dez segundos de nota longa no começo da semana e compare no fim. O ouvido aprende com a comparação.", itens: [
+      ["demetrio", "Lição 1, Ex. 3 · pág. 5", "Som senoidal: uma nota longa que cresce e diminui sem mudar a afinação. É a preparação do vibrato.", null],
+      ["sonoridade-tv", "Seções A–E", "Sonoridade em intervalos, cada nota em pianíssimo, depois em forte, com o mesmo timbre.", [60, 60]],
+      ["demetrio", "Lições 10 e 12 · pág. 21–22 e 27", "Graves e agudos com a garganta aberta. Os graves sem estourar, os agudos sem morder.", null],
+      ["dorsey", "Vibrato · pág. 36", "Vibrato com o queixo: primeiro em colcheias, depois em tercinas, por fim livre.", [60, 72]],
+      ["marienthal", "Parte 1 · pág. 1", "Notas longas cromáticas com crescendo e diminuendo em cada uma.", [60, 72]],
+      ["demetrio", "Subtone · pág. 50", "Notas subtonadas: o som soprado e macio das baladas.", null],
+    ] },
+    mecanismo: { nome: "Técnica", dica: "Quando um trecho travar, toque só a passagem difícil em ritmo pontuado (longa-curta, depois curta-longa) e volte ao normal.", itens: [
+      ["demetrio", "Lições 4–7 · pág. 8–11", "Mecanismo cromático e troca de registro. Uma lição por sessão, sem pressa.", [60, 96]],
+      ["klose25", "Ex. 1–5 · pág. 2–5", "Revisão dos primeiros exercícios diários, agora com meta de andamento mais alta.", [80, 120]],
+      ["marienthal", "Parte 4 · pág. 8", "Dedo Busters: frases rápidas para resistência dos dedos.", [72, 120]],
+      ["rubank-adv", "Exercícios de digitação · pág. 55–58", "Exercícios de digitação: as passagens difíceis do saxofone, uma linha por vez.", [60, 100]],
+      ["klose25", "Ex. 6–10 · pág. 6–10", "Exercícios diários com meta mais alta.", [80, 120]],
+      ["marienthal", "Parte 5 · pág. 9–10", "Motivos em todas as tonalidades: um tom por dia, até completar o ciclo.", [72, 120]],
+      ["klose25", "Ex. 11–15 · pág. 11–15", "Exercícios diários com meta mais alta.", [80, 126]],
+      ["demetrio", "Tonalidades fáceis · pág. 28–48", "Arpejos, mecanismo e exercícios melódicos por tonalidade. Um tom por sessão.", [60, 100]],
+      ["klose25", "Ex. 16–20 · pág. 16–20", "Exercícios diários com meta mais alta.", [80, 126]],
+      ["klose25", "Ex. 21–25 · pág. 21–25", "Exercícios diários com meta mais alta. O fim do livro.", [80, 132]],
+    ] },
+    tons: { nome: "Escalas de Marcel Mule", dica: "Escala, terças e arpejo do mesmo tom, sempre na mesma ordem. Primeiro tudo ligado, depois tudo destacado.", itens: [
+      ["mule-gammes", "Escala-modelo · pág. 3–8", "Leia as instruções e toque a escala-modelo: a escala, as terças e os arpejos que se repetem em cada tom.", [56, 88]],
+      ["mule-gammes", "Fá maior · pág. 9–10", "Fá maior em toda a extensão: escala, terças e arpejos.", [56, 92]],
+      ["mule-gammes", "Si♭ maior · pág. 12", "Si♭ maior: escala, terças e arpejos.", [56, 92]],
+      ["mule-gammes", "Sol menor · pág. 13", "Sol menor: escala, terças e arpejos.", [56, 92]],
+      ["rubank-adv", "Escalas e arpejos · pág. 6–19", "Escalas, terças e arpejos do Rubank Avançado: um tom por sessão, na ordem do livro.", [60, 100]],
+      ["mule-gammes", "Lá maior · pág. 17", "Lá maior: escala, terças e arpejos.", [56, 96]],
+      ["mule-gammes", "Mi maior · pág. 20", "Mi maior: quatro sustenidos. Confira cada nota antes de subir o andamento.", [52, 92]],
+      ["mule-gammes", "Dó♯ menor · pág. 21", "Dó♯ menor, a relativa de Mi maior.", [52, 92]],
+      ["coker", "Padrões 28–59", "Escalas maiores com padrões do jazz (1-2-3-5 e outros), em vários tons.", [60, 112]],
+    ] },
+    estudos: { nome: "Estudos melódicos", dica: "Estude a frase, não a nota: marque as respirações a lápis e cante cada frase antes de tocar.", itens: [
+      ["mule24", "Estudo 1", "Primeiro dos 24 Estudos Fáceis de Marcel Mule. Siga cada dinâmica escrita.", [56, 96]],
+      ["mule24", "Estudo 2", "Estudo fácil de Marcel Mule.", [56, 96]],
+      ["mule24", "Estudo 3", "Estudo fácil de Marcel Mule.", [56, 100]],
+      ["mule24", "Estudo 4", "Estudo fácil de Marcel Mule.", [56, 100]],
+      ["mule24", "Estudo 5", "Estudo fácil de Marcel Mule.", [56, 104]],
+      ["mule24", "Estudo 6", "Estudo fácil de Marcel Mule.", [56, 104]],
+      ["mule24", "Estudo 7", "Estudo fácil de Marcel Mule.", [56, 108]],
+      ["mule24", "Estudo 8", "Estudo fácil de Marcel Mule.", [56, 108]],
+      ["hite", "Nocentini · pág. 31–40", "Estudos cantabile de Nocentini: dolce e espressivo. Um estudo por sessão.", [52, 80]],
+      ["mule48", "Estudo 1", "Primeiro dos 48 Estudos de Ferling: lento e cantado. Respire onde a frase pede.", [50, 72]],
+      ["mule48", "Estudo 2", "O par rápido do Estudo 1: mesmo tom, outro caráter.", [60, 100]],
+      ["mule48", "Estudo 3", "Ferling, lento e cantado.", [50, 72]],
+      ["mule48", "Estudo 4", "Ferling, o par rápido.", [60, 100]],
+    ] },
+    expressao: { nome: "Articulação e expressão", dica: "Toque o trecho primeiro todo ligado, só com o ar. Depois coloque a articulação escrita sem mudar o som.", itens: [
+      ["rubank-adv", "Estudos de articulação · pág. 45–49", "Estudos de articulação do Rubank Avançado, primeira parte.", [60, 96]],
+      ["hite", "Baermann Op. 63 · pág. 41–56", "Estudos de Baermann: legato longo e indicações de ligadura. Um estudo por sessão.", [56, 88]],
+      ["rubank-adv", "Estudos de articulação · pág. 50–54", "Estudos de articulação do Rubank Avançado, segunda parte.", [60, 100]],
+      ["freeman", "Legato Tonguing · pág. 14–17", "A língua legato do swing, em oito exercícios de Bud Freeman. Dois por sessão.", [72, 132]],
+      ["rubank-adv", "Mozart, Tempo di Menuetto · pág. 21", "Interpretação melódica: o minueto de Mozart, leve e elegante.", [80, 112]],
+      ["rubank-adv", "Andante grazioso · pág. 22", "Interpretação melódica: frase cantada e dinâmica.", [60, 84]],
+      ["rubank-adv", "Hohmann, Allegretto · pág. 25", "Interpretação melódica: estude em três tempos e depois em um.", [80, 120]],
+      ["rubank-adv", "Barret, Allegretto · pág. 27", "Interpretação melódica com ornamentos.", [72, 104]],
+      ["rubank-adv", "Verroust, Larghetto · pág. 31", "Interpretação melódica lenta: som, vibrato e frase.", [50, 66]],
+    ] },
+    balanco: { nome: "Ritmo e levadas", dica: "Ponha o metrônomo nos tempos 2 e 4 e bata o pé no 1 e no 3. O balanço mora entre os dois.", itens: [
+      ["ritmo-tv", "Todo o material", "Figuras rítmicas brasileiras: leia em voz alta e depois toque numa nota só.", [60, 90]],
+      ["dorsey", "Colcheia pontuada e tercinas · pág. 33–34", "Colcheia pontuada com semicolcheia e tercinas, lado a lado.", [60, 96]],
+      ["freeman", "Syncopation · pág. 18–21", "Síncopes e fraseado de swing sobre progressões. Dois exercícios por sessão.", [72, 132]],
+      ["mintzer", "Est. III · pág. 7–8", "Funk: semicolcheias firmes e notas curtas.", [72, 100]],
+      ["aerobica", "Workouts 288–301 · pág. 84–87", "Exercícios de ritmo: swing, rock e 12/8. Um por sessão.", [72, 120]],
+      ["mintzer", "Est. X · pág. 21–22", "Valsa jazz em 3/4: sinta um tempo por compasso.", [100, 160]],
+      ["mintzer", "Est. IX · pág. 19–20", "Funk com colcheias iguais.", [72, 100]],
+    ] },
+    jazz2: { nome: "Jazz e improviso", dica: "Toque a melodia, depois improvise só com as notas do primeiro compasso. Pouca nota, muito ritmo.", itens: [
+      ["niehaus1", "Cool ’n’ Breezy · pág. 20", "Tema de Lennie Niehaus em swing moderado.", [80, 132]],
+      ["bergonzi2", "Cap. 1 · pág. 6–9", "As escalas pentatônicas: a porta de entrada do improviso.", [60, 120]],
+      ["niehaus1", "Remember When? · pág. 21", "Tema de Niehaus em swing moderado.", [80, 132]],
+      ["mintzer", "Est. IV · pág. 9–10", "Etude de swing de Bob Mintzer.", [80, 132]],
+      ["pentatonica", "Pentatônicas por tom · pág. 16–43", "Pentatônica maior, menor e blues: um tom por sessão.", [60, 120]],
+      ["niehaus1", "Stan’s Idea · pág. 22", "Tema de Niehaus.", [80, 132]],
+      ["mintzer", "Est. VI · pág. 13–14", "Blues de Bob Mintzer. Toque o tema e improvise um chorus.", [80, 132]],
+      ["bergonzi2", "Cap. 2 · pág. 10–23", "Criando linhas com a pentatônica: oito fórmulas.", [72, 132]],
+      ["niehaus1", "Listener’s Delight · pág. 23", "Tema de Niehaus.", [88, 138]],
+      ["coker", "Padrões 123–148", "Padrões sobre II-V e II-V-I, em vários tons.", [72, 132]],
+      ["mintzer", "Est. XI · pág. 23–24", "Blues de Bob Mintzer.", [88, 138]],
+      ["freeman", "Standard Songs · pág. 23–46", "Os standards de Bud Freeman: a melodia, a versão com ritmo e a versão improvisada.", [80, 132]],
+    ] },
+    musicas: { nome: "Minhas músicas", dica: "Ouça a gravação, cante a melodia, fatie a música em frases de quatro compassos e só então toque com o playback.", itens: [
+      ["rep:summertime", "Partitura", "Uma balada de jazz para começar: melodia cantada, notas longas e vibrato no fim das frases.", [56, 80]],
+      ["rep:manha-carnaval", "Partitura e playback", "Bossa nova: colcheias iguais e som macio. Toque com o playback.", [60, 90]],
+      ["rep:asa-branca", "Partitura e playback", "O baião de Luiz Gonzaga. Acentue o primeiro tempo como o zabumba.", [72, 100]],
+      ["rep:all-of-me", "Partitura e playback", "Standard de swing: colcheias swingadas e notas curtas no fim das frases.", [80, 132]],
+      ["rep:insensatez", "Partitura", "Bossa lenta e cromática. Cuidado com a afinação das notas que descem meio tom.", [56, 80]],
+      ["rep:autumn-leaves", "Real Book", "O standard mais tocado nas jams. Aprenda a melodia de cor.", [80, 132]],
+      ["rep:carinhoso", "Partitura", "O choro-canção de Pixinguinha: frase longa e expressiva.", [60, 88]],
+      ["rep:chega", "Partitura e playback", "A primeira bossa nova gravada. A parte em maior pede outro brilho no som.", [72, 104]],
+      ["rep:careless", "Partitura e playback", "O solo de sax mais famoso do pop. Som cheio e as síncopes bem no lugar.", [60, 76]],
+      ["rep:blue-bossa", "Partitura", "Bossa do jazz: depois da melodia, improvise com a pentatônica.", [80, 132]],
+      ["rep:wave", "Partitura e guia", "Siga o guia de estudo do Wave, passo a passo.", [70, 90]],
+      ["rep:lamentos", "Songbook de choro", "O choro lento de Pixinguinha. Ornamentos leves e muita frase.", [56, 80]],
+    ] },
   };
 
   const SEMANAS = [
@@ -282,9 +378,41 @@
     { foco: "Fechar o trimestre", texto: "Última semana do terceiro mês. Na sessão final, grave o seu melhor repertório e ouça ao lado do som do primeiro dia: são três meses de estudo organizado.",
       sessoes: [[["aquecimento", 5], ["tecnica", 10], ["escalas", 10], ["leitura", 10], ["ritmo", 5]], [["aquecimento", 5], ["articulacao", 10], ["jazz", 15], ["repertorio", 10]], [["aquecimento", 5], ["leitura", 10], ["ritmo", 10], ["repertorio", 15]], [["aquecimento", 10], ["tecnica", 10], ["repertorio", 20]]] },
   ];
+  // Módulo 2: meses 4 a 6. Sessões de 40 a 45 minutos com trilhos novos e as músicas do repertório essencial.
+  SEMANAS.push(
+    { foco: "Novos métodos", texto: "Começa o segundo módulo. Os trilhos são novos: Marcel Mule, Ferling, Rubank Avançado e as primeiras músicas do repertório essencial. As sessões ficam em cerca de 40 minutos.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 15]], [["som", 5], ["expressao", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 15]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 15]]] },
+    { foco: "Som de verdade", texto: "Esta semana o aquecimento ganha mais tempo. Grave uma nota longa no primeiro dia e outra no último: o som é o seu cartão de visita.",
+      sessoes: [[["som", 10], ["mecanismo", 10], ["estudos", 10], ["musicas", 10]], [["som", 10], ["tons", 10], ["expressao", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["jazz2", 10], ["musicas", 10]], [["som", 10], ["mecanismo", 10], ["expressao", 10], ["musicas", 10]]] },
+    { foco: "Ferling e Mule", texto: "Os estudos melódicos pesam mais. Antes de tocar, marque a lápis onde respirar e cante cada frase uma vez.",
+      sessoes: [[["som", 5], ["tons", 10], ["estudos", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 15], ["jazz2", 10]], [["som", 5], ["expressao", 10], ["estudos", 15], ["musicas", 10]], [["som", 5], ["tons", 10], ["estudos", 10], ["musicas", 15]]] },
+    { foco: "Fechar o quarto mês", texto: "Última semana do quarto mês. A sessão final termina com uma gravação da música do repertório de que você mais gostou.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["balanco", 5]], [["som", 5], ["expressao", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["musicas", 25]]] },
+    { foco: "Quinto mês: groove", texto: "O ritmo ganha espaço: funk, valsa jazz, swing e as figuras brasileiras. Metrônomo nos tempos 2 e 4 sempre que der.",
+      sessoes: [[["som", 5], ["balanco", 15], ["mecanismo", 10], ["musicas", 10]], [["som", 5], ["tons", 10], ["balanco", 10], ["jazz2", 15]], [["som", 5], ["balanco", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["expressao", 10], ["balanco", 10], ["jazz2", 15]]] },
+    { foco: "Primeiros improvisos", texto: "Entra a pentatônica. Depois de tocar cada tema, improvise um chorus com poucas notas. Errar aqui faz parte: é assim que se aprende a improvisar.",
+      sessoes: [[["som", 5], ["tons", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["jazz2", 15], ["balanco", 10]], [["som", 5], ["estudos", 10], ["jazz2", 15], ["expressao", 10]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 15]]] },
+    { foco: "Do choro à bossa", texto: "Uma semana brasileira. Choro com articulação viva, bossa com colcheias iguais e som macio. A mesma colcheia muda de jeito em cada estilo.",
+      sessoes: [[["som", 5], ["expressao", 10], ["musicas", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["tons", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["expressao", 10], ["jazz2", 10], ["musicas", 15]]] },
+    { foco: "Fechar o quinto mês", texto: "Última semana do quinto mês. Na sessão final, grave uma música do repertório com o playback.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 15]], [["som", 5], ["balanco", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["expressao", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["tons", 10], ["musicas", 25]]] },
+    { foco: "Sexto mês: sessões de 45 minutos", texto: "As sessões chegam a 45 minutos. Se o dia estiver corrido, faça o aquecimento e os dois primeiros blocos. Regularidade vale mais que duração.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["musicas", 10]], [["som", 5], ["expressao", 10], ["balanco", 10], ["jazz2", 10], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 10], ["balanco", 10]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 20]]] },
+    { foco: "Interpretação", texto: "Os estudos de interpretação do Rubank e os Ferling lentos pedem som, vibrato e frase. Grave um trecho no gravador do app e ouça antes de avaliar o bloco.",
+      sessoes: [[["som", 10], ["expressao", 15], ["estudos", 10], ["mecanismo", 10]], [["som", 10], ["estudos", 15], ["tons", 10], ["musicas", 10]], [["som", 10], ["expressao", 15], ["jazz2", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["expressao", 10], ["musicas", 15]]] },
+    { foco: "Montar o seu show", texto: "Escolha três músicas do repertório, de estilos diferentes, e toque as três em sequência como se fosse uma apresentação: entrada, música, pausa, próxima.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["musicas", 20], ["balanco", 10]], [["som", 5], ["tons", 10], ["jazz2", 10], ["musicas", 20]], [["som", 5], ["expressao", 10], ["estudos", 10], ["musicas", 20]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 20]]] },
+    { foco: "Fechar o semestre", texto: "Última semana do sexto mês. Na sessão final, grave o seu pequeno show e ouça ao lado do som do primeiro dia: são seis meses de estudo organizado.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["balanco", 10]], [["som", 5], ["expressao", 10], ["jazz2", 15], ["musicas", 15]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 20]], [["som", 10], ["mecanismo", 5], ["musicas", 30]]] },
+  );
+  const MARCOS_MES = ["primeiro", "segundo", "terceiro", "quarto", "quinto", "sexto"];
+  const MODULOS = [
+    { nome: "Módulo 1", periodo: "Meses 1 a 3", texto: "A base: rotina, técnica, leitura, ritmo, articulação, repertório e as primeiras colcheias de jazz.", de: 0, ate: 12 },
+    { nome: "Módulo 2", periodo: "Meses 4 a 6", texto: "Marcel Mule, Ferling, Rubank Avançado, groove, os primeiros improvisos e as músicas do repertório essencial.", de: 12, ate: 24 },
+  ];
   const UNIDADES_PLANO = SEMANAS.map((sem, w) => ({
     plano: true, titulo: `Semana ${w + 1} · ${sem.foco}`, foco: sem.foco, texto: sem.texto,
-    marco: w === 3 ? "Completei o primeiro mês do meu plano de estudos no saxofone." : w === 7 ? "Completei o segundo mês do meu plano de estudos no saxofone." : w === 11 ? "Completei três meses de estudo organizado no saxofone." : `Completei a semana ${w + 1} do meu plano de estudos.`,
+    marco: w === 11 ? "Completei três meses de estudo organizado no saxofone." : w === 23 ? "Completei seis meses de estudo organizado no saxofone." : w % 4 === 3 ? `Completei o ${MARCOS_MES[(w + 1) / 4 - 1]} mês do meu plano de estudos no saxofone.` : `Completei a semana ${w + 1} do meu plano de estudos.`,
     licoes: sem.sessoes.map((blocos, k) => ({
       id: `s${w + 1}-${k + 1}`, titulo: `Sessão ${k + 1}`, resumo: blocos.map(([t]) => TRILHOS[t].nome).join(" · ") + ` · cerca de ${blocos.reduce((a, b) => a + b[1], 0)} min`,
       sessao: { semana: w, blocos, gravar: k === sem.sessoes.length - 1 && w % 4 === 3 ? `s${w + 1}` : null }, passos: [],
@@ -1504,7 +1632,7 @@
     limpar(); sessao = null;
     const primeiraAberta = lista => { const l = lista.find(x => !prog.feitas[x.id]); return l ? LICOES.indexOf(l) : -1; };
     const atual = primeiraAberta(PRINCIPAIS);
-    const unidades = UNIDADES.map((u, n) => {
+    const htmlUn = UNIDADES.map((u, n) => {
       if (u.pilar || !!u.plano !== estudo) return "";
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
       const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
@@ -1522,7 +1650,8 @@
           ${htmlCaminho(u, n, livreParaQuemToca ? primeiraAberta(u.licoes) : atual, paga)}
           ${completa ? `<a class="btn tr-ver-marco" href="#/trilha/marco-${n}">Meu marco ${u.plano ? "desta semana" : "desta unidade"}</a>` : ""}
         </details>`;
-    }).join("");
+    });
+    const unidades = htmlUn.join("");
     const modoTxt = REVISAR ? " · modo de revisão do professor" : "";
     if (estudo) {
       const pl = estadoPlano(), teoriaFeita = PRINCIPAIS.filter(l => !l.sessao).every(l => prog.feitas[l.id]), bloqueado = !REVISAR && prog.perfil !== "toca" && !teoriaFeita;
@@ -1530,12 +1659,19 @@
       <header class="cabecalho">
         <p class="sobretitulo">Estudo${modoTxt}</p>
         <h1>Plano de estudos</h1>
-        <p class="mudo">Sessões de 30 a 40 minutos com os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento.</p>
+        <p class="mudo">Dois módulos de três meses, com sessões de 30 a 45 minutos e os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento. Toque num módulo para abrir as semanas.</p>
       </header>
       <div class="corpo tr-corpo">
         ${bloqueado ? `<section class="cartao tr-porque"><span class="rotulo">Quando começar</span><p class="mudo">O plano abre quando você conclui a Teoria. Se você já lê partitura e toca, pode começar agora.</p><button class="btn" id="tr-ja-toco" type="button">Já toco, quero começar o plano</button></section>` : pl.n ? `<section class="cartao tr-porque"><span class="rotulo">Meu plano</span><p class="mudo"><strong>${pl.n}</strong> ${pl.n === 1 ? "sessão feita" : "sessões feitas"}. O tempo de cada sessão fica no seu Diário.</p></section>` : ""}
-        ${unidades}
+        ${MODULOS.map((md, k) => {
+          const us = UNIDADES_PLANO.slice(md.de, md.ate), lics = us.flatMap(u => u.licoes), feitas = lics.filter(l => prog.feitas[l.id]).length;
+          const trancado = /tr-unidade trancada/.test(htmlUn[UNIDADES.indexOf(us[0])]), completo = feitas === lics.length;
+          const estado = completo ? "✓ Completo" : trancado ? `🔒 Abre ao concluir ${k ? `o ${MODULOS[k - 1].nome}` : "a Teoria"}` : `${feitas} de ${lics.length} sessões`;
+          return `<details class="tr-modulo${trancado ? " fechado" : ""}"><summary><span class="tr-mod-txt"><span class="rotulo">${md.periodo}</span><strong>${md.nome}</strong><small>${estado}</small></span><span class="tr-mod-prog" style="--p:${Math.round(feitas / lics.length * 100)}%"></span><span class="tr-seta" aria-hidden="true">⌄</span></summary><p class="mudo tr-mod-desc">${esc(md.texto)}</p>${us.map(u => htmlUn[UNIDADES.indexOf(u)]).join("")}</details>`;
+        }).join("")}
+        ${htmlRepertorio()}
       </div>`;
+      ligarRepertorio();
       const jt = $("#tr-ja-toco"); if (jt) jt.addEventListener("click", () => { prog.perfil = "toca"; salvar(); renderTrilha("estudo"); });
       return;
     }
@@ -1554,6 +1690,29 @@
       </div>`;
     $("#tr-editar-porque").addEventListener("click", renderPorque);
     htmlAntesDepois().then(h => { const el = $("#tr-antes"); if (el) el.innerHTML = h; });
+  }
+
+  // Repertório essencial: as músicas que todo saxofonista toca, com partitura e playback do acervo.
+  const NIVEIS = { 1: "Primeiras músicas", 2: "Intermediário", 3: "Desafio" };
+  function htmlRepertorio() {
+    if (!REP.musicas.length) return "";
+    const meu = prog.rep || {}, total = REP.musicas.length, tenho = REP.musicas.filter(m => meu[m.id]).length;
+    return `<details class="tr-modulo tr-repertorio"><summary><span class="tr-mod-txt"><span class="rotulo">Para a vida toda</span><strong>Repertório essencial</strong><small id="tr-rep-conta">${tenho} de ${total} músicas no meu repertório</small></span><span class="tr-mod-prog" style="--p:${Math.round(tenho / total * 100)}%"></span><span class="tr-seta" aria-hidden="true">⌄</span></summary>
+      <p class="mudo tr-mod-desc">As músicas que todo saxofonista toca, da bossa nova ao jazz, do choro ao pop. Cada uma abre a partitura do acervo, e muitas têm playback para tocar junto. Quando uma música estiver pronta, marque “Já toco”.</p>
+      <p class="mudo tr-mod-desc">Como estudar: ouça a gravação, cante a melodia, divida em frases de quatro compassos e só então toque com o playback. O guia do Wave mostra o passo a passo.</p>
+      ${REP.estilos.map(e => { const ms = REP.musicas.filter(m => m.estilo === e.id).sort((a, b) => a.nivel - b.nivel); return `<details class="tr-rep-estilo"><summary><strong>${esc(e.nome)}</strong><small>${ms.filter(m => meu[m.id]).length} de ${ms.length}</small><span class="tr-seta" aria-hidden="true">⌄</span></summary><p class="mudo">${esc(e.texto)}</p><ul class="tr-rep-lista">${ms.map(m => `<li class="${meu[m.id] ? "tenho" : ""}"><div class="tr-rep-cab"><span><strong>${esc(m.titulo)}</strong><small>${esc(m.autor)}</small></span><span class="tr-rep-nivel n${m.nivel}">${NIVEIS[m.nivel]}</span></div>${fonteTxt(m) ? `<p class="tr-rep-fonte">${esc(fonteTxt(m))}</p>` : ""}${linksMusica(m)}<button type="button" class="tr-rep-tenho" data-rep="${esc(m.id)}" aria-pressed="${!!meu[m.id]}">${meu[m.id] ? "✓ Já toco" : "Já toco"}</button></li>`).join("")}</ul></details>`; }).join("")}
+    </details>`;
+  }
+  function ligarRepertorio() {
+    raiz().querySelectorAll(".tr-rep-tenho").forEach(b => b.addEventListener("click", () => {
+      prog.rep = prog.rep || {}; const id = b.dataset.rep, sim = !prog.rep[id];
+      if (sim) prog.rep[id] = new Date().toISOString().slice(0, 10); else delete prog.rep[id];
+      salvar();
+      b.textContent = sim ? "✓ Já toco" : "Já toco"; b.setAttribute("aria-pressed", String(sim)); b.closest("li").classList.toggle("tenho", sim);
+      const det = b.closest(".tr-rep-estilo"), lis = [...det.querySelectorAll("li")]; det.querySelector("summary small").textContent = `${lis.filter(x => x.classList.contains("tenho")).length} de ${lis.length}`;
+      const tenho = REP.musicas.filter(m => prog.rep[m.id]).length, c = $("#tr-rep-conta"); if (c) c.textContent = `${tenho} de ${REP.musicas.length} músicas no meu repertório`;
+      const pg = c && c.closest("summary").querySelector(".tr-mod-prog"); if (pg) pg.style.setProperty("--p", `${Math.round(tenho / REP.musicas.length * 100)}%`);
+    }));
   }
 
   // Cartão no Início (com as abas Teoria e Estudo): pergunta de entrada e "continuar a lição".
@@ -1908,8 +2067,25 @@
     const [livro, onde, oque, bpm] = tr.itens[i];
     return { i, livro, onde, oque, bpm, fim: !tr.gira && st.i >= n, inicio: bpm ? Math.max(bpm[0], Math.min(bpm[1], st.bpm || bpm[0])) : null };
   }
-  const urlPdf = id => { const l = ((window.CMA_METODOS || {}).livros || {})[id]; return l && l.arquivo ? `https://drive.google.com/file/d/${l.arquivo}/view` : ""; };
-  const livroInfo = id => ((window.CMA_METODOS || {}).livros || {})[id] || { titulo: id, autor: "" };
+  // Itens "rep:<id>" apontam para uma música do repertório essencial (repertorio.js).
+  const REP = window.NAIPE_REPERTORIO || { fontes: {}, estilos: [], musicas: [] };
+  const musicaRep = id => REP.musicas.find(m => `rep:${m.id}` === id);
+  const driveUrl = arq => `https://drive.google.com/file/d/${arq}/view`;
+  const urlPdf = id => { const m = musicaRep(id); if (m) return ""; const l = ((window.CMA_METODOS || {}).livros || {})[id]; return l && l.arquivo ? driveUrl(l.arquivo) : ""; };
+  const livroInfo = id => { const m = musicaRep(id); if (m) return { titulo: m.titulo, autor: m.autor }; return ((window.CMA_METODOS || {}).livros || {})[id] || { titulo: id, autor: "" }; };
+  // Botões de uma música: partitura em Mi♭, em Si♭, songbook e playback.
+  function linksMusica(m, principal) {
+    const b = [], cls = k => `btn${principal && k === 0 ? " primario" : ""}`;
+    const livro = (lv, rot) => { const f = REP.fontes[lv[0]]; if (f) b.push(`<a class="${cls(b.length)}" href="${driveUrl(f.arquivo)}" target="_blank" rel="noopener">${rot} · ${esc(lv[1].split(" (")[0])}</a>`); };
+    if (m.alto) b.push(`<a class="${cls(b.length)}" href="${driveUrl(m.alto)}" target="_blank" rel="noopener">Partitura alto (Mi♭)</a>`);
+    else if (m.livro) livro(m.livro, "Real Book alto");
+    if (m.tenor) b.push(`<a class="${cls(b.length)}" href="${driveUrl(m.tenor)}" target="_blank" rel="noopener">Partitura tenor (Si♭)</a>`);
+    else if (m.livroBb) livro(m.livroBb, m.livroBb[0].startsWith("choro") ? "Songbook tenor" : "Real Book tenor");
+    if (m.playback) b.push(`<a class="${cls(b.length)}" href="${driveUrl(m.playback)}" target="_blank" rel="noopener">▶ Playback</a>`);
+    if (m.guia) b.push(`<a class="btn" href="#/metodo/${encodeURIComponent(m.guia)}">Guia de estudo</a>`);
+    return `<div class="tr-rep-links">${b.join("")}</div>`;
+  }
+  const fonteTxt = m => { const lv = m.livro || m.livroBb, f = lv && REP.fontes[lv[0]]; return f ? `${f.titulo}, ${lv[1]}${m.livro && m.livroBb ? ". A mesma página na edição em Si♭." : ""}` : ""; };
 
   // Decide o próximo passo do trilho a partir da avaliação (3 fácil, 2 com erros, 1 difícil) e do andamento alcançado.
   function avaliarTrilho(id, ev, alcancado) {
@@ -1945,9 +2121,10 @@
 
   function passoBloco(p) {
     const it = itemAtual(p.trilho), tr = TRILHOS[p.trilho], l = livroInfo(it.livro), url = urlPdf(it.livro), nb = sessao.licao.sessao.blocos.length;
+    const rep = musicaRep(it.livro);
     if (it.inicio) { prog.bpm = it.inicio; salvar(); }
     moldura(`<p class="sobretitulo">Bloco ${p.k + 1} de ${nb} · cerca de ${p.min} min</p><h2>${esc(tr.nome)}</h2>
-      <div class="tr-bloco"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><strong>${esc(l.titulo)}</strong><p class="tr-bloco-onde">${esc(it.onde)}</p><p>${esc(it.oque)}</p>${url ? `<a class="btn primario" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}</div>
+      <div class="tr-bloco"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><strong>${esc(l.titulo)}</strong><p class="tr-bloco-onde">${esc(rep ? fonteTxt(rep) || it.onde : it.onde)}</p><p>${esc(it.oque)}</p>${rep ? linksMusica(rep, true) : url ? `<a class="btn primario" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}</div>
       ${it.bpm ? `<p class="tr-meta-bpm">Comece em <b>${it.inicio}</b> · meta <b>${it.bpm[1]}</b>. Suba de 4 em 4 quando sair limpo.</p>${htmlPulso(true)}` : ""}
       <div class="tr-crono"><span id="tr-crono">00:00</span><small>de ${String(p.min).padStart(2, "0")}:00</small><button class="btn" id="tr-crono-btn" type="button">Iniciar o bloco</button></div>
       <p class="tr-hoje-titulo">Como foi?</p><div class="tr-opcoes tr-aval">${[3, 2, 1].map(v => `<button type="button" data-ev="${v}">${NOTAS_AV[v]}</button>`).join("")}</div>${it.bpm ? `<p class="mudo">O andamento marcado no pulso quando você avaliar é o que eu guardo como alcançado.</p>` : ""}`, { botao: "Avalie o bloco", pronto: false });
