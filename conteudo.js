@@ -33,7 +33,10 @@ window.CMA = {
   // codigos: impressão digital (SHA-256) de cada código válido, nunca o código em si.
   //          Para criar um código novo, peça ao Claude ou gere o SHA-256 do código em MAIÚSCULAS.
   // paginaVendas: link da página de vendas. Vazio = o botão abre o WhatsApp do professor.
+  // livre: true = acesso total para todos, sem código e sem ordem obrigatória (unidades e semanas abertas).
+  //        Para voltar a cobrar, troque para false: os códigos abaixo continuam valendo.
   acesso: {
+    livre: true,
     gratis: ["escuta"],
     // codigos: plano COM acompanhamento (grupo ou mentoria): app completo + relatório para o professor.
     codigos: ["394eaaa12f8e1be16dbfaf1d373f3b5187ec2450c37b578fd5d9ccaa8490d428", "dc27a20c56efcee32b23c3b3d0110298c10f1ff2412ff50108f968022495160f", "7d654f52e6224d3ce4f0b54e5090b3f93478e0199034eb1ac203cf83aa72de41", "9d30d4b1245acf821f9fcdb8e99210d9d54ab96935f2c27867c4af414e2bc016"],

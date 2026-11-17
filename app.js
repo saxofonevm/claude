@@ -93,7 +93,7 @@
 
   // ---------- Acesso (versão grátis x completa) ----------
 
-  const ACESSO = CMA.acesso && Array.isArray(CMA.acesso.codigos) && CMA.acesso.codigos.length ? CMA.acesso : null;
+  const ACESSO = CMA.acesso && !CMA.acesso.livre && Array.isArray(CMA.acesso.codigos) && CMA.acesso.codigos.length ? CMA.acesso : null;
   const liberada = raiz => !ACESSO || estado.desbloqueado || (ACESSO.gratis || []).includes(raiz.id);
   const temBloqueio = () => RAIZES.some(r => !liberada(r));
 

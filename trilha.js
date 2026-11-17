@@ -23,6 +23,9 @@
   } catch { /* sem armazenamento */ }
   let REVISAR = false;
   try { REVISAR = localStorage.getItem("naipe.revisar") === "1"; } catch { /* segue desligado */ }
+  // Acesso total (conteudo.js, acesso.livre): tudo aberto para todos, salvando o progresso normalmente.
+  const LIVRE = !!(window.CMA && CMA.acesso && CMA.acesso.livre);
+  const ABERTO = REVISAR || LIVRE;
   let BETA = false;
   try { BETA = localStorage.getItem("naipe.beta") !== "0"; } catch { BETA = true; }
   window.NAIPE_BETA = BETA;
@@ -1602,7 +1605,7 @@
     if (ctx && ctx.state === "running") ctx.suspend();
   }
 
-  const completo = () => { try { return !!JSON.parse(localStorage.getItem("cma.v1") || "{}").desbloqueado; } catch { return false; } };
+  const completo = () => { if (LIVRE) return true; try { return !!JSON.parse(localStorage.getItem("cma.v1") || "{}").desbloqueado; } catch { return false; } };
 
   const ARTE = [
     '<svg viewBox="0 0 120 70" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M14 35h14"/><path d="M40 22q10 13 0 26"/><path d="M54 14q16 21 0 42"/><path d="M68 6q22 29 0 58"/></g><circle cx="98" cy="35" r="7" fill="currentColor"/></svg>',
@@ -1615,7 +1618,7 @@
     const passo = 92, pts = u.licoes.map((l, k) => [DESVIO[k % DESVIO.length] + 30, 46 + k * passo]);
     const curva = pts.map((pt, k) => k === 0 ? `M${pt[0]} ${pt[1]}` : `C${pts[k - 1][0]} ${pts[k - 1][1] + passo / 2} ${pt[0]} ${pt[1] - passo / 2} ${pt[0]} ${pt[1]}`).join(" ");
     return `<ol class="tr-caminho" style="height:${u.licoes.length * passo}px"><svg class="tr-fio" viewBox="0 0 120 ${u.licoes.length * passo}" preserveAspectRatio="none" aria-hidden="true"><path d="${curva}"/></svg>${u.licoes.map((l, k) => {
-      const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = REVISAR || (!paga && (feita || i === atual || atual === -1)), ehAtual = aberta && !feita && (!REVISAR || i === atual);
+      const i = LICOES.indexOf(l), feita = !!prog.feitas[l.id], aberta = ABERTO || (!paga && (feita || i === atual || atual === -1)), ehAtual = aberta && !feita && (!ABERTO || i === atual);
       const miolo = `<span class="tr-no" style="left:${DESVIO[k % DESVIO.length]}px">${feita ? "✓" : ehAtual ? "▶" : paga ? "★" : u.pilar || u.plano ? k + 1 : i + 1}</span><span class="tr-lic-txt"><strong>${esc(l.titulo)}</strong><small>${esc(l.resumo)}</small>${ehAtual ? `<em>Começar</em>` : ""}</span>`;
       return `<li class="${feita ? "feita" : ehAtual ? "atual" : aberta ? "livre" : "fechada"}" style="top:${k * passo}px">${aberta ? `<a href="#/trilha/${l.id}">${miolo}</a>` : `<div>${miolo}</div>`}</li>`;
     }).join("")}</ol>`;
@@ -1635,13 +1638,13 @@
     const htmlUn = UNIDADES.map((u, n) => {
       if (u.pilar || !!u.plano !== estudo) return "";
       const feitas = u.licoes.filter(l => prog.feitas[l.id]).length;
-      const paga = !REVISAR && n > 0 && !completo(), cor = CORES[n % CORES.length];
+      const paga = !ABERTO && n > 0 && !completo(), cor = CORES[n % CORES.length];
       const unAtual = atual < 0 ? -1 : UNIDADES.findIndex(x => x.licoes.includes(LICOES[atual]));
       const livreParaQuemToca = u.plano && prog.perfil === "toca";
-      const completa = unidadeCompleta(n), futura = !REVISAR && unAtual >= 0 && n > unAtual && !(livreParaQuemToca && (n === UNIDADES.indexOf(UNIDADES_PLANO[0]) || unidadeCompleta(n - 1)));
+      const completa = unidadeCompleta(n), futura = !ABERTO && unAtual >= 0 && n > unAtual && !(livreParaQuemToca && (n === UNIDADES.indexOf(UNIDADES_PLANO[0]) || unidadeCompleta(n - 1)));
       const primeiraDoPlano = n === UNIDADES.indexOf(UNIDADES_PLANO[0]);
       const estado = completa ? "Completa · toque para rever" : futura ? (u.plano ? (primeiraDoPlano ? "Abre ao concluir a Teoria" : "Abre ao concluir a semana anterior") : `Abre ao concluir a Unidade ${n}`) : `${feitas} de ${u.licoes.length} ${u.plano ? "sessões" : "lições"}`;
-      const faixa = `<div class="tr-faixa"><div><span class="rotulo">${u.plano ? `Mês ${Math.floor(UNIDADES_PLANO.indexOf(u) / 4) + 1}` : `Unidade ${n + 1}${n === 0 ? " · gratuita" : ""}`}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
+      const faixa = `<div class="tr-faixa"><div><span class="rotulo">${u.plano ? `Mês ${Math.floor(UNIDADES_PLANO.indexOf(u) / 4) + 1}` : `Unidade ${n + 1}${n === 0 && !LIVRE ? " · gratuita" : ""}`}</span><h2>${esc(u.titulo)}</h2><span class="tr-conta">${futura ? "🔒 " : completa ? "✓ " : ""}${estado}</span></div><span class="tr-arte">${ARTE[n % ARTE.length]}</span><div class="tr-barra-prog"><span style="width:${Math.round(feitas / u.licoes.length * 100)}%"></span></div>${futura ? "" : `<span class="tr-seta" aria-hidden="true">⌄</span>`}</div>`;
       if (futura) return `<section class="tr-unidade trancada" style="--u1:${cor[0]};--u2:${cor[1]}">${faixa}</section>`;
       return `<details class="tr-unidade" style="--u1:${cor[0]};--u2:${cor[1]}">
           <summary>${faixa}</summary>
@@ -1654,7 +1657,7 @@
     const unidades = htmlUn.join("");
     const modoTxt = REVISAR ? " · modo de revisão do professor" : "";
     if (estudo) {
-      const pl = estadoPlano(), teoriaFeita = PRINCIPAIS.filter(l => !l.sessao).every(l => prog.feitas[l.id]), bloqueado = !REVISAR && prog.perfil !== "toca" && !teoriaFeita;
+      const pl = estadoPlano(), teoriaFeita = PRINCIPAIS.filter(l => !l.sessao).every(l => prog.feitas[l.id]), bloqueado = !ABERTO && prog.perfil !== "toca" && !teoriaFeita;
       raiz().innerHTML = `
       <header class="cabecalho">
         <p class="sobretitulo">Estudo${modoTxt}</p>
@@ -1736,7 +1739,7 @@
     if (m) return renderMarco(Number(m[1]));
     const licao = LICOES.find(l => l.id === id);
     if (!licao) return renderTrilha();
-    if (!REVISAR && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = baseDe(licao); return; }
+    if (!ABERTO && UNIDADES.findIndex(u => u.licoes.includes(licao)) > 0 && !completo()) { location.hash = baseDe(licao); return; }
     limpar();
     sessao = { licao, i: 0, erros: 0 };
     if (licao.sessao) gerarSessao(licao);
