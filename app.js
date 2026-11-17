@@ -816,6 +816,7 @@
       <header class="cabecalho">
         ${(() => {
           const ant = telaAnterior();
+          if (/^#\/(estudo|trilha\/s\d)/.test(ant)) return `<a class="btn-voltar" href="${escapar(ant)}">${icone("voltar")}Voltar para o Estudo</a>`;
           const m = ant.match(/^#\/(raiz|ex)\/(.+)$/);
           if (!m) return `<a class="btn-voltar" href="#/metodos">${icone("voltar")}Métodos</a>`;
           const nome = m[1] === "raiz" ? (RAIZ[decodeURIComponent(m[2])] || {}).titulo : "o exercício";
@@ -828,6 +829,14 @@
       </header>
       <div class="corpo-metodos">
         ${href ? `<a class="btn primario largo" href="${escapar(href)}" target="_blank" rel="noopener">${icone("pdf")}Abrir o PDF</a>` : ""}
+        ${(() => {
+          const usos = (window.NaipeTrilha && window.NaipeTrilha.usos) ? window.NaipeTrilha.usos(chave) : [];
+          if (!usos.length) return "";
+          return `<section class="cartao metodo-no-estudo"><h2>${icone("calendario")}No plano de estudos</h2>
+            <p class="mudo">Este método faz parte do plano da aba Estudo. O professor virtual indica o exercício e o andamento de cada sessão.</p>
+            <ul>${usos.map(u => `<li><strong>${escapar(u.nome)}</strong> <small>${escapar(u.modulos.join(", "))}</small><span>${u.itens.map(i => escapar(i.onde)).join(" · ")}</span></li>`).join("")}</ul>
+            <a class="link-acao" href="#/estudo">Ir para o Estudo</a></section>`;
+        })()}
         ${porRaiz.map(({ raiz, itens }) => `<section class="cartao grupo-raiz" style="${corRaiz(raiz)}">
           <a class="grupo-topo" href="#/raiz/${encodeURIComponent(raiz.id)}"><span class="mini-ilus">${ilustracao(raiz.icone)}</span><h2>${escapar(raiz.titulo)}</h2>${icone("seta")}</a>
           ${htmlIndicacoes(itens, { mostrarLivro: false, mostrarRamo: "ramo" })}

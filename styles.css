@@ -2018,3 +2018,19 @@ details.tr-rep-estilo > p { margin: 0 4px 10px; }
 @media (prefers-reduced-motion: reduce) {
   .met-luz.bate.forte { transform: none; }
 }
+
+/* ---------- Estudo ↔ Biblioteca de métodos ---------- */
+.tr-livro-link { background: none; border: 0; padding: 0; font: inherit; color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--ok, #3dffb0) 70%, transparent); text-underline-offset: 3px; cursor: pointer; text-align: left; }
+.tr-livro-link:hover, .tr-livro-link:focus-visible { color: var(--ok, #3dffb0); }
+dialog.tr-ficha { width: min(520px, calc(100% - 24px)); max-height: 85vh; border: 0; border-radius: 22px; padding: 0; background: var(--bg, #04170f); color: var(--text); box-shadow: 0 0 0 1px var(--line), 0 24px 60px rgb(0 0 0 / .6); }
+dialog.tr-ficha::backdrop { background: rgb(0 0 0 / .6); -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); }
+.tr-ficha-corpo { padding: 18px; display: flex; flex-direction: column; gap: 12px; overflow: auto; }
+.tr-ficha-topo { display: flex; justify-content: space-between; align-items: center; }
+.tr-ficha h2 { margin: 0; font-size: 1.4rem; }
+.tr-ficha-usos { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.tr-ficha-usos li, .metodo-no-estudo li { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border-radius: 12px; background: var(--surface); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.tr-ficha-usos small, .metodo-no-estudo small { color: var(--ok, #3dffb0); font-size: .78rem; }
+.tr-ficha-usos span, .metodo-no-estudo li span { color: var(--muted); font-size: .85rem; }
+.metodo-no-estudo ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.metodo-no-estudo h2 { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin: 0; }
+.metodo-no-estudo h2 .ic, .metodo-no-estudo h2 svg { width: 20px; height: 20px; }

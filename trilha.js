@@ -1826,6 +1826,35 @@
     htmlAntesDepois().then(h => { const el = $("#tr-antes"); if (el) el.innerHTML = h; });
   }
 
+  // ---------- Ponte com a Biblioteca de métodos ----------
+  // Em que trilhos e módulos do plano cada livro aparece.
+  function usosDoLivro(id) {
+    const out = [];
+    for (const [tid, tr] of Object.entries(TRILHOS)) {
+      const itens = tr.itens.filter(it => it[0] === id);
+      if (!itens.length) continue;
+      const mods = MODULOS.filter(md => SEMANAS.slice(md.de, md.ate).some(sem => sem.sessoes.some(b => b.some(([t]) => t === tid)))).map(md => md.nome);
+      out.push({ trilho: tid, nome: tr.nome, modulos: mods, itens: itens.map(it => ({ onde: it[1], oque: it[2] })) });
+    }
+    return out;
+  }
+  // Ficha do método aberta por cima da sessão, sem perder o progresso.
+  function abrirFicha(id, podeSair) {
+    const l = livroInfo(id), url = urlPdf(id), usos = usosDoLivro(id);
+    let d = document.getElementById("tr-ficha");
+    if (!d) { d = document.createElement("dialog"); d.id = "tr-ficha"; d.className = "tr-ficha"; document.body.appendChild(d); d.addEventListener("click", ev => { if (ev.target === d || ev.target.closest("[data-fechar]") || ev.target.closest('a[href^="#"]')) d.close(); }); window.addEventListener("hashchange", () => { if (d.open) d.close(); }); }
+    d.innerHTML = `<div class="tr-ficha-corpo"><div class="tr-ficha-topo"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><button class="link-acao" type="button" data-fechar>Fechar</button></div>
+      <h2>${esc(l.titulo)}</h2>${l.nota ? `<p class="mudo">${esc(l.nota)}</p>` : ""}
+      ${url ? `<a class="btn primario largo" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}
+      ${usos.length ? `<p class="tr-hoje-titulo">No seu plano de estudos</p><ul class="tr-ficha-usos">${usos.map(u => `<li><strong>${esc(u.nome)}</strong><small>${esc(u.modulos.join(", "))}</small><span>${u.itens.map(i => esc(i.onde)).join(" · ")}</span></li>`).join("")}</ul>` : ""}
+      ${podeSair ? `<a class="btn largo" href="#/metodo/${encodeURIComponent(id)}">Ver na Biblioteca de métodos</a>` : `<p class="mudo">A página completa do método fica na Biblioteca de métodos, em Pilares. Abra depois da sessão para não perder os blocos já avaliados.</p>`}
+    </div>`;
+    if (d.showModal) d.showModal(); else d.setAttribute("open", "");
+  }
+  function ligarFichas(podeSair) {
+    raiz().querySelectorAll("[data-ficha]").forEach(b => b.addEventListener("click", ev => { ev.preventDefault(); abrirFicha(b.dataset.ficha, podeSair); }));
+  }
+
   // Repertório essencial: as músicas que todo saxofonista toca, com partitura e playback do acervo.
   const NIVEIS = { 1: "Primeiras músicas", 2: "Intermediário", 3: "Desafio" };
   function htmlRepertorio() {
@@ -2252,8 +2281,9 @@
     const nome = nomeAluno().split(" ")[0];
     const total = se.blocos.reduce((a, b) => a + b[1], 0);
     const ultima = pl.ultima && pl.ultima.recados && pl.ultima.recados.length ? `<p>Da última sessão:</p><ul class="tr-recados">${pl.ultima.recados.map(r => `<li>${esc(r)}</li>`).join("")}</ul>` : `<p>${esc(un.texto)}</p>`;
-    const linhas = se.blocos.map(([t, min]) => { const it = itemAtual(t), l = livroInfo(it.livro); return `<li><span><strong>${esc(TRILHOS[t].nome)}</strong><small>${esc(l.titulo)} · ${esc(it.onde)}${it.inicio ? ` · ♩ ${it.inicio}` : ""}</small></span><b>${min} min</b></li>`; }).join("");
+    const linhas = se.blocos.map(([t, min]) => { const it = itemAtual(t), l = livroInfo(it.livro), rep = musicaRep(it.livro); return `<li><span><strong>${esc(TRILHOS[t].nome)}</strong><small>${rep ? esc(l.titulo) : `<button type="button" class="tr-livro-link" data-ficha="${esc(it.livro)}">${esc(l.titulo)}</button>`} · ${esc(it.onde)}${it.inicio ? ` · ♩ ${it.inicio}` : ""}</small></span><b>${min} min</b></li>`; }).join("");
     moldura(`<p class="sobretitulo">Semana ${se.semana + 1} · ${esc(un.foco)}</p><h2>${esc(licao.titulo)}</h2><div class="tr-recado"><span class="rotulo">Recado do professor</span><p>${nome ? `${esc(nome)}, ` : ""}${pl.n ? `esta é a sua sessão número ${pl.n + 1} do plano.` : "vamos começar o seu plano de estudos."}</p>${ultima}</div><p class="tr-hoje-titulo">Hoje, cerca de ${total} minutos:</p><ol class="tr-plano-hoje">${linhas}</ol><p class="mudo">Deixe o sax montado e os PDFs à mão. Cada bloco abre o método na página certa.</p>`, { botao: "Começar a sessão" });
+    ligarFichas(true);
   }
 
   function passoBloco(p) {
@@ -2261,10 +2291,11 @@
     const rep = musicaRep(it.livro);
     if (it.inicio) { prog.bpm = it.inicio; salvar(); }
     moldura(`<p class="sobretitulo">Bloco ${p.k + 1} de ${nb} · cerca de ${p.min} min</p><h2>${esc(tr.nome)}</h2>
-      <div class="tr-bloco"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><strong>${esc(l.titulo)}</strong><p class="tr-bloco-onde">${esc(rep ? fonteTxt(rep) || it.onde : it.onde)}</p><p>${esc(it.oque)}</p>${rep ? linksMusica(rep, true) : url ? `<a class="btn primario" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}</div>
+      <div class="tr-bloco"><span class="rotulo">${esc(l.autor || "Material de apoio")}</span><strong>${rep ? esc(l.titulo) : `<button type="button" class="tr-livro-link" data-ficha="${esc(it.livro)}">${esc(l.titulo)}</button>`}</strong><p class="tr-bloco-onde">${esc(rep ? fonteTxt(rep) || it.onde : it.onde)}</p><p>${esc(it.oque)}</p>${rep ? linksMusica(rep, true) : url ? `<a class="btn primario" href="${esc(url)}" target="_blank" rel="noopener">Abrir o PDF</a>` : ""}</div>
       ${it.bpm ? `<p class="tr-meta-bpm">Comece em <b>${it.inicio}</b> · meta <b>${it.bpm[1]}</b>. Suba de 4 em 4 quando sair limpo.</p>${htmlPulso(true)}` : ""}
       <div class="tr-crono"><span id="tr-crono">00:00</span><small>de ${String(p.min).padStart(2, "0")}:00</small><button class="btn" id="tr-crono-btn" type="button">Iniciar o bloco</button></div>
       <p class="tr-hoje-titulo">Como foi?</p><div class="tr-opcoes tr-aval">${[3, 2, 1].map(v => `<button type="button" data-ev="${v}">${NOTAS_AV[v]}</button>`).join("")}</div>${it.bpm ? `<p class="mudo">O andamento marcado no pulso quando você avaliar é o que eu guardo como alcançado.</p>` : ""}`, { botao: "Avalie o bloco", pronto: false });
+    ligarFichas(false);
     ativarPulso();
     let ini = 0, acum = 0, tick = 0;
     const mostra = () => { const sg = Math.floor((acum + (ini ? Date.now() - ini : 0)) / 1000), el = $("#tr-crono"); if (el) el.textContent = `${String(Math.floor(sg / 60)).padStart(2, "0")}:${String(sg % 60).padStart(2, "0")}`; if (ini && sg === p.min * 60) { somRetorno(true); const r = $("#tr-retorno"); if (r && !r.textContent) { r.textContent = "Tempo do bloco completo. Avalie quando terminar."; r.className = "tr-retorno ok"; } } };
@@ -2478,5 +2509,5 @@
   }
 
   window.addEventListener("hashchange", () => { if (!/^#\/(trilha|estudo)/.test(location.hash)) limpar(); });
-  window.NaipeTrilha = { render: (id, modo) => (id ? renderLicao(id) : renderTrilha(modo)), inicio: cartaoInicio, aba: abaDe };
+  window.NaipeTrilha = { render: (id, modo) => (id ? renderLicao(id) : renderTrilha(modo)), inicio: cartaoInicio, aba: abaDe, usos: usosDoLivro };
 })();
