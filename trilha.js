@@ -1489,6 +1489,7 @@
   // ---------- Áudio ----------
   let ctx = null;
   function audio() {
+    if (!mic.stream && window.NaipeMic) window.NaipeMic.sessao("playback"); // toca mesmo com o iPhone no silencioso
     if (!ctx) { const C = window.AudioContext || window.webkitAudioContext; ctx = new C(); }
     if (ctx.state === "suspended") ctx.resume();
     return ctx;
@@ -1555,7 +1556,7 @@
   }
 
   // ---------- Microfone ----------
-  const mic = { stream: null, an: null, buf: null, raf: 0 };
+  const mic = { stream: null, an: null, buf: null, raf: 0, ctx: null, erro: null };
   function detectar(buf, sr) {
     let rms = 0;
     for (let i = 0; i < buf.length; i++) rms += buf[i] * buf[i];
@@ -1570,25 +1571,28 @@
     return sr / (a ? pos - b / (2 * a) : pos);
   }
   async function ligarMic() {
-    if (mic.stream) return true;
+    if (mic.stream && mic.an) return true;
+    mic.erro = null;
     try {
-      mic.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    } catch { return false; }
-    const a = audio();
-    mic.an = a.createAnalyser(); mic.an.fftSize = 2048; mic.buf = new Float32Array(2048);
-    a.createMediaStreamSource(mic.stream).connect(mic.an);
-    return true;
+      mic.stream = await window.NaipeMic.abrir();
+      const r = await window.NaipeMic.analisador(mic.stream, audio(), 2048);
+      mic.an = r.an; mic.ctx = r.ctx; mic.proprio = !!r.proprio; mic.buf = new Float32Array(2048);
+      return true;
+    } catch (err) {
+      mic.erro = err; desligarMic(); return false;
+    }
   }
   function desligarMic() {
     cancelAnimationFrame(mic.raf);
     if (mic.stream) mic.stream.getTracks().forEach(t => t.stop());
-    mic.stream = mic.an = null;
+    if (mic.proprio && mic.ctx) mic.ctx.close().catch(() => {});
+    mic.stream = mic.an = mic.ctx = null; mic.proprio = false;
   }
   // Classe da nota ouvida, já convertida para a nota ESCRITA do sax (0 = Dó … 11 = Si), ou -1.
   function notaOuvida() {
     if (!mic.an) return -1;
     mic.an.getFloatTimeDomainData(mic.buf);
-    const f = detectar(mic.buf, ctx.sampleRate);
+    const f = detectar(mic.buf, (mic.ctx || ctx).sampleRate);
     if (!(f > 60 && f < 1600)) return -1;
     const real = Math.round(69 + 12 * Math.log2(f / 440));
     return (((real + (saxDoApp() === "Sib" ? 2 : 9)) % 12) + 12) % 12;
@@ -1942,9 +1946,12 @@
     raiz().querySelectorAll(".tr-sax button").forEach(b => b.addEventListener("click", () => { prog.sax = b.dataset.sax; salvar(); b.parentNode.querySelectorAll("button").forEach(x => x.classList.toggle("ativo", x === b)); }));
     $("#tr-pular").addEventListener("click", () => liberar("Tudo bem. Volte a esta lição com o sax na mão.", false));
     $("#tr-mic").addEventListener("click", async () => {
-      audio();
-      if (!(await ligarMic())) { $("#tr-ouvindo").textContent = "Não consegui usar o microfone. Libere o acesso nas permissões do navegador."; return; }
-      $("#tr-mic").hidden = true; aoLigar();
+      const b = $("#tr-mic"); audio(); b.disabled = true; b.textContent = "Ligando…";
+      const ok = await ligarMic();
+      if (!$("#tr-mic")) return;
+      b.disabled = false; b.textContent = "Tentar de novo";
+      if (!ok) { const o = $("#tr-ouvindo"); o.innerHTML = window.NaipeMic.htmlAviso(mic.erro); return; }
+      b.hidden = true; aoLigar();
     });
   }
   const NOMES = ["Dó", "Dó♯", "Ré", "Mi♭", "Mi", "Fá", "Fá♯", "Sol", "Sol♯", "Lá", "Si♭", "Si"];
@@ -2014,7 +2021,7 @@
   function freqOuvida() {
     if (!mic.an) return -1;
     mic.an.getFloatTimeDomainData(mic.buf);
-    const f = detectar(mic.buf, ctx.sampleRate);
+    const f = detectar(mic.buf, (mic.ctx || ctx).sampleRate);
     return f > 60 && f < 1600 ? f : -1;
   }
   // modo "reto": 3 s de som sem oscilar. modo "vibrato": 3 s com ondulação regular da afinação.
@@ -2232,9 +2239,10 @@
     botao.addEventListener("click", async () => {
       if (rec.mr && rec.mr.state === "recording") return pararRec();
       if (!window.MediaRecorder) { txt.textContent = "Este navegador não grava áudio."; return; }
-      try { rec.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } }); }
-      catch { txt.textContent = "Não consegui usar o microfone. Libere o acesso nas permissões do navegador."; return; }
-      rec.partes = []; rec.mr = new MediaRecorder(rec.stream);
+      try { rec.stream = await window.NaipeMic.abrir(); }
+      catch (err) { txt.innerHTML = window.NaipeMic.htmlAviso(err); return; }
+      rec.partes = [];
+      try { rec.mr = new MediaRecorder(rec.stream); } catch { rec.stream.getTracks().forEach(t => t.stop()); txt.textContent = "Este navegador não grava áudio. Atualize o navegador do celular."; return; }
       rec.mr.ondataavailable = e => { if (e.data.size) rec.partes.push(e.data); };
       rec.mr.onstop = async () => {
         botao.classList.remove("gravando");

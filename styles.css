@@ -1985,3 +1985,9 @@ details.tr-rep-estilo > p { margin: 0 4px 10px; }
 .moderno .tr-mod-prog::after { background: var(--ouro); box-shadow: 0 0 10px rgb(233 196 92 / .5); }
 .moderno .tr-repertorio .tr-mod-prog::after { background: var(--ametista); box-shadow: 0 0 10px rgb(194 155 255 / .5); }
 .moderno .tr-rep-lista li.tenho { box-shadow: 0 0 0 1px rgb(61 255 176 / .35), 0 0 18px -8px var(--neon); }
+
+/* ---------- Aviso do microfone (motivo e como liberar) ---------- */
+.mic-aviso { display: flex; flex-direction: column; gap: 4px; text-align: left; padding: 12px 14px; border-radius: 14px; background: color-mix(in srgb, var(--warn, #ffc857) 12%, transparent); border: 1px solid color-mix(in srgb, var(--warn, #ffc857) 45%, transparent); color: var(--text); font-size: .9rem; line-height: 1.4; }
+.mic-aviso strong { color: var(--warn, #ffc857); font-size: .95rem; }
+#af-erro { margin-top: 10px; }
+#grav-aviso:not(:empty) { margin: 8px 0; }

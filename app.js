@@ -1098,6 +1098,7 @@
             <button class="btn primario grav-btn" id="grav-btn" type="button">${icone("microfone")}Gravar</button>
             <div class="grav-status" id="grav-status" hidden><span class="grav-ponto"></span><span id="grav-tempo">0:00</span><span class="grav-nivel"><span id="grav-nivel"></span></span></div>
           </div>
+          <div id="grav-aviso"></div>
           <div id="grav-lista"></div>
         </div>
 
@@ -1955,7 +1956,9 @@
     const suporte = tipoGravacao() !== null && navigator.mediaDevices && navigator.mediaDevices.getUserMedia;
     if (!suporte) {
       $("#grav-btn").disabled = true;
-      $("#grav-lista").innerHTML = `<p class="mudo">Este navegador não permite gravar. Atualize o navegador do celular.</p>`;
+      $("#grav-lista").innerHTML = navigator.mediaDevices && navigator.mediaDevices.getUserMedia
+        ? `<p class="mudo">Este navegador não permite gravar. Atualize o navegador do celular.</p>`
+        : window.NaipeMic.htmlAviso({ name: "SemSuporte" });
       return;
     }
     atualizarBotaoGrav();
@@ -1992,15 +1995,21 @@
 
   async function iniciarGravacao(exId) {
     pararAudioGrav();
+    const st = $("#grav-aviso"); if (st) st.innerHTML = "";
     try {
-      grav.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-    } catch {
-      avisar(NA_PREVIA ? AVISO_PREVIA : "Permita o uso do microfone para gravar.");
+      grav.stream = await window.NaipeMic.abrir();
+    } catch (err) {
+      const m = window.NaipeMic.mensagem(err);
+      avisar(m.titulo);
+      const caixa = $("#grav-aviso"); if (caixa) caixa.innerHTML = window.NaipeMic.htmlAviso(err);
       return;
     }
     const tipo = tipoGravacao();
     try { grav.rec = tipo ? new MediaRecorder(grav.stream, { mimeType: tipo }) : new MediaRecorder(grav.stream); }
-    catch { grav.rec = new MediaRecorder(grav.stream); }
+    catch {
+      try { grav.rec = new MediaRecorder(grav.stream); }
+      catch { grav.stream.getTracks().forEach(t => t.stop()); grav.stream = null; avisar("Este navegador não grava áudio. Atualize o navegador do celular."); return; }
+    }
     grav.partes = [];
     grav.ex = exId;
     grav.rec.ondataavailable = e => { if (e.data && e.data.size) grav.partes.push(e.data); };
@@ -2011,10 +2020,8 @@
     abaixarRadio(true);
     // medidor de volume
     try {
-      grav.ctx = new (window.AudioContext || window.webkitAudioContext)();
-      const fonte = grav.ctx.createMediaStreamSource(grav.stream);
-      grav.analisador = grav.ctx.createAnalyser(); grav.analisador.fftSize = 512;
-      fonte.connect(grav.analisador);
+      const r = await window.NaipeMic.analisador(grav.stream, null, 512);
+      grav.ctx = r.ctx; grav.analisador = r.an;
     } catch { grav.analisador = null; }
     const dados = new Uint8Array(512);
     grav.timer = setInterval(() => {
@@ -2096,7 +2103,7 @@
   $("#exercicio-conteudo").addEventListener("click", async ev => {
     const exId = rotaAtual.id;
     if (ev.target.closest("#grav-btn")) {
-      if (grav.gravando) pararGravacao(); else iniciarGravacao(exId);
+      if (grav.gravando) pararGravacao(); else if (!grav.abrindo) { grav.abrindo = true; try { await iniciarGravacao(exId); } finally { grav.abrindo = false; } }
       return;
     }
     const tocar = ev.target.closest("[data-grav-tocar]");
@@ -2419,22 +2426,31 @@
   }
 
   async function ligarAfinador() {
-    try {
-      afin.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } });
-      const st = afin.stream; // um minuto de afinador ligado conta como aquecimento
-      setTimeout(() => { if (afin.stream === st && st.active) marcarPasso("aq"); }, 60000);
-    } catch {
-      avisar(NA_PREVIA ? AVISO_PREVIA : "Libere o microfone para usar o afinador.");
-      return;
-    }
+    const aviso = $("#af-erro"); if (aviso) { aviso.hidden = true; aviso.innerHTML = ""; }
+    const mostrarErro = err => {
+      if (afin.stream) afin.stream.getTracks().forEach(t => t.stop());
+      afin.stream = null;
+      const caixa = $("#af-erro");
+      if (caixa) { caixa.innerHTML = window.NaipeMic.htmlAviso(err); caixa.hidden = false; }
+      else avisar(window.NaipeMic.mensagem(err).titulo);
+      $("#af-dica").textContent = "";
+    };
+    // Cria o contexto ainda dentro do toque: no iPhone ele só pode começar a partir de um gesto.
     const Ctx = window.AudioContext || window.webkitAudioContext;
-    afin.ctx = new Ctx();
-    await afin.ctx.resume();
-    const src = afin.ctx.createMediaStreamSource(afin.stream);
-    afin.an = afin.ctx.createAnalyser();
-    afin.an.fftSize = 2048;
+    let ctxGesto = null;
+    try { ctxGesto = new Ctx(); ctxGesto.resume().catch(() => {}); } catch { /* cria depois */ }
+    $("#af-dica").textContent = "Ligando o microfone…";
+    try {
+      afin.stream = await window.NaipeMic.abrir();
+    } catch (err) { if (ctxGesto) ctxGesto.close().catch(() => {}); mostrarErro(err); return; }
+    const st = afin.stream; // um minuto de afinador ligado conta como aquecimento
+    setTimeout(() => { if (afin.stream === st && st.active) marcarPasso("aq"); }, 60000);
+    try {
+      const r = await window.NaipeMic.analisador(afin.stream, ctxGesto, 2048);
+      if (r.ctx !== ctxGesto && ctxGesto) ctxGesto.close().catch(() => {});
+      afin.ctx = r.ctx; afin.an = r.an;
+    } catch (err) { if (ctxGesto) ctxGesto.close().catch(() => {}); mostrarErro(err); return; }
     afin.buf = new Float32Array(afin.an.fftSize);
-    src.connect(afin.an);
     afin.ligado = true; afin.suave = null;
     $("#af-ligar").innerHTML = `${icone("stop")}Parar afinador`;
     $("#af-dica").textContent = "Toque uma nota longa";
@@ -2457,7 +2473,12 @@
     $("#af-sax").value = estado.sax || "";
     dlgAf.showModal();
   }
-  $("#af-ligar").addEventListener("click", () => (afin.ligado ? desligarAfinador() : ligarAfinador()));
+  $("#af-ligar").addEventListener("click", async () => {
+    if (afin.ligado) return desligarAfinador();
+    if (afin.ligando) return;
+    afin.ligando = true; $("#af-ligar").disabled = true;
+    try { await ligarAfinador(); } finally { afin.ligando = false; $("#af-ligar").disabled = false; }
+  });
   $("#af-fechar").addEventListener("click", () => dlgAf.close());
   dlgAf.addEventListener("close", desligarAfinador);
   $("#btn-afinador-inicio").addEventListener("click", abrirAfinador);
