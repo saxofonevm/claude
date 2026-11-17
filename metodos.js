@@ -66,6 +66,12 @@ window.CMA_METODOS = {
     "intervalos-tv": {"titulo": "Intervalos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-intervalos.pdf", "nota": "Caderno do Naipe: terças a oitavas em seis tons.", "paginas": "pdf"},
     "som-tv": {"titulo": "Som e articulação", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-som-articulacao.pdf", "nota": "Caderno do Naipe: notas longas, dinâmica, harmônicos e doze padrões de articulação.", "paginas": "pdf"},
     "ritmica-tv": {"titulo": "Leitura rítmica", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-leitura-ritmica.pdf", "nota": "Caderno do Naipe: das figuras básicas às levadas brasileiras e ao swing.", "paginas": "pdf"},
+    "estilos-tv": {"titulo": "Estudos no estilo dos mestres", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-estudos-estilo.pdf", "nota": "Caderno do Naipe: sete estudos originais (Parker, Coltrane, Getz, Cannonball, Webster, Sanborn, Pixinguinha). Sax alto nas pág. 1–3, sax tenor nas pág. 4–6.", "paginas": "pdf"},
+    "solos-tv": {"titulo": "Os solos que todo saxofonista precisa ouvir", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-guia-solos.pdf", "nota": "Guia do Naipe: 24 solos essenciais, como transcrever de ouvido e a tonalidade de cada sax.", "paginas": "pdf"},
+    "rollins-solos": {"titulo": "Improvised Saxophone Solos", "autor": "Sonny Rollins", "arquivo": "1FSTUisoqj1rUlqUXl8BD9axh89IScsHm", "nota": "Acervo do Naipe: solos de Sonny Rollins transcritos.", "paginas": "pdf"},
+    "coltrane-solos": {"titulo": "Improvised Saxophone Solos", "autor": "John Coltrane", "arquivo": "1vQO0NC89dYvAcQSWTTbt_jmfxeOIHiMc", "nota": "Acervo do Naipe: solos de John Coltrane transcritos.", "paginas": "pdf"},
+    "coltrane-padroes": {"titulo": "Patterns", "autor": "John Coltrane", "arquivo": "1Y6QYOJHjMpzwkk_PIYUG2Fj17SF2TkGv", "nota": "Acervo do Naipe: padrões melódicos de Coltrane.", "paginas": "pdf"},
+    "giant-steps-trans": {"titulo": "Giant Steps (transcrição)", "autor": "Michael Brecker e Bob Mintzer", "arquivo": "1WG5lpkTS_PIISa_nYlrbxnOdA-mENlv1", "nota": "Acervo do Naipe: transcrição de Giant Steps.", "paginas": "pdf"},
     "guia-wave": {"titulo": "Como estudar qualquer música sozinho (Wave)", "autor": "Tiago Veloso", "arquivo": "1fAGtsNO1tz91lKzw8syRln23zSL9V3Hz", "nota": "Guia de estudo do CMA: ouvir, cantar, fatiar e tocar.", "paginas": "pdf"}
   },
 
@@ -328,7 +334,15 @@ window.CMA_METODOS = {
     ["som-tv", "pág. 4–5", "Doze padrões de articulação", "art-basicas"],
     ["ritmica-tv", "pág. 1–4", "Leitura rítmica: das semínimas às tercinas e síncopes", "ritmo-base"],
     ["ritmica-tv", "pág. 5", "6/8 e levadas brasileiras: baião, maxixe, samba, xote e frevo", "ritmo-samba-choro"],
-    ["ritmica-tv", "pág. 6", "Colcheias com swing", "ritmo-swing"]
+    ["ritmica-tv", "pág. 6", "Colcheias com swing", "ritmo-swing"],
+    ["solos-tv", "pág. 1–2", "Os 24 solos de saxofone que todo saxofonista precisa ouvir", "escuta-saxofonistas"],
+    ["solos-tv", "pág. 2–3", "Como transcrever um solo de ouvido, passo a passo", "orn-popular"],
+    ["estilos-tv", "alto pág. 1–3 · tenor pág. 4–6", "Estudos no estilo de Parker, Coltrane, Getz, Cannonball, Webster, Sanborn e Pixinguinha", "escuta-saxofonistas"],
+    ["estilos-tv", "alto pág. 1–3 · tenor pág. 4–6", "Linguagem do bebop, bossa, soul, balada, smooth e choro", "orn-popular"],
+    ["rollins-solos", "Todo o livro", "Solos de Sonny Rollins transcritos (acervo)", "escuta-saxofonistas"],
+    ["coltrane-solos", "Todo o livro", "Solos de John Coltrane transcritos (acervo)", "escuta-saxofonistas"],
+    ["coltrane-padroes", "Todo o livro", "Padrões melódicos de John Coltrane (acervo)", "orn-popular"],
+    ["giant-steps-trans", "Todo o material", "Transcrição de Giant Steps (acervo)", "orn-popular"]
   ],
 
   // Acervo de partituras e playbacks (pastas do Drive), mostrado na aba Métodos.
