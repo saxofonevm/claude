@@ -2034,3 +2034,22 @@ dialog.tr-ficha::backdrop { background: rgb(0 0 0 / .6); -webkit-backdrop-filter
 .metodo-no-estudo ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .metodo-no-estudo h2 { display: flex; align-items: center; gap: 8px; font-size: 1.15rem; margin: 0; }
 .metodo-no-estudo h2 .ic, .metodo-no-estudo h2 svg { width: 20px; height: 20px; }
+
+/* ---------- Registro de prática: foco, andamento máximo e gravação rápida ---------- */
+.s-foco { display: flex; gap: 8px; }
+.s-foco button { flex: 1; min-height: 44px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--line) 90%, transparent); background: var(--surface); color: var(--text); font: inherit; font-weight: 700; font-size: 1.05rem; cursor: pointer; }
+.s-foco button.ativo { background: var(--ok, #3dffb0); color: #04170f; border-color: transparent; box-shadow: 0 0 14px rgb(61 255 176 / .4); }
+.s-bpm-linha { display: flex; gap: 8px; align-items: stretch; }
+.s-bpm-linha input { flex: 0 0 96px; min-width: 0; }
+.s-bpm-linha .btn { flex: 1; font-size: .85rem; padding: 8px 10px; }
+.s-grav { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.s-grav .btn { display: inline-flex; align-items: center; gap: 8px; }
+.s-grav-ponto { width: 12px; height: 12px; border-radius: 50%; background: var(--danger, #ff6b8a); }
+#s-grav-btn.gravando .s-grav-ponto { animation: s-grav-pisca 1s steps(2) infinite; }
+@keyframes s-grav-pisca { 50% { opacity: .2; } }
+.s-grav-tempo { font-variant-numeric: tabular-nums; color: var(--muted); font-size: .9rem; }
+#s-grav-audio { width: 100%; margin-top: 8px; }
+.sessao-extra { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.sessao-chip { display: inline-flex; align-items: center; gap: 4px; font-size: .78rem; font-weight: 600; padding: 3px 9px; border-radius: 99px; background: var(--surface-2, var(--surface)); color: var(--text); border: 1px solid color-mix(in srgb, var(--line) 70%, transparent); font-family: inherit; }
+.sessao-ouvir { cursor: pointer; color: var(--ok, #3dffb0); }
+.sessao-ouvir svg { width: 14px; height: 14px; }

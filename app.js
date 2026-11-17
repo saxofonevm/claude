@@ -1549,7 +1549,8 @@
   // ---------- Registro de sessão ----------
 
   const dlg = $("#dlg-sessao");
-  let edicao = { id: null, doTimer: false, avaliacao: 0 };
+  let edicao = { id: null, doTimer: false, avaliacao: 0, foco: 0, gravBlob: null, gravDur: 0, gravTinha: false, gravApagar: false };
+  const FOCOS = ["Disperso", "Pouco focado", "Médio", "Focado", "Totalmente focado"];
 
   $("#s-raiz").insertAdjacentHTML("beforeend", RAIZES.map((r, i) =>
     `<option value="${escapar(r.id)}">${i + 1}. ${escapar(r.titulo)}</option>`).join(""));
@@ -1580,9 +1581,73 @@
     renderAvaliacao();
   });
 
+  // Foco (1 a 5), andamento máximo e gravação rápida da prática
+  function renderFoco() {
+    $("#s-foco").innerHTML = FOCOS.map((f, i) => `<button type="button" data-f="${i + 1}" class="${edicao.foco === i + 1 ? "ativo" : ""}" aria-pressed="${edicao.foco === i + 1}" aria-label="Foco ${i + 1} de 5: ${f}">${i + 1}</button>`).join("");
+    $("#s-foco-texto").textContent = edicao.foco ? `· ${FOCOS[edicao.foco - 1]}` : "";
+  }
+  $("#s-foco").addEventListener("click", ev => {
+    const b = ev.target.closest("button"); if (!b) return;
+    const v = Number(b.dataset.f); edicao.foco = edicao.foco === v ? 0 : v; renderFoco();
+  });
+  function rotuloBpmMet() { $("#s-bpm-met").textContent = `Usar ${estado.metronomo.bpm} do metrônomo`; }
+  $("#s-bpm-met").addEventListener("click", () => { $("#s-bpm").value = estado.metronomo.bpm; });
+
+  const sGrav = { rec: null, stream: null, partes: [], t: 0, ini: 0, url: null };
+  function mostrarGravSessao() {
+    const a = $("#s-grav-audio"), tem = !!(edicao.gravBlob || (edicao.gravTinha && !edicao.gravApagar));
+    if (sGrav.url) { URL.revokeObjectURL(sGrav.url); sGrav.url = null; }
+    if (edicao.gravBlob) { sGrav.url = URL.createObjectURL(edicao.gravBlob); a.src = sGrav.url; }
+    a.hidden = !tem;
+    $("#s-grav-apagar").hidden = !tem;
+    $("#s-grav-rot").textContent = tem ? "Gravar de novo" : "Gravar";
+  }
+  function pararGravSessao(descartar) {
+    clearInterval(sGrav.t);
+    if (sGrav.rec && sGrav.rec.state !== "inactive") { sGrav.descartar = !!descartar; sGrav.rec.stop(); }
+    if (sGrav.stream) sGrav.stream.getTracks().forEach(t => t.stop());
+    sGrav.stream = null;
+    $("#s-grav-btn").classList.remove("gravando");
+  }
+  $("#s-grav-btn").addEventListener("click", async () => {
+    if (sGrav.rec && sGrav.rec.state === "recording") return pararGravSessao(false);
+    $("#s-grav-aviso").innerHTML = "";
+    const tipo = tipoGravacao();
+    if (tipo === null) { $("#s-grav-aviso").innerHTML = `<p class="mudo">Este navegador não grava áudio. Atualize o navegador do celular.</p>`; return; }
+    try { sGrav.stream = await window.NaipeMic.abrir(); }
+    catch (err) { $("#s-grav-aviso").innerHTML = window.NaipeMic.htmlAviso(err); return; }
+    try { sGrav.rec = tipo ? new MediaRecorder(sGrav.stream, { mimeType: tipo }) : new MediaRecorder(sGrav.stream); }
+    catch { sGrav.rec = new MediaRecorder(sGrav.stream); }
+    sGrav.partes = []; sGrav.descartar = false;
+    sGrav.rec.ondataavailable = e => { if (e.data && e.data.size) sGrav.partes.push(e.data); };
+    sGrav.rec.onstop = () => {
+      const dur = (Date.now() - sGrav.ini) / 1000;
+      if (sGrav.descartar || !sGrav.partes.length) return;
+      if (dur < 1) { $("#s-grav-aviso").innerHTML = `<p class="mudo">A gravação ficou curta demais. Tente de novo.</p>`; return; }
+      edicao.gravBlob = new Blob(sGrav.partes, { type: sGrav.rec.mimeType || sGrav.partes[0].type || "audio/webm" });
+      edicao.gravDur = Math.round(dur); edicao.gravApagar = false;
+      $("#s-grav-tempo").textContent = formatoDur(dur);
+      mostrarGravSessao();
+    };
+    sGrav.rec.start(500); sGrav.ini = Date.now();
+    $("#s-grav-btn").classList.add("gravando"); $("#s-grav-rot").textContent = "Parar";
+    const tick = () => { const sg = (Date.now() - sGrav.ini) / 1000; $("#s-grav-tempo").textContent = `${formatoDur(sg)} de 1:00`; if (sg >= 60) pararGravSessao(false); };
+    tick(); sGrav.t = setInterval(tick, 250);
+  });
+  $("#s-grav-apagar").addEventListener("click", () => {
+    edicao.gravBlob = null; edicao.gravApagar = true; $("#s-grav-tempo").textContent = ""; mostrarGravSessao();
+  });
+
   function abrirSessao(id, opcoes = {}) {
     const s = id ? estado.sessoes.find(x => x.id === id) : null;
-    edicao = { id, doTimer: !!opcoes.doTimer, avaliacao: s?.avaliacao || 0 };
+    edicao = { id, doTimer: !!opcoes.doTimer, avaliacao: s?.avaliacao || 0, foco: s?.foco || 0, gravBlob: null, gravDur: 0, gravTinha: !!s?.audio, gravApagar: false };
+    $("#s-bpm").value = s?.bpm || "";
+    rotuloBpmMet();
+    renderFoco();
+    $("#s-grav-aviso").innerHTML = ""; $("#s-grav-tempo").textContent = "";
+    $("#s-grav-audio").removeAttribute("src");
+    mostrarGravSessao();
+    if (s?.audio) listarGravacoes(`sessao:${s.id}`).then(l => { const g = l && l[l.length - 1]; if (g && edicao.id === s.id && !edicao.gravBlob) { if (sGrav.url) URL.revokeObjectURL(sGrav.url); sGrav.url = URL.createObjectURL(g.blob); $("#s-grav-audio").src = sGrav.url; $("#s-grav-tempo").textContent = formatoDur(g.dur || 0); } }).catch(() => {});
     $("#dlg-titulo").textContent = s ? "Editar prática" : "Registrar prática";
     $("#s-data").value = s?.data || hojeISO();
     $("#s-data").max = hojeISO();
@@ -1598,6 +1663,10 @@
   }
 
   dlg.addEventListener("close", async () => {
+    const gravando = sGrav.rec && sGrav.rec.state === "recording";
+    pararGravSessao(dlg.returnValue !== "salvar");
+    if (gravando && dlg.returnValue === "salvar") await new Promise(r => setTimeout(r, 300)); // espera o fim da gravação
+    $("#s-grav-audio").pause && $("#s-grav-audio").pause();
     if (dlg.returnValue !== "salvar") {
       if (edicao.doTimer && timer().acumulado > 0 &&
           await confirmar("Descartar o tempo?", "O tempo marcado no cronômetro será zerado sem registrar a prática.", "Descartar")) {
@@ -1612,12 +1681,28 @@
       raizId: $("#s-raiz").value || null,
       exercicioId: $("#s-exercicio").value || null,
       avaliacao: edicao.avaliacao || null,
+      foco: edicao.foco || null,
+      bpm: Math.round(Number($("#s-bpm").value)) || null,
       notas: $("#s-notas").value.trim()
     };
+    if (dados.bpm && (dados.bpm < 20 || dados.bpm > 400)) dados.bpm = null;
+    const sid = edicao.id || novoId();
+    const temAudio = !!edicao.gravBlob || (edicao.gravTinha && !edicao.gravApagar);
+    dados.audio = temAudio || null;
     if (edicao.id) {
       Object.assign(estado.sessoes.find(x => x.id === edicao.id), dados);
     } else {
-      estado.sessoes.push({ id: novoId(), ...dados });
+      estado.sessoes.push({ id: sid, ...dados });
+    }
+    try {
+      if (edicao.gravBlob || edicao.gravApagar) {
+        const velhas = await listarGravacoes(`sessao:${sid}`);
+        for (const g of velhas) await apagarGravacao(g.id);
+      }
+      if (edicao.gravBlob) await guardarGravacao({ id: `s-${sid}-${Date.now().toString(36)}`, ex: `sessao:${sid}`, quando: new Date().toISOString(), dur: edicao.gravDur, bpm: dados.bpm, blob: edicao.gravBlob });
+    } catch {
+      const s = estado.sessoes.find(x => x.id === sid); if (s && edicao.gravBlob) s.audio = null;
+      avisar("Não foi possível guardar a gravação (pouco espaço no aparelho?).");
     }
     if (edicao.doTimer) zerarTimer();
     salvar();
@@ -1698,6 +1783,7 @@
           </div>
           <div class="sessao-sub">${raiz ? escapar(raiz.titulo) : "Prática geral"}${ex ? ` · ${escapar(ex.titulo)}` : ""}</div>
           ${s.avaliacao ? `<div class="sessao-nota" aria-label="Avaliação ${s.avaliacao} de 5">${AVALIACOES.map((_, i) => `<span class="${i < s.avaliacao ? "on" : ""}"></span>`).join("")}<em>${escapar(AVALIACOES[s.avaliacao - 1])}</em></div>` : ""}
+          ${s.foco || s.bpm || s.audio ? `<div class="sessao-extra">${s.foco ? `<span class="sessao-chip" title="Foco ${s.foco} de 5">Foco ${s.foco}/5</span>` : ""}${s.bpm ? `<span class="sessao-chip">♩ ${s.bpm} bpm</span>` : ""}${s.audio ? `<button type="button" class="sessao-chip sessao-ouvir" data-ouvir-sessao="${escapar(s.id)}">${icone("play")}Ouvir</button>` : ""}</div>` : ""}
           ${s.notas ? `<p class="sessao-notas">${escapar(s.notas)}</p>` : ""}
           <div class="sessao-acoes">
             <button class="link-acao" data-editar="${escapar(s.id)}">Editar</button>
@@ -1708,13 +1794,31 @@
     }).join("");
   }
 
+  let ouvindoSessao = null;
   $("#lista-sessoes").addEventListener("click", async ev => {
     const editar = ev.target.closest("[data-editar]");
     const apagar = ev.target.closest("[data-apagar]");
+    const ouvir = ev.target.closest("[data-ouvir-sessao]");
+    if (ouvir) {
+      const id = ouvir.dataset.ouvirSessao;
+      if (ouvindoSessao) { ouvindoSessao.a.pause(); URL.revokeObjectURL(ouvindoSessao.url); const ant = ouvindoSessao.id; document.querySelectorAll("[data-ouvir-sessao]").forEach(b => { b.innerHTML = `${icone("play")}Ouvir`; }); ouvindoSessao = null; if (ant === id) return; }
+      try {
+        const l = await listarGravacoes(`sessao:${id}`), g = l && l[l.length - 1];
+        if (!g) { avisar("A gravação não está neste aparelho."); return; }
+        const url = URL.createObjectURL(g.blob), a = new Audio(url);
+        ouvindoSessao = { id, a, url };
+        ouvir.innerHTML = `${icone("pause")}Parar`;
+        a.onended = () => { if (ouvindoSessao && ouvindoSessao.id === id) { URL.revokeObjectURL(url); ouvindoSessao = null; ouvir.innerHTML = `${icone("play")}Ouvir`; } };
+        await a.play();
+      } catch { avisar("Não foi possível tocar a gravação."); }
+      return;
+    }
     if (editar) abrirSessao(editar.dataset.editar);
-    if (apagar && await confirmar("Apagar esta prática?", "Ela será removida do seu diário.", "Apagar")) {
-      estado.sessoes = estado.sessoes.filter(s => s.id !== apagar.dataset.apagar);
+    if (apagar && await confirmar("Apagar esta prática?", "Ela será removida do seu diário, com a gravação.", "Apagar")) {
+      const id = apagar.dataset.apagar;
+      estado.sessoes = estado.sessoes.filter(s => s.id !== id);
       salvar(); renderTela();
+      listarGravacoes(`sessao:${id}`).then(l => Promise.all((l || []).map(g => apagarGravacao(g.id)))).catch(() => {});
     }
   });
 

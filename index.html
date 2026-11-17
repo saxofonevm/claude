@@ -419,6 +419,27 @@
         <span class="campo-rotulo">Como foi a sessão? <span class="mudo" id="s-avaliacao-texto"></span></span>
         <div class="avaliacao" id="s-avaliacao"></div>
       </div>
+      <div class="campo">
+        <span class="campo-rotulo">Meu foco <span class="mudo" id="s-foco-texto"></span></span>
+        <div class="s-foco" id="s-foco" role="group" aria-label="Nível de foco de 1 a 5"></div>
+      </div>
+      <div class="campo">
+        <label class="campo-rotulo" for="s-bpm">Andamento máximo que saiu limpo</label>
+        <div class="s-bpm-linha">
+          <input type="number" id="s-bpm" min="30" max="300" inputmode="numeric" placeholder="bpm">
+          <button type="button" class="btn" id="s-bpm-met">Usar o do metrônomo</button>
+        </div>
+      </div>
+      <div class="campo">
+        <span class="campo-rotulo">Gravação rápida <span class="mudo">até 60 s · fica só neste aparelho</span></span>
+        <div class="s-grav">
+          <button type="button" class="btn" id="s-grav-btn"><span class="s-grav-ponto" aria-hidden="true"></span><span id="s-grav-rot">Gravar</span></button>
+          <span class="s-grav-tempo" id="s-grav-tempo"></span>
+          <button type="button" class="link-acao" id="s-grav-apagar" hidden>Apagar gravação</button>
+        </div>
+        <audio id="s-grav-audio" controls preload="metadata" hidden></audio>
+        <div id="s-grav-aviso"></div>
+      </div>
       <label>Anotações
         <textarea id="s-notas" rows="3" maxlength="1000" placeholder="O que deu certo? O que precisa melhorar?"></textarea>
       </label>
