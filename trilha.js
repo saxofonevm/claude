@@ -374,6 +374,51 @@
       ["ornamentos-tv", "6 · Estudo no choro · pág. 6", "Exercício 23: apojaturas, mordentes, grupeto e trinado num estudo de choro.", [56, 88]],
       ["ornamentos-tv", "6 · Estudo no jazz · pág. 6", "Exercício 24: glissando, fall, scoop e ghost notes num estudo de jazz.", [72, 120]],
     ] },
+    // ----- Módulo 3 (meses 7 a 9): os cadernos do Naipe -----
+    somart: { nome: "Som", gira: true, dica: "Use o afinador nas notas longas e grave um trecho por semana. O som melhora quando você se ouve.", itens: [
+      ["som-tv", "Notas longas, do meio para o grave · pág. 1", "Notas longas com crescendo e diminuendo, do Sol para o Si♭ grave. Afinação parada do piano ao forte.", [60, 60]],
+      ["som-tv", "Harmônicos · pág. 3", "Harmônicos sobre as notas graves: só ar, língua e garganta, sem trocar o dedo.", null],
+      ["som-tv", "Notas longas, do meio para o agudo · pág. 1", "Notas longas com crescendo e diminuendo, do Sol até o Fá agudo.", [60, 60]],
+      ["som-tv", "Dinâmica na escala · pág. 2", "A escala de Dó em seis níveis de volume, do pp ao ff.", [60, 72]],
+    ] },
+    escalas3: { nome: "Escalas", dica: "Escala bonita é escala igual: mesmo som e mesmo volume do grave ao agudo. Três tons por sessão.", itens: [
+      ["escalas-tv", "Maiores, Dó a Lá♭ · pág. 1", "Escalas maiores em toda a extensão do sax.", [60, 112]],
+      ["escalas-tv", "Maiores, Ré♭ a Sol · pág. 2", "Escalas maiores em toda a extensão do sax.", [60, 112]],
+      ["escalas-tv", "Menores naturais · pág. 3", "Menores naturais em toda a extensão, nos doze tons.", [60, 108]],
+      ["escalas-tv", "Menores harmônicas · pág. 4–5", "Menores harmônicas: cuidado com o salto de tom e meio entre o 6º e o 7º grau.", [56, 104]],
+      ["escalas-tv", "Menores melódicas · pág. 6", "Menores melódicas: sobem com 6º e 7º elevados e descem como a natural.", [56, 104]],
+      ["escalas-tv", "Maiores em terças · pág. 7–8", "Escalas maiores em terças nos doze tons.", [56, 104]],
+    ] },
+    escjazz: { nome: "Escalas do jazz", dica: "Depois de tocar a escala, improvise só com as notas dela sobre um playback por um minuto.", itens: [
+      ["escalas-jazz-tv", "Cromática e tons inteiros · pág. 1–2", "A escala cromática em toda a extensão e as duas escalas de tons inteiros.", [60, 120]],
+      ["escalas-jazz-tv", "Pentatônica maior · pág. 3", "Pentatônica maior nos doze tons.", [60, 120]],
+      ["escalas-jazz-tv", "Pentatônica menor · pág. 4", "Pentatônica menor nos doze tons.", [60, 120]],
+      ["escalas-jazz-tv", "Escala blues · pág. 5–6", "A escala blues nos doze tons. Arraste a blue note.", [60, 120]],
+      ["escalas-jazz-tv", "Escalas diminutas · pág. 2", "Diminutas tom-semitom e semitom-tom: três formas de cada.", [56, 112]],
+      ["escalas-jazz-tv", "Bebop dominante · pág. 7–8", "A escala bebop dominante, descendo da tônica, com swing.", [72, 144]],
+    ] },
+    intervalos: { nome: "Intervalos", dica: "Cante a nota de cima antes de tocar. Nos saltos, quem muda é o dedo: o ar e a boca ficam parados.", itens: [
+      ["intervalos-tv", "Terças · pág. 1", "Terças em seis tons maiores.", [60, 112]],
+      ["intervalos-tv", "Quartas · pág. 2", "Quartas em seis tons maiores.", [60, 108]],
+      ["intervalos-tv", "Quintas · pág. 3", "Quintas em seis tons maiores.", [60, 104]],
+      ["intervalos-tv", "Sextas · pág. 4", "Sextas em seis tons maiores.", [56, 100]],
+      ["intervalos-tv", "Sétimas · pág. 5", "Sétimas em seis tons maiores.", [56, 96]],
+      ["intervalos-tv", "Oitavas · pág. 6", "Oitavas em seis tons maiores: troca de registro sem estalo.", [56, 96]],
+    ] },
+    artic: { nome: "Articulação", dica: "Toque primeiro tudo ligado; depois coloque a língua sem mudar o som nem o tempo.", itens: [
+      ["som-tv", "Padrões 1 a 4 · pág. 4", "Ligado, destacado, staccato e tenuto na escala de Dó em duas oitavas.", [60, 120]],
+      ["som-tv", "Padrões 5 a 8 · pág. 4", "Combinações de notas ligadas e destacadas.", [60, 120]],
+      ["som-tv", "Padrões 9 a 12 · pág. 4–5", "Acentos e a articulação do swing.", [60, 132]],
+    ] },
+    leitura3: { nome: "Leitura rítmica", dica: "Bata o pé nos tempos e diga o ritmo em voz alta antes de tocar. Se não sai batido, não sai tocado.", itens: [
+      ["ritmica-tv", "Lições 1 e 2 · pág. 1", "Semínimas, colcheias e semicolcheias, numa nota só.", [60, 100]],
+      ["ritmica-tv", "Lições 3 a 5 · pág. 2", "Combinações de semicolcheia e a colcheia pontuada.", [60, 96]],
+      ["ritmica-tv", "Lições 6 a 8 · pág. 3", "Síncope, contratempo e semicolcheia com colcheia pontuada.", [60, 96]],
+      ["ritmica-tv", "Lições 9 e 10 · pág. 4", "Tercinas e revisão geral.", [60, 96]],
+      ["ritmica-tv", "Compasso 6/8 · pág. 5", "Seis colcheias sentidas em dois tempos.", [50, 80]],
+      ["ritmica-tv", "Levadas brasileiras · pág. 5", "Baião, maxixe, samba, xote e frevo. Repita cada levada até soar natural.", [60, 100]],
+      ["ritmica-tv", "Swing · pág. 6", "Colcheias com swing: a primeira longa, a segunda curta.", [80, 160]],
+    ] },
     musicas: { nome: "Minhas músicas", dica: "Ouça a gravação, cante a melodia, fatie a música em frases de quatro compassos e só então toque com o playback.", itens: [
       ["rep:summertime", "Partitura", "Uma balada de jazz para começar: melodia cantada, notas longas e vibrato no fim das frases.", [56, 80]],
       ["rep:manha-carnaval", "Partitura e playback", "Bossa nova: colcheias iguais e som macio. Toque com o playback.", [60, 90]],
@@ -443,14 +488,42 @@
     { foco: "Fechar o semestre", texto: "Última semana do sexto mês. Na sessão final, grave o seu pequeno show e ouça ao lado do som do primeiro dia: são seis meses de estudo organizado.",
       sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 10], ["balanco", 10]], [["som", 5], ["ornamentos", 10], ["modos", 15], ["musicas", 15]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 20]], [["som", 10], ["mecanismo", 5], ["musicas", 30]]] },
   );
-  const MARCOS_MES = ["primeiro", "segundo", "terceiro", "quarto", "quinto", "sexto"];
+  // Módulo 3: meses 7 a 9. Os cadernos do Naipe de escalas, intervalos, som, articulação e leitura rítmica.
+  SEMANAS.push(
+    { foco: "Escalas em toda a extensão", texto: "Começa o terceiro módulo, com os cadernos do Naipe. As escalas agora percorrem toda a extensão do sax, do Si♭ grave ao Fá agudo, e o aquecimento ganha notas longas com dinâmica.",
+      sessoes: [[["somart", 5], ["escalas3", 15], ["arpejos", 10], ["estudos", 10]], [["somart", 5], ["leitura3", 10], ["escalas3", 10], ["musicas", 15]], [["somart", 5], ["intervalos", 10], ["escalas3", 10], ["ornamentos", 15]], [["somart", 5], ["escalas3", 10], ["artic", 10], ["musicas", 15]]] },
+    { foco: "Intervalos e ouvido", texto: "Os intervalos entram com força. Cante a nota de cima antes de tocar: o ouvido guia o dedo.",
+      sessoes: [[["somart", 5], ["intervalos", 15], ["escalas3", 10], ["estudos", 10]], [["somart", 5], ["intervalos", 10], ["leitura3", 10], ["musicas", 15]], [["somart", 5], ["intervalos", 10], ["arpejos", 10], ["modos", 15]], [["somart", 5], ["intervalos", 10], ["artic", 10], ["musicas", 15]]] },
+    { foco: "Ler ritmo de verdade", texto: "Uma semana de leitura rítmica: bata, fale e toque. Síncope, contratempo e tercina precisam sair sem pensar.",
+      sessoes: [[["somart", 5], ["leitura3", 15], ["escalas3", 10], ["musicas", 10]], [["somart", 5], ["leitura3", 15], ["intervalos", 10], ["jazz2", 10]], [["somart", 5], ["leitura3", 10], ["artic", 10], ["estudos", 15]], [["somart", 5], ["leitura3", 10], ["escalas3", 10], ["musicas", 15]]] },
+    { foco: "Fechar o sétimo mês", texto: "Última semana do sétimo mês. A sessão final termina com uma gravação da sua música preferida do repertório.",
+      sessoes: [[["somart", 5], ["escalas3", 10], ["intervalos", 10], ["arpejos", 15]], [["somart", 5], ["artic", 10], ["leitura3", 10], ["ornamentos", 15]], [["somart", 5], ["estudos", 15], ["modos", 10], ["musicas", 10]], [["somart", 5], ["escalas3", 10], ["musicas", 25]]] },
+    { foco: "O vocabulário do jazz", texto: "Pentatônicas, blues e escalas simétricas. Depois de cada escala, improvise um minuto só com as notas dela.",
+      sessoes: [[["somart", 5], ["escjazz", 15], ["arpejos", 10], ["jazz2", 10]], [["somart", 5], ["escjazz", 10], ["leitura3", 10], ["musicas", 15]], [["somart", 5], ["escjazz", 10], ["modos", 10], ["jazz2", 15]], [["somart", 5], ["escjazz", 10], ["intervalos", 10], ["musicas", 15]]] },
+    { foco: "Articulação a serviço da frase", texto: "Os doze padrões de articulação, aplicados às escalas e às músicas. A mesma frase muda de caráter com a língua.",
+      sessoes: [[["somart", 5], ["artic", 15], ["escalas3", 10], ["estudos", 10]], [["somart", 5], ["artic", 10], ["escjazz", 10], ["musicas", 15]], [["somart", 5], ["artic", 10], ["ornamentos", 10], ["jazz2", 15]], [["somart", 5], ["artic", 10], ["intervalos", 10], ["musicas", 15]]] },
+    { foco: "Levadas brasileiras", texto: "Baião, maxixe, samba, xote e frevo no corpo e no sax. Toque cada levada antes das músicas brasileiras do repertório.",
+      sessoes: [[["somart", 5], ["leitura3", 15], ["escjazz", 10], ["musicas", 10]], [["somart", 5], ["leitura3", 10], ["ornamentos", 10], ["musicas", 15]], [["somart", 5], ["leitura3", 10], ["escalas3", 10], ["estudos", 15]], [["somart", 5], ["leitura3", 10], ["arpejos", 10], ["musicas", 15]]] },
+    { foco: "Fechar o oitavo mês", texto: "Última semana do oitavo mês. Grave uma música brasileira do repertório com o playback.",
+      sessoes: [[["somart", 5], ["escalas3", 10], ["intervalos", 10], ["estudos", 15]], [["somart", 5], ["escjazz", 10], ["artic", 10], ["jazz2", 15]], [["somart", 5], ["leitura3", 10], ["modos", 10], ["musicas", 15]], [["somart", 5], ["escalas3", 10], ["musicas", 25]]] },
+    { foco: "Nono mês: rotina completa", texto: "As sessões reúnem tudo: som, escalas, intervalos, ritmo, estudos e repertório. É a rotina que você pode levar para a vida.",
+      sessoes: [[["somart", 5], ["escalas3", 10], ["intervalos", 10], ["leitura3", 5], ["musicas", 15]], [["somart", 5], ["escjazz", 10], ["artic", 10], ["jazz2", 10], ["musicas", 10]], [["somart", 5], ["arpejos", 10], ["modos", 10], ["estudos", 15], ["leitura3", 5]], [["somart", 5], ["escalas3", 10], ["ornamentos", 10], ["musicas", 20]]] },
+    { foco: "Swing e bebop", texto: "Colcheias com swing, a escala bebop e os temas de jazz. Ouça Charlie Parker e Cannonball Adderley nesta semana.",
+      sessoes: [[["somart", 5], ["escjazz", 10], ["leitura3", 10], ["jazz2", 15]], [["somart", 5], ["artic", 10], ["escjazz", 10], ["musicas", 15]], [["somart", 5], ["intervalos", 10], ["jazz2", 15], ["modos", 10]], [["somart", 5], ["escjazz", 10], ["arpejos", 10], ["musicas", 15]]] },
+    { foco: "Recital", texto: "Monte um pequeno recital com quatro músicas de estilos diferentes do repertório. Toque como se houvesse público: entrada, música, pausa, próxima.",
+      sessoes: [[["somart", 5], ["escalas3", 10], ["musicas", 25]], [["somart", 5], ["artic", 10], ["musicas", 25]], [["somart", 5], ["ornamentos", 10], ["musicas", 25]], [["somart", 5], ["escjazz", 10], ["musicas", 25]]] },
+    { foco: "Fechar os nove meses", texto: "Última semana do terceiro módulo. Na sessão final, grave o seu recital e ouça ao lado do som do primeiro dia: são nove meses de estudo organizado.",
+      sessoes: [[["somart", 5], ["escalas3", 10], ["intervalos", 10], ["estudos", 15]], [["somart", 5], ["escjazz", 10], ["leitura3", 10], ["jazz2", 15]], [["somart", 5], ["artic", 10], ["arpejos", 10], ["musicas", 15]], [["somart", 10], ["musicas", 30]]] },
+  );
+  const MARCOS_MES = ["primeiro", "segundo", "terceiro", "quarto", "quinto", "sexto", "sétimo", "oitavo", "nono"];
   const MODULOS = [
     { nome: "Módulo 1", periodo: "Meses 1 a 3", texto: "A base: rotina, técnica, leitura, ritmo, articulação, repertório e as primeiras colcheias de jazz.", de: 0, ate: 12 },
     { nome: "Módulo 2", periodo: "Meses 4 a 6", texto: "Marcel Mule, Ferling, Rubank Avançado, os cadernos do Naipe de arpejos, modos gregos e ornamentos, groove, os primeiros improvisos e as músicas do repertório essencial.", de: 12, ate: 24 },
+    { nome: "Módulo 3", periodo: "Meses 7 a 9", texto: "Os cadernos do Naipe: escalas em toda a extensão, escalas do jazz, intervalos, som, articulação e leitura rítmica, com as levadas brasileiras e o swing.", de: 24, ate: 36 },
   ];
   const UNIDADES_PLANO = SEMANAS.map((sem, w) => ({
     plano: true, titulo: `Semana ${w + 1} · ${sem.foco}`, foco: sem.foco, texto: sem.texto,
-    marco: w === 11 ? "Completei três meses de estudo organizado no saxofone." : w === 23 ? "Completei seis meses de estudo organizado no saxofone." : w % 4 === 3 ? `Completei o ${MARCOS_MES[(w + 1) / 4 - 1]} mês do meu plano de estudos no saxofone.` : `Completei a semana ${w + 1} do meu plano de estudos.`,
+    marco: w === 11 ? "Completei três meses de estudo organizado no saxofone." : w === 23 ? "Completei seis meses de estudo organizado no saxofone." : w === 35 ? "Completei nove meses de estudo organizado no saxofone." : w % 4 === 3 ? `Completei o ${MARCOS_MES[(w + 1) / 4 - 1]} mês do meu plano de estudos no saxofone.` : `Completei a semana ${w + 1} do meu plano de estudos.`,
     licoes: sem.sessoes.map((blocos, k) => ({
       id: `s${w + 1}-${k + 1}`, titulo: `Sessão ${k + 1}`, resumo: blocos.map(([t]) => TRILHOS[t].nome).join(" · ") + ` · cerca de ${blocos.reduce((a, b) => a + b[1], 0)} min`,
       sessao: { semana: w, blocos, gravar: k === sem.sessoes.length - 1 && w % 4 === 3 ? `s${w + 1}` : null }, passos: [],
@@ -1701,7 +1774,7 @@
       <header class="cabecalho">
         <p class="sobretitulo">Estudo${modoTxt}</p>
         <h1>Plano de estudos</h1>
-        <p class="mudo">Dois módulos de três meses, com sessões de 30 a 45 minutos e os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento. Toque num módulo para abrir as semanas.</p>
+        <p class="mudo">Três módulos de três meses, com sessões de 30 a 45 minutos e os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento. Toque num módulo para abrir as semanas.</p>
       </header>
       <div class="corpo tr-corpo">
         ${bloqueado ? `<section class="cartao tr-porque"><span class="rotulo">Quando começar</span><p class="mudo">O plano abre quando você conclui a Teoria. Se você já lê partitura e toca, pode começar agora.</p><button class="btn" id="tr-ja-toco" type="button">Já toco, quero começar o plano</button></section>` : pl.n ? `<section class="cartao tr-porque"><span class="rotulo">Meu plano</span><p class="mudo"><strong>${pl.n}</strong> ${pl.n === 1 ? "sessão feita" : "sessões feitas"}. O tempo de cada sessão fica no seu Diário.</p></section>` : ""}

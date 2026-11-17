@@ -458,6 +458,12 @@ def caderno_ornamentos():
 
 
 if __name__ == "__main__":
-    caderno_arpejos()
-    caderno_modos()
-    caderno_ornamentos()
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import cadernos_extra
+    so = sys.argv[1:]
+    for nome, fn in [("arpejos", caderno_arpejos), ("modos", caderno_modos), ("ornamentos", caderno_ornamentos),
+                     ("escalas", cadernos_extra.caderno_escalas), ("jazz", cadernos_extra.caderno_jazz),
+                     ("intervalos", cadernos_extra.caderno_intervalos), ("som", cadernos_extra.caderno_som),
+                     ("ritmo", cadernos_extra.caderno_ritmo)]:
+        if not so or nome in so:
+            fn()

@@ -61,6 +61,11 @@ window.CMA_METODOS = {
     "arpejos-tv": {"titulo": "Arpejos em todos os tons", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-arpejos.pdf", "nota": "Caderno do Naipe: maiores, menores, aumentados e diminutos nos 12 tons.", "paginas": "pdf"},
     "modos-tv": {"titulo": "Modos gregos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-modos-gregos.pdf", "nota": "Caderno do Naipe: os sete modos, em terças e nos 12 tons.", "paginas": "pdf"},
     "ornamentos-tv": {"titulo": "Ornamentos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-ornamentos.pdf", "nota": "Caderno do Naipe: apojaturas, mordentes, grupeto, trinado e enfeites do choro e do jazz.", "paginas": "pdf"},
+    "escalas-tv": {"titulo": "Escalas maiores e menores", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-escalas.pdf", "nota": "Caderno do Naipe: maiores, menores natural, harmônica e melódica, e maiores em terças, nos 12 tons.", "paginas": "pdf"},
+    "escalas-jazz-tv": {"titulo": "Escalas do jazz e da música brasileira", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-escalas-jazz.pdf", "nota": "Caderno do Naipe: cromática, tons inteiros, diminutas, pentatônicas, blues e bebop.", "paginas": "pdf"},
+    "intervalos-tv": {"titulo": "Intervalos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-intervalos.pdf", "nota": "Caderno do Naipe: terças a oitavas em seis tons.", "paginas": "pdf"},
+    "som-tv": {"titulo": "Som e articulação", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-som-articulacao.pdf", "nota": "Caderno do Naipe: notas longas, dinâmica, harmônicos e doze padrões de articulação.", "paginas": "pdf"},
+    "ritmica-tv": {"titulo": "Leitura rítmica", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-leitura-ritmica.pdf", "nota": "Caderno do Naipe: das figuras básicas às levadas brasileiras e ao swing.", "paginas": "pdf"},
     "guia-wave": {"titulo": "Como estudar qualquer música sozinho (Wave)", "autor": "Tiago Veloso", "arquivo": "1fAGtsNO1tz91lKzw8syRln23zSL9V3Hz", "nota": "Guia de estudo do CMA: ouvir, cantar, fatiar e tocar.", "paginas": "pdf"}
   },
 
@@ -313,7 +318,17 @@ window.CMA_METODOS = {
     ["modos-tv", "Partes 1 a 3 · pág. 1–3", "Os sete modos gregos: relativos, sobre o Dó e em terças", "melodia-escalas"],
     ["modos-tv", "Parte 4 · pág. 4–12", "Cada modo grego nos 12 tons", "melodia-escalas"],
     ["ornamentos-tv", "Seções 1 a 5 · pág. 1–5", "Apojatura breve e longa, mordentes, grupeto e trinado: escrita e execução", "orn-classicos"],
-    ["ornamentos-tv", "Seção 6 · pág. 6", "Glissando, fall, scoop e ghost notes; estudos de choro e de jazz", "orn-popular"]
+    ["ornamentos-tv", "Seção 6 · pág. 6", "Glissando, fall, scoop e ghost notes; estudos de choro e de jazz", "orn-popular"],
+    ["escalas-tv", "pág. 1–6", "Escalas maiores e menores (natural, harmônica e melódica) em toda a extensão, nos 12 tons", "melodia-escalas"],
+    ["escalas-tv", "pág. 7–8", "Escalas maiores em terças nos 12 tons", "melodia-intervalos"],
+    ["escalas-jazz-tv", "pág. 1–2", "Cromática, tons inteiros e diminutas", "melodia-escalas"],
+    ["escalas-jazz-tv", "pág. 3–8", "Pentatônicas maior e menor, blues e bebop dominante nos 12 tons", "orn-popular"],
+    ["intervalos-tv", "pág. 1–6", "Terças, quartas, quintas, sextas, sétimas e oitavas em seis tons", "melodia-intervalos"],
+    ["som-tv", "pág. 1–3", "Notas longas com dinâmica, dinâmica na escala e harmônicos", "din-niveis"],
+    ["som-tv", "pág. 4–5", "Doze padrões de articulação", "art-basicas"],
+    ["ritmica-tv", "pág. 1–4", "Leitura rítmica: das semínimas às tercinas e síncopes", "ritmo-base"],
+    ["ritmica-tv", "pág. 5", "6/8 e levadas brasileiras: baião, maxixe, samba, xote e frevo", "ritmo-samba-choro"],
+    ["ritmica-tv", "pág. 6", "Colcheias com swing", "ritmo-swing"]
   ],
 
   // Acervo de partituras e playbacks (pastas do Drive), mostrado na aba Métodos.
