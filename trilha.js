@@ -339,6 +339,41 @@
       ["mintzer", "Est. XI · pág. 23–24", "Blues de Bob Mintzer.", [88, 138]],
       ["freeman", "Standard Songs · pág. 23–46", "Os standards de Bud Freeman: a melodia, a versão com ritmo e a versão improvisada.", [80, 132]],
     ] },
+    // Cadernos do Naipe (Tiago Veloso), em PDF no próprio site.
+    arpejos: { nome: "Arpejos", dica: "Três tons por sessão, no ciclo das quartas. Diga o nome de cada nota do acorde antes de tocar.", itens: [
+      ["arpejos-tv", "Maiores, Ex. 1 · pág. 1–2", "Arpejos maiores em toda a extensão do sax. Três tons por sessão; em quatro sessões você fecha os doze.", [60, 108]],
+      ["arpejos-tv", "Maiores, Ex. 2 · pág. 2–3", "Arpejos maiores em grupos de quatro notas.", [60, 104]],
+      ["arpejos-tv", "Maiores, Ex. 3 · pág. 3–4", "Inversões dos acordes maiores: fundamental, primeira e segunda inversão.", [60, 104]],
+      ["arpejos-tv", "Menores, Ex. 1 · pág. 5–6", "Arpejos menores em toda a extensão.", [60, 108]],
+      ["arpejos-tv", "Menores, Ex. 2 · pág. 6–7", "Arpejos menores em grupos de quatro notas.", [60, 104]],
+      ["arpejos-tv", "Menores, Ex. 3 · pág. 7–8", "Inversões dos acordes menores.", [60, 104]],
+      ["arpejos-tv", "Aumentados, Ex. 1 · pág. 9–10", "Arpejos aumentados em toda a extensão: duas terças maiores seguidas.", [56, 100]],
+      ["arpejos-tv", "Diminutos, Ex. 1 · pág. 13–14", "Arpejos diminutos em toda a extensão: duas terças menores seguidas.", [56, 100]],
+      ["arpejos-tv", "Aumentados, Ex. 2 e 3 · pág. 10–12", "Aumentados em grupos de quatro e em inversões.", [56, 100]],
+      ["arpejos-tv", "Diminutos, Ex. 2 e 3 · pág. 14–16", "Diminutos em grupos de quatro e em inversões.", [56, 100]],
+      ["arpejos-tv", "Sétima diminuta, Ex. 4 · pág. 17–18", "O acorde de sétima diminuta, o diminuto do choro e do jazz, nos doze nomes.", [56, 104]],
+    ] },
+    modos: { nome: "Escalas modais", dica: "Toque com um bordão na tônica (uma nota longa no afinador ou no teclado) e cante a nota característica do modo.", itens: [
+      ["modos-tv", "Parte 1 · pág. 1", "Os modos da escala de Dó maior: as mesmas sete notas, começando em cada grau.", [60, 100]],
+      ["modos-tv", "Parte 2 · pág. 2", "Os sete modos sobre o Dó. Leia a cor de cada um e cante a nota característica.", [60, 100]],
+      ["modos-tv", "Parte 3 · pág. 3", "Os sete modos sobre o Dó, em terças.", [60, 96]],
+      ["modos-tv", "Dórico nos 12 tons · pág. 6", "O modo dórico nos doze tons: o menor do jazz e do samba-jazz. Quatro tons por sessão.", [60, 104]],
+      ["modos-tv", "Mixolídio nos 12 tons · pág. 9", "O mixolídio nos doze tons: o som do baião e do blues.", [60, 104]],
+      ["modos-tv", "Jônio nos 12 tons · pág. 4–5", "O jônio (escala maior) nos doze tons.", [60, 108]],
+      ["modos-tv", "Eólio nos 12 tons · pág. 10", "O eólio (menor natural) nos doze tons.", [60, 104]],
+      ["modos-tv", "Lídio nos 12 tons · pág. 8", "O lídio nos doze tons: maior com a quarta aumentada.", [60, 100]],
+      ["modos-tv", "Frígio nos 12 tons · pág. 7", "O frígio nos doze tons: menor com a segunda menor.", [60, 100]],
+      ["modos-tv", "Lócrio nos 12 tons · pág. 11", "O lócrio nos doze tons: o modo do acorde meio-diminuto.", [56, 96]],
+    ] },
+    ornamentos: { nome: "Ornamentação", dica: "Toque primeiro a versão escrita por extenso, devagar. O enfeite nunca atrasa o tempo: ele cabe dentro da nota.", itens: [
+      ["ornamentos-tv", "1 · Apojatura breve · pág. 1", "A notinha cortada, rapidíssima. Exercícios 1 a 6 em cinco tons.", [60, 96]],
+      ["ornamentos-tv", "2 · Apojatura longa · pág. 2", "A apojatura que cai no tempo e vale metade da nota. Exercício 7: melodia em 3/4.", [56, 88]],
+      ["ornamentos-tv", "3 · Mordentes · pág. 3", "Mordente superior e inferior alternados nas escalas. Exercícios 8 a 12.", [56, 92]],
+      ["ornamentos-tv", "4 · Grupeto · pág. 4", "O grupeto em cada grau da escala. Exercícios 13 a 17.", [56, 88]],
+      ["ornamentos-tv", "5 · Trinado · pág. 5", "Trinado medido e depois livre, em cada grau. Exercícios 18 a 22.", [56, 80]],
+      ["ornamentos-tv", "6 · Estudo no choro · pág. 6", "Exercício 23: apojaturas, mordentes, grupeto e trinado num estudo de choro.", [56, 88]],
+      ["ornamentos-tv", "6 · Estudo no jazz · pág. 6", "Exercício 24: glissando, fall, scoop e ghost notes num estudo de jazz.", [72, 120]],
+    ] },
     musicas: { nome: "Minhas músicas", dica: "Ouça a gravação, cante a melodia, fatie a música em frases de quatro compassos e só então toque com o playback.", itens: [
       ["rep:summertime", "Partitura", "Uma balada de jazz para começar: melodia cantada, notas longas e vibrato no fim das frases.", [56, 80]],
       ["rep:manha-carnaval", "Partitura e playback", "Bossa nova: colcheias iguais e som macio. Toque com o playback.", [60, 90]],
@@ -383,35 +418,35 @@
   ];
   // Módulo 2: meses 4 a 6. Sessões de 40 a 45 minutos com trilhos novos e as músicas do repertório essencial.
   SEMANAS.push(
-    { foco: "Novos métodos", texto: "Começa o segundo módulo. Os trilhos são novos: Marcel Mule, Ferling, Rubank Avançado e as primeiras músicas do repertório essencial. As sessões ficam em cerca de 40 minutos.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 15]], [["som", 5], ["expressao", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 15]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 15]]] },
+    { foco: "Novos métodos", texto: "Começa o segundo módulo. Os trilhos são novos: Marcel Mule, Ferling, Rubank Avançado, o caderno de arpejos em todos os tons e as primeiras músicas do repertório essencial. As sessões ficam em cerca de 40 minutos.",
+      sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 15]], [["som", 5], ["expressao", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 15]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 15]]] },
     { foco: "Som de verdade", texto: "Esta semana o aquecimento ganha mais tempo. Grave uma nota longa no primeiro dia e outra no último: o som é o seu cartão de visita.",
-      sessoes: [[["som", 10], ["mecanismo", 10], ["estudos", 10], ["musicas", 10]], [["som", 10], ["tons", 10], ["expressao", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["jazz2", 10], ["musicas", 10]], [["som", 10], ["mecanismo", 10], ["expressao", 10], ["musicas", 10]]] },
-    { foco: "Ferling e Mule", texto: "Os estudos melódicos pesam mais. Antes de tocar, marque a lápis onde respirar e cante cada frase uma vez.",
-      sessoes: [[["som", 5], ["tons", 10], ["estudos", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 15], ["jazz2", 10]], [["som", 5], ["expressao", 10], ["estudos", 15], ["musicas", 10]], [["som", 5], ["tons", 10], ["estudos", 10], ["musicas", 15]]] },
+      sessoes: [[["som", 10], ["mecanismo", 10], ["estudos", 10], ["musicas", 10]], [["som", 10], ["arpejos", 10], ["expressao", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["jazz2", 10], ["musicas", 10]], [["som", 10], ["mecanismo", 10], ["expressao", 10], ["musicas", 10]]] },
+    { foco: "Ferling e Mule", texto: "Os estudos melódicos pesam mais. Antes de tocar, marque a lápis onde respirar e cante cada frase uma vez. Entra também o caderno de ornamentos: apojaturas, mordentes, grupeto e trinado.",
+      sessoes: [[["som", 5], ["arpejos", 10], ["estudos", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 15], ["jazz2", 10]], [["som", 5], ["ornamentos", 10], ["estudos", 15], ["musicas", 10]], [["som", 5], ["tons", 10], ["estudos", 10], ["musicas", 15]]] },
     { foco: "Fechar o quarto mês", texto: "Última semana do quarto mês. A sessão final termina com uma gravação da música do repertório de que você mais gostou.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["balanco", 5]], [["som", 5], ["expressao", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["musicas", 25]]] },
-    { foco: "Quinto mês: groove", texto: "O ritmo ganha espaço: funk, valsa jazz, swing e as figuras brasileiras. Metrônomo nos tempos 2 e 4 sempre que der.",
-      sessoes: [[["som", 5], ["balanco", 15], ["mecanismo", 10], ["musicas", 10]], [["som", 5], ["tons", 10], ["balanco", 10], ["jazz2", 15]], [["som", 5], ["balanco", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["expressao", 10], ["balanco", 10], ["jazz2", 15]]] },
+      sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 10], ["balanco", 5]], [["som", 5], ["ornamentos", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["mecanismo", 10], ["musicas", 25]]] },
+    { foco: "Quinto mês: groove", texto: "O ritmo ganha espaço: funk, valsa jazz, swing e as figuras brasileiras. Metrônomo nos tempos 2 e 4 sempre que der. E começam os modos gregos.",
+      sessoes: [[["som", 5], ["balanco", 15], ["mecanismo", 10], ["musicas", 10]], [["som", 5], ["arpejos", 10], ["balanco", 10], ["modos", 15]], [["som", 5], ["balanco", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["ornamentos", 10], ["balanco", 10], ["jazz2", 15]]] },
     { foco: "Primeiros improvisos", texto: "Entra a pentatônica. Depois de tocar cada tema, improvise um chorus com poucas notas. Errar aqui faz parte: é assim que se aprende a improvisar.",
-      sessoes: [[["som", 5], ["tons", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["jazz2", 15], ["balanco", 10]], [["som", 5], ["estudos", 10], ["jazz2", 15], ["expressao", 10]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 15]]] },
+      sessoes: [[["som", 5], ["arpejos", 10], ["modos", 15], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["jazz2", 15], ["balanco", 10]], [["som", 5], ["estudos", 10], ["jazz2", 15], ["ornamentos", 10]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 15]]] },
     { foco: "Do choro à bossa", texto: "Uma semana brasileira. Choro com articulação viva, bossa com colcheias iguais e som macio. A mesma colcheia muda de jeito em cada estilo.",
-      sessoes: [[["som", 5], ["expressao", 10], ["musicas", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["tons", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["expressao", 10], ["jazz2", 10], ["musicas", 15]]] },
+      sessoes: [[["som", 5], ["ornamentos", 10], ["musicas", 15], ["balanco", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["arpejos", 10], ["balanco", 10], ["musicas", 15]], [["som", 5], ["expressao", 10], ["modos", 10], ["musicas", 15]]] },
     { foco: "Fechar o quinto mês", texto: "Última semana do quinto mês. Na sessão final, grave uma música do repertório com o playback.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 15]], [["som", 5], ["balanco", 10], ["jazz2", 15], ["musicas", 10]], [["som", 5], ["expressao", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["tons", 10], ["musicas", 25]]] },
+      sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 15]], [["som", 5], ["balanco", 10], ["modos", 15], ["musicas", 10]], [["som", 5], ["ornamentos", 10], ["estudos", 10], ["musicas", 15]], [["som", 5], ["tons", 10], ["musicas", 25]]] },
     { foco: "Sexto mês: sessões de 45 minutos", texto: "As sessões chegam a 45 minutos. Se o dia estiver corrido, faça o aquecimento e os dois primeiros blocos. Regularidade vale mais que duração.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["musicas", 10]], [["som", 5], ["expressao", 10], ["balanco", 10], ["jazz2", 10], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 10], ["balanco", 10]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 20]]] },
+      sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 10], ["musicas", 10]], [["som", 5], ["ornamentos", 10], ["balanco", 10], ["modos", 10], ["musicas", 10]], [["som", 5], ["mecanismo", 10], ["estudos", 10], ["jazz2", 10], ["balanco", 10]], [["som", 5], ["tons", 10], ["expressao", 10], ["musicas", 20]]] },
     { foco: "Interpretação", texto: "Os estudos de interpretação do Rubank e os Ferling lentos pedem som, vibrato e frase. Grave um trecho no gravador do app e ouça antes de avaliar o bloco.",
-      sessoes: [[["som", 10], ["expressao", 15], ["estudos", 10], ["mecanismo", 10]], [["som", 10], ["estudos", 15], ["tons", 10], ["musicas", 10]], [["som", 10], ["expressao", 15], ["jazz2", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["expressao", 10], ["musicas", 15]]] },
+      sessoes: [[["som", 10], ["ornamentos", 15], ["estudos", 10], ["mecanismo", 10]], [["som", 10], ["estudos", 15], ["arpejos", 10], ["musicas", 10]], [["som", 10], ["expressao", 15], ["modos", 10], ["balanco", 10]], [["som", 10], ["estudos", 10], ["expressao", 10], ["musicas", 15]]] },
     { foco: "Montar o seu show", texto: "Escolha três músicas do repertório, de estilos diferentes, e toque as três em sequência como se fosse uma apresentação: entrada, música, pausa, próxima.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["musicas", 20], ["balanco", 10]], [["som", 5], ["tons", 10], ["jazz2", 10], ["musicas", 20]], [["som", 5], ["expressao", 10], ["estudos", 10], ["musicas", 20]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 20]]] },
+      sessoes: [[["som", 5], ["mecanismo", 10], ["musicas", 20], ["balanco", 10]], [["som", 5], ["arpejos", 10], ["modos", 10], ["musicas", 20]], [["som", 5], ["ornamentos", 10], ["estudos", 10], ["musicas", 20]], [["som", 5], ["balanco", 10], ["jazz2", 10], ["musicas", 20]]] },
     { foco: "Fechar o semestre", texto: "Última semana do sexto mês. Na sessão final, grave o seu pequeno show e ouça ao lado do som do primeiro dia: são seis meses de estudo organizado.",
-      sessoes: [[["som", 5], ["mecanismo", 10], ["tons", 10], ["estudos", 10], ["balanco", 10]], [["som", 5], ["expressao", 10], ["jazz2", 15], ["musicas", 15]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 20]], [["som", 10], ["mecanismo", 5], ["musicas", 30]]] },
+      sessoes: [[["som", 5], ["mecanismo", 10], ["arpejos", 10], ["estudos", 10], ["balanco", 10]], [["som", 5], ["ornamentos", 10], ["modos", 15], ["musicas", 15]], [["som", 5], ["estudos", 10], ["balanco", 10], ["musicas", 20]], [["som", 10], ["mecanismo", 5], ["musicas", 30]]] },
   );
   const MARCOS_MES = ["primeiro", "segundo", "terceiro", "quarto", "quinto", "sexto"];
   const MODULOS = [
     { nome: "Módulo 1", periodo: "Meses 1 a 3", texto: "A base: rotina, técnica, leitura, ritmo, articulação, repertório e as primeiras colcheias de jazz.", de: 0, ate: 12 },
-    { nome: "Módulo 2", periodo: "Meses 4 a 6", texto: "Marcel Mule, Ferling, Rubank Avançado, groove, os primeiros improvisos e as músicas do repertório essencial.", de: 12, ate: 24 },
+    { nome: "Módulo 2", periodo: "Meses 4 a 6", texto: "Marcel Mule, Ferling, Rubank Avançado, os cadernos do Naipe de arpejos, modos gregos e ornamentos, groove, os primeiros improvisos e as músicas do repertório essencial.", de: 12, ate: 24 },
   ];
   const UNIDADES_PLANO = SEMANAS.map((sem, w) => ({
     plano: true, titulo: `Semana ${w + 1} · ${sem.foco}`, foco: sem.foco, texto: sem.texto,
@@ -2081,7 +2116,7 @@
   const REP = window.NAIPE_REPERTORIO || { fontes: {}, estilos: [], musicas: [] };
   const musicaRep = id => REP.musicas.find(m => `rep:${m.id}` === id);
   const driveUrl = arq => `https://drive.google.com/file/d/${arq}/view`;
-  const urlPdf = id => { const m = musicaRep(id); if (m) return ""; const l = ((window.CMA_METODOS || {}).livros || {})[id]; return l && l.arquivo ? driveUrl(l.arquivo) : ""; };
+  const urlPdf = id => { const m = musicaRep(id); if (m) return ""; const l = ((window.CMA_METODOS || {}).livros || {})[id]; return l && l.arquivo ? (/\.pdf$/i.test(l.arquivo) ? l.arquivo : driveUrl(l.arquivo)) : ""; };
   const livroInfo = id => { const m = musicaRep(id); if (m) return { titulo: m.titulo, autor: m.autor }; return ((window.CMA_METODOS || {}).livros || {})[id] || { titulo: id, autor: "" }; };
   // Botões de uma música: partitura em Mi♭, em Si♭, songbook e playback.
   function linksMusica(m, principal) {

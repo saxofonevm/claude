@@ -58,6 +58,9 @@ window.CMA_METODOS = {
     "ex4-tv": {"titulo": "Exercício 4 – acordes menores", "autor": "Tiago Veloso", "arquivo": "1shz7r2LD55cK3H161H9vYXcueZepHvIE", "paginas": "pdf"},
     "ex5-tv": {"titulo": "Exercício 5 – acordes diminutos", "autor": "Tiago Veloso", "arquivo": "1SeJ6G_nZky7mKiKf6V2FgDbEGdtlQGCR", "paginas": "pdf"},
     "nelson": {"titulo": "Patterns for Improvisation", "autor": "Oliver Nelson", "arquivo": "1cDSW52TPT3XpRcH7HQ55eCwni1cxOer6", "nota": "Organizado por número do exercício.", "paginas": "pdf"},
+    "arpejos-tv": {"titulo": "Arpejos em todos os tons", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-arpejos.pdf", "nota": "Caderno do Naipe: maiores, menores, aumentados e diminutos nos 12 tons.", "paginas": "pdf"},
+    "modos-tv": {"titulo": "Modos gregos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-modos-gregos.pdf", "nota": "Caderno do Naipe: os sete modos, em terças e nos 12 tons.", "paginas": "pdf"},
+    "ornamentos-tv": {"titulo": "Ornamentos", "autor": "Tiago Veloso", "arquivo": "pdf/naipe-ornamentos.pdf", "nota": "Caderno do Naipe: apojaturas, mordentes, grupeto, trinado e enfeites do choro e do jazz.", "paginas": "pdf"},
     "guia-wave": {"titulo": "Como estudar qualquer música sozinho (Wave)", "autor": "Tiago Veloso", "arquivo": "1fAGtsNO1tz91lKzw8syRln23zSL9V3Hz", "nota": "Guia de estudo do CMA: ouvir, cantar, fatiar e tocar.", "paginas": "pdf"}
   },
 
@@ -304,7 +307,13 @@ window.CMA_METODOS = {
     ["guia-wave", "Rotina e checklist · pág. 5", "Rotina de 20 minutos e checklist do ciclo para cada música", "melodia-musicas"],
     ["alfabeto", "Ex. 49–52 · pág. 15", "Ponto de aumento", "ritmo-base"],
     ["demetrio", "pág. 50", "Exercícios para as notas subtonadas (subtone)", "orn-popular"],
-    ["pentatonica", "pág. 64–99", "Escala maior: arpejos, intervalos e sequências nos 12 tons", "melodia-escalas"]
+    ["pentatonica", "pág. 64–99", "Escala maior: arpejos, intervalos e sequências nos 12 tons", "melodia-escalas"],
+    ["arpejos-tv", "Maiores e menores · pág. 1–8", "Arpejos maiores e menores nos 12 tons: extensão, grupos de 4 e inversões", "melodia-arpejos"],
+    ["arpejos-tv", "Aumentados e diminutos · pág. 9–18", "Arpejos aumentados, diminutos e de sétima diminuta nos 12 tons", "melodia-arpejos"],
+    ["modos-tv", "Partes 1 a 3 · pág. 1–3", "Os sete modos gregos: relativos, sobre o Dó e em terças", "melodia-escalas"],
+    ["modos-tv", "Parte 4 · pág. 4–12", "Cada modo grego nos 12 tons", "melodia-escalas"],
+    ["ornamentos-tv", "Seções 1 a 5 · pág. 1–5", "Apojatura breve e longa, mordentes, grupeto e trinado: escrita e execução", "orn-classicos"],
+    ["ornamentos-tv", "Seção 6 · pág. 6", "Glissando, fall, scoop e ghost notes; estudos de choro e de jazz", "orn-popular"]
   ],
 
   // Acervo de partituras e playbacks (pastas do Drive), mostrado na aba Métodos.

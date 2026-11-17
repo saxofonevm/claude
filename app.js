@@ -38,7 +38,8 @@
     .filter(i => LIVROS[i[0]] && RAMO[i[3]])
     .map(([livro, onde, assunto, ramo]) => ({ livro, onde, assunto, ramo }));
   const indicacoesDoRamo = id => INDICACOES.filter(i => i.ramo === id);
-  const urlArquivo = id => id ? `https://drive.google.com/file/d/${encodeURIComponent(id)}/view` : null;
+  // Arquivo do Drive (id) ou PDF hospedado no próprio site (caminho terminado em .pdf).
+  const urlArquivo = id => id ? (/\.pdf$/i.test(id) ? id : `https://drive.google.com/file/d/${encodeURIComponent(id)}/view`) : null;
   const urlPasta = id => id ? `https://drive.google.com/drive/folders/${encodeURIComponent(id)}` : null;
   const nomeLivro = l => l.autor ? `${l.autor} · ${l.titulo}` : l.titulo;
 
