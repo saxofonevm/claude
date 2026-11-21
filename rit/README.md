@@ -4,10 +4,10 @@ Aplicativo de estudo que junta **levadas de bateria e percussão** com **harmoni
 o aluno escolhe um ritmo, escreve (ou escolhe) uma progressão de acordes e toca junto com
 percussão, baixo e acordes no andamento e no tom que quiser.
 
-Faz parte do Naipe: abre pela aba **Tocar junto**, usa o sax escolhido pelo aluno e respeita
-a versão grátis (Samba, Bossa Nova, Jazz Swing e metrônomo) ou completa. Também funciona
-sozinho: abra `index.html` no navegador
-(computador ou celular). Os instrumentos são gravações reais (veja `samples/README.md`).
+É um **módulo independente**: a pasta `rit/` funciona sozinha, em qualquer site ou como app
+próprio, sem depender de nenhum arquivo de fora dela. O Naipe o abre pela aba **Tocar junto** e pelos
+exercícios do Treino do dia, passando as opções pelo endereço (veja abaixo). Para testar, abra
+`index.html` no navegador (computador ou celular). Os instrumentos são gravações reais (veja `samples/README.md`).
 
 ## O que já faz
 
@@ -31,6 +31,34 @@ sozinho: abra `index.html` no navegador
   inicial e aceleração automática a cada volta da progressão.
 - Progressões e ajustes ficam salvos no próprio navegador.
 
+## Abrir já configurado (opções no endereço)
+
+Todas são opcionais. Exemplo: `index.html?ritmo=bossa&bpm=110&sax=Mib&prog=m-carnaval`
+
+| Opção | Valores | O que faz |
+| --- | --- | --- |
+| `ritmo` | `samba`, `bossa`, `choro`, `baiao`, `xote`, `frevo`, `maracatu`, `ijexa`, `afro`, `swing`, `valsa`, `funk`, `pop`, `reggae`, `balada`, `metro` | Escolhe o ritmo |
+| `bpm` | 40 a 260 | Andamento |
+| `sax` | vazio (som real), `Mib` (alto e barítono), `Sib` (tenor e soprano) | Tonalidade em que a cifra é escrita |
+| `prog` | código de uma progressão pronta (`p-251`, `p-blues`, `m-summertime`…) | Carrega a progressão |
+| `cifra` | texto da cifra em som real, como `\| Dm7 \| G7 \| C7M \|` | Carrega uma cifra avulsa (vira a progressão "Exercício") |
+| `titulo` | texto | Nome da cifra avulsa |
+| `levada` | código de uma levada gravada (`levadas/levadas.json`) | Abre já na levada |
+| `acesso` | `gratis` | Restringe a Samba, Bossa Nova, Jazz Swing e metrônomo. Sem essa opção, tudo fica liberado |
+| `assinar` | endereço | Link "Conhecer a versão completa" do aviso da versão grátis |
+| `voltar`, `voltarRotulo` | endereço e texto | Mostra um botão "‹ Voltar" no topo |
+
+**Mensagens entre janelas**, quando o Rit abre num quadro (iframe) do mesmo site:
+- o Rit envia `{ naipeRit: 'tocar' }` quando começa a tocar, para quem o abriu silenciar outros sons;
+- quem abriu pode enviar `{ naipe: 'parar' }` para o Rit parar a banda e a levada gravada.
+
+O Rit guarda as preferências dele no próprio navegador (`naiperit.v1`) e não lê dados de outros apps.
+
+## Levadas gravadas
+
+Gravações reais em loop, cadastradas em `levadas/levadas.json`, com os áudios em `levadas/audios/`.
+Passo a passo em `levadas/LEIA-ME.md`.
+
 ## Estrutura
 
 | Arquivo | Conteúdo |
@@ -39,6 +67,8 @@ sozinho: abra `index.html` no navegador
 | `js/audio.js` | Reprodução das gravações e timbres sintetizados de reserva |
 | `samples/` | Gravações dos instrumentos (origens e licenças em `samples/README.md`) |
 | `js/app.js` | Sequenciador e interface |
+| `js/levadas.js` | Levadas gravadas (áudios em loop) |
+| `levadas/` | Cadastro e áudios das levadas gravadas |
 | `test/music.test.js` | Testes do núcleo musical (`node test/music.test.js`) |
 
 Para acrescentar um ritmo, adicione um item à lista `RHYTHMS` em `js/music.js`.

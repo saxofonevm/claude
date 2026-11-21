@@ -938,7 +938,7 @@
     if (base) {
       // Naipe Rit (pasta rit/) aberto dentro da aba, sem sair do app
       alvo.innerHTML = `<div class="rit-embutido">${modos}
-        <iframe class="rit-quadro" src="rit/index.html?sax=${encodeURIComponent(estado.sax || "")}" title="Naipe Rit: ritmo e harmonia" allow="autoplay"></iframe></div>`;
+        <iframe class="rit-quadro" src="rit/index.html?${new URLSearchParams({ sax: estado.sax || "", ...(temBloqueio() ? { acesso: "gratis", assinar: urlConhecer() } : {}) }).toString()}" title="Naipe Rit: ritmo e harmonia" allow="autoplay"></iframe></div>`;
       document.body.classList.add("com-rit");
       return;
     }

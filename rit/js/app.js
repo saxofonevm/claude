@@ -43,17 +43,15 @@
     var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
     if (saved && typeof saved === 'object') Object.keys(S).forEach(function (k) { if (k in saved) S[k] = saved[k]; });
   } catch (e) { /* sem armazenamento: segue com o padrão */ }
-  /* Quando roda dentro do Naipe: lê o sax do aluno e o acesso (grátis x completo). */
-  var NAIPE = (function () {
-    var cma = window.CMA, est = {};
-    try { est = JSON.parse(localStorage.getItem('cma.v1') || '{}') || {}; } catch (e) { /* segue sem */ }
-    var ctrl = cma && cma.acesso && !cma.acesso.livre && Array.isArray(cma.acesso.codigos) && cma.acesso.codigos.length;
-    return { dentro: !!cma, sax: est.sax || '', completo: !ctrl || !!est.desbloqueado };
-  })();
-  if (S.sax === null) S.sax = NAIPE.sax;
+  /* O Rit é independente: não lê nada de outro app. Quem o abre informa tudo pelo
+     endereço (veja "Abrir já configurado" no README): sax, ritmo, cifra, acesso etc. */
+  var Q = {};
+  try { new URLSearchParams(location.search).forEach(function (v, k) { Q[k] = v; }); } catch (e) { /* navegador antigo */ }
+  var ACESSO = { completo: Q.acesso !== 'gratis' };
+  if (S.sax === null) S.sax = '';
   var GRATIS = { samba: 1, bossa: 1, swing: 1, metro: 1 };
-  function liberado(ritmoId) { return NAIPE.completo || !!GRATIS[ritmoId]; }
-  function musicaLiberada(id) { return NAIPE.completo || id.indexOf('m-') !== 0; }
+  function liberado(ritmoId) { return ACESSO.completo || !!GRATIS[ritmoId]; }
+  function musicaLiberada(id) { return ACESSO.completo || id.indexOf('m-') !== 0; }
   if (!liberado(S.rhythmId)) S.rhythmId = 'samba';
   if (!musicaLiberada(S.songId)) S.songId = 'p-samba';
   var SAX = { '': 0, Mib: 9, Sib: 2 }; // semitons acima do som real em que o sax lê
@@ -61,8 +59,6 @@
   /* Abertura já configurada pelo endereço (usada pelos exercícios do Naipe; veja o README):
      index.html?ritmo=bossa&bpm=120&sax=Mib&prog=p-251
      index.html?ritmo=swing&cifra=|%20Dm7%20|%20G7%20|&titulo=II-V-I  (cifra em som real) */
-  var Q = {};
-  try { new URLSearchParams(location.search).forEach(function (v, k) { Q[k] = v; }); } catch (e) { /* navegador antigo */ }
   var LINK = !!(Q.ritmo || Q.cifra || Q.prog);
   if (Q.ritmo && M.RHYTHMS.some(function (r) { return r.id === Q.ritmo; })) S.rhythmId = Q.ritmo;
   if (Q.bpm && +Q.bpm > 0) S.bpm = Math.max(40, Math.min(260, Math.round(+Q.bpm)));
@@ -74,6 +70,9 @@
     S.songId = doLink.id;
   }
   if (LINK) S.transpose = 0;
+  // a versão grátis vale também para o que veio pelo endereço
+  if (!liberado(S.rhythmId)) S.rhythmId = 'samba';
+  if (!musicaLiberada(S.songId)) S.songId = 'p-samba';
 
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* idem */ } }
 
@@ -669,10 +668,21 @@
   try { E.init(); } catch (e) { /* o áudio começa no primeiro toque */ }
   $('countin').checked = S.countIn;
   $('tons').value = String(S.tons);
-  // Dentro da aba Tocar junto do Naipe (num quadro) o próprio Naipe já tem o voltar
-  var EMBUTIDO = window.parent !== window;
-  $('voltar').hidden = !NAIPE.dentro || EMBUTIDO;
-  window.addEventListener('message', function (ev) { if (ev.origin === location.origin && ev.data && ev.data.naipe === 'parar' && P) stop(); });
+  // "Voltar": só aparece quando quem abriu o Rit pede (?voltar=endereço&voltarRotulo=texto)
+  if (Q.voltar && /^(https?:\/\/|\.\.?\/|\/|#)/.test(Q.voltar)) {
+    $('voltar').href = Q.voltar;
+    $('voltar').textContent = '‹ ' + (Q.voltarRotulo || 'Voltar');
+    $('voltar').hidden = false;
+  }
+  // Versão grátis: link opcional para assinar (?acesso=gratis&assinar=endereço)
+  var assinar = $('aviso-assinar');
+  if (assinar) { if (Q.assinar && /^(https?:\/\/|\.\.?\/|\/|#)/.test(Q.assinar)) assinar.href = Q.assinar; else assinar.hidden = true; }
+  // Mensagem de quem abriu o Rit num quadro (mesmo site): { naipe: 'parar' } para o som
+  window.addEventListener('message', function (ev) {
+    if (ev.origin !== location.origin || !ev.data || ev.data.naipe !== 'parar') return;
+    if (P) stop();
+    if (window.RitLevadas) window.RitLevadas.parar();
+  });
   renderLoop();
   $('ramp').value = S.ramp;
   $('fill').value = String(S.fill);
