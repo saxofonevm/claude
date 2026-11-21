@@ -177,12 +177,12 @@
         </div>
         <button class="btn primario pequeno" id="btn-registrar-2" data-icone="mais">Novo</button>
       </header>
+      <section class="cartao resumo-semana" id="resumo-semana" aria-label="Resumo da semana"></section>
       <section class="meus-materiais" aria-labelledby="mm-titulo">
         <h2 id="mm-titulo"><span data-icone="pasta"></span>Meus materiais</h2>
         <p class="mudo">O seu espaço: os seus arquivos, a sua evolução e os prazos.</p>
         <div class="cartao meus-arquivos" id="meus-arquivos"></div>
         <div class="cartao minha-evolucao" id="minha-evolucao"></div>
-        <div class="cartao estudo-dia-cartao"><section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section></div>
         <details class="cartao recolhe">
           <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
           <ul class="lista-prazos" id="lista-prazos"></ul>
@@ -200,7 +200,6 @@
         </details>
         <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
       </section>
-      <section class="cartao resumo-semana" id="resumo-semana" aria-label="Resumo da semana"></section>
       <div class="corpo-diario" id="diario-graficos"></div>
       <ul class="lista" id="lista-sessoes"></ul>
       <div class="vazio" id="diario-vazio">
@@ -280,6 +279,9 @@
     <!-- APRENDER (trilha do zero, protótipo) -->
     <section id="tela-trilha" class="tela">
       <div id="trilha-conteudo"></div>
+      <div id="dica-guarda" hidden>
+        <div class="cartao estudo-dia-cartao"><section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section></div>
+      </div>
     </section>
   </main>
 

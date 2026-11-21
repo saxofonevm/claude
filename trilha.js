@@ -1795,6 +1795,9 @@
   let sessao = null; // { licao, i, erros }
   const temporizadores = [];
   function limpar() {
+    // A Dica de estudo (cartão do app) mora no Estudo: guarda antes de a tela ser redesenhada
+    const dica = document.querySelector(".estudo-dia-cartao"), guarda = document.getElementById("dica-guarda");
+    if (dica && guarda && dica.parentElement !== guarda) guarda.appendChild(dica);
     pararPulso();
     pararRec(); urls.splice(0).forEach(u => URL.revokeObjectURL(u));
     temporizadores.splice(0).forEach(clearTimeout);
@@ -1861,7 +1864,7 @@
         <h1>Plano de estudos</h1>
         <p class="mudo">Três módulos de três meses, com sessões de 30 a 45 minutos e os métodos da biblioteca. Em cada bloco você conta como foi, e o professor virtual ajusta o próximo passo: o exercício e o andamento. Toque num módulo para abrir as semanas.</p>
       </header>
-      <div class="corpo tr-corpo">
+      <div class="corpo tr-corpo"><div id="tr-dica"></div>
         ${bloqueado ? `<section class="cartao tr-porque"><span class="rotulo">Quando começar</span><p class="mudo">O plano abre quando você conclui a Teoria. Se você já lê partitura e toca, pode começar agora.</p><button class="btn" id="tr-ja-toco" type="button">Já toco, quero começar o plano</button></section>` : pl.n ? `<section class="cartao tr-porque"><span class="rotulo">Meu plano</span><p class="mudo"><strong>${pl.n}</strong> ${pl.n === 1 ? "sessão feita" : "sessões feitas"}. O tempo de cada sessão fica no seu Diário.</p></section>` : ""}
         ${MODULOS.map((md, k) => {
           const us = UNIDADES_PLANO.slice(md.de, md.ate), lics = us.flatMap(u => u.licoes), feitas = lics.filter(l => prog.feitas[l.id]).length;

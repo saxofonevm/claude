@@ -398,7 +398,7 @@
       case "diario": renderInicio(); renderDiario(); if (window.NaipeMateriais) window.NaipeMateriais.render(); if (window.NaipeEvolucao) window.NaipeEvolucao.render(); break;
       case "ajustes": renderAjustes(); break;
       case "trilha": if (window.NaipeTrilha) window.NaipeTrilha.render(rotaAtual.id); break;
-      case "estudo": if (window.NaipeTrilha) window.NaipeTrilha.render(null, "estudo"); break;
+      case "estudo": if (window.NaipeTrilha) window.NaipeTrilha.render(null, "estudo"); porDica(); break;
     }
   }
 
@@ -2121,7 +2121,7 @@
       ed.festa = true; salvar();
       setTimeout(() => celebrar("Dica de estudo completa!", "Aquecimento, exercício e tocar junto. Até amanhã!", "trofeu"), 400);
     }
-    if (rotaAtual.tela === "inicio" || rotaAtual.tela === "diario") renderEstudoDia();
+    if (rotaAtual.tela === "estudo") renderEstudoDia();
   }
 
   function playAlongDoDia() {
@@ -2133,6 +2133,12 @@
     if (!lista.length) return null;
     const dia = Math.floor(deISO(hojeISO()) / 864e5);
     return lista[dia % lista.length];
+  }
+
+  // A Dica de estudo fica no Estudo, logo abaixo do título
+  function porDica() {
+    const dica = document.querySelector(".estudo-dia-cartao"), slot = $("#tr-dica");
+    if (dica && slot) { slot.replaceWith(dica); renderEstudoDia(); }
   }
 
   function renderEstudoDia() {

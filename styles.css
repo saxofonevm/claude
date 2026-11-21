@@ -2300,3 +2300,7 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .rs-lista { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
 .rs-lista li { font-size: .88rem; padding-left: 18px; position: relative; }
 .rs-lista li::before { content: "✓"; position: absolute; left: 0; color: var(--ok, #3dffb0); font-weight: 700; }
+
+/* Dica de estudo no Estudo e resumo no alto do Diário */
+#tela-trilha .estudo-dia-cartao { margin-bottom: 14px; }
+#tela-diario > .resumo-semana { margin: 0 16px 14px; }
