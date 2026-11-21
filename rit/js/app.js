@@ -155,6 +155,7 @@
   function stepDur() { return 60 / S.bpm / rhythm().spb; }
 
   function play(fromBar, noCount) {
+    if (window.RitLevadas) window.RitLevadas.parar(); // a gravação para quando a banda sintetizada toca
     try { if (window.parent !== window) window.parent.postMessage({ naipeRit: 'tocar' }, location.origin); } catch (e) { /* fora do Naipe */ }
     E.init();
     E.resume();
@@ -590,6 +591,7 @@
     renderChart();
     renderTranspose();
     save();
+    if (window.RitLevadas) window.RitLevadas.redesenhar();
   });
   $('tons').addEventListener('change', function () { S.tons = +this.value; save(); });
   $('loop').addEventListener('click', function () {
@@ -677,4 +679,10 @@
   renderSelects();
   setBpm(S.bpm);
   refresh(false);
+
+  /* Ponte com o módulo de levadas gravadas (js/levadas.js). */
+  window.RitApp = {
+    stop: function () { if (P) stop(); },
+    sax: function () { return S.sax || ''; }
+  };
 })();

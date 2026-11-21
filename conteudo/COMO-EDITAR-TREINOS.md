@@ -52,6 +52,7 @@ ou, usando uma harmonia pronta do RIT:
 
 - **ritmo**: `samba`, `bossa`, `choro`, `baiao`, `xote`, `frevo`, `maracatu`, `ijexa`, `afro`, `swing`, `valsa`, `funk`, `pop`, `reggae`, `balada` ou `metro`.
 - **cifra**: escreva em **som real (Dó)**, com `|` entre os compassos e `%` para repetir. O app transpõe sozinho para Mi♭ e Si♭.
+- **levada**: para usar uma levada gravada por você, use `"rit": { "levada": "samba-partido-90" }`. Como cadastrar as levadas está em `rit/levadas/LEIA-ME.md`.
 - **prog**: o código de uma harmonia pronta, por exemplo `p-251`, `p-blues`, `m-summertime` ou `m-allofme`. A lista completa está em `rit/js/music.js`.
 
 Os códigos de exercícios, livros e músicas estão em `conteudo.js`, `metodos.js` e `repertorio.js`. Se não achar, me peça a lista.

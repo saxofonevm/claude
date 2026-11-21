@@ -18,6 +18,9 @@ const livros = new Set(Object.keys(window.CMA_METODOS.livros));
 const musicas = new Set(window.NAIPE_REPERTORIO.musicas.map(m => m.id));
 const Music = require(path.join(raiz, "rit/js/music.js"));
 const ritmos = new Set(Music.RHYTHMS.map(r => r.id)), progs = new Set(Music.PRESETS.map(p => p.id));
+let levadas = new Set();
+try { levadas = new Set((JSON.parse(ler("rit/levadas/levadas.json")).levadas || []).map(l => l.id)); }
+catch (e) { avisos.push("O cadastro rit/levadas/levadas.json não é um JSON válido: " + e.message); }
 
 const cats = dados.categorias || {};
 for (const [id, c] of Object.entries(cats)) {
@@ -42,9 +45,10 @@ const ids = new Set();
     if (b.material && !livros.has(b.material.livro)) problemas.push(`${ob}: o livro "${b.material.livro}" não está na Biblioteca de métodos.`);
     if (b.musica && !musicas.has(b.musica)) problemas.push(`${ob}: a música "${b.musica}" não está no Repertório essencial.`);
     if (b.rit) {
-      if (!ritmos.has(b.rit.ritmo)) problemas.push(`${ob}: o ritmo do RIT "${b.rit.ritmo}" não existe. Ritmos: ${[...ritmos].join(", ")}.`);
+      if (b.rit.levada) { if (!levadas.has(b.rit.levada)) problemas.push(`${ob}: a levada "${b.rit.levada}" não está em rit/levadas/levadas.json.`); }
+      else if (!ritmos.has(b.rit.ritmo)) problemas.push(`${ob}: o ritmo do RIT "${b.rit.ritmo}" não existe. Ritmos: ${[...ritmos].join(", ")}.`);
       if (b.rit.prog && !progs.has(b.rit.prog)) problemas.push(`${ob}: a progressão do RIT "${b.rit.prog}" não existe.`);
-      if (!b.rit.prog && !b.rit.cifra) avisos.push(`${ob}: o RIT está sem cifra e sem progressão (vai tocar só o ritmo).`);
+      if (!b.rit.levada && !b.rit.prog && !b.rit.cifra) avisos.push(`${ob}: o RIT está sem cifra e sem progressão (vai tocar só o ritmo).`);
       if (b.rit.cifra) { try { const c = Music.parseChart(b.rit.cifra); if (!c.bars.length) problemas.push(`${ob}: a cifra do RIT está vazia.`); } catch (e) { problemas.push(`${ob}: não consegui ler a cifra do RIT.`); } }
     }
   });

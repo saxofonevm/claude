@@ -1,0 +1,16 @@
+{
+  "versao": 1,
+  "levadas": [
+    {
+      "id": "exemplo-100",
+      "nome": "Exemplo: bumbo e clique",
+      "estilo": "Exemplo",
+      "arquivo": "exemplo-100bpm.wav",
+      "bpm": 100,
+      "compasso": "4/4",
+      "compassos": 2,
+      "cifra": "| C7M | A7 |",
+      "exemplo": true
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 // Service worker: permite usar o app offline.
 // Estratégia "rede primeiro": com internet, sempre busca a versão nova do servidor
 // (sem usar cópia velha do navegador); sem internet, usa a cópia salva.
-const CACHE = "cma-v106";
+const CACHE = "cma-v107";
 const ARQUIVOS = [
   "./",
   "index.html",
@@ -21,6 +21,8 @@ const ARQUIVOS = [
   "rit/js/music.js",
   "rit/js/audio.js",
   "rit/js/app.js",
+  "rit/js/levadas.js",
+  "rit/levadas/levadas.json",
   "rit/samples/drums.js"
 ];
 

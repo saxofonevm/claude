@@ -6,7 +6,7 @@
  */
 (function () {
   "use strict";
-  let DADOS = null, erro = false;
+  let DADOS = null, erro = false, LEVADAS = [];
   const tempo = { bloco: -1, fim: 0, t: 0 };
   let verDeNovo = false; // depois de concluído, o aluno pode rever os blocos sem registrar de novo
 
@@ -20,6 +20,9 @@
       if (!r.ok) throw new Error(r.status);
       DADOS = await r.json();
     } catch { erro = true; }
+    if (DADOS && DADOS.treinos.some(t => t.blocos.some(b => b.rit && b.rit.levada))) {
+      try { const r = await fetch("rit/levadas/levadas.json", { cache: "no-cache" }); if (r.ok) LEVADAS = (await r.json()).levadas || []; } catch { /* segue sem levadas */ }
+    }
     if (location.hash === "" || location.hash.startsWith("#/inicio")) render();
   }
 
@@ -78,8 +81,10 @@
   // ---------- Naipe RIT no exercício ----------
   // Cifra escrita para o sax do aluno (alto em Mi♭: +9 semitons; tenor e soprano em Si♭: +2).
   const DESLOC = { Mib: 9, Sib: 2 };
+  const levadaDe = r => r && r.levada ? LEVADAS.find(l => l.id === r.levada) : null;
   function textoCifra(r) {
     if (r.cifra) return r.cifra;
+    const lv = levadaDe(r); if (lv) return lv.cifra || "";
     const p = ((window.Music || {}).PRESETS || []).find(x => x.id === r.prog);
     return p ? p.text : "";
   }
@@ -94,10 +99,12 @@
   function htmlRit(b, k) {
     const r = b.rit; if (!r) return "";
     const sax = app().estado().sax || "", texto = textoCifra(r);
-    const nomeRitmo = (((window.Music || {}).RHYTHMS || []).find(x => x.id === r.ritmo) || {}).name || r.ritmo;
-    const titulo = r.titulo || ((((window.Music || {}).PRESETS || []).find(x => x.id === r.prog) || {}).title) || "";
+    const lv = levadaDe(r);
+    const nomeRitmo = lv ? `Levada gravada: ${lv.nome}` : ((((window.Music || {}).RHYTHMS || []).find(x => x.id === r.ritmo) || {}).name || r.ritmo);
+    const bpm = lv ? lv.bpm : r.bpm;
+    const titulo = lv ? "" : (r.titulo || ((((window.Music || {}).PRESETS || []).find(x => x.id === r.prog) || {}).title) || "");
     return `<div class="tb-rit">
-      <div class="rb-topo"><span class="rb-rot">Com a banda · ${esc(nomeRitmo)}${r.bpm ? ` · ♩ ${r.bpm}` : ""}${titulo ? ` · ${esc(titulo)}` : ""}</span></div>
+      <div class="rb-topo"><span class="rb-rot">Com a banda · ${esc(nomeRitmo)}${bpm ? ` · ♩ ${bpm}` : ""}${titulo ? ` · ${esc(titulo)}` : ""}</span></div>
       <div class="rb-sax" role="group" aria-label="Meu saxofone">
         ${[["Mib", "Alto · Mi♭"], ["Sib", "Tenor e soprano · Si♭"]].map(([v, rot]) => `<button type="button" data-treino="sax" data-sax="${v}" aria-pressed="${sax === v}" class="${sax === v ? "ativo" : ""}">${rot}</button>`).join("")}
       </div>
@@ -107,6 +114,7 @@
   }
   function abrirBanda(b) {
     const r = b.rit, q = new URLSearchParams();
+    if (r.levada) q.set("levada", r.levada);
     if (r.ritmo) q.set("ritmo", r.ritmo);
     if (r.bpm) q.set("bpm", r.bpm);
     if (r.prog) q.set("prog", r.prog);
