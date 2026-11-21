@@ -650,7 +650,8 @@ window.CMA = {
                 "Toque a escala de Ré menor em semicolcheias, todas destacadas, curtas e leves",
                 "Agora ligue de 2 em 2, começando a ligadura na nota da síncope",
                 "Aplique num trecho de choro que você está estudando"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-06.png", legenda: "Ré menor harmônica. Na segunda linha, a ligadura começa na 2ª semicolcheia de cada tempo (a nota da síncope)." }]
             }
           ]
         },

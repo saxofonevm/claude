@@ -1150,6 +1150,7 @@
         ${ex.passos?.length ? `<div class="cartao">
           <h2>${icone("nota")}Como fazer</h2>
           <ol class="passos">${ex.passos.map(p => `<li><span>${escapar(p)}</span></li>`).join("")}</ol>
+          ${(ex.partituras || []).map(pt => `<figure class="tb-partitura"><a href="${escapar(pt.src)}" target="_blank" rel="noopener" aria-label="Ampliar a partitura"><img src="${escapar(pt.src)}" alt="Exemplo em partitura: ${escapar(ex.titulo)}" loading="lazy"></a>${pt.legenda ? `<figcaption>${escapar(pt.legenda)}</figcaption>` : ""}</figure>`).join("")}
         </div>` : ""}
 
         ${andamento}
