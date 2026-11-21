@@ -388,7 +388,7 @@
 
   function renderTela() {
     switch (rotaAtual.tela) {
-      case "inicio": renderInicio(); if (window.NaipeTrilha) window.NaipeTrilha.inicio(); if (window.NaipeTreino) window.NaipeTreino.render(); break;
+      case "inicio": renderInicio(); if (window.NaipeTreino) window.NaipeTreino.render(); break; // o cartão do Estudo (NaipeTrilha.inicio) saiu do Início: o treino é a sugestão do dia
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
       case "ex": renderExercicio(rotaAtual.id); renderGravador(rotaAtual.id); break;

@@ -8,7 +8,9 @@
   "use strict";
   let DADOS = null, erro = false, LEVADAS = [];
   const tempo = { bloco: -1, fim: 0, t: 0 };
-  let verDeNovo = false; // depois de concluído, o aluno pode rever os blocos sem registrar de novo
+  let verDeNovo = false;
+  let aberto = null;          // bloco com os detalhes à mostra (um por vez)
+  const cifraVisivel = {};    // blocos com a cifra aberta // depois de concluído, o aluno pode rever os blocos sem registrar de novo
 
   const app = () => window.NaipeApp;
   const esc = s => app().escapar(String(s == null ? "" : s));
@@ -91,10 +93,10 @@
   function htmlCifra(texto, sax) {
     const M = window.Music, n = DESLOC[sax] || 0, sust = M && M.prefersSharps ? M.prefersSharps(texto, n) : false;
     const tr = tok => (/^[A-G]/.test(tok) && M ? (M.transposeSymKey ? M.transposeSymKey(tok, n, sust) : M.transposeSym(tok, n)) : tok);
-    return texto.split("\n").map(linha => {
-      const comps = linha.split("|").map(c => c.trim()).filter((c, i, a) => c !== "" || (i > 0 && i < a.length - 1));
-      return `<div class="rb-linha">${comps.map(c => `<span class="rb-comp">${esc(c.replace(/^:|:$/g, "").split(/\s+/).map(tr).join("  "))}</span>`).join("")}</div>`;
-    }).join("");
+    if (!M || !M.parseChart) return "";
+    return M.parseChart(texto).rows.map(row =>
+      `${row.label ? `<span class="rb-parte">${esc(row.label)}</span>` : ""}<div class="rb-linha">${row.bars.map(bar => `<span class="rb-comp">${esc(bar.chords.map(tr).join(" "))}</span>`).join("")}</div>`
+    ).join("");
   }
   function htmlRit(b, k) {
     const r = b.rit; if (!r) return "";
@@ -108,8 +110,11 @@
       <div class="rb-sax" role="group" aria-label="Meu saxofone">
         ${[["Mib", "Alto · Mi♭"], ["Sib", "Tenor e soprano · Si♭"]].map(([v, rot]) => `<button type="button" data-treino="sax" data-sax="${v}" aria-pressed="${sax === v}" class="${sax === v ? "ativo" : ""}">${rot}</button>`).join("")}
       </div>
-      ${texto ? `<div class="rb-cifra" aria-label="Cifra">${htmlCifra(texto, sax)}</div><small class="rb-nota">${sax ? `Cifra escrita para o seu sax (${sax === "Mib" ? "Mi♭" : "Si♭"}). A banda soa no tom real.` : "Cifra em som real (Dó). Escolha o seu sax para ver a cifra transposta."}</small>` : ""}
-      <button type="button" class="btn primario rb-tocar" data-treino="banda" data-k="${k}">▶ Tocar com a banda</button>
+      <div class="rb-botoes">
+        <button type="button" class="btn primario rb-tocar" data-treino="banda" data-k="${k}">▶ Tocar com a banda</button>
+        ${texto ? `<button type="button" class="link-acao" data-treino="cifra" data-k="${k}" aria-expanded="${!!cifraVisivel[k]}">${cifraVisivel[k] ? "Esconder a cifra" : "Ver a cifra"}</button>` : ""}
+      </div>
+      ${texto && cifraVisivel[k] ? `<div class="rb-cifra" aria-label="Cifra">${htmlCifra(texto, sax)}</div><small class="rb-nota">${sax ? `Cifra escrita para o seu sax (${sax === "Mib" ? "Mi♭" : "Si♭"}). A banda soa no tom real.` : "Cifra em som real (Dó). Escolha o seu sax acima para ver a cifra transposta."}</small>` : ""}
     </div>`;
   }
   function abrirBanda(b) {
@@ -133,6 +138,14 @@
     d.querySelector("#banda-titulo").textContent = b.titulo;
     d.querySelector("#banda-quadro").src = `rit/index.html?${q.toString()}`;
     d.showModal();
+  }
+
+  // O bloco aberto: o que o aluno tocou por último, ou o primeiro ainda não feito.
+  function blocoAberto(dia, t) {
+    if (tempo.bloco >= 0) return tempo.bloco;
+    if (aberto !== null && aberto < t.blocos.length) return aberto;
+    const i = t.blocos.findIndex((_, k) => !dia.feitos.includes(k));
+    return i < 0 ? -1 : i;
   }
 
   const mmss = s => `${Math.floor(s / 60)}:${String(Math.max(0, s) % 60).padStart(2, "0")}`;
@@ -162,9 +175,15 @@
       <ol class="treino-blocos">${t.blocos.map((b, k) => {
         const feito = dia.feitos.includes(k), rodando = tempo.bloco === k;
         const resta = rodando ? Math.max(0, Math.round((tempo.fim - Date.now()) / 1000)) : b.minutos * 60;
+        const abre = k === blocoAberto(dia, t);
+        const cab = `<button type="button" class="tb-cab-btn" data-treino="abrir" data-k="${k}" aria-expanded="${abre}">
+            <span class="tb-marca" aria-hidden="true">${feito ? "✓" : k + 1}</span>
+            <span class="tb-cab-txt"><span class="tb-cat">${esc((cats[b.categoria] || {}).nome || b.categoria)} · ${b.minutos} min</span><strong class="tb-titulo">${esc(b.titulo)}</strong></span>
+            <span class="tb-seta" aria-hidden="true">${abre ? "▴" : "▾"}</span>
+          </button>`;
+        if (!abre) return `<li class="treino-bloco fechado${feito ? " feito" : ""}${rodando ? " rodando" : ""}">${cab}</li>`;
         return `<li class="treino-bloco${feito ? " feito" : ""}${rodando ? " rodando" : ""}">
-          <div class="tb-cab"><span class="tb-cat">${esc((cats[b.categoria] || {}).nome || b.categoria)}</span><span class="tb-min">${b.minutos} min</span></div>
-          <strong class="tb-titulo">${esc(b.titulo)}</strong>
+          ${cab}
           ${fonteBloco(b) ? `<small class="tb-fonte">${esc(fonteBloco(b))}</small>` : ""}
           ${b.instrucao ? `<p class="tb-instrucao">${esc(b.instrucao)}</p>` : ""}
           <div class="tb-links">${linksBloco(b)}</div>
@@ -190,6 +209,7 @@
     if (resta <= 0) {
       const k = tempo.bloco; pararTempo();
       const dia = estadoDia(); if (!dia.feitos.includes(k)) { dia.feitos.push(k); app().salvar(); }
+      aberto = null;
       try { navigator.vibrate && navigator.vibrate(200); } catch { /* sem vibração */ }
       render(); return;
     }
@@ -202,10 +222,12 @@
     if (!b || !document.getElementById("treino-dia").contains(b)) return;
     const acao = b.dataset.treino, dia = estadoDia(), t = treinoAtual(dia), k = Number(b.dataset.k);
     if (acao === "sax") { app().definirSax(b.dataset.sax); render(); return; }
+    if (acao === "abrir") { aberto = blocoAberto(dia, t) === k ? -1 : k; render(); return; }
+    if (acao === "cifra") { cifraVisivel[k] = !cifraVisivel[k]; render(); return; }
     if (acao === "banda") { abrirBanda(t.blocos[k]); return; }
     if (acao === "feito") {
       const i = dia.feitos.indexOf(k);
-      if (i >= 0) dia.feitos.splice(i, 1); else dia.feitos.push(k);
+      if (i >= 0) dia.feitos.splice(i, 1); else { dia.feitos.push(k); aberto = null; } // ao marcar, abre o próximo
       if (tempo.bloco === k) pararTempo();
       app().salvar(); render();
     } else if (acao === "tempo") {
@@ -223,7 +245,7 @@
       if (app().atualizar) app().atualizar(); else render();
     } else if (acao === "trocar") {
       const i = DADOS.treinos.findIndex(x => x.id === dia.id);
-      dia.id = DADOS.treinos[(i + 1) % DADOS.treinos.length].id; dia.feitos = [];
+      dia.id = DADOS.treinos[(i + 1) % DADOS.treinos.length].id; dia.feitos = []; aberto = null;
       app().salvar(); render();
     } else if (acao === "refazer") {
       verDeNovo = true; render();

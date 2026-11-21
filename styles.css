@@ -2193,3 +2193,22 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .beta-erro { margin: 0; min-height: 1.2em; color: var(--danger, #ff6b8a); font-size: .9rem; }
 .beta-form .link-acao { align-self: center; }
 .beta-form h2 { justify-content: center; text-align: center; }
+
+/* ---------- Treino mais limpo (blocos recolhidos) e correção de largura ---------- */
+.ferramentas-inicio { grid-template-columns: minmax(0, 1fr); }
+.ferramentas-inicio > button { min-width: 0; }
+.treino-bloco { padding: 0; gap: 0; overflow: hidden; }
+.treino-bloco > :not(.tb-cab-btn) { margin: 0 14px; }
+.treino-bloco > :not(.tb-cab-btn) + :not(.tb-cab-btn) { margin-top: 8px; }
+.treino-bloco > :last-child { margin-bottom: 14px; }
+.tb-cab-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; background: none; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
+.tb-marca { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-size: .9rem; background: var(--surface); border: 1px solid color-mix(in srgb, var(--line) 90%, transparent); color: var(--muted); }
+.treino-bloco.feito .tb-marca { background: var(--ok, #3dffb0); color: #04170f; border-color: transparent; }
+.tb-cab-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.tb-cab-txt .tb-titulo { font-size: 1.02rem; }
+.tb-seta { flex: none; color: var(--muted); font-size: .9rem; }
+.treino-bloco.fechado .tb-cat { color: var(--muted); }
+.rb-botoes { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.rb-parte { display: inline-block; margin-top: 4px; font-size: .72rem; font-weight: 700; color: var(--brass-soft, #f2d47c); }
+.rb-linha { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.rb-comp { white-space: normal; overflow: visible; text-overflow: clip; word-spacing: .2em; line-height: 1.25; }
