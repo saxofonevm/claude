@@ -262,7 +262,8 @@ window.CMA = {
                 "Com o metrônomo, bata palmas: 4 semínimas, 8 colcheias, 16 semicolcheias (um compasso cada)",
                 "Repita tocando uma única nota no sax (ex.: Sol)",
                 "Quando estiver estável, suba o andamento de 5 em 5 bpm"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-01.png", legenda: "Bata palmas primeiro; depois toque em Sol." }]
             },
             {
               id: "rit-02",
@@ -272,7 +273,8 @@ window.CMA = {
                 "Toque só nos contratempos (no 'e' de cada tempo) com o metrônomo marcando os tempos",
                 "Alterne um compasso no tempo e um no contratempo",
                 "Faça o mesmo com pausas de semicolcheia"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-02.png" }]
             }
           ]
         },
@@ -294,7 +296,8 @@ window.CMA = {
                 "Ouça a referência e cante a levada do tamborim",
                 "Escreva o ritmo no papel (semicolcheia – colcheia – semicolcheia)",
                 "Toque o ritmo em uma nota e depois aplique na escala de Dó"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-03.png", legenda: "Semicolcheia, colcheia, semicolcheia: a síncope do samba e do choro." }]
             }
           ]
         },
@@ -316,7 +319,8 @@ window.CMA = {
                 "Cante a levada da zabumba junto com a referência",
                 "Escreva a célula rítmica",
                 "Toque a célula em notas repetidas e depois em arpejos simples"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-04.png" }]
             }
           ]
         },
@@ -338,7 +342,8 @@ window.CMA = {
                 "Escreva um compasso típico: semicolcheias com acentos nas síncopes",
                 "Toque o ritmo numa nota só, depois na escala de Dó, mantendo o acento",
                 "Suba o andamento aos poucos: o frevo pede leveza mesmo rápido"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-06.png", legenda: "Acento nas síncopes; as outras notas curtas e leves." }]
             }
           ]
         },
@@ -360,7 +365,8 @@ window.CMA = {
                 "Toque a escala de Fá maior em colcheias iguais, sem swingar",
                 "Toque a melodia de uma bossa conhecida (ex.: Corcovado) com som leve e pouca dinâmica",
                 "Grave e compare com Stan Getz: as colcheias estão iguais?"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-07.png", legenda: "Na bossa, as colcheias são iguais." }]
             }
           ]
         },
@@ -381,7 +387,8 @@ window.CMA = {
                 "Fale 'du-ba du-ba' sobre o metrônomo nos tempos 2 e 4",
                 "Toque a escala de Fá maior em colcheias swingadas",
                 "Grave e compare com a referência"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/rit-05.png", legenda: "No swing, cada par de colcheias soa como uma tercina: a primeira longa, a segunda curta." }]
             }
           ]
         }
@@ -420,7 +427,8 @@ window.CMA = {
                 "Fatie a frase em pedaços de 2 a 4 notas",
                 "Toque cada pedaço bem devagar, sem erros, 3 vezes seguidas",
                 "Junte os pedaços e suba o metrônomo de 4 em 4 bpm só quando estiver limpo"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-01.png", legenda: "Aprenda cada pedaço devagar, depois junte." }]
             }
           ]
         },
@@ -441,7 +449,8 @@ window.CMA = {
                 "Toque cada escala subindo e descendo em semínimas",
                 "Depois em colcheias, mantendo o som igual em toda a extensão",
                 "Suba o andamento aos poucos até o alvo"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-02.png", legenda: "Faça o mesmo em Sol e Fá maior." }]
             },
             {
               id: "mel-03",
@@ -451,7 +460,8 @@ window.CMA = {
                 "Siga o ciclo das quintas: Dó, Fá, Sib, Mib, Láb...",
                 "Cante a escala antes de tocar",
                 "Anote no diário quais tonalidades ainda estão difíceis"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-03.png", legenda: "Continue no ciclo das quintas: Lá♭, Ré♭, Sol♭, Si, Mi, Lá, Ré e Sol." }]
             },
             {
               id: "mel-07",
@@ -461,7 +471,8 @@ window.CMA = {
                 "Comece por Lá menor: toque a natural, depois a harmônica (7º grau elevado) e a melódica (6º e 7º graus elevados na subida)",
                 "Cante cada uma antes de tocar e perceba a diferença de cor",
                 "Repita em Mi menor e Ré menor, depois siga o ciclo das quintas"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-07.png", legenda: "Depois repita em Mi menor e Ré menor." }]
             },
             {
               id: "mel-08",
@@ -471,7 +482,8 @@ window.CMA = {
                 "Toque a cromática da nota mais grave à mais aguda que você alcança, em semínimas",
                 "Use os dedilhados cromáticos corretos (sem arrastar dedos) e mantenha o som igual",
                 "Depois em colcheias e semicolcheias, subindo o andamento aos poucos"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-08.png", legenda: "Suba até a nota mais aguda que você alcança." }]
             }
           ]
         },
@@ -492,7 +504,8 @@ window.CMA = {
                 "Escala em terças: Dó-Mi, Ré-Fá, Mi-Sol...",
                 "Escala em quartas: Dó-Fá, Ré-Sol, Mi-Lá...",
                 "Cante cada intervalo antes de tocar"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-04.png" }]
             }
           ]
         },
@@ -513,7 +526,8 @@ window.CMA = {
                 "Toque o arpejo de cada grau da escala (Dó-Mi-Sol, Ré-Fá-Lá...)",
                 "Repita invertendo a direção (descendo)",
                 "Depois faça com tétrades (Dó-Mi-Sol-Si)"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/mel-05.png", legenda: "Continue até o 7º grau também nas tétrades." }]
             }
           ]
         },
@@ -577,7 +591,8 @@ window.CMA = {
                 "Escala de Dó toda em legato, ar contínuo",
                 "A mesma escala toda em staccato, notas curtas e iguais",
                 "Alterne: 2 ligadas + 2 destacadas"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-01.png" }]
             }
           ]
         },
@@ -595,7 +610,8 @@ window.CMA = {
                 "Colcheias em uma nota, acentuando o primeiro de cada tempo",
                 "Agora acentue o contratempo",
                 "Aplique tenuto (nota cheia) e marcato (forte e curta)"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-02.png" }]
             }
           ]
         },
@@ -618,7 +634,8 @@ window.CMA = {
                 "Toque a escala de Fá maior em colcheias swingadas: língua leve no contratempo, ligando para o tempo",
                 "A língua toca a palheta de leve, sem cortar o ar",
                 "Grave e compare com Cannonball Adderley"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/t03-legato.png", legenda: "Língua leve na nota do contratempo, ligando para o tempo." }]
             },
             {
               id: "art-05",
@@ -629,7 +646,8 @@ window.CMA = {
                 "Comece escondendo a nota mais grave de cada grupo de três, como no bebop",
                 "Combine: acento na nota aguda, ghost note na grave",
                 "Aplique num tema de jazz que você já toca"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-05.png", legenda: "Como no bebop: a nota grave de cada grupo quase some, a aguda leva o acento." }]
             }
           ]
         },
@@ -672,7 +690,8 @@ window.CMA = {
                 "Semicolcheias numa nota só, com acento forte nas síncopes",
                 "Mantenha as notas não acentuadas curtas e leves, para o acento aparecer",
                 "Leve para a escala de Dó e depois para um trecho de Vassourinhas"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-07.png" }]
             }
           ]
         },
@@ -694,7 +713,8 @@ window.CMA = {
                 "Toque com legato longo, língua bem suave (\"du\") só onde for preciso",
                 "Termine as notas sem cortar com a língua: o ar é que para",
                 "Grave e compare com Stan Getz"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-08.png", legenda: "Língua suave (“du”) só no começo de cada ligadura; respire na vírgula." }]
             }
           ]
         },
@@ -712,7 +732,8 @@ window.CMA = {
                 "Escolha uma frase curta de uma música",
                 "Toque com articulação de jazz (ligando contratempo → tempo)",
                 "Toque com articulação de choro e depois de bossa nova; grave e compare"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/art-03.png", legenda: "A mesma frase com três articulações." }]
             }
           ]
         }
@@ -747,7 +768,8 @@ window.CMA = {
                 "Nota longa de 8 tempos em p, depois mf, depois f",
                 "Confira a afinação em cada intensidade",
                 "Repita em notas graves, médias e agudas"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/din-01.png", legenda: "Confira a afinação no afinador em cada dinâmica." }]
             },
             {
               id: "din-04",
@@ -758,7 +780,8 @@ window.CMA = {
                 "Toque uma nota longa em p, depois em mf, depois em f, olhando o ponteiro",
                 "Atenção: no piano o sax tende a subir e no forte tende a baixar. Corrija com a embocadura e o ar, não com a boca apertada",
                 "Repita em Sol, Ré grave, Dó médio e Ré agudo, e anote no diário onde a afinação foge"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/din-04.png" }]
             }
           ]
         },
@@ -778,7 +801,8 @@ window.CMA = {
                 "Nota de 8 tempos: 4 tempos crescendo de p a f, 4 tempos diminuindo",
                 "Mantenha a afinação estável durante toda a nota",
                 "Faça a escala de Dó inteira assim"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/din-02.png" }]
             }
           ]
         },
@@ -800,7 +824,8 @@ window.CMA = {
                 "sfz: um acento forte e isolado no meio de uma frase em mf",
                 "subito p: toque 2 compassos em f e passe direto para p, sem diminuendo",
                 "Em todos, mantenha a afinação: confira no afinador"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/din-05.png" }]
             }
           ]
         },
@@ -863,7 +888,8 @@ window.CMA = {
                 "Depois 3 por tempo (tercinas) e 4 por tempo (semicolcheias)",
                 "A afinação deve ondular para baixo e voltar: confira no afinador",
                 "Aplique numa balada: comece a nota reta e coloque o vibrato só no final"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-05.png", legenda: "Notas ligadas, sem língua: é a mandíbula que ondula o som." }]
             }
           ]
         },
@@ -881,7 +907,8 @@ window.CMA = {
                 "Toque a escala de Dó com uma apojatura (nota de cima) antes de cada nota",
                 "Repita com mordente (nota principal – vizinha – principal)",
                 "Aplique em uma frase de música"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-01.png" }]
             },
             {
               id: "orn-02",
@@ -891,7 +918,8 @@ window.CMA = {
                 "Trinado lento entre Sol e Lá, contando as notas (4 por tempo)",
                 "Acelere aos poucos mantendo as notas iguais",
                 "Experimente trinados em outras notas e com as chaves de trinado"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-02.png" }]
             }
           ]
         },
@@ -909,7 +937,8 @@ window.CMA = {
                 "Para cada nota da escala: nota de cima – principal – nota de baixo – principal",
                 "Toque bem devagar e com som igual",
                 "Aplique em uma nota longa de uma balada"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-03.png" }]
             }
           ]
         },
@@ -932,7 +961,8 @@ window.CMA = {
                 "Apojatura rápida: nota de cima ou de baixo, bem curta, caindo na nota principal no tempo",
                 "Bordadura: principal – vizinha – principal, leve e rápida, sem pesar",
                 "Aplique numa frase de choro que você já toca, sem exagerar"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-06.png" }]
             }
           ]
         },
@@ -955,7 +985,8 @@ window.CMA = {
                 "Bend: comece a nota abaixo e suba até a afinação com a embocadura",
                 "Scoop: entre na nota 'por baixo' rapidamente",
                 "Fall: termine a nota caindo; aplique cada efeito em uma frase de blues"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/t04-enfeites.png" }]
             },
             {
               id: "orn-07",
@@ -966,7 +997,8 @@ window.CMA = {
                 "Growl: cante ou rosne uma nota grave com a garganta enquanto toca",
                 "Comece com notas longas, depois use em uma frase de blues ou balada",
                 "Use com moderação: são temperos, não o prato principal"
-              ]
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-07.png", legenda: "Use com moderação: são temperos." }]
             }
           ]
         }
