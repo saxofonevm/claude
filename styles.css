@@ -2289,3 +2289,14 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .conteudo-inicio #cartao-timer.rodando .timer-botoes .btn { font-size: .78rem; padding: 8px 6px; gap: 4px; }
 .conteudo-inicio #cartao-timer .timer-meta { grid-area: meta; }
 .conteudo-inicio #cartao-timer #timer-dica { grid-column: 1 / -1; margin: 0; }
+
+/* Diário: resumo da semana */
+.resumo-semana { margin: 0 0 14px; padding: 16px; display: flex; flex-direction: column; gap: 6px; }
+.rs-topo { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+.rs-topo small { color: var(--muted); font-size: .8rem; }
+.rs-principal { margin: 2px 0 0; font-size: 1.08rem; line-height: 1.4; }
+.rs-principal strong { color: var(--brass-soft); }
+.rs-compara { margin: 0; color: var(--muted); font-size: .88rem; }
+.rs-lista { margin: 4px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.rs-lista li { font-size: .88rem; padding-left: 18px; position: relative; }
+.rs-lista li::before { content: "✓"; position: absolute; left: 0; color: var(--ok, #3dffb0); font-weight: 700; }

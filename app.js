@@ -1854,7 +1854,45 @@
     </section>`;
   }
 
+  // ---------- Resumo da semana (para o próprio aluno) ----------
+  function htmlResumoSemana() {
+    const ini = segunda(new Date()), fim = new Date(ini); fim.setDate(fim.getDate() + 6);
+    const iniAnt = new Date(ini); iniAnt.setDate(iniAnt.getDate() - 7);
+    const a = dataISO(ini), b = dataISO(fim), aAnt = dataISO(iniAnt);
+    const daSemana = estado.sessoes.filter(s => s.data >= a && s.data <= b);
+    const daAnterior = estado.sessoes.filter(s => s.data >= aAnt && s.data < a);
+    const min = daSemana.reduce((t, s) => t + (s.minutos || 0), 0), minAnt = daAnterior.reduce((t, s) => t + (s.minutos || 0), 0);
+    const dias = new Set(daSemana.filter(s => s.minutos > 0).map(s => s.data)).size;
+    const treinos = daSemana.filter(s => /^Treino do dia/.test(s.notas || "")).length;
+    // Exercícios dos pilares concluídos nesta semana, por pilar
+    const porPilar = {};
+    for (const [id, dia] of Object.entries(estado.feitos || {})) {
+      if (typeof dia !== "string" || dia < a || dia > b || !EXERCICIO[id]) continue;
+      const r = EXERCICIO[id].raiz.titulo; porPilar[r] = (porPilar[r] || 0) + 1;
+    }
+    const pilares = Object.entries(porPilar).sort((x, y) => y[1] - x[1]);
+    const totalEx = pilares.reduce((t, [, n]) => t + n, 0);
+    const lista = nomes => nomes.length > 1 ? nomes.slice(0, -1).join(", ") + " e " + nomes[nomes.length - 1] : nomes[0];
+    const periodo = `${ini.toLocaleDateString("pt-BR", { day: "numeric", month: "short" })} a ${fim.toLocaleDateString("pt-BR", { day: "numeric", month: "short" })}`.replace(/\./g, "");
+    let comparacao = "";
+    if (minAnt > 0) {
+      const dif = min - minAnt;
+      comparacao = dif > 0 ? `${formatarMinutos(dif)} a mais que na semana passada (${formatarMinutos(minAnt)}).` : dif < 0 ? `Na semana passada foram ${formatarMinutos(minAnt)}.` : "O mesmo tempo da semana passada.";
+    }
+    const linhas = [];
+    if (treinos) linhas.push(`${treinos} ${treinos === 1 ? "treino do dia concluído" : "treinos do dia concluídos"}`);
+    if (totalEx) linhas.push(`${totalEx} ${totalEx === 1 ? "exercício" : "exercícios"} dos pilares: avançou em ${lista(pilares.map(([n]) => n))}`);
+    const principal = min > 0
+      ? `Você estudou <strong>${formatarMinutos(min)}</strong> em <strong>${dias} ${dias === 1 ? "dia" : "dias"}</strong>.`
+      : linhas.length ? "Nenhum minuto registrado ainda nesta semana. Use o cronômetro do Início para contar o seu tempo." : "Semana nova. Um treino de 20 minutos já conta.";
+    return `<div class="rs-topo"><span class="rotulo">Sua semana</span><small>${periodo}</small></div>
+      <p class="rs-principal">${principal}</p>
+      ${comparacao ? `<p class="rs-compara">${comparacao}</p>` : ""}
+      ${linhas.length ? `<ul class="rs-lista">${linhas.map(l => `<li>${escapar(l)}</li>`).join("")}</ul>` : ""}`;
+  }
+
   function renderDiario() {
+    const rs = $("#resumo-semana"); if (rs) rs.innerHTML = htmlResumoSemana();
     $("#diario-graficos").innerHTML = htmlGraficosDiario();
     const ordenadas = [...estado.sessoes].sort((a, b) => b.data.localeCompare(a.data) || b.id.localeCompare(a.id));
     $("#diario-vazio").hidden = ordenadas.length > 0;
