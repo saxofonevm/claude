@@ -945,10 +945,7 @@
     document.body.classList.remove("com-rit");
     const topo = `<header class="cabecalho"><p class="sobretitulo">Play-alongs</p><h1>Tocar junto</h1>
       <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></header>`;
-    const destaque = `<a class="rit-destaque" href="#/tocar/base"><span class="rd-topo"><span class="rit-marca" aria-label="Naipe Rit">naipe <b>rit</b></span><span class="rd-selo">Banda virtual</span></span>
-        <strong>Escolha o ritmo, a música e o andamento</strong>
-        <small>Samba, bossa, choro, baião, jazz e mais. A cifra aparece no tom do seu sax.</small>
-        <span class="rd-btn">${icone("play")}Abrir o naipe rit</span></a>`;
+    const destaque = `<a class="rit-destaque" href="#/tocar/base" aria-label="Abrir o naipe rit"><span class="rit-marca" aria-hidden="true">naipe <b>rit</b></span></a>`;
     if (temBloqueio()) {
       alvo.innerHTML = topo + `<div class="corpo-metodos">${destaque}<section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
         <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. No naipe rit, Samba, Bossa Nova e Jazz Swing já estão abertos. Tudo disponível no Naipe completo.</p>

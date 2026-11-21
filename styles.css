@@ -2213,19 +2213,22 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .rb-linha { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .rb-comp { white-space: normal; overflow: visible; text-overflow: clip; word-spacing: .2em; line-height: 1.25; }
 
-/* Tocar junto: naipe rit em destaque no topo */
-.rit-destaque { display: flex; flex-direction: column; gap: 6px; margin: 4px 0 18px; padding: 18px; border-radius: 22px; text-decoration: none; color: #f4f1fb;
-  background: radial-gradient(120% 140% at 100% 0%, rgb(255 203 71 / .22), transparent 55%), radial-gradient(120% 140% at 0% 100%, rgb(79 224 160 / .2), transparent 60%), linear-gradient(150deg, #1c1336, #0d2a20);
+/* Tocar junto: só a marca do naipe rit, centralizada, em destaque */
+.rit-destaque { display: flex; align-items: center; justify-content: center; margin: 4px 0 18px; padding: 30px 16px; border-radius: 22px; text-decoration: none;
+  background: radial-gradient(120% 140% at 100% 0%, rgb(255 203 71 / .2), transparent 55%), radial-gradient(120% 140% at 0% 100%, rgb(79 224 160 / .18), transparent 60%), linear-gradient(150deg, #1c1336, #0d2a20);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), 0 0 0 1px rgb(255 203 71 / .35), 0 18px 40px -24px #ffcb47; transition: transform .15s ease; }
-.rit-destaque:active { transform: scale(.98); }
-.rd-topo { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.rit-destaque .rit-marca { font-size: 1.6rem; }
-.rd-selo { font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: .35em .7em; border-radius: 999px; background: rgb(255 255 255 / .1); color: #ffcb47; white-space: nowrap; }
-.rit-destaque strong { font-size: 1.05rem; margin-top: 4px; }
-.rit-destaque small { color: rgb(244 241 251 / .75); font-size: .88rem; line-height: 1.4; }
-.rd-btn { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; padding: 10px 16px; border-radius: 999px; font-weight: 700; font-size: .92rem;
-  color: #0d2a20; background: linear-gradient(90deg, #ffcb47, #b9de5c 60%, #4fe0a0); }
-.rd-btn .ic { width: 16px; height: 16px; }
+.rit-destaque:active { transform: scale(.97); }
+.rit-destaque .rit-marca { font-size: 2.6rem; }
+
+/* Pilares: Biblioteca de métodos em destaque, centralizada */
+.biblio-destaque { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: 18px; padding: 20px 18px; border-radius: 22px; text-decoration: none; color: var(--texto, #f4f1fb);
+  background: radial-gradient(120% 140% at 50% 0%, rgb(242 193 78 / .2), transparent 60%), rgb(255 255 255 / .04);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .1), 0 0 0 1px rgb(242 193 78 / .4), 0 18px 40px -26px #F2C14E; transition: transform .15s ease; }
+.biblio-destaque:active { transform: scale(.98); }
+.bd-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgb(242 193 78 / .16); color: #F2C14E; margin-bottom: 4px; }
+.bd-ic .ic { width: 26px; height: 26px; }
+.biblio-destaque strong { font-size: 1.15rem; }
+.biblio-destaque small { color: rgb(244 241 251 / .7); font-size: .86rem; max-width: 30ch; line-height: 1.4; }
 
 /* Cartões mais compactos: Pilares, Teoria e Estudo */
 .raiz-card { min-height: 0; padding: 14px 16px; gap: 4px; }
