@@ -2265,7 +2265,25 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
   .ed-check { width: 42px; }
 }
 
-/* Rádio Naipe dentro do Tocar junto, logo abaixo do naipe rit */
-.letreiro-radio.tj-radio { position: static; margin: 0 0 18px; width: 100%; }
-/* Cronômetro no Início, acima do metrônomo */
-.conteudo-inicio > #cartao-timer { margin-bottom: 14px; }
+/* Rádio Naipe no topo do Tocar junto: discreta, como marca d'água, com um brilho dourado que corre pela borda */
+#tela-tocar .letreiro-radio.tj-radio { position: relative; isolation: isolate; margin: 0 0 18px; width: 100%; min-height: 38px; opacity: .8;
+  border: 1px solid transparent; color: rgb(244 241 251 / .85);
+  background: linear-gradient(#0c1f18, #0c1f18) padding-box,
+    linear-gradient(100deg, rgb(242 193 78 / .15) 0%, rgb(242 193 78 / .15) 35%, #F2C14E 50%, rgb(242 193 78 / .15) 65%, rgb(242 193 78 / .15) 100%) border-box;
+  background-size: 100% 100%, 300% 100%; animation: radio-brilho 5s linear infinite, radio-aura 4s ease-in-out infinite; transition: opacity .2s; }
+#tela-tocar .letreiro-radio.tj-radio:hover, #tela-tocar .letreiro-radio.tj-radio.tocando { opacity: 1; }
+#tela-tocar .tj-radio .letreiro-radio-play { width: 24px; height: 24px; }
+#tela-tocar .tj-radio .letreiro-radio-faixa span { font-size: .8rem; font-weight: 500; }
+#tela-tocar .tj-radio .letreiro-radio-ic { color: #F2C14E; opacity: .8; }
+@keyframes radio-brilho { from { background-position: 0 0, 100% 0; } to { background-position: 0 0, -200% 0; } }
+@keyframes radio-aura { 0%, 100% { box-shadow: 0 0 0 0 rgb(242 193 78 / 0); } 50% { box-shadow: 0 0 18px -4px rgb(242 193 78 / .35); } }
+@media (prefers-reduced-motion: reduce) { #tela-tocar .letreiro-radio.tj-radio { animation: none; } }
+
+/* Cronômetro compacto no Início: visor e botão lado a lado */
+.conteudo-inicio > #cartao-timer { margin-bottom: 14px; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "topo topo" "visor botoes" "meta meta"; gap: 8px 14px; align-items: center; padding: 14px 16px; }
+.conteudo-inicio #cartao-timer .timer-topo { grid-area: topo; }
+.conteudo-inicio #cartao-timer .timer-visor { grid-area: visor; font-size: 2.1rem; padding: 0; background: none; border: 0; box-shadow: none; text-align: left; }
+.conteudo-inicio #cartao-timer .timer-botoes { grid-area: botoes; justify-content: flex-end; }
+.conteudo-inicio #cartao-timer .timer-botoes .btn { min-height: 40px; padding: 8px 14px; font-size: .88rem; }
+.conteudo-inicio #cartao-timer .timer-meta { grid-area: meta; }
+.conteudo-inicio #cartao-timer #timer-dica { grid-column: 1 / -1; margin: 0; }
