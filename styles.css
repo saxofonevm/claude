@@ -2280,10 +2280,12 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 @media (prefers-reduced-motion: reduce) { #tela-tocar .letreiro-radio.tj-radio { animation: none; } }
 
 /* Cronômetro compacto no Início: visor e botão lado a lado */
-.conteudo-inicio > #cartao-timer { margin-bottom: 14px; display: grid; grid-template-columns: auto 1fr; grid-template-areas: "topo topo" "visor botoes" "meta meta"; gap: 8px 14px; align-items: center; padding: 14px 16px; }
+.conteudo-inicio > #cartao-timer { margin-bottom: 14px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); grid-template-areas: "topo topo" "botoes visor" "meta meta"; gap: 8px 14px; align-items: center; padding: 14px 16px; }
 .conteudo-inicio #cartao-timer .timer-topo { grid-area: topo; }
-.conteudo-inicio #cartao-timer .timer-visor { grid-area: visor; font-size: 2.1rem; padding: 0; background: none; border: 0; box-shadow: none; text-align: left; }
-.conteudo-inicio #cartao-timer .timer-botoes { grid-area: botoes; justify-content: flex-end; }
-.conteudo-inicio #cartao-timer .timer-botoes .btn { min-height: 40px; padding: 8px 14px; font-size: .88rem; }
+.conteudo-inicio #cartao-timer .timer-visor { grid-area: visor; font-size: 2.1rem; padding: 0; background: none; border: 0; box-shadow: none; text-align: center; }
+.conteudo-inicio #cartao-timer .timer-botoes { grid-area: botoes; flex-wrap: nowrap; gap: 6px; }
+.conteudo-inicio #cartao-timer .timer-botoes .btn:not([hidden]) { flex: 1; min-width: 0; justify-content: center; }
+.conteudo-inicio #cartao-timer .timer-botoes .btn { min-height: 44px; padding: 8px 10px; font-size: .84rem; line-height: 1.15; white-space: normal; text-align: center; }
+.conteudo-inicio #cartao-timer.rodando .timer-botoes .btn { font-size: .78rem; padding: 8px 6px; gap: 4px; }
 .conteudo-inicio #cartao-timer .timer-meta { grid-area: meta; }
 .conteudo-inicio #cartao-timer #timer-dica { grid-column: 1 / -1; margin: 0; }
