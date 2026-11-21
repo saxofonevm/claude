@@ -11,7 +11,10 @@ A coluna **Observação** traz o que eu já sei sobre o item. Ela não é parece
 
 ---
 
-## 1. Embutido no site (os arquivos estão dentro do app)
+## 1. Embutido no site
+
+> Novo desde a primeira versão: a levada de exemplo do RIT (`rit/levadas/audios/exemplo-100bpm.wav`), gerada por computador, sem direitos de terceiros.
+ (os arquivos estão dentro do app)
 
 ### 1.1 Cadernos em PDF (pasta `pdf/`)
 Gerados nesta conversa em seu nome, com exercícios e melodias originais. Todas as páginas trazem "Tiago Veloso · Naipe".
@@ -47,13 +50,13 @@ São 20 melodias curtas compostas para o app: Primeiro Passo, Caminho de Casa, R
 ### 1.4 Sons do Naipe RIT (`rit/samples/`), gravações de instrumentos de terceiros
 | Timbre | Origem e licença declarada | Observação | Sua resposta |
 |---|---|---|---|
-| Piano de cauda | Salamander Grand Piano · CC BY 3.0 | **Exige crédito visível** ao autor | |
+| Piano de cauda | Salamander Grand Piano · CC BY 3.0 | Exige crédito visível: **já aparece** em "Créditos dos sons", no fim do RIT | |
 | Baixo elétrico, guitarra limpa | Karoryfer Samples · domínio público | Ok | |
 | Violão de aço | Universidade de Iowa (MIS) · uso livre | Conferir os termos para uso comercial | |
 | Violão de nylon | Freesound, pacote 11573 · "conforme o pacote" | **Licença não confirmada.** Se for CC BY-NC, proíbe uso comercial | |
 | Órgão | VSCO 2 Community · CC0 | Ok | |
 | Harmônio | Freesound, pacote 330410 · "conforme o pacote" | **Licença não confirmada** | |
-| Baixo acústico, guitarra de jazz, pianos elétricos, sanfona, bandoneon, bateria e percussão | FluidR3_GM · CC BY 3.0 | **Exige crédito visível** | |
+| Baixo acústico, guitarra de jazz, pianos elétricos, sanfona, bandoneon, bateria e percussão | FluidR3_GM · CC BY 3.0 | Exige crédito visível: **já aparece** em "Créditos dos sons", no fim do RIT | |
 
 ### 1.5 Harmonias prontas do Naipe RIT (`rit/js/music.js`)
 | Item | Observação | Sua resposta |
@@ -161,5 +164,5 @@ São 44 itens, entre livros e pastas do Drive, indicados em cada assunto, como a
 ---
 
 ## O que eu sugiro conferir primeiro
-1. **Sons do RIT:** colocar os créditos exigidos pela licença CC BY (Salamander e FluidR3) e confirmar as licenças dos dois pacotes do Freesound.
+1. **Sons do RIT:** os créditos CC BY já aparecem em "Créditos dos sons", no fim do RIT. Falta confirmar as licenças dos dois pacotes do Freesound.
 2. **Itens de terceiros entregues por link** (2.1 a 2.5): num produto pago, distribuir esses PDFs e áudios pelo app pode exigir autorização das editoras, mesmo ficando no seu Drive. Você decide se mantém, troca por indicação ("compre o livro X, página Y") ou remove.
