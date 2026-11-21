@@ -2147,3 +2147,18 @@ details.tr-unidade.completa .tr-conta { font-weight: 700; }
 .mm-nome small { color: var(--muted); font-size: .78rem; }
 .mm-acoes { grid-column: 2; display: flex; gap: 14px; }
 .mm-audio { grid-column: 1 / -1; width: 100%; }
+
+/* ---------- Minha evolução (um áudio por semana) ---------- */
+.ev-texto { margin: 0; font-size: .88rem; }
+.ev-semana { display: flex; flex-direction: column; gap: 8px; padding: 12px; border-radius: 14px; background: var(--surface-2, var(--surface)); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.ev-semana.feita { border-color: color-mix(in srgb, var(--ok, #3dffb0) 55%, transparent); }
+.ev-ok { margin: 0; font-weight: 600; color: var(--ok, #3dffb0); }
+.ev-titulo { display: flex; flex-direction: column; gap: 4px; font-size: .85rem; color: var(--muted); }
+.ev-gravar { display: inline-flex; align-items: center; gap: 8px; }
+.ev-gravar.gravando .s-grav-ponto { animation: s-grav-pisca 1s steps(2) infinite; }
+.ev-enviar { cursor: pointer; }
+.ev-tempo { align-self: center; color: var(--muted); font-variant-numeric: tabular-nums; }
+.ev-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ev-lista li { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 12px; border-radius: 12px; background: var(--surface-2, var(--surface)); }
+.ev-lista li > span:first-child { display: flex; flex-direction: column; }
+.ev-lista small { color: var(--muted); font-size: .78rem; }

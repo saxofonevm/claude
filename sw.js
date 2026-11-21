@@ -1,12 +1,12 @@
 // Service worker: permite usar o app offline.
 // Estratégia "rede primeiro": com internet, sempre busca a versão nova do servidor
 // (sem usar cópia velha do navegador); sem internet, usa a cópia salva.
-const CACHE = "cma-v104";
+const CACHE = "cma-v105";
 const ARQUIVOS = [
   "./",
   "index.html",
   "styles.css",
-  "app.js", "trilha.js", "repertorio.js", "mic.js", "treino.js", "conteudo/treinos.json", "materiais.js",
+  "app.js", "trilha.js", "repertorio.js", "mic.js", "treino.js", "conteudo/treinos.json", "materiais.js", "evolucao.js",
   "icones.js",
   "conteudo.js",
   "metodos.js",

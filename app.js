@@ -395,7 +395,7 @@
       case "tocar": renderTocar(); break;
       case "metodos": renderMetodos(); break;
       case "metodo": renderMetodo(rotaAtual.id); break;
-      case "diario": renderInicio(); renderDiario(); if (window.NaipeMateriais) window.NaipeMateriais.render(); break;
+      case "diario": renderInicio(); renderDiario(); if (window.NaipeMateriais) window.NaipeMateriais.render(); if (window.NaipeEvolucao) window.NaipeEvolucao.render(); break;
       case "ajustes": renderAjustes(); break;
       case "trilha": if (window.NaipeTrilha) window.NaipeTrilha.render(rotaAtual.id); break;
       case "estudo": if (window.NaipeTrilha) window.NaipeTrilha.render(null, "estudo"); break;
