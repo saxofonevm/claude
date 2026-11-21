@@ -2243,3 +2243,16 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .tr-faixa .tr-conta { font-size: .82rem; }
 .tr-arte { width: 64px; }
 .tr-faixa .tr-barra-prog { margin-top: 4px; }
+
+/* Telas estreitas (iPhone SE e parecidos): nada espremido */
+.ferramentas-inicio .btn-metronomo, .ferramentas-inicio .btn-afinador { justify-content: flex-start; }
+.ferramentas-inicio .btn-metronomo-texto, .ferramentas-inicio .btn-afinador > span:last-child { min-width: 0; }
+@media (max-width: 420px) {
+  .mp-livro { display: grid; grid-template-columns: 40px minmax(0, 1fr) 16px; column-gap: 12px; row-gap: 6px; }
+  .mp-livro-ic { grid-row: 1 / span 2; }
+  .mp-livro-txt { grid-column: 2; grid-row: 1; }
+  .mp-livro em { grid-column: 2; grid-row: 2; justify-self: start; }
+  .mp-livro .mp-seta { grid-column: 3; grid-row: 1 / span 2; align-self: center; }
+  .ed-ic { display: none; }
+  .ed-check { width: 42px; }
+}
