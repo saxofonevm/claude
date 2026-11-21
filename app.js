@@ -943,11 +943,11 @@
       return;
     }
     document.body.classList.remove("com-rit");
-    const destaque = `<a class="rit-destaque" href="#/tocar/base" aria-label="Abrir o naipe rit"><span class="rit-marca" aria-hidden="true">naipe <b>rit</b></span><small>Escolha o ritmo e a música. Sua banda virtual.</small></a>`;
-    const topo = `<header class="cabecalho">${destaque}<p class="sobretitulo">Tocar junto</p><h1>Play-alongs</h1>
-      <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></header>`;
+    const destaque = `<a class="rit-destaque" href="#/tocar/base"><span class="rd-play">${icone("play")}</span><span class="rd-txt"><span class="rit-marca" aria-label="Naipe Rit">naipe <b>rit</b></span><small>Banda virtual: escolha o ritmo e a música</small></span>${icone("seta", "rd-seta")}</a>`;
+    const topo = `<header class="cabecalho"><p class="sobretitulo">Com a banda</p><h1>Tocar junto</h1>${destaque}</header>`;
+    const secao = `<div class="tj-secao"><h2>Play-alongs</h2><p class="mudo">Gravações com banda por estilo. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></div>`;
     if (temBloqueio()) {
-      alvo.innerHTML = topo + `<div class="corpo-metodos"><section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
+      alvo.innerHTML = topo + `<div class="corpo-metodos">${secao}<section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
         <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. No naipe rit, Samba, Bossa Nova e Jazz Swing já estão abertos. Tudo disponível no Naipe completo.</p>
         <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
       return;
@@ -970,7 +970,7 @@
     const listaMarcada = filtroMarca ? TOCAR.filter(t => marcasTocar()[t.id] === filtroTocar) : [];
     const chips = `<div class="filtro-sax filtro-marca" role="group" aria-label="Mostrar">
       ${[["", "Todos"], ["fav", `★ Favoritos · ${TOCAR.filter(t => marcasTocar()[t.id] === "fav").length}`], ["estudo", `Em estudo · ${TOCAR.filter(t => marcasTocar()[t.id] === "estudo").length}`]].map(([v, r]) => `<button type="button" data-filtro-tocar="${v}" class="${filtroTocar === v ? "ativo" : ""}" aria-pressed="${filtroTocar === v}">${r}</button>`).join("")}</div>`;
-    alvo.innerHTML = topo + `<div class="corpo-metodos">${filtro}${chips}
+    alvo.innerHTML = topo + `<div class="corpo-metodos">${secao}${filtro}${chips}
       ${filtroMarca ? (listaMarcada.length ? `<section class="cartao genero aberto-fixo"><ul class="tocar-lista">${listaMarcada.map(itemTocar).join("")}</ul></section>` : `<p class="vazio-mini">${filtroTocar === "fav" ? "Toque na estrela de um play-along para guardá-lo aqui." : "Marque “Em estudo” nos play-alongs que você está praticando agora."}</p>`) : `
       ${ocultos ? `<p class="vazio-mini">${ocultos} ${ocultos === 1 ? "coleção em outra afinação está oculta" : "coleções em outras afinações estão ocultas"}.</p>` : ""}
       ${marcados.length ? `<p class="vazio-mini">${marcados.length} ${marcados.length === 1 ? "play-along marcado" : "play-alongs marcados"}: use os filtros acima para achar rápido.</p>` : ""}
