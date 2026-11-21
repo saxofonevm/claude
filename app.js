@@ -943,7 +943,7 @@
       return;
     }
     document.body.classList.remove("com-rit");
-    const destaque = `<a class="rit-destaque" href="#/tocar/base" aria-label="Abrir o naipe rit"><span class="rit-marca" aria-hidden="true">naipe <b>rit</b></span></a>`;
+    const destaque = `<a class="rit-destaque" href="#/tocar/base" aria-label="Abrir o naipe rit"><span class="rit-marca" aria-hidden="true">naipe <b>rit</b></span><small>Escolha o ritmo e a música. Sua banda virtual.</small></a>`;
     const topo = `<header class="cabecalho">${destaque}<p class="sobretitulo">Tocar junto</p><h1>Play-alongs</h1>
       <p class="mudo">Toque com a banda. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></header>`;
     if (temBloqueio()) {
