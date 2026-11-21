@@ -2214,11 +2214,11 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .rb-comp { white-space: normal; overflow: visible; text-overflow: clip; word-spacing: .2em; line-height: 1.25; }
 
 /* Tocar junto: só a marca do naipe rit, centralizada, em destaque */
-.rit-destaque { display: flex; align-items: center; justify-content: center; margin: 4px 0 18px; padding: 30px 16px; border-radius: 22px; text-decoration: none;
+.rit-destaque { display: flex; align-items: center; justify-content: center; margin: 0 0 22px; padding: 14px 16px; border-radius: 22px; text-decoration: none;
   background: radial-gradient(120% 140% at 100% 0%, rgb(255 203 71 / .2), transparent 55%), radial-gradient(120% 140% at 0% 100%, rgb(79 224 160 / .18), transparent 60%), linear-gradient(150deg, #1c1336, #0d2a20);
   box-shadow: inset 0 1px 0 rgb(255 255 255 / .12), 0 0 0 1px rgb(255 203 71 / .35), 0 18px 40px -24px #ffcb47; transition: transform .15s ease; }
 .rit-destaque:active { transform: scale(.97); }
-.rit-destaque .rit-marca { font-size: 2.6rem; }
+.rit-destaque .rit-marca { font-size: 1.7rem; }
 
 /* Pilares: Biblioteca de métodos em destaque, centralizada */
 .biblio-destaque { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: 18px; padding: 20px 18px; border-radius: 22px; text-decoration: none; color: var(--texto, #f4f1fb);
