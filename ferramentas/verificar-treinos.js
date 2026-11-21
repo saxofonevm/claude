@@ -43,6 +43,7 @@ const ids = new Set();
     if (!b.titulo) problemas.push(`${ob}: falta o "titulo".`);
     if (b.exercicio && !exercicios.has(b.exercicio)) problemas.push(`${ob}: o exercício "${b.exercicio}" não existe.`);
     if (b.material && !livros.has(b.material.livro)) problemas.push(`${ob}: o livro "${b.material.livro}" não está na Biblioteca de métodos.`);
+    if (b.partitura && !fs.existsSync(path.join(raiz, b.partitura))) problemas.push(`${ob}: a imagem da partitura "${b.partitura}" não foi encontrada.`);
     if (b.musica && !musicas.has(b.musica)) problemas.push(`${ob}: a música "${b.musica}" não está no Repertório essencial.`);
     if (b.rit) {
       if (b.rit.levada) { if (!levadas.has(b.rit.levada)) problemas.push(`${ob}: a levada "${b.rit.levada}" não está em rit/levadas/levadas.json.`); }

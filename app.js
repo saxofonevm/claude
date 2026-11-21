@@ -406,6 +406,8 @@
   const pilha = [location.hash || "#/inicio"];
   const posicoes = {};
   const telaAnterior = () => pilha[pilha.length - 2] || "";
+  // Veio do Início (Treino do dia)? Então o "voltar" leva de volta para lá, e não para o pilar
+  const vindoDoInicio = () => pilha.length > 1 && /^(#\/?(inicio)?)?$/.test(telaAnterior());
   function guardarPosicao(hash) {
     const tela = document.querySelector(".tela.ativa");
     posicoes[hash] = { y: window.scrollY, abertos: tela ? [...tela.querySelectorAll("details")].map(d => d.open) : [] };
@@ -820,6 +822,7 @@
       <header class="cabecalho">
         ${(() => {
           const ant = telaAnterior();
+          if (vindoDoInicio()) return `<a class="btn-voltar" href="${escapar(ant)}">${icone("voltar")}Treino do dia</a>`;
           if (/^#\/(estudo|trilha\/s\d)/.test(ant)) return `<a class="btn-voltar" href="${escapar(ant)}">${icone("voltar")}Voltar para o Estudo</a>`;
           const m = ant.match(/^#\/(raiz|ex)\/(.+)$/);
           if (!m) return `<a class="btn-voltar" href="#/metodos">${icone("voltar")}Métodos</a>`;
@@ -1136,7 +1139,7 @@
 
     $("#exercicio-conteudo").innerHTML = `<article style="${corRaiz(raiz)}">
       <header class="banda compacta">
-        <a class="btn-voltar" href="#/raiz/${encodeURIComponent(raiz.id)}">${icone("voltar")}${escapar(raiz.titulo)}</a>
+        ${vindoDoInicio() ? `<a class="btn-voltar" href="${escapar(telaAnterior())}">${icone("voltar")}Treino do dia</a>` : `<a class="btn-voltar" href="#/raiz/${encodeURIComponent(raiz.id)}">${icone("voltar")}${escapar(raiz.titulo)}</a>`}
         <span class="banda-ilus">${ilustracao(raiz.icone)}</span>
         <p class="banda-sobre">${escapar(ram.titulo)}</p>
         <h1>${escapar(ex.titulo)}</h1>

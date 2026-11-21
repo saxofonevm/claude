@@ -28,6 +28,8 @@
           "minutos": 5,
           "titulo": "Escalas maiores",
           "instrucao": "Dó, Sol e Fá maior em toda a extensão, ligado e depois destacado. Comece em 60 e suba de 4 em 4.",
+          "partitura": "conteudo/partituras/t01-escalas.png",
+          "legenda": "Faça o mesmo em Sol e Fá maior.",
           "exercicio": "mel-02"
         },
         {
@@ -42,6 +44,7 @@
           "minutos": 5,
           "titulo": "Pentatônica maior",
           "instrucao": "Toque a pentatônica de Fá maior e improvise dois minutos só com essas cinco notas.",
+          "partitura": "conteudo/partituras/t01-pentatonica.png",
           "material": {
             "livro": "escalas-jazz-tv",
             "onde": "Pentatônica maior · pág. 3"
@@ -76,6 +79,8 @@
           "minutos": 5,
           "titulo": "Arpejos maiores",
           "instrucao": "Três tons por dia, em toda a extensão. Diga o nome de cada nota antes de tocar.",
+          "partitura": "conteudo/partituras/t02-arpejos.png",
+          "legenda": "Siga para os outros tons no caderno de arpejos.",
           "material": {
             "livro": "arpejos-tv",
             "onde": "Maiores, Ex. 1 · pág. 1–2"
@@ -93,6 +98,7 @@
           "minutos": 5,
           "titulo": "Improvisar com a síncope",
           "instrucao": "Escolha duas notas e invente frases usando só a síncope brasileira.",
+          "partitura": "conteudo/partituras/t02-sincope.png",
           "exercicio": "rit-03",
           "rit": {
             "ritmo": "samba",
@@ -123,6 +129,8 @@
           "minutos": 5,
           "titulo": "Língua no legato",
           "instrucao": "Colcheias com swing: “doo-dah”, ligando o contratempo ao tempo.",
+          "partitura": "conteudo/partituras/t03-legato.png",
+          "legenda": "Ataque com a língua a nota do contratempo e ligue até a nota do tempo.",
           "exercicio": "art-04"
         },
         {
@@ -137,6 +145,7 @@
           "minutos": 5,
           "titulo": "Escala blues",
           "instrucao": "Toque a escala blues em Fá e improvise um chorus de blues com ela.",
+          "partitura": "conteudo/partituras/t03-blues.png",
           "material": {
             "livro": "escalas-jazz-tv",
             "onde": "Escala blues · pág. 5–6"
@@ -170,6 +179,8 @@
           "minutos": 5,
           "titulo": "Notas longas com dinâmica",
           "instrucao": "Notas longas do pp ao ff, com o afinador ligado. A afinação não pode mudar.",
+          "partitura": "conteudo/partituras/t04-dinamica.png",
+          "legenda": "Repita em notas graves e agudas.",
           "exercicio": "din-01"
         },
         {
@@ -184,6 +195,7 @@
           "minutos": 5,
           "titulo": "Bend, scoop e fall",
           "instrucao": "Improvise frases curtas usando um enfeite diferente em cada uma.",
+          "partitura": "conteudo/partituras/t04-enfeites.png",
           "exercicio": "orn-04",
           "rit": {
             "ritmo": "funk",
@@ -215,6 +227,7 @@
           "minutos": 5,
           "titulo": "Staccato leve do choro",
           "instrucao": "Semicolcheias com a língua leve, sem cortar o ar.",
+          "partitura": "conteudo/partituras/t05-staccato.png",
           "exercicio": "art-06"
         },
         {
@@ -229,6 +242,7 @@
           "minutos": 5,
           "titulo": "Ornamentar a melodia",
           "instrucao": "Pegue uma frase do choro e enfeite com apojaturas e bordaduras.",
+          "partitura": "conteudo/partituras/t05-ornamentos.png",
           "exercicio": "orn-06",
           "rit": {
             "ritmo": "choro",

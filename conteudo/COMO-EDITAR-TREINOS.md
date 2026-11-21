@@ -57,6 +57,17 @@ ou, usando uma harmonia pronta do RIT:
 
 Os códigos de exercícios, livros e músicas estão em `conteudo.js`, `metodos.js` e `repertorio.js`. Se não achar, me peça a lista.
 
+### Exemplo em partitura
+
+Todo bloco que pede uma ação no sax deve mostrar como fazer. Use `"partitura"` com o caminho da imagem e, se quiser, `"legenda"` com uma frase curta embaixo dela:
+
+```json
+"partitura": "conteudo/partituras/t01-escalas.png",
+"legenda": "Faça o mesmo em Sol e Fá maior."
+```
+
+As imagens ficam em `conteudo/partituras/`. A fonte de cada uma (arquivo `.ly` do LilyPond, o mesmo programa dos cadernos) fica em `conteudo/partituras/fontes/`. Para criar uma nova, copie um `.ly` parecido, troque as notas e gere a imagem; ou me mande a ideia do exercício que eu escrevo. Escreva as notas como o saxofonista lê (alto e tenor leem a mesma partitura).
+
 ## Regras do JSON (onde costuma dar erro)
 
 - Textos sempre entre **aspas duplas**: `"assim"`.

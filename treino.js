@@ -186,6 +186,7 @@
           ${cab}
           ${fonteBloco(b) ? `<small class="tb-fonte">${esc(fonteBloco(b))}</small>` : ""}
           ${b.instrucao ? `<p class="tb-instrucao">${esc(b.instrucao)}</p>` : ""}
+          ${b.partitura ? `<figure class="tb-partitura"><a href="${esc(b.partitura)}" target="_blank" rel="noopener" aria-label="Ampliar a partitura"><img src="${esc(b.partitura)}" alt="Exemplo em partitura: ${esc(b.titulo)}" loading="lazy"></a>${b.legenda ? `<figcaption>${esc(b.legenda)}</figcaption>` : ""}</figure>` : ""}
           <div class="tb-links">${linksBloco(b)}</div>
           ${htmlRit(b, k)}
           <div class="tb-acoes">
