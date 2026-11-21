@@ -38,7 +38,7 @@
       const pil = document.querySelector('.abas a[data-aba="raizes"]'); if (pil) { pil.parentNode.insertBefore(aba, pil); pil.parentNode.insertBefore(est, pil); }
     }
     const cab = document.querySelector("#tela-raizes .cabecalho");
-    if (cab) cab.insertAdjacentHTML("beforeend", '<a class="biblio-destaque" href="#/metodos"><span class="bd-ic" data-icone="livro"></span><strong>Biblioteca de métodos</strong><small>Busque um assunto e veja em que livro e página ele está</small></a>');
+    if (cab) cab.insertAdjacentHTML("beforeend", '<a class="biblio-destaque" href="#/metodos"><span class="bd-ic" data-icone="livro"></span><span class="bd-txt"><strong>Biblioteca de métodos</strong><small>Busque um assunto e veja em que livro está</small></span></a>');
   }
 
   // ---------- Conteúdo ----------

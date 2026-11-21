@@ -2221,15 +2221,16 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .rit-destaque .rit-marca { font-size: 1.7rem; }
 .rit-destaque small { color: rgb(244 241 251 / .72); font-size: .84rem; }
 
-/* Pilares: Biblioteca de métodos em destaque, centralizada */
-.biblio-destaque { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 6px; margin-top: 18px; padding: 20px 18px; border-radius: 22px; text-decoration: none; color: var(--texto, #f4f1fb);
-  background: radial-gradient(120% 140% at 50% 0%, rgb(242 193 78 / .2), transparent 60%), rgb(255 255 255 / .04);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / .1), 0 0 0 1px rgb(242 193 78 / .4), 0 18px 40px -26px #F2C14E; transition: transform .15s ease; }
+/* Pilares: Biblioteca de métodos em destaque, compacta */
+.biblio-destaque { display: flex; align-items: center; gap: 12px; margin-top: 16px; padding: 10px 14px; border-radius: 16px; text-decoration: none; color: var(--texto, #f4f1fb);
+  background: radial-gradient(120% 160% at 0% 50%, rgb(242 193 78 / .16), transparent 60%), rgb(255 255 255 / .04);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .08), 0 0 0 1px rgb(242 193 78 / .38); transition: transform .15s ease; }
 .biblio-destaque:active { transform: scale(.98); }
-.bd-ic { display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%; background: rgb(242 193 78 / .16); color: #F2C14E; margin-bottom: 4px; }
-.bd-ic .ic { width: 26px; height: 26px; }
-.biblio-destaque strong { font-size: 1.15rem; }
-.biblio-destaque small { color: rgb(244 241 251 / .7); font-size: .86rem; max-width: 30ch; line-height: 1.4; }
+.bd-ic { flex: none; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgb(242 193 78 / .16); color: #F2C14E; }
+.bd-ic .ic { width: 19px; height: 19px; }
+.bd-txt { display: flex; flex-direction: column; min-width: 0; }
+.biblio-destaque strong { font-size: .98rem; }
+.biblio-destaque small { color: rgb(244 241 251 / .65); font-size: .78rem; line-height: 1.3; }
 
 /* Cartões mais compactos: Pilares, Teoria e Estudo */
 .raiz-card { min-height: 0; padding: 14px 16px; gap: 4px; }

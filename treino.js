@@ -9,7 +9,7 @@
   let DADOS = null, erro = false, LEVADAS = [];
   const tempo = { bloco: -1, fim: 0, t: 0 };
   let verDeNovo = false;
-  let aberto = null;          // bloco com os detalhes à mostra (um por vez)
+  let aberto = -1;            // bloco com os detalhes à mostra (um por vez); -1 = todos fechados ao abrir o app
   const cifraVisivel = {};    // blocos com a cifra aberta // depois de concluído, o aluno pode rever os blocos sem registrar de novo
 
   const app = () => window.NaipeApp;
@@ -140,7 +140,7 @@
     d.showModal();
   }
 
-  // O bloco aberto: o que o aluno tocou por último, ou o primeiro ainda não feito.
+  // O bloco aberto: o que o aluno tocou por último; depois de marcar um bloco (aberto = null), o próximo não feito.
   function blocoAberto(dia, t) {
     if (tempo.bloco >= 0) return tempo.bloco;
     if (aberto !== null && aberto < t.blocos.length) return aberto;
@@ -245,7 +245,7 @@
       if (app().atualizar) app().atualizar(); else render();
     } else if (acao === "trocar") {
       const i = DADOS.treinos.findIndex(x => x.id === dia.id);
-      dia.id = DADOS.treinos[(i + 1) % DADOS.treinos.length].id; dia.feitos = []; aberto = null;
+      dia.id = DADOS.treinos[(i + 1) % DADOS.treinos.length].id; dia.feitos = []; aberto = -1;
       app().salvar(); render();
     } else if (acao === "refazer") {
       verDeNovo = true; render();
