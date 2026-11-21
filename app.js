@@ -388,7 +388,7 @@
 
   function renderTela() {
     switch (rotaAtual.tela) {
-      case "inicio": renderInicio(); if (window.NaipeTrilha) window.NaipeTrilha.inicio(); break;
+      case "inicio": renderInicio(); if (window.NaipeTrilha) window.NaipeTrilha.inicio(); if (window.NaipeTreino) window.NaipeTreino.render(); break;
       case "raizes": renderRaizes(); break;
       case "raiz": renderRaiz(RAIZ[rotaAtual.id]); break;
       case "ex": renderExercicio(rotaAtual.id); renderGravador(rotaAtual.id); break;
@@ -2927,6 +2927,22 @@
   document.addEventListener("visibilitychange", () => {
     if (!document.hidden) { renderTimer(); renderTela(); }
   });
+
+  // Ponte para o Treino do dia (treino.js): dados e funções do app que ele usa.
+  window.NaipeApp = {
+    estado: () => estado, salvar, hojeISO, icone, escapar, metaDoDia,
+    sequencia: () => calcularSequencia(minutosPorDia()),
+    minutosSemana: () => resumoMetas().semana,
+    metaSemana: () => estado.metaSemanal,
+    atualizar: () => renderTela(),
+    urlArquivo: id => urlSegura(urlArquivo(id)),
+    registrarPratica: (minutos, notas) => {
+      const antes = resumoMetas();
+      estado.sessoes.push({ id: novoId(), data: hojeISO(), minutos: Math.max(1, Math.round(minutos)), raizId: null, exercicioId: null, avaliacao: null, notas: notas || "" });
+      salvar();
+      if (!comemorarPratica(antes)) avisar(`${Math.round(minutos)} min registrados no Diário.`);
+    },
+  };
 
   // A trilha (trilha.js) registra no Diário o tempo das sessões do plano de estudos.
   window.NaipeRegistrarPratica = (minutos, avaliacao, notas) => {

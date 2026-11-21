@@ -2087,3 +2087,34 @@ details.tr-unidade.completa .tr-conta { font-weight: 700; }
 .raizes-resumo strong { font-family: var(--f-display); font-size: 1.5rem; color: var(--brass-soft, #f2d47c); }
 .raizes-resumo span { color: var(--muted); font-size: .8rem; }
 .raizes-resumo .raizes-barra { grid-column: 1 / -1; }
+
+/* ---------- Treino do dia (tela inicial) ---------- */
+#treino-dia:empty { display: none; }
+.treino { gap: 10px; }
+.treino-topo { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.treino-ritmo { color: var(--muted); font-size: .8rem; }
+.treino h2 { margin: 0; font-size: 1.5rem; }
+.treino-resumo { margin: 0; }
+.treino-blocos { list-style: none; margin: 4px 0 0; padding: 0; display: flex; flex-direction: column; gap: 10px; counter-reset: bloco; }
+.treino-bloco { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 14px; border-radius: 16px; background: var(--surface-2, var(--surface)); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.treino-bloco.feito { border-color: color-mix(in srgb, var(--ok, #3dffb0) 60%, transparent); }
+.treino-bloco.feito .tb-titulo { color: color-mix(in srgb, var(--ok, #3dffb0) 75%, var(--text)); }
+.treino-bloco.rodando { border-color: var(--brass, #e9c45c); box-shadow: 0 0 0 1px var(--brass, #e9c45c); }
+.tb-cab { display: flex; justify-content: space-between; align-items: center; }
+.tb-cat { font-size: .72rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ok, #3dffb0); }
+.tb-min { font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tb-titulo { font-size: 1.08rem; }
+.tb-fonte { color: var(--muted); font-size: .82rem; }
+.tb-instrucao { margin: 0; font-size: .92rem; line-height: 1.45; }
+.tb-links { display: flex; flex-wrap: wrap; gap: 8px; }
+.tb-links:empty { display: none; }
+.tb-links .btn { padding: 8px 12px; font-size: .85rem; min-height: 0; }
+.tb-acoes { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-top: 2px; }
+.tb-tempo { padding: 6px 12px; font-size: .85rem; min-height: 0; font-variant-numeric: tabular-nums; }
+.tb-feito { background: none; border: 1px solid color-mix(in srgb, var(--line) 90%, transparent); border-radius: 99px; padding: 6px 14px; font: inherit; font-size: .85rem; font-weight: 600; color: var(--muted); cursor: pointer; }
+.tb-feito[aria-pressed="true"] { color: #04170f; background: var(--ok, #3dffb0); border-color: transparent; }
+.treino-rodape { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 4px; }
+.treino-rodape .btn[disabled] { opacity: .45; }
+.treino-trocar { align-self: center; }
+.treino-feito { margin: 0; font-weight: 700; color: var(--ok, #3dffb0); }
+.treino.concluido .linha-botoes { justify-content: flex-start; }
