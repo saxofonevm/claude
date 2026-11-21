@@ -2906,7 +2906,53 @@
 
   hidratarIcones();
   renderRadio();
-  if (!estado.boasVindas && !estado.nome && !estado.sessoes.length) setTimeout(abrirBoasVindas, 400);
+  // ---------- Beta fechado ----------
+  // Com acesso.beta ligado (conteudo.js), o app só abre com um dos códigos do beta.
+  const BETA = !!(CMA.acesso && CMA.acesso.beta);
+  function portaoBeta(depois) {
+    if (!BETA || estado.betaOk) return depois();
+    const d = document.createElement("dialog");
+    d.className = "dlg-beta";
+    d.innerHTML = `<form class="beta-form" method="dialog">
+      <span class="marca beta-marca" aria-label="naipe">naipe</span>
+      <h2>Beta fechado</h2>
+      <p class="mudo">O Naipe está em teste com um grupo pequeno de saxofonistas. Digite o código que você recebeu do professor.</p>
+      <input type="text" id="beta-codigo" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="BETA-XXXXX" aria-label="Código do beta">
+      <p class="beta-erro" id="beta-erro" role="alert"></p>
+      <button class="btn primario largo" type="submit">Entrar</button>
+      <a class="link-acao" id="beta-pedir" target="_blank" rel="noopener">Quero participar do beta</a>
+    </form>`;
+    document.body.appendChild(d);
+    const prof = CMA.professor || {}, num = String(prof.whatsapp || "").replace(/\D/g, "");
+    d.querySelector("#beta-pedir").href = `https://wa.me/${num}?text=${encodeURIComponent("Olá! Quero participar do beta do Naipe.")}`;
+    d.addEventListener("cancel", ev => ev.preventDefault()); // não fecha sem código
+    d.querySelector("form").addEventListener("submit", async ev => {
+      ev.preventDefault();
+      const codigo = d.querySelector("#beta-codigo").value.trim().toUpperCase().replace(/\s+/g, "");
+      const erro = d.querySelector("#beta-erro");
+      if (!codigo) { erro.textContent = "Digite o código."; return; }
+      let impr;
+      try { impr = await impressao(codigo); } catch { erro.textContent = "Não foi possível conferir o código neste navegador."; return; }
+      const validos = [...(CMA.acesso.codigosBeta || []), ...(CMA.acesso.codigos || []), ...(CMA.acesso.codigosApp || [])];
+      if (!validos.includes(impr)) { erro.textContent = "Código não reconhecido. Confira com o professor."; return; }
+      estado.betaOk = true; estado.desbloqueado = true;
+      salvar(); d.close(); d.remove(); renderTela(); depois();
+    });
+    d.showModal();
+  }
+
+  // ---------- Enviar feedback (WhatsApp do professor) ----------
+  function enviarFeedback() {
+    const prof = CMA.professor || {}, num = String(prof.whatsapp || "").replace(/\D/g, "");
+    const tela = { inicio: "Início (Treino do dia)", trilha: "Teoria", estudo: "Estudo", raizes: "Pilares", raiz: "Pilar", ex: "Exercício", tocar: "Tocar junto", metodos: "Métodos", metodo: "Método", diario: "Diário", ajustes: "Ajustes" }[rotaAtual.tela] || rotaAtual.tela || "";
+    const ua = navigator.userAgent, aparelho = /iPhone|iPad/.test(ua) ? "iPhone/iPad" : /Android/.test(ua) ? "Android" : /Mac/.test(ua) ? "Mac" : /Windows/.test(ua) ? "Windows" : "outro";
+    const instalado = window.matchMedia && window.matchMedia("(display-mode: standalone)").matches ? "app instalado" : "navegador";
+    const texto = `*Feedback do Naipe${BETA ? " (beta)" : ""}*\nTela: ${tela}${rotaAtual.id ? ` (${rotaAtual.id})` : ""}\nAparelho: ${aparelho}, ${instalado}\n${estado.nome ? `Nome: ${estado.nome}\n` : ""}\nMeu comentário: `;
+    window.open(`https://wa.me/${num}?text=${encodeURIComponent(texto)}`, "_blank", "noopener");
+  }
+  document.addEventListener("click", ev => { if (ev.target.closest("[data-feedback]")) { ev.preventDefault(); enviarFeedback(); } });
+
+  portaoBeta(() => { if (!estado.boasVindas && !estado.nome && !estado.sessoes.length) setTimeout(abrirBoasVindas, 400); });
   lerRota();
   mostrarTela();
   renderTela();

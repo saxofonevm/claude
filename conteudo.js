@@ -41,6 +41,11 @@ window.CMA = {
   //        Para voltar a cobrar, troque para false: os códigos abaixo continuam valendo.
   acesso: {
     livre: true,
+    // beta: true = beta fechado. Ao abrir, o app pede um dos códigos do beta (um por pessoa).
+    //       Para começar o beta: beta: true e livre: false. Para encerrar: beta: false.
+    beta: false,
+    // codigosBeta: impressão digital (SHA-256) dos 20 códigos do beta, nunca o código em si.
+    codigosBeta: ["df3e0983768ab6f937226cb7c792b1f5cdbc3f5866c5ec65e0470c363baf3c0e", "08f771d20f843369ac6be2c8e9c7315f411e81fa7c170d34f0f9ecb27da5cc95", "7ca22b0c3c8f553b5960beb231630eab1f80977b8235f0bb7841266ed2ba1a64", "a363ffa838de99126e7a76afd8c279abfe4d92b033ee2c3b3360590d1e959732", "9d604560ac5c78e0a3bb779431acefc928bbeb97103190d0998572bf518ae190", "5e48a108e856f3ed5db4d66291dcd6fa0ad730f45d81ab3f5ab0e86f189f21dc", "8c4e7bb81e803ccb8899ab0ef05667104b18d64e8539b4cc856ac056ac9dab59", "8512f8c5e3b195c3bc7e97d2dbe4f9974417519b061e84be8b87c005f19ceeea", "fbc6c36c7c10796851d253ef17ef154a9b0b38ab870a2337a55b912ed949e4a6", "ed2ff18eb150717e83d98a6ecb18c81dce5f9be2f1fec235fa87a06a727b5a63", "aa71ae09c5e43b55e7762cf24b840d84582427eb53df5ab77cb273e6a8c31dca", "cfd597ff9162caae0ad56852c69294b24a4352c4712798d6350e27abcfc3b803", "6cf3993f6fa7a942e826ffe985647a703297c8b9e99cc35aa7d25d3675f91fb9", "b0bb7cac55ff7d99b3f8bf5055aa12200bfc90dac806d87c5eeeb8b06558bd60", "b0f4ea9f751eb9064f66f59ceee451d26dd1c8dc92db0fed8193eb0bb41b0ccc", "b2a8ab07efb86e914a531c674b87be652940e46cdbecc4ef72617121ef1acb03", "881ea1834f5ee093f63dbc1d3c89185ab6929da3dbf38a794f5b770369b8f7c7", "149ca0038d1ff1ab380a00fe166eb5ae1e3d04a03085ca2a5ce4e9d1f72a26ef", "d4776ead0f1ad1f044bb5699a06fc58b4d2142c33008bc87701ff1b0db474693", "485933732d2c140baf2b95174aa55638ba574e87f1219095627d26bf12f2e542"],
     gratis: ["escuta"],
     // codigos: plano COM acompanhamento (grupo ou mentoria): app completo + relatório para o professor.
     codigos: ["394eaaa12f8e1be16dbfaf1d373f3b5187ec2450c37b578fd5d9ccaa8490d428", "dc27a20c56efcee32b23c3b3d0110298c10f1ff2412ff50108f968022495160f", "7d654f52e6224d3ce4f0b54e5090b3f93478e0199034eb1ac203cf83aa72de41", "9d30d4b1245acf821f9fcdb8e99210d9d54ab96935f2c27867c4af414e2bc016"],
