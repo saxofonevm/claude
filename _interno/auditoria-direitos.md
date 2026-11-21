@@ -9,6 +9,12 @@ Para cada grupo, marque na coluna **Sua resposta**:
 
 A coluna **Observação** traz o que eu já sei sobre o item. Ela não é parecer jurídico.
 
+## Respostas de 21/11/2026
+- **Métodos de outros autores na Biblioteca (Drive):** Tiago tem autorização. Mantidos como estão. *Sugestão: guarde as autorizações por escrito (e-mail ou mensagem) numa pasta.*
+- **18 harmonias com título de música no RIT:** manter os títulos.
+- **Violão de nylon e harmônio (Freesound):** trocados por timbres FluidR3_GM, CC BY 3.0.
+- **Termos de Uso:** o aviso de Meus materiais aponta para `vendas/termos.html#arquivos`, com um parágrafo novo sobre os arquivos enviados pelo aluno.
+
 ---
 
 ## 1. Embutido no site
@@ -53,9 +59,9 @@ São 20 melodias curtas compostas para o app: Primeiro Passo, Caminho de Casa, R
 | Piano de cauda | Salamander Grand Piano · CC BY 3.0 | Exige crédito visível: **já aparece** em "Créditos dos sons", no fim do RIT | |
 | Baixo elétrico, guitarra limpa | Karoryfer Samples · domínio público | Ok | |
 | Violão de aço | Universidade de Iowa (MIS) · uso livre | Conferir os termos para uso comercial | |
-| Violão de nylon | Freesound, pacote 11573 · "conforme o pacote" | **Licença não confirmada.** Se for CC BY-NC, proíbe uso comercial | |
+| Violão de nylon | ~~Freesound, pacote 11573~~ → agora FluidR3_GM · CC BY 3.0 | **Trocado em 21/11/2026.** O arquivo antigo está guardado em `_interno/sons-antigos/` | Trocar (resolvido) |
 | Órgão | VSCO 2 Community · CC0 | Ok | |
-| Harmônio | Freesound, pacote 330410 · "conforme o pacote" | **Licença não confirmada** | |
+| Harmônio | ~~Freesound, pacote 330410~~ → agora FluidR3_GM (reed organ) · CC BY 3.0 | **Trocado em 21/11/2026.** O arquivo antigo está guardado em `_interno/sons-antigos/` | Trocar (resolvido) |
 | Baixo acústico, guitarra de jazz, pianos elétricos, sanfona, bandoneon, bateria e percussão | FluidR3_GM · CC BY 3.0 | Exige crédito visível: **já aparece** em "Créditos dos sons", no fim do RIT | |
 
 ### 1.5 Harmonias prontas do Naipe RIT (`rit/js/music.js`)
@@ -164,5 +170,5 @@ São 44 itens, entre livros e pastas do Drive, indicados em cada assunto, como a
 ---
 
 ## O que eu sugiro conferir primeiro
-1. **Sons do RIT:** os créditos CC BY já aparecem em "Créditos dos sons", no fim do RIT. Falta confirmar as licenças dos dois pacotes do Freesound.
+1. **Sons do RIT:** os créditos CC BY já aparecem em "Créditos dos sons", no fim do RIT. Os dois timbres do Freesound foram trocados por FluidR3_GM (21/11/2026).
 2. **Itens de terceiros entregues por link** (2.1 a 2.5): num produto pago, distribuir esses PDFs e áudios pelo app pode exigir autorização das editoras, mesmo ficando no seu Drive. Você decide se mantém, troca por indicação ("compre o livro X, página Y") ou remove.

@@ -1,5 +1,5 @@
 // Baixa as gravações usadas pelo app, apara, nivela e gera os arquivos de samples/.
-// Requer ffmpeg.   node tools/fetch-samples.js
+// Requer ffmpeg.   node tools/fetch-samples.js [timbre ...]   (sem nomes, refaz todos)
 const fs = require('fs'), path = require('path'), { execFileSync } = require('child_process');
 const RAW = 'https://raw.githubusercontent.com/';
 const OUT = path.join(__dirname, '..', 'samples');
@@ -23,7 +23,7 @@ const INST = {
   bassA: ['fluid', 'acoustic_bass', BASS, 2.5, -3],
   bassF: ['fluid', 'fretless_bass', BASS, 2.5, -3],
   bassP: ['fluid', 'electric_bass_pick', BASS, 2.5, -3],
-  nylon: ['tone', 'guitar-nylon', [55, 59, 63, 66], 3, -3],
+  nylon: ['fluid', 'acoustic_guitar_nylon', MID, 3, -3],
   steel: ['tone', 'guitar-acoustic', MID, 3, -3],
   clean: ['tone', 'guitar-electric', [57, 60, 63, 66], 3, -3],
   jazzg: ['fluid', 'electric_guitar_jazz', MID, 3, -3],
@@ -33,7 +33,7 @@ const INST = {
   organ: ['tone', 'organ', MID5, 3, -10],
   acc: ['fluid', 'accordion', MID, 3, -9],
   band: ['fluid', 'tango_accordion', MID, 3, -9],
-  harm: ['tone', 'harmonium', MID, 3, -9]
+  harm: ['fluid', 'reed_organ', MID, 3, -9]
 };
 const DRUMS = [35, 36, 37, 38, 40, 41, 42, 51, 54, 56, 60, 61, 63, 64, 65, 67, 68, 70, 76, 77, 80, 81];
 
@@ -58,8 +58,10 @@ function escrever(id, mapa) {
   fs.writeFileSync(path.join(OUT, id + '.js'), 'window.NAIPE_SAMPLES(' + JSON.stringify(id) + ',' + JSON.stringify(mapa) + ');\n');
 }
 
+const SO = process.argv.slice(2);
 (async () => {
   for (const [id, [src, dir, notas, dur, alvo]] of Object.entries(INST)) {
+    if (SO.length && !SO.includes(id)) continue;
     const arqs = [];
     for (const m of notas) {
       const arq = path.join(TMP, id + '-' + m + '.mp3');
@@ -77,6 +79,7 @@ function escrever(id, mapa) {
     escrever('i-' + id, mapa);
     console.log(id, 'ganho', ganho.toFixed(1), 'dB', Math.round(fs.statSync(path.join(OUT, 'i-' + id + '.js')).size / 1024) + ' KB');
   }
+  if (SO.length && !SO.includes('drums')) return;
   const drums = {};
   for (const n of DRUMS) {
     const arq = path.join(TMP, 'drum-' + n + '.js');

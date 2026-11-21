@@ -30,7 +30,7 @@ window.CMA = {
 
   // Endereço dos Termos de Uso, mostrado no aviso de "Meus materiais".
   // Vazio = o link ainda não leva a lugar nenhum (aparece "em breve").
-  termosUso: "",
+  termosUso: "vendas/termos.html#arquivos",
 
   // Versão grátis x completa.
   // gratis: raízes abertas para todos. As outras pedem o código de acesso.
