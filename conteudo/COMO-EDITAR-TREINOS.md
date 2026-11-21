@@ -36,6 +36,24 @@ Cada bloco pode apontar para **um** destes (ou nenhum):
 | `"material"` | Uma página de um método da Biblioteca | `{ "livro": "arpejos-tv", "onde": "pág. 1–2" }` |
 | `"musica"` | Uma música do Repertório essencial | `"summertime"` |
 
+### Tocar com a banda (Naipe RIT)
+
+Qualquer bloco pode ter `"rit"`. Ele mostra a cifra já transposta para o sax do aluno e o botão **Tocar com a banda**:
+
+```json
+"rit": { "ritmo": "bossa", "cifra": "| F7M | % | Gm7 | C7 |", "bpm": 110, "titulo": "Bossa em Fá" }
+```
+
+ou, usando uma harmonia pronta do RIT:
+
+```json
+"rit": { "ritmo": "swing", "prog": "p-blues", "bpm": 120 }
+```
+
+- **ritmo**: `samba`, `bossa`, `choro`, `baiao`, `xote`, `frevo`, `maracatu`, `ijexa`, `afro`, `swing`, `valsa`, `funk`, `pop`, `reggae`, `balada` ou `metro`.
+- **cifra**: escreva em **som real (Dó)**, com `|` entre os compassos e `%` para repetir. O app transpõe sozinho para Mi♭ e Si♭.
+- **prog**: o código de uma harmonia pronta, por exemplo `p-251`, `p-blues`, `m-summertime` ou `m-allofme`. A lista completa está em `rit/js/music.js`.
+
 Os códigos de exercícios, livros e músicas estão em `conteudo.js`, `metodos.js` e `repertorio.js`. Se não achar, me peça a lista.
 
 ## Regras do JSON (onde costuma dar erro)

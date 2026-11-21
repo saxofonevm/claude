@@ -1,60 +1,249 @@
 {
   "versao": 1,
   "categorias": {
-    "tecnica": { "nome": "Técnica", "pilar": "melodia" },
-    "percepcao": { "nome": "Percepção", "pilar": "escuta" },
-    "improvisacao": { "nome": "Improvisação", "pilar": "ornamentos" },
-    "repertorio": { "nome": "Repertório", "pilar": null }
+    "tecnica": {
+      "nome": "Técnica",
+      "pilar": "melodia"
+    },
+    "percepcao": {
+      "nome": "Percepção",
+      "pilar": "escuta"
+    },
+    "improvisacao": {
+      "nome": "Improvisação",
+      "pilar": "ornamentos"
+    },
+    "repertorio": {
+      "nome": "Repertório",
+      "pilar": null
+    }
   },
   "treinos": [
     {
       "id": "t01",
       "nome": "Som e escalas",
       "blocos": [
-        { "categoria": "tecnica", "minutos": 5, "titulo": "Escalas maiores", "instrucao": "Dó, Sol e Fá maior em toda a extensão, ligado e depois destacado. Comece em 60 e suba de 4 em 4.", "exercicio": "mel-02" },
-        { "categoria": "percepcao", "minutos": 5, "titulo": "Cantar junto", "instrucao": "Escolha um solo curto e cante junto com a gravação. Só depois procure as notas no sax.", "exercicio": "esc-06" },
-        { "categoria": "improvisacao", "minutos": 5, "titulo": "Pentatônica maior", "instrucao": "Toque a pentatônica de Fá maior e improvise dois minutos só com essas cinco notas.", "material": { "livro": "escalas-jazz-tv", "onde": "Pentatônica maior · pág. 3" } },
-        { "categoria": "repertorio", "minutos": 5, "titulo": "Summertime", "instrucao": "Toque a melodia devagar, com vibrato no fim das frases.", "musica": "summertime" }
+        {
+          "categoria": "tecnica",
+          "minutos": 5,
+          "titulo": "Escalas maiores",
+          "instrucao": "Dó, Sol e Fá maior em toda a extensão, ligado e depois destacado. Comece em 60 e suba de 4 em 4.",
+          "exercicio": "mel-02"
+        },
+        {
+          "categoria": "percepcao",
+          "minutos": 5,
+          "titulo": "Cantar junto",
+          "instrucao": "Escolha um solo curto e cante junto com a gravação. Só depois procure as notas no sax.",
+          "exercicio": "esc-06"
+        },
+        {
+          "categoria": "improvisacao",
+          "minutos": 5,
+          "titulo": "Pentatônica maior",
+          "instrucao": "Toque a pentatônica de Fá maior e improvise dois minutos só com essas cinco notas.",
+          "material": {
+            "livro": "escalas-jazz-tv",
+            "onde": "Pentatônica maior · pág. 3"
+          },
+          "rit": {
+            "ritmo": "bossa",
+            "cifra": "| F7M | % | Gm7 | C7 |",
+            "bpm": 110,
+            "titulo": "Bossa em Fá"
+          }
+        },
+        {
+          "categoria": "repertorio",
+          "minutos": 5,
+          "titulo": "Summertime",
+          "instrucao": "Toque a melodia devagar, com vibrato no fim das frases.",
+          "musica": "summertime",
+          "rit": {
+            "ritmo": "swing",
+            "prog": "m-summertime",
+            "bpm": 80
+          }
+        }
       ]
     },
     {
       "id": "t02",
       "nome": "Ritmo brasileiro",
       "blocos": [
-        { "categoria": "tecnica", "minutos": 5, "titulo": "Arpejos maiores", "instrucao": "Três tons por dia, em toda a extensão. Diga o nome de cada nota antes de tocar.", "material": { "livro": "arpejos-tv", "onde": "Maiores, Ex. 1 · pág. 1–2" } },
-        { "categoria": "percepcao", "minutos": 5, "titulo": "Tirar de ouvido", "instrucao": "Tire de ouvido as quatro primeiras notas de uma música que você conhece bem.", "exercicio": "esc-07" },
-        { "categoria": "improvisacao", "minutos": 5, "titulo": "Improvisar com a síncope", "instrucao": "Escolha duas notas e invente frases usando só a síncope brasileira.", "exercicio": "rit-03" },
-        { "categoria": "repertorio", "minutos": 5, "titulo": "Asa Branca", "instrucao": "Acentue o primeiro tempo como a zabumba. Toque com o playback.", "musica": "asa-branca" }
+        {
+          "categoria": "tecnica",
+          "minutos": 5,
+          "titulo": "Arpejos maiores",
+          "instrucao": "Três tons por dia, em toda a extensão. Diga o nome de cada nota antes de tocar.",
+          "material": {
+            "livro": "arpejos-tv",
+            "onde": "Maiores, Ex. 1 · pág. 1–2"
+          }
+        },
+        {
+          "categoria": "percepcao",
+          "minutos": 5,
+          "titulo": "Tirar de ouvido",
+          "instrucao": "Tire de ouvido as quatro primeiras notas de uma música que você conhece bem.",
+          "exercicio": "esc-07"
+        },
+        {
+          "categoria": "improvisacao",
+          "minutos": 5,
+          "titulo": "Improvisar com a síncope",
+          "instrucao": "Escolha duas notas e invente frases usando só a síncope brasileira.",
+          "exercicio": "rit-03",
+          "rit": {
+            "ritmo": "samba",
+            "prog": "p-samba",
+            "bpm": 88
+          }
+        },
+        {
+          "categoria": "repertorio",
+          "minutos": 5,
+          "titulo": "Asa Branca",
+          "instrucao": "Acentue o primeiro tempo como a zabumba. Toque com o playback.",
+          "musica": "asa-branca",
+          "rit": {
+            "ritmo": "baiao",
+            "prog": "m-asabranca",
+            "bpm": 96
+          }
+        }
       ]
     },
     {
       "id": "t03",
       "nome": "Swing",
       "blocos": [
-        { "categoria": "tecnica", "minutos": 5, "titulo": "Língua no legato", "instrucao": "Colcheias com swing: “doo-dah”, ligando o contratempo ao tempo.", "exercicio": "art-04" },
-        { "categoria": "percepcao", "minutos": 5, "titulo": "Comparar dois timbres", "instrucao": "Ouça um tenor e um alto no mesmo standard e descreva a diferença em três palavras.", "exercicio": "esc-02" },
-        { "categoria": "improvisacao", "minutos": 5, "titulo": "Escala blues", "instrucao": "Toque a escala blues em Fá e improvise um chorus de blues com ela.", "material": { "livro": "escalas-jazz-tv", "onde": "Escala blues · pág. 5–6" } },
-        { "categoria": "repertorio", "minutos": 5, "titulo": "All of Me", "instrucao": "Melodia com swing e notas curtas no fim das frases.", "musica": "all-of-me" }
+        {
+          "categoria": "tecnica",
+          "minutos": 5,
+          "titulo": "Língua no legato",
+          "instrucao": "Colcheias com swing: “doo-dah”, ligando o contratempo ao tempo.",
+          "exercicio": "art-04"
+        },
+        {
+          "categoria": "percepcao",
+          "minutos": 5,
+          "titulo": "Comparar dois timbres",
+          "instrucao": "Ouça um tenor e um alto no mesmo standard e descreva a diferença em três palavras.",
+          "exercicio": "esc-02"
+        },
+        {
+          "categoria": "improvisacao",
+          "minutos": 5,
+          "titulo": "Escala blues",
+          "instrucao": "Toque a escala blues em Fá e improvise um chorus de blues com ela.",
+          "material": {
+            "livro": "escalas-jazz-tv",
+            "onde": "Escala blues · pág. 5–6"
+          },
+          "rit": {
+            "ritmo": "swing",
+            "prog": "p-blues",
+            "bpm": 120
+          }
+        },
+        {
+          "categoria": "repertorio",
+          "minutos": 5,
+          "titulo": "All of Me",
+          "instrucao": "Melodia com swing e notas curtas no fim das frases.",
+          "musica": "all-of-me",
+          "rit": {
+            "ritmo": "swing",
+            "prog": "m-allofme",
+            "bpm": 120
+          }
+        }
       ]
     },
     {
       "id": "t04",
       "nome": "Expressão",
       "blocos": [
-        { "categoria": "tecnica", "minutos": 5, "titulo": "Notas longas com dinâmica", "instrucao": "Notas longas do pp ao ff, com o afinador ligado. A afinação não pode mudar.", "exercicio": "din-01" },
-        { "categoria": "percepcao", "minutos": 5, "titulo": "Diário de escuta", "instrucao": "Ouça uma faixa inteira e anote o que o saxofonista faz com o som e a dinâmica.", "exercicio": "esc-01" },
-        { "categoria": "improvisacao", "minutos": 5, "titulo": "Bend, scoop e fall", "instrucao": "Improvise frases curtas usando um enfeite diferente em cada uma.", "exercicio": "orn-04" },
-        { "categoria": "repertorio", "minutos": 5, "titulo": "Manhã de Carnaval", "instrucao": "Som macio, colcheias iguais. Toque com o playback.", "musica": "manha-carnaval" }
+        {
+          "categoria": "tecnica",
+          "minutos": 5,
+          "titulo": "Notas longas com dinâmica",
+          "instrucao": "Notas longas do pp ao ff, com o afinador ligado. A afinação não pode mudar.",
+          "exercicio": "din-01"
+        },
+        {
+          "categoria": "percepcao",
+          "minutos": 5,
+          "titulo": "Diário de escuta",
+          "instrucao": "Ouça uma faixa inteira e anote o que o saxofonista faz com o som e a dinâmica.",
+          "exercicio": "esc-01"
+        },
+        {
+          "categoria": "improvisacao",
+          "minutos": 5,
+          "titulo": "Bend, scoop e fall",
+          "instrucao": "Improvise frases curtas usando um enfeite diferente em cada uma.",
+          "exercicio": "orn-04",
+          "rit": {
+            "ritmo": "funk",
+            "cifra": "| Dm7 | G7 | Dm7 | G7 |",
+            "bpm": 92,
+            "titulo": "Groove em Ré dórico"
+          }
+        },
+        {
+          "categoria": "repertorio",
+          "minutos": 5,
+          "titulo": "Manhã de Carnaval",
+          "instrucao": "Som macio, colcheias iguais. Toque com o playback.",
+          "musica": "manha-carnaval",
+          "rit": {
+            "ritmo": "bossa",
+            "prog": "m-carnaval",
+            "bpm": 100
+          }
+        }
       ]
     },
     {
       "id": "t05",
       "nome": "Choro",
       "blocos": [
-        { "categoria": "tecnica", "minutos": 5, "titulo": "Staccato leve do choro", "instrucao": "Semicolcheias com a língua leve, sem cortar o ar.", "exercicio": "art-06" },
-        { "categoria": "percepcao", "minutos": 5, "titulo": "Cantar junto", "instrucao": "Cante junto com uma gravação de Pixinguinha e marque onde ele respira.", "exercicio": "esc-06" },
-        { "categoria": "improvisacao", "minutos": 5, "titulo": "Ornamentar a melodia", "instrucao": "Pegue uma frase do choro e enfeite com apojaturas e bordaduras.", "exercicio": "orn-06" },
-        { "categoria": "repertorio", "minutos": 5, "titulo": "Carinhoso", "instrucao": "Frase longa e expressiva. Respire só onde a frase respira.", "musica": "carinhoso" }
+        {
+          "categoria": "tecnica",
+          "minutos": 5,
+          "titulo": "Staccato leve do choro",
+          "instrucao": "Semicolcheias com a língua leve, sem cortar o ar.",
+          "exercicio": "art-06"
+        },
+        {
+          "categoria": "percepcao",
+          "minutos": 5,
+          "titulo": "Cantar junto",
+          "instrucao": "Cante junto com uma gravação de Pixinguinha e marque onde ele respira.",
+          "exercicio": "esc-06"
+        },
+        {
+          "categoria": "improvisacao",
+          "minutos": 5,
+          "titulo": "Ornamentar a melodia",
+          "instrucao": "Pegue uma frase do choro e enfeite com apojaturas e bordaduras.",
+          "exercicio": "orn-06",
+          "rit": {
+            "ritmo": "choro",
+            "cifra": "| C | G7 | G7 | C | C7 | F | D7 G7 | C |",
+            "bpm": 72,
+            "titulo": "Choro em Dó"
+          }
+        },
+        {
+          "categoria": "repertorio",
+          "minutos": 5,
+          "titulo": "Carinhoso",
+          "instrucao": "Frase longa e expressiva. Respire só onde a frase respira.",
+          "musica": "carinhoso"
+        }
       ]
     }
   ]

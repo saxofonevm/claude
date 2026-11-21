@@ -47,7 +47,7 @@
   var NAIPE = (function () {
     var cma = window.CMA, est = {};
     try { est = JSON.parse(localStorage.getItem('cma.v1') || '{}') || {}; } catch (e) { /* segue sem */ }
-    var ctrl = cma && cma.acesso && Array.isArray(cma.acesso.codigos) && cma.acesso.codigos.length;
+    var ctrl = cma && cma.acesso && !cma.acesso.livre && Array.isArray(cma.acesso.codigos) && cma.acesso.codigos.length;
     return { dentro: !!cma, sax: est.sax || '', completo: !ctrl || !!est.desbloqueado };
   })();
   if (S.sax === null) S.sax = NAIPE.sax;
@@ -57,6 +57,23 @@
   if (!liberado(S.rhythmId)) S.rhythmId = 'samba';
   if (!musicaLiberada(S.songId)) S.songId = 'p-samba';
   var SAX = { '': 0, Mib: 9, Sib: 2 }; // semitons acima do som real em que o sax lê
+
+  /* Abertura já configurada pelo endereço (usada pelos exercícios do Naipe; veja o README):
+     index.html?ritmo=bossa&bpm=120&sax=Mib&prog=p-251
+     index.html?ritmo=swing&cifra=|%20Dm7%20|%20G7%20|&titulo=II-V-I  (cifra em som real) */
+  var Q = {};
+  try { new URLSearchParams(location.search).forEach(function (v, k) { Q[k] = v; }); } catch (e) { /* navegador antigo */ }
+  var LINK = !!(Q.ritmo || Q.cifra || Q.prog);
+  if (Q.ritmo && M.RHYTHMS.some(function (r) { return r.id === Q.ritmo; })) S.rhythmId = Q.ritmo;
+  if (Q.bpm && +Q.bpm > 0) S.bpm = Math.max(40, Math.min(260, Math.round(+Q.bpm)));
+  if ('sax' in Q && Q.sax in SAX) S.sax = Q.sax;
+  if (Q.prog && M.PRESETS.some(function (p) { return p.id === Q.prog; })) S.songId = Q.prog;
+  if (Q.cifra) {
+    var doLink = { id: 'x-exercicio', title: Q.titulo || 'Exercício do Naipe', text: Q.cifra };
+    S.songs = S.songs.filter(function (s) { return s.id !== doLink.id; }).concat([doLink]);
+    S.songId = doLink.id;
+  }
+  if (LINK) S.transpose = 0;
 
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* idem */ } }
 
@@ -312,7 +329,8 @@
 
   function chordEl(tok) {
     if (tok === '%') return el('span', 'ch rep', '%');
-    var sym = M.transposeSym(tok, S.transpose + SAX[S.sax || '']);
+    var n = S.transpose + SAX[S.sax || ''];
+    var sym = M.transposeSymKey(tok, n, M.prefersSharps(song().text, n));
     var span = el('span', 'ch' + (M.parseChord(sym) ? '' : ' bad'));
     var m = /^([A-G][#b]?)(.*)$/.exec(sym);
     if (!m) { span.textContent = sym; return span; }

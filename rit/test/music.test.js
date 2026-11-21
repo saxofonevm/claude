@@ -54,3 +54,11 @@ assert.deepStrictEqual(M.playOrder(rep.bars), [0, 1, 0, 2, 3, 4, 4, 5]);
 assert.deepStrictEqual(rep.bars[1].chords, ['D']);
 assert.deepStrictEqual(M.playOrder(M.parseChart('| C | D |').bars), [0, 1]);
 console.log('ok ritornelos');
+
+// grafia pelo tom (transposeSymKey / prefersSharps)
+assert.strictEqual(M.prefersSharps('| Am6 | E7 |', 9), true);   // Fá# menor (alto, Summertime)
+assert.strictEqual(M.transposeSymKey('E7', 9, M.prefersSharps('| Am6 | E7 |', 9)), 'C#7');
+assert.strictEqual(M.transposeSymKey('Bm7(b5)', 9, true), 'G#m7(b5)');
+assert.strictEqual(M.prefersSharps('| F7M | Gm7 | C7 |', 0), false); // Fá maior: bemóis
+assert.strictEqual(M.prefersSharps('| F7M | Gm7 | C7 |', 2), true);  // tenor: Sol maior, sustenidos
+console.log('grafia pelo tom: ok');

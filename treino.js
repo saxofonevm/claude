@@ -75,6 +75,58 @@
     return "";
   }
 
+  // ---------- Naipe RIT no exercício ----------
+  // Cifra escrita para o sax do aluno (alto em Mi♭: +9 semitons; tenor e soprano em Si♭: +2).
+  const DESLOC = { Mib: 9, Sib: 2 };
+  function textoCifra(r) {
+    if (r.cifra) return r.cifra;
+    const p = ((window.Music || {}).PRESETS || []).find(x => x.id === r.prog);
+    return p ? p.text : "";
+  }
+  function htmlCifra(texto, sax) {
+    const M = window.Music, n = DESLOC[sax] || 0, sust = M && M.prefersSharps ? M.prefersSharps(texto, n) : false;
+    const tr = tok => (/^[A-G]/.test(tok) && M ? (M.transposeSymKey ? M.transposeSymKey(tok, n, sust) : M.transposeSym(tok, n)) : tok);
+    return texto.split("\n").map(linha => {
+      const comps = linha.split("|").map(c => c.trim()).filter((c, i, a) => c !== "" || (i > 0 && i < a.length - 1));
+      return `<div class="rb-linha">${comps.map(c => `<span class="rb-comp">${esc(c.replace(/^:|:$/g, "").split(/\s+/).map(tr).join("  "))}</span>`).join("")}</div>`;
+    }).join("");
+  }
+  function htmlRit(b, k) {
+    const r = b.rit; if (!r) return "";
+    const sax = app().estado().sax || "", texto = textoCifra(r);
+    const nomeRitmo = (((window.Music || {}).RHYTHMS || []).find(x => x.id === r.ritmo) || {}).name || r.ritmo;
+    const titulo = r.titulo || ((((window.Music || {}).PRESETS || []).find(x => x.id === r.prog) || {}).title) || "";
+    return `<div class="tb-rit">
+      <div class="rb-topo"><span class="rb-rot">Com a banda · ${esc(nomeRitmo)}${r.bpm ? ` · ♩ ${r.bpm}` : ""}${titulo ? ` · ${esc(titulo)}` : ""}</span></div>
+      <div class="rb-sax" role="group" aria-label="Meu saxofone">
+        ${[["Mib", "Alto · Mi♭"], ["Sib", "Tenor e soprano · Si♭"]].map(([v, rot]) => `<button type="button" data-treino="sax" data-sax="${v}" aria-pressed="${sax === v}" class="${sax === v ? "ativo" : ""}">${rot}</button>`).join("")}
+      </div>
+      ${texto ? `<div class="rb-cifra" aria-label="Cifra">${htmlCifra(texto, sax)}</div><small class="rb-nota">${sax ? `Cifra escrita para o seu sax (${sax === "Mib" ? "Mi♭" : "Si♭"}). A banda soa no tom real.` : "Cifra em som real (Dó). Escolha o seu sax para ver a cifra transposta."}</small>` : ""}
+      <button type="button" class="btn primario rb-tocar" data-treino="banda" data-k="${k}">▶ Tocar com a banda</button>
+    </div>`;
+  }
+  function abrirBanda(b) {
+    const r = b.rit, q = new URLSearchParams();
+    if (r.ritmo) q.set("ritmo", r.ritmo);
+    if (r.bpm) q.set("bpm", r.bpm);
+    if (r.prog) q.set("prog", r.prog);
+    if (r.cifra) { q.set("cifra", r.cifra); q.set("titulo", r.titulo || b.titulo); }
+    q.set("sax", app().estado().sax || "");
+    let d = document.getElementById("dlg-banda");
+    if (!d) {
+      d = document.createElement("dialog"); d.id = "dlg-banda"; d.className = "dlg-banda";
+      d.innerHTML = `<div class="banda-topo"><strong id="banda-titulo"></strong><button type="button" class="link-acao" id="banda-fechar">Fechar</button></div><iframe id="banda-quadro" title="Naipe Rit: tocar com a banda" allow="autoplay"></iframe>`;
+      document.body.appendChild(d);
+      const fechar = () => { document.getElementById("banda-quadro").src = "about:blank"; if (d.open) d.close(); };
+      d.querySelector("#banda-fechar").addEventListener("click", fechar);
+      d.addEventListener("cancel", ev => { ev.preventDefault(); fechar(); });
+      window.addEventListener("hashchange", fechar);
+    }
+    d.querySelector("#banda-titulo").textContent = b.titulo;
+    d.querySelector("#banda-quadro").src = `rit/index.html?${q.toString()}`;
+    d.showModal();
+  }
+
   const mmss = s => `${Math.floor(s / 60)}:${String(Math.max(0, s) % 60).padStart(2, "0")}`;
 
   function render() {
@@ -108,6 +160,7 @@
           ${fonteBloco(b) ? `<small class="tb-fonte">${esc(fonteBloco(b))}</small>` : ""}
           ${b.instrucao ? `<p class="tb-instrucao">${esc(b.instrucao)}</p>` : ""}
           <div class="tb-links">${linksBloco(b)}</div>
+          ${htmlRit(b, k)}
           <div class="tb-acoes">
             <button type="button" class="btn tb-tempo" data-treino="tempo" data-k="${k}">${rodando ? `⏸ ${mmss(resta)}` : `⏱ ${mmss(resta)}`}</button>
             <button type="button" class="tb-feito" data-treino="feito" data-k="${k}" aria-pressed="${feito}">${feito ? "✓ Feito" : "Marcar como feito"}</button>
@@ -140,6 +193,8 @@
     const b = ev.target.closest("[data-treino]");
     if (!b || !document.getElementById("treino-dia").contains(b)) return;
     const acao = b.dataset.treino, dia = estadoDia(), t = treinoAtual(dia), k = Number(b.dataset.k);
+    if (acao === "sax") { app().definirSax(b.dataset.sax); render(); return; }
+    if (acao === "banda") { abrirBanda(t.blocos[k]); return; }
     if (acao === "feito") {
       const i = dia.feitos.indexOf(k);
       if (i >= 0) dia.feitos.splice(i, 1); else dia.feitos.push(k);

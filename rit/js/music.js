@@ -77,6 +77,25 @@
       .replace(/\/([A-G][#b]?)$/, function (_, b) { return '/' + tr(b); });
   }
 
+  /* Transposição com a grafia do tom: em tons de sustenido (G, D, A, E, B, F# maior
+     e as relativas menores) as notas alteradas saem com #; nos demais, com b. */
+  var SUST = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+  var TONS_SUST = { 7: 1, 2: 1, 9: 1, 4: 1, 11: 1, 6: 1 };
+  function prefersSharps(text, n) {
+    var m = /(^|[\s|:\]])([A-G][#b]?)(m(?!aj)|-)?/.exec(String(text || ''));
+    if (!m) return false;
+    var pc = (notePc(m[2]) + (n || 0) + 120) % 12;
+    if (m[3]) pc = (pc + 3) % 12; // menor: olha a relativa maior
+    return !!TONS_SUST[pc];
+  }
+  function transposeSymKey(sym, n, sharps) {
+    var nomes = sharps ? SUST : NOTES;
+    var tr = function (note) { return nomes[(notePc(note) + (n || 0) + 120) % 12]; };
+    return String(sym)
+      .replace(/^[A-G][#b]?/, tr)
+      .replace(/\/([A-G][#b]?)$/, function (_, b) { return '/' + tr(b); });
+  }
+
   /* Notas (MIDI) do acorde para o acompanhamento, na região média. */
   function voicing(ch) {
     var ivs;
@@ -389,7 +408,7 @@
 
 
   var api = {
-    NOTES: NOTES, parseChord: parseChord, transposeSym: transposeSym, voicing: voicing,
+    NOTES: NOTES, parseChord: parseChord, transposeSym: transposeSym, transposeSymKey: transposeSymKey, prefersSharps: prefersSharps, voicing: voicing,
     bassMidi: bassMidi, parseChart: parseChart, playOrder: playOrder, buildTimeline: buildTimeline,
     RHYTHMS: RHYTHMS, PRESETS: PRESETS
   };

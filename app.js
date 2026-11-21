@@ -938,7 +938,7 @@
     if (base) {
       // Naipe Rit (pasta rit/) aberto dentro da aba, sem sair do app
       alvo.innerHTML = `<div class="rit-embutido">${modos}
-        <iframe class="rit-quadro" src="rit/index.html" title="Naipe Rit: ritmo e harmonia" allow="autoplay"></iframe></div>`;
+        <iframe class="rit-quadro" src="rit/index.html?sax=${encodeURIComponent(estado.sax || "")}" title="Naipe Rit: ritmo e harmonia" allow="autoplay"></iframe></div>`;
       document.body.classList.add("com-rit");
       return;
     }
@@ -2711,6 +2711,7 @@
     const av = $("#af-previa");
     if (av) av.hidden = !NA_PREVIA;
     $("#af-sax").value = estado.sax || "";
+    if (!$("#af-sax").dataset.ligado) { $("#af-sax").dataset.ligado = "1"; $("#af-sax").addEventListener("change", ev => { estado.sax = ev.target.value; salvar(); }); }
     dlgAf.showModal();
   }
   $("#af-ligar").addEventListener("click", async () => {
@@ -2936,6 +2937,7 @@
     metaSemana: () => estado.metaSemanal,
     atualizar: () => renderTela(),
     urlArquivo: id => urlSegura(urlArquivo(id)),
+    definirSax: sax => { estado.sax = sax; salvar(); },
     registrarPratica: (minutos, notas) => {
       const antes = resumoMetas();
       estado.sessoes.push({ id: novoId(), data: hojeISO(), minutos: Math.max(1, Math.round(minutos)), raizId: null, exercicioId: null, avaliacao: null, notas: notas || "" });
