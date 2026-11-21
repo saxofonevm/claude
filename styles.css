@@ -2118,3 +2118,32 @@ details.tr-unidade.completa .tr-conta { font-weight: 700; }
 .treino-trocar { align-self: center; }
 .treino-feito { margin: 0; font-weight: 700; color: var(--ok, #3dffb0); }
 .treino.concluido .linha-botoes { justify-content: flex-start; }
+
+/* ---------- Início enxuto e Meus materiais (no Diário) ---------- */
+.ferramentas-inicio { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px; }
+.ferramentas-inicio > button { margin: 0; }
+@media (max-width: 360px) { .ferramentas-inicio { grid-template-columns: 1fr; } }
+.meus-materiais { display: flex; flex-direction: column; gap: 12px; padding: 0 16px 18px; }
+.meus-materiais > h2 { display: flex; align-items: center; gap: 8px; margin: 4px 0 0; font-size: 1.3rem; }
+.meus-materiais > h2 [data-icone] svg, .meus-materiais > h2 svg { width: 22px; height: 22px; }
+.meus-materiais > p { margin: -6px 0 2px; }
+.meus-materiais .mm-radio { position: static; width: 100%; margin: 0; }
+.mm-topo { display: flex; justify-content: space-between; align-items: center; }
+.mm-topo h3 { display: flex; align-items: center; gap: 8px; margin: 0; font-size: 1.1rem; }
+.mm-ic svg { width: 20px; height: 20px; }
+.mm-topo small { color: var(--muted); }
+.mm-aviso { margin: 0; font-size: .82rem; color: var(--muted); padding: 8px 10px; border-radius: 10px; background: color-mix(in srgb, var(--surface-2, var(--surface)) 80%, transparent); border-left: 3px solid var(--brass, #e9c45c); }
+.mm-aviso a { color: var(--brass-soft, #f2d47c); }
+.mm-botoes { display: flex; gap: 8px; flex-wrap: wrap; }
+.mm-enviar { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; }
+.mm-enviar svg { width: 18px; height: 18px; }
+.mm-form { display: flex; flex-direction: column; gap: 10px; }
+.mm-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.mm-item { display: grid; grid-template-columns: auto 1fr; gap: 4px 10px; align-items: center; padding: 10px 12px; border-radius: 14px; background: var(--surface-2, var(--surface)); border: 1px solid color-mix(in srgb, var(--line) 60%, transparent); }
+.mm-tipo { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ok, #3dffb0); padding: 3px 7px; border-radius: 6px; border: 1px solid currentColor; }
+.mm-item.tipo-link .mm-tipo { color: var(--brass, #e9c45c); }
+.mm-nome { display: flex; flex-direction: column; min-width: 0; }
+.mm-nome strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mm-nome small { color: var(--muted); font-size: .78rem; }
+.mm-acoes { grid-column: 2; display: flex; gap: 14px; }
+.mm-audio { grid-column: 1 / -1; width: 100%; }

@@ -31,11 +31,6 @@
     <!-- INÍCIO -->
     <section id="tela-inicio" class="tela">
       <header class="hero">
-        <button class="letreiro-radio" id="letreiro-radio" type="button" aria-label="Rádio Naipe: toque para ouvir">
-          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
-          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
-          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
-        </button>
         <div class="hero-topo">
           <span class="marca" aria-label="naipe">naipe<svg class="marca-simbolo" viewBox="-12.60 -2.12 71.22 95.96" aria-hidden="true"><g transform="rotate(-10 30 85.5)" fill="none" stroke="currentColor" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8 L16 12 C22 15 24 19 24 25 L24 66 C24 88 46 88 46 66 L46 56"/><path d="M39 54 Q46 59 52 50"/></g></svg></span>
           <span class="hero-data" id="hero-data"></span>
@@ -51,6 +46,16 @@
 
       <div class="conteudo-inicio">
         <div id="treino-dia"></div>
+        <div class="cartao ferramentas-inicio">
+          <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
+            <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <span class="btn-metronomo-texto"><strong>Metrônomo</strong><small>Toque para marcar o tempo do estudo</small></span>
+          </button>
+          <button class="btn-afinador" id="btn-afinador-inicio" type="button">
+            <span class="btn-afinador-ic" aria-hidden="true"><svg viewBox="0 1.2 24 24"><path d="M4 16a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="agulha-mini" d="M12 16l3.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.6" fill="currentColor"/></svg></span>
+            <span><strong>Afinador</strong><small>Confira a afinação com o microfone</small></span>
+          </button>
+        </div>
         <button class="ajuda-topo" type="button" data-abrir-ajuda><span data-icone="lampada"></span>Como usar o Naipe</button>
         <div class="cartao percurso-cartao">
           <div class="percurso">
@@ -63,32 +68,6 @@
         </div>
         </div>
 
-        <div class="cartao timer hoje" id="cartao-timer">
-          <div class="timer-topo">
-            <span class="rotulo">Hoje</span>
-            <span class="timer-estado" id="timer-estado">Parado</span>
-          </div>
-          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
-          <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
-          <div class="timer-meta">
-            <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
-            <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
-          </div>
-          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
-          <div class="timer-botoes">
-            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
-            <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
-            <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
-          </div>
-          <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
-            <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-            <span class="btn-metronomo-texto"><strong>Metrônomo</strong><small>Toque para marcar o tempo do estudo</small></span>
-          </button>
-          <button class="btn-afinador" id="btn-afinador-inicio" type="button">
-            <span class="btn-afinador-ic" aria-hidden="true"><svg viewBox="0 1.2 24 24"><path d="M4 16a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path class="agulha-mini" d="M12 16l3.5-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="12" cy="16" r="1.6" fill="currentColor"/></svg></span>
-            <span><strong>Afinador</strong><small>Confira a afinação com o microfone</small></span>
-          </button>
-        </div>
 
         <div class="cartao backup-lembrete" id="backup-lembrete" hidden>
           <p class="backup-lembrete-txt"><strong>Backup do meu progresso</strong><span id="backup-lembrete-sub">Faça um backup do seu diário e guarde no Drive ou no WhatsApp.</span></p>
@@ -119,23 +98,8 @@
           <div class="stat"><span class="stat-valor" id="stat-exercicios">0</span><span class="stat-rotulo"><span data-icone="check"></span>exercícios</span></div>
         </div>
 
-        <details class="cartao recolhe">
-          <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
-          <ul class="lista-prazos" id="lista-prazos"></ul>
-          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra um pilar ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
-        </details>
 
-        <details class="cartao recolhe">
-          <summary><span class="rec-ic" data-icone="alvo"></span><span class="rec-txt"><strong>Meta semanal</strong><small id="meta-texto"></small></span><span class="rec-seta" data-icone="seta"></span></summary>
-          <div class="barra grossa"><div class="barra-preenchida arco" id="meta-barra"></div></div>
-          <div class="semana" id="semana"></div>
-        </details>
 
-        <details class="cartao recolhe" id="cartao-relatorio">
-          <summary><span class="rec-ic" data-icone="diario"></span><span class="rec-txt"><strong>Relatório para o professor</strong><small>Envie o resumo da semana pelo WhatsApp</small></span><span class="rec-seta" data-icone="seta"></span></summary>
-          <p class="mudo" id="relatorio-dica">Envie o resumo dos seus últimos 7 dias pelo WhatsApp: minutos, pilares estudados, exercícios concluídos, andamentos e anotações.</p>
-          <button class="btn primario largo" id="btn-relatorio" type="button">Enviar relatório pelo WhatsApp</button>
-        </details>
 
         <div class="cartao recolhe-convite" id="cartao-acomp" hidden>
           <span class="rec-ic" data-icone="diario"></span>
@@ -143,7 +107,6 @@
           <a class="link-acao" data-conhecer-acomp target="_blank" rel="noopener" href="#">Conhecer</a>
         </div>
 
-        <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
       </div>
     </section>
 
@@ -187,13 +150,57 @@
         </div>
         <button class="btn primario pequeno" id="btn-registrar-2" data-icone="mais">Novo</button>
       </header>
+      <section class="meus-materiais" aria-labelledby="mm-titulo">
+        <h2 id="mm-titulo"><span data-icone="pasta"></span>Meus materiais</h2>
+        <p class="mudo">O seu espaço: os seus arquivos, o cronômetro livre, os prazos e a rádio.</p>
+        <div class="cartao meus-arquivos" id="meus-arquivos"></div>
+        <div class="cartao timer" id="cartao-timer">
+          <div class="timer-topo">
+            <span class="rotulo">Hoje</span>
+            <span class="timer-estado" id="timer-estado">Parado</span>
+          </div>
+          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
+          <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
+          <div class="timer-meta">
+            <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
+            <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
+          </div>
+          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
+          <div class="timer-botoes">
+            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
+            <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
+            <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
+          </div>
+        </div>
+        <button class="letreiro-radio mm-radio" id="letreiro-radio" type="button" aria-label="Rádio Naipe: toque para ouvir">
+          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
+          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
+          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
+        </button>
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <ul class="lista-prazos" id="lista-prazos"></ul>
+          <p class="vazio-mini" id="prazos-vazio">Nenhum prazo definido. Abra um pilar ou um exercício e escolha a sua data: um compromisso com dia marcado ajuda a manter o foco.</p>
+        </details>
+        <details class="cartao recolhe">
+          <summary><span class="rec-ic" data-icone="alvo"></span><span class="rec-txt"><strong>Meta semanal</strong><small id="meta-texto"></small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <div class="barra grossa"><div class="barra-preenchida arco" id="meta-barra"></div></div>
+          <div class="semana" id="semana"></div>
+        </details>
+        <details class="cartao recolhe" id="cartao-relatorio">
+          <summary><span class="rec-ic" data-icone="diario"></span><span class="rec-txt"><strong>Relatório para o professor</strong><small>Envie o resumo da semana pelo WhatsApp</small></span><span class="rec-seta" data-icone="seta"></span></summary>
+          <p class="mudo" id="relatorio-dica">Envie o resumo dos seus últimos 7 dias pelo WhatsApp: minutos, pilares estudados, exercícios concluídos, andamentos e anotações.</p>
+          <button class="btn primario largo" id="btn-relatorio" type="button">Enviar relatório pelo WhatsApp</button>
+        </details>
+        <button class="btn largo contorno" id="btn-registrar" data-icone="mais">Registrar prática manualmente</button>
+      </section>
       <div class="corpo-diario" id="diario-graficos"></div>
       <ul class="lista" id="lista-sessoes"></ul>
       <div class="vazio" id="diario-vazio">
         <span class="vazio-notas" aria-hidden="true"><span data-icone="nota"></span><span data-icone="nota"></span><span data-icone="nota"></span></span>
         <span data-icone="diario"></span>
         <p><strong>Nenhuma prática registrada.</strong></p>
-        <p class="mudo">Use o cronômetro na tela inicial ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
+        <p class="mudo">Use o cronômetro em Meus materiais, logo acima, ou toque em “Novo”. Anotar o que você estudou ajuda a perceber a sua evolução.</p>
       </div>
     </section>
 
@@ -328,13 +335,14 @@
   <dialog id="dlg-ajuda" class="ajuda-dlg" aria-labelledby="ajuda-titulo">
     <div class="cartao-topo"><h2 id="ajuda-titulo">Como usar o Naipe</h2><button class="link-acao" id="ajuda-fechar" type="button">Fechar</button></div>
     <ol class="ajuda-passos">
+      <li><span class="aj-ic" data-icone="alvo"></span><span><strong>Treino do dia</strong><small>Ao abrir o app, o treino de hoje: blocos de 5 minutos de técnica, percepção, improvisação e repertório. Marque cada bloco e toque em Concluir: o tempo vai para o Diário.</small></span></li>
       <li><span class="aj-ic" data-icone="nota"></span><span><strong>Teoria</strong><small>Do zero à formatura em 16 unidades: ler partitura, ritmo e as primeiras músicas. O Naipe escuta o seu sax pelo microfone.</small></span></li>
       <li><span class="aj-ic" data-icone="calendario"></span><span><strong>Estudo</strong><small>Um plano de estudos com os métodos. Em cada bloco você conta como foi, e o professor virtual escolhe o exercício e o andamento da próxima sessão.</small></span></li>
       <li><span class="aj-ic" data-icone="raizes"></span><span><strong>Meu percurso e Pilares</strong><small>Toque num pilar para abrir. Siga na ordem e comece pela Escuta.</small></span></li>
       <li><span class="aj-ic" data-icone="livro"></span><span><strong>Métodos deste pilar</strong><small>Dentro de cada pilar ficam os livros, já organizados por assunto. Toque no método e depois no selo amarelo (p. 27, Ex. 1–5) para abrir o livro na página certa.</small></span></li>
-      <li><span class="aj-ic" data-icone="play"></span><span><strong>Começar os estudos</strong><small>Ligue o cronômetro quando pegar o sax. Ao terminar, toque em Finalizar e a prática vai para o Diário.</small></span></li>
-      <li><span class="aj-ic" data-icone="metronomo"></span><span><strong>Metrônomo e afinador</strong><small>Ficam logo abaixo. O metrônomo continua tocando quando você fecha a janela; para parar, toque no ■ no topo da tela.</small></span></li>
-      <li><span class="aj-ic" data-icone="lampada"></span><span><strong>Dica de estudo</strong><small>Três passos para hoje: aquecer, fazer o exercício da vez e tocar junto. Toque na bolinha para marcar o que já fez.</small></span></li>
+      <li><span class="aj-ic" data-icone="play"></span><span><strong>Cronômetro livre</strong><small>Para estudar fora do treino: no Diário, em Meus materiais, ligue o cronômetro quando pegar o sax. Ao terminar, toque em Finalizar e a prática vai para o Diário.</small></span></li>
+      <li><span class="aj-ic" data-icone="metronomo"></span><span><strong>Metrônomo e afinador</strong><small>Ficam logo abaixo do treino. O metrônomo continua tocando quando você fecha a janela; para parar, toque no ■ no topo da tela.</small></span></li>
+      <li><span class="aj-ic" data-icone="lampada"></span><span><strong>Meus materiais</strong><small>No topo do Diário: os seus arquivos e links (ficam só no aparelho), o cronômetro livre, os prazos, a meta da semana e a rádio.</small></span></li>
       <li><span class="aj-ic" data-icone="nota"></span><span><strong>Dentro do exercício</strong><small>Leia o “Como fazer”, abra o metrônomo no andamento indicado, grave e compare. Toque em Concluí quando estiver limpo.</small></span></li>
       <li><span class="aj-ic" data-icone="fone"></span><span><strong>Tocar junto e naipe rit</strong><small>Play-alongs por estilo ou o naipe rit: escolha o ritmo, a progressão e o andamento e toque em cima da base, no tom que quiser.</small></span></li>
       <li><span class="aj-ic" data-icone="diario"></span><span><strong>Métodos e Diário</strong><small>Em Pilares, toque em Biblioteca de métodos para buscar um assunto e ver em que livro ele está. No Diário, acompanhe suas práticas e gráficos.</small></span></li>
@@ -549,5 +557,6 @@
   <script src="trilha.js"></script>
   <script src="app.js"></script>
   <script src="treino.js"></script>
+  <script src="materiais.js"></script>
 </body>
 </html>

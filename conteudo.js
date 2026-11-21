@@ -28,6 +28,10 @@ window.CMA = {
   // Se ficar vazio, o WhatsApp abre e o aluno escolhe o contato.
   professor: { nome: "Tiago Veloso", whatsapp: "5527999704300" },
 
+  // Endereço dos Termos de Uso, mostrado no aviso de "Meus materiais".
+  // Vazio = o link ainda não leva a lugar nenhum (aparece "em breve").
+  termosUso: "",
+
   // Versão grátis x completa.
   // gratis: raízes abertas para todos. As outras pedem o código de acesso.
   // codigos: impressão digital (SHA-256) de cada código válido, nunca o código em si.

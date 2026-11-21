@@ -395,7 +395,7 @@
       case "tocar": renderTocar(); break;
       case "metodos": renderMetodos(); break;
       case "metodo": renderMetodo(rotaAtual.id); break;
-      case "diario": renderDiario(); break;
+      case "diario": renderInicio(); renderDiario(); if (window.NaipeMateriais) window.NaipeMateriais.render(); break;
       case "ajustes": renderAjustes(); break;
       case "trilha": if (window.NaipeTrilha) window.NaipeTrilha.render(rotaAtual.id); break;
       case "estudo": if (window.NaipeTrilha) window.NaipeTrilha.render(null, "estudo"); break;
@@ -2077,7 +2077,7 @@
       ed.festa = true; salvar();
       setTimeout(() => celebrar("Dica de estudo completa!", "Aquecimento, exercício e tocar junto. Até amanhã!", "trofeu"), 400);
     }
-    if (rotaAtual.tela === "inicio") renderEstudoDia();
+    if (rotaAtual.tela === "inicio" || rotaAtual.tela === "diario") renderEstudoDia();
   }
 
   function playAlongDoDia() {
@@ -2930,7 +2930,7 @@
 
   // Ponte para o Treino do dia (treino.js): dados e funções do app que ele usa.
   window.NaipeApp = {
-    estado: () => estado, salvar, hojeISO, icone, escapar, metaDoDia,
+    estado: () => estado, salvar, hojeISO, icone, escapar, metaDoDia, avisar, confirmar,
     sequencia: () => calcularSequencia(minutosPorDia()),
     minutosSemana: () => resumoMetas().semana,
     metaSemana: () => estado.metaSemanal,
