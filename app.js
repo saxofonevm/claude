@@ -931,6 +931,10 @@
 
   function renderTocar() {
     const alvo = $("#tocar-conteudo");
+    // A Rádio Naipe mora no Tocar junto: guarda o botão antes de redesenhar e põe de volta no lugar dele
+    const radio = $("#letreiro-radio"), guarda = $("#tj-radio-guarda");
+    if (radio && guarda && radio.parentElement !== guarda) guarda.appendChild(radio);
+    const porRadio = () => { const slot = $("#tj-radio"); if (radio && slot) slot.replaceWith(radio); };
     const base = rotaAtual.id === "base";
     const modos = `<div class="modo-tocar" role="group" aria-label="Modo">
       <a href="#/tocar" class="${base ? "" : "ativo"}"${base ? "" : ' aria-current="page"'}>Play-alongs</a>
@@ -947,9 +951,10 @@
     const topo = `<header class="cabecalho"><p class="sobretitulo">Com a banda</p><h1>Tocar junto</h1>${destaque}</header>`;
     const secao = `<div class="tj-secao"><h2>Play-alongs</h2><p class="mudo">Gravações com banda por estilo. Comece pelos indicados e escolha o seu sax para ver só a sua afinação.</p></div>`;
     if (temBloqueio()) {
-      alvo.innerHTML = topo + `<div class="corpo-metodos">${secao}<section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
+      alvo.innerHTML = topo + `<div class="corpo-metodos"><div id="tj-radio"></div>${secao}<section class="cartao acervo"><h2>${icone("cadeado")}Mais de 40 coleções de play-along</h2>
         <p class="mudo">Choro, bossa nova, MPB, jazz, blues e baladas, com playback para tocar junto. No naipe rit, Samba, Bossa Nova e Jazz Swing já estão abertos. Tudo disponível no Naipe completo.</p>
         <a class="btn largo" href="${escapar(urlConhecer())}" target="_blank" rel="noopener">Conhecer o Naipe</a>${htmlCodigo()}</section></div>`;
+      porRadio();
       return;
     }
     const sax = estado.sax;
@@ -970,12 +975,13 @@
     const listaMarcada = filtroMarca ? TOCAR.filter(t => marcasTocar()[t.id] === filtroTocar) : [];
     const chips = `<div class="filtro-sax filtro-marca" role="group" aria-label="Mostrar">
       ${[["", "Todos"], ["fav", `★ Favoritos · ${TOCAR.filter(t => marcasTocar()[t.id] === "fav").length}`], ["estudo", `Em estudo · ${TOCAR.filter(t => marcasTocar()[t.id] === "estudo").length}`]].map(([v, r]) => `<button type="button" data-filtro-tocar="${v}" class="${filtroTocar === v ? "ativo" : ""}" aria-pressed="${filtroTocar === v}">${r}</button>`).join("")}</div>`;
-    alvo.innerHTML = topo + `<div class="corpo-metodos">${secao}${filtro}${chips}
+    alvo.innerHTML = topo + `<div class="corpo-metodos"><div id="tj-radio"></div>${secao}${filtro}${chips}
       ${filtroMarca ? (listaMarcada.length ? `<section class="cartao genero aberto-fixo"><ul class="tocar-lista">${listaMarcada.map(itemTocar).join("")}</ul></section>` : `<p class="vazio-mini">${filtroTocar === "fav" ? "Toque na estrela de um play-along para guardá-lo aqui." : "Marque “Em estudo” nos play-alongs que você está praticando agora."}</p>`) : `
       ${ocultos ? `<p class="vazio-mini">${ocultos} ${ocultos === 1 ? "coleção em outra afinação está oculta" : "coleções em outras afinações estão ocultas"}.</p>` : ""}
       ${marcados.length ? `<p class="vazio-mini">${marcados.length} ${marcados.length === 1 ? "play-along marcado" : "play-alongs marcados"}: use os filtros acima para achar rápido.</p>` : ""}
       ${secoes}`}
       <p class="vazio-mini">Os play-alongs abrem no Google Drive. Se aparecer “Acesso negado”, entre com o e-mail que você passou ao professor.</p></div>`;
+    porRadio();
     generoAberto = "";
   }
 

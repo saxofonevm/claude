@@ -2264,3 +2264,8 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
   .ed-ic { display: none; }
   .ed-check { width: 42px; }
 }
+
+/* Rádio Naipe dentro do Tocar junto, logo abaixo do naipe rit */
+.letreiro-radio.tj-radio { position: static; margin: 0 0 18px; width: 100%; }
+/* Cronômetro no Início, acima do metrônomo */
+.conteudo-inicio > #cartao-timer { margin-bottom: 14px; }

@@ -46,6 +46,23 @@
 
       <div class="conteudo-inicio">
         <div id="treino-dia"></div>
+        <div class="cartao timer" id="cartao-timer">
+          <div class="timer-topo">
+            <span class="rotulo">Hoje</span>
+            <span class="timer-estado" id="timer-estado">Parado</span>
+          </div>
+          <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
+          <div class="timer-meta">
+            <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
+            <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
+          </div>
+          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
+          <div class="timer-botoes">
+            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
+            <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
+            <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
+          </div>
+        </div>
         <div class="cartao ferramentas-inicio">
           <button class="btn-metronomo" id="btn-metronomo-inicio" type="button">
             <span class="btn-metronomo-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 21L9.6 3.5h4.8L18 21z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path class="pendulo" d="M12 17L12 6.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/><circle class="pendulo" cx="12" cy="9.5" r="1.7" fill="currentColor"/><path d="M8 17h8" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
@@ -137,6 +154,13 @@
     <!-- TOCAR JUNTO (play-alongs) -->
     <section id="tela-tocar" class="tela">
       <div id="tocar-conteudo"></div>
+      <div id="tj-radio-guarda" hidden>
+        <button class="letreiro-radio tj-radio" id="letreiro-radio" type="button" aria-label="Rádio Naipe: toque para ouvir">
+          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
+          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
+          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
+        </button>
+      </div>
     </section>
 
     <!-- MÉTODOS (biblioteca e detalhe de um método) -->
@@ -155,32 +179,10 @@
       </header>
       <section class="meus-materiais" aria-labelledby="mm-titulo">
         <h2 id="mm-titulo"><span data-icone="pasta"></span>Meus materiais</h2>
-        <p class="mudo">O seu espaço: os seus arquivos, o cronômetro livre, os prazos e a rádio.</p>
+        <p class="mudo">O seu espaço: os seus arquivos, a sua evolução e os prazos.</p>
         <div class="cartao meus-arquivos" id="meus-arquivos"></div>
         <div class="cartao minha-evolucao" id="minha-evolucao"></div>
-        <div class="cartao timer" id="cartao-timer">
-          <div class="timer-topo">
-            <span class="rotulo">Hoje</span>
-            <span class="timer-estado" id="timer-estado">Parado</span>
-          </div>
-          <section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section>
-          <div class="timer-visor" id="timer-visor" role="timer" aria-live="off">00:00</div>
-          <div class="timer-meta">
-            <div class="barra"><div class="barra-preenchida arco" id="timer-meta-barra"></div></div>
-            <span class="timer-rotulo" id="timer-rotulo">Meta do dia</span>
-          </div>
-          <p class="mudo" id="timer-dica" hidden>Ligue o cronômetro e registre sua prática ao terminar.</p>
-          <div class="timer-botoes">
-            <button class="btn primario" id="timer-iniciar" data-icone="play">Começar os estudos</button>
-            <button class="btn" id="timer-pausar" data-icone="pause" hidden>Pausar</button>
-            <button class="btn perigo" id="timer-finalizar" data-icone="stop" hidden>Finalizar</button>
-          </div>
-        </div>
-        <button class="letreiro-radio mm-radio" id="letreiro-radio" type="button" aria-label="Rádio Naipe: toque para ouvir">
-          <span class="letreiro-radio-play" aria-hidden="true" data-icone="play"></span>
-          <span class="letreiro-radio-janela" aria-hidden="true"><span class="letreiro-radio-faixa" id="letreiro-radio-faixa"></span></span>
-          <span class="letreiro-radio-ic" aria-hidden="true" data-icone="radio"></span>
-        </button>
+        <div class="cartao estudo-dia-cartao"><section class="estudo-dia" id="estudo-dia" aria-label="Dica de estudo"></section></div>
         <details class="cartao recolhe">
           <summary><span class="rec-ic" data-icone="calendario"></span><span class="rec-txt"><strong>Próximos prazos</strong><small id="prazos-resumo">Nenhum prazo</small></span><span class="rec-seta" data-icone="seta"></span></summary>
           <ul class="lista-prazos" id="lista-prazos"></ul>
