@@ -1,0 +1,91 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* modo claro: creme + verde-escuro + marrom */
+    --fundo: 245 239 226;
+    --superficie: 255 252 245;
+    --elevado: 236 227 207;
+    --borda: 221 207 180;
+    --texto: 18 44 34;
+    --suave: 107 79 58;
+    --ouro: 168 128 36;
+    --ouro-forte: 140 104 24;
+    --verde: 30 122 74;
+    --perigo: 186 62 42;
+    color-scheme: light;
+  }
+  .dark {
+    /* modo escuro (padrão): verde-escuro profundo + dourado */
+    --fundo: 9 30 23;
+    --superficie: 16 44 34;
+    --elevado: 23 58 45;
+    --borda: 38 77 61;
+    --texto: 245 239 226;
+    --suave: 196 176 146;
+    --ouro: 214 178 94;
+    --ouro-forte: 236 202 120;
+    --verde: 98 202 138;
+    --perigo: 240 118 96;
+    color-scheme: dark;
+  }
+
+  html,
+  body,
+  #root {
+    min-height: 100%;
+  }
+  body {
+    @apply bg-fundo text-texto antialiased;
+    font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    overscroll-behavior-y: none;
+  }
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    -webkit-tap-highlight-color: transparent;
+  }
+  input,
+  select,
+  textarea {
+    font-size: 16px; /* evita zoom no iPhone */
+  }
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-borda/60 bg-superficie p-4 shadow-[0_1px_0_rgb(255_255_255/0.03)_inset];
+  }
+  .rotulo {
+    @apply text-[11px] font-semibold uppercase tracking-[0.12em] text-suave;
+  }
+  .campo {
+    @apply min-h-[44px] w-full rounded-xl border border-borda bg-fundo px-3 py-2 text-texto outline-none transition placeholder:text-suave/60 focus:border-ouro focus:ring-2 focus:ring-ouro/25;
+  }
+  .numero {
+    font-variant-numeric: tabular-nums;
+  }
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .brilho-ouro {
+    background: radial-gradient(120% 80% at 100% 0%, rgb(var(--ouro) / 0.18), transparent 60%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

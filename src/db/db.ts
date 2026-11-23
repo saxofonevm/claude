@@ -63,7 +63,7 @@ export class NoEixoDB extends Dexie {
       fasesPlano: 'id',
       exercicios: 'id',
       fichasTreino: 'id',
-      sessoesTreino: '++id, data, ficha, concluida',
+      sessoesTreino: '++id, data, ficha',
       pratos: 'id, refeicao',
       planoAlimentar: 'id',
       refeicoes: '++id, data, refeicao',

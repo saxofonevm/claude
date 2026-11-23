@@ -52,7 +52,7 @@ function duracao(item: RotinaItem): string {
   const min = item.horaFim ? Math.max(5, minutosDoDia(item.horaFim) - minutosDoDia(item.hora)) : 15;
   const h = Math.floor(min / 60);
   const m = min % 60;
-  return `PT${h ? `${h}H` : ''}${m ? `${m}M` : ''}` || 'PT15M';
+  return `PT${h ? `${h}H` : ''}${m ? `${m}M` : ''}`;
 }
 
 /** Eventos recorrentes semanais (um por item de rotina com lembrete), no fuso de São Paulo. */

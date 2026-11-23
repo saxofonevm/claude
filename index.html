@@ -16,6 +16,11 @@
     <link rel="apple-touch-startup-image" href="/splash-1179x2556.png" media="(device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3)" />
     <link rel="apple-touch-startup-image" href="/splash-750x1334.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" />
     <title>No Eixo</title>
+    <script>
+      try {
+        if (localStorage.getItem('no-eixo:tema') === 'claro') document.documentElement.classList.remove('dark');
+      } catch (e) {}
+    </script>
   </head>
   <body>
     <div id="root"></div>

@@ -206,6 +206,8 @@ export interface RegistroRefeicao {
   proteina: number;
   livre: boolean;
   origem: 'plano' | 'catalogo' | 'livre' | 'trabalho' | 'estoque';
+  /** marmita retirada do estoque (devolvida se o registro for apagado) */
+  estoquePratoId?: string;
   criadoEm: string;
 }
 
