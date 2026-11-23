@@ -57,7 +57,7 @@ function Guardiao({ children }: { children: ReactNode }) {
     } catch {
       /* ok */
     }
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', escuro ? '#091e17' : '#f5efe2');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', escuro ? '#101325' : '#f7f6fc');
   }, [config]);
   if (!perfil || !config) return <Carregando />;
   if (!perfil.onboardingFeito && !pathname.startsWith('/boas-vindas')) return <Navigate to="/boas-vindas" replace />;

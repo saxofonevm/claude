@@ -3,32 +3,33 @@
 @tailwind utilities;
 
 @layer base {
+  /* Paleta "Amanhecer": índigo calmo + pêssego/coral (otimismo, energia) + verde-água (equilíbrio, renovação) */
   :root {
-    /* modo claro: creme + verde-escuro + marrom */
-    --fundo: 245 239 226;
-    --superficie: 255 252 245;
-    --elevado: 236 227 207;
-    --borda: 221 207 180;
-    --texto: 18 44 34;
-    --suave: 107 79 58;
-    --ouro: 168 128 36;
-    --ouro-forte: 140 104 24;
-    --verde: 30 122 74;
-    --perigo: 186 62 42;
+    /* modo claro: branco-pérola + índigo + coral */
+    --fundo: 247 246 252;
+    --superficie: 255 255 255;
+    --elevado: 237 235 247;
+    --borda: 221 218 236;
+    --texto: 27 30 58;
+    --suave: 96 100 138;
+    --ouro: 196 82 56;
+    --ouro-forte: 172 68 44;
+    --verde: 15 128 106;
+    --perigo: 200 52 84;
     color-scheme: light;
   }
   .dark {
-    /* modo escuro (padrão): verde-escuro profundo + dourado */
-    --fundo: 9 30 23;
-    --superficie: 16 44 34;
-    --elevado: 23 58 45;
-    --borda: 38 77 61;
-    --texto: 245 239 226;
-    --suave: 196 176 146;
-    --ouro: 214 178 94;
-    --ouro-forte: 236 202 120;
-    --verde: 98 202 138;
-    --perigo: 240 118 96;
+    /* modo escuro (padrão): céu índigo antes do nascer do sol */
+    --fundo: 16 19 37;
+    --superficie: 25 29 53;
+    --elevado: 35 40 70;
+    --borda: 51 57 93;
+    --texto: 242 241 250;
+    --suave: 170 174 208;
+    --ouro: 255 160 122;
+    --ouro-forte: 255 184 152;
+    --verde: 98 218 186;
+    --perigo: 255 112 134;
     color-scheme: dark;
   }
 

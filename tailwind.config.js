@@ -15,8 +15,6 @@ export default {
         'ouro-forte': 'rgb(var(--ouro-forte) / <alpha-value>)',
         verde: 'rgb(var(--verde) / <alpha-value>)',
         perigo: 'rgb(var(--perigo) / <alpha-value>)',
-        creme: '#f5efe2',
-        marrom: '#6b4f3a',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
