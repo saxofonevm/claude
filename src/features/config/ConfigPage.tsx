@@ -135,15 +135,12 @@ export default function ConfigPage() {
           </div>
           <div className="border-t border-borda/60 pt-3">
             <div className="mb-2 text-sm">Proteína estimada no trabalho (g)</div>
-            <div className="flex justify-around">
+            <div className="space-y-2">
               {(['cafe', 'almoco', 'lanche'] as const).map((r) => (
-                <Contador
-                  key={r}
-                  rotulo={r === 'cafe' ? 'café' : r === 'almoco' ? 'almoço' : 'lanche'}
-                  valor={config.proteinaTrabalho[r]}
-                  passo={5}
-                  onChange={(v) => set({ proteinaTrabalho: { ...config.proteinaTrabalho, [r]: v } })}
-                />
+                <div key={r} className="flex items-center justify-between">
+                  <span className="text-sm text-suave">{r === 'cafe' ? 'Café' : r === 'almoco' ? 'Almoço' : 'Lanche'}</span>
+                  <Contador valor={config.proteinaTrabalho[r]} passo={5} onChange={(v) => set({ proteinaTrabalho: { ...config.proteinaTrabalho, [r]: v } })} />
+                </div>
               ))}
             </div>
           </div>
