@@ -23,6 +23,7 @@ import { CardapioDia, FolhaRefeicao } from '@/features/alimentacao/CardapioDia';
 import { LinhaDoTempo } from '@/features/rotina/LinhaDoTempo';
 import { RegistroAlcoolRapido } from '@/features/alcool/RegistroAlcool';
 import { iniciarSessao } from '@/features/treino/servico';
+import { PassosHoje } from '@/features/saude/Componentes';
 import type { Refeicao } from '@/db/tipos';
 
 function refeicaoDaHora(hora: string): Refeicao {
@@ -215,6 +216,9 @@ export default function HojePage() {
       <Secao titulo="Água">
         <Card>
           <ContadorAgua data={hoje} meta={perfil.metaAguaMl} />
+          <div className="mt-2">
+            <PassosHoje data={hoje} />
+          </div>
         </Card>
       </Secao>
 

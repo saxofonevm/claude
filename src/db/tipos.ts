@@ -56,6 +56,10 @@ export interface Configuracoes {
   refeicoesLivresSemana: number;
   horaVoltaShow: string;
   fraseRecusa: string;
+  /** nomes dos atalhos do app Atalhos (integração com o Saúde) */
+  atalhos?: { peso: string; agua: string; importar: string };
+  /** separador decimal usado nos números enviados ao Atalhos */
+  atalhosDecimal?: 'virgula' | 'ponto';
 }
 
 /* ---------- Rotina e plano ---------- */
@@ -305,6 +309,7 @@ export interface MedidaCorpo {
   peso?: number;
   cintura?: number;
   fotoId?: number;
+  enviadoSaude?: boolean;
 }
 
 export interface Foto {
@@ -327,4 +332,13 @@ export interface RevisaoSemanal {
 export interface Agua {
   data: DataISO;
   ml: number;
+  /** quanto já foi enviado ao app Saúde (para não duplicar) */
+  enviadoSaudeMl?: number;
+}
+
+/** Dados vindos do app Saúde (Apple) via Atalhos. */
+export interface RegistroSaude {
+  data: DataISO;
+  passos?: number;
+  importadoEm: string;
 }

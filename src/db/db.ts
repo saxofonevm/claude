@@ -15,6 +15,7 @@ import type {
   Perfil,
   PlanoAlimentarSemana,
   Prato,
+  RegistroSaude,
   Preparo,
   ReceitaBase,
   RegistroAlcool,
@@ -51,6 +52,7 @@ export class NoEixoDB extends Dexie {
   fotos!: Table<Foto, number>;
   revisoesSemanais!: Table<RevisaoSemanal, string>;
   agua!: Table<Agua, string>;
+  saude!: Table<RegistroSaude, string>;
 
   constructor() {
     super('no-eixo');
@@ -81,6 +83,8 @@ export class NoEixoDB extends Dexie {
       revisoesSemanais: 'id',
       agua: 'data',
     });
+    // v2: dados importados do app Saúde (passos)
+    this.version(2).stores({ saude: 'data' });
   }
 }
 
@@ -111,6 +115,7 @@ export const TABELAS = [
   'fotos',
   'revisoesSemanais',
   'agua',
+  'saude',
 ] as const;
 
 export type NomeTabela = (typeof TABELAS)[number];

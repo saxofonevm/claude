@@ -189,6 +189,15 @@ export default function ConfigPage() {
         </Card>
       </Secao>
 
+      <Secao titulo="App Saúde (Apple)">
+        <Card>
+          <Link to="/saude" className="flex min-h-[44px] items-center justify-between font-semibold text-ouro">
+            Integração pelo app Atalhos <ChevronRight size={18} />
+          </Link>
+          <p className="text-sm text-suave">Envie peso, cintura e água ao Saúde e traga de lá peso, cintura e passos.</p>
+        </Card>
+      </Secao>
+
       <Secao titulo="Aparência">
         <Card className="flex items-center gap-3">
           {config.tema === 'escuro' ? <Moon className="text-ouro" /> : <Sun className="text-ouro" />}

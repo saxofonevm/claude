@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-import { Beer, ChefHat, ClipboardCheck, HeartHandshake, Info, Ruler, Settings, Target } from 'lucide-react';
+import { Beer, ChefHat, ClipboardCheck, HeartHandshake, HeartPulse, Info, Ruler, Settings, Target } from 'lucide-react';
 import { Cabecalho } from '@/components/ui';
 
 const ITENS = [
   { to: '/alcool', rotulo: 'Álcool', detalhe: 'Contadores, gatilhos e apoio', icone: Beer },
   { to: '/habitos', rotulo: 'Hábitos', detalhe: 'Fazer e evitar', icone: HeartHandshake },
   { to: '/corpo', rotulo: 'Corpo', detalhe: 'Peso, cintura e fotos', icone: Ruler },
+  { to: '/saude', rotulo: 'App Saúde', detalhe: 'Peso, água e passos via Atalhos', icone: HeartPulse },
   { to: '/marmitas', rotulo: 'Marmitas', detalhe: 'Receitas, compras e estoque', icone: ChefHat },
   { to: '/rotina/plano', rotulo: 'Plano de 12 semanas', detalhe: 'Fases e conquistas', icone: Target },
   { to: '/rotina/semana0', rotulo: 'Semana 0', detalhe: 'Checklist de início', icone: ClipboardCheck },

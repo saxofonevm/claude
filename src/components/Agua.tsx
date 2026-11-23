@@ -4,10 +4,12 @@ import { db } from '@/db/db';
 import type { DataISO } from '@/db/tipos';
 import { Barra } from '@/components/ui';
 import { br, vibrar } from '@/lib/utils';
+import { EnviarAguaSaude } from '@/features/saude/Componentes';
 
 export async function somarAgua(data: DataISO, ml: number) {
-  const atual = (await db.agua.get(data))?.ml ?? 0;
-  await db.agua.put({ data, ml: Math.max(0, atual + ml) });
+  const atual = await db.agua.get(data);
+  // preserva o que já foi enviado ao Saúde (para não duplicar lá)
+  await db.agua.put({ ...atual, data, ml: Math.max(0, (atual?.ml ?? 0) + ml) });
   vibrar(20);
 }
 
@@ -34,6 +36,7 @@ export function ContadorAgua({ data, meta }: { data: DataISO; meta: number }) {
           + garrafa 500 ml
         </button>
       </div>
+      <EnviarAguaSaude data={data} />
     </div>
   );
 }

@@ -11,6 +11,7 @@ import { diaSemana, formatar } from '@/lib/datas';
 import { serieCorpo, variacao } from '@/domain/corpo';
 import { br } from '@/lib/utils';
 import { avisar } from '@/store/app';
+import { EnviarPesoSaude, ImportarSaude } from '@/features/saude/Componentes';
 
 export default function CorpoPage() {
   const { hoje } = useAgora();
@@ -22,7 +23,14 @@ export default function CorpoPage() {
   return (
     <>
       <Cabecalho titulo="Corpo" subtitulo="Registro semanal (domingo)" voltar />
-      <Formulario key={ultima?.data ?? 'novo'} hoje={hoje} ultima={ultima} pesoInicial={perfil.pesoInicial} registroHoje={medidas.find((m) => m.data === hoje)} />
+      <Formulario key={`${ultima?.data ?? 'novo'}-${ultima?.peso}-${ultima?.cintura}`} hoje={hoje} ultima={ultima} pesoInicial={perfil.pesoInicial} registroHoje={medidas.find((m) => m.data === hoje)} />
+
+      <Secao titulo="App Saúde (Apple)">
+        <Card className="space-y-3">
+          <ImportarSaude data={hoje} />
+          <EnviarPesoSaude data={hoje} />
+        </Card>
+      </Secao>
 
       {medidas.length > 0 && (
         <Card className="mb-4 grid grid-cols-3 gap-3">

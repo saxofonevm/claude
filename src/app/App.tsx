@@ -34,6 +34,7 @@ const ConfigPage = p(() => import('@/features/config/ConfigPage'));
 const MaisPage = p(() => import('@/features/config/MaisPage'));
 const SobrePage = p(() => import('@/features/config/SobrePage'));
 const OnboardingPage = p(() => import('@/features/config/OnboardingPage'));
+const SaudePage = p(() => import('@/features/saude/SaudePage'));
 
 function Carregando() {
   return (
@@ -101,6 +102,7 @@ const router = createBrowserRouter([
       { path: '/config', element: s(<ConfigPage />) },
       { path: '/mais', element: s(<MaisPage />) },
       { path: '/sobre', element: s(<SobrePage />) },
+      { path: '/saude', element: s(<SaudePage />) },
       { path: '/boas-vindas', element: s(<OnboardingPage />) },
       { path: '*', element: <Navigate to="/" replace /> },
     ],

@@ -65,6 +65,16 @@ O arquivo `vercel.json` já cuida das rotas internas do app (para não dar erro 
 abra **Mais → Configurações → Lembretes → Baixar lembretes (.ics)**, abra o arquivo e toque em **Adicionar todos**.
 São eventos semanais: véspera do treino 21h30, treino 5h00, mercado quinta 8h, marmitas quinta 9h e domingo 10h, plano do show sexta e sábado 17h e revisão domingo 19h. Se mudar a rotina, gere o arquivo de novo (apague antes o calendário antigo para não duplicar).
 
+**App Saúde (Apple):** em **Mais → App Saúde** tem o passo a passo para montar 3 atalhos no app **Atalhos** (uns 10 minutos, uma vez só):
+
+| Atalho | O que faz |
+|---|---|
+| `No Eixo Peso` | Envia peso e cintura do No Eixo para o Saúde |
+| `No Eixo Água` | Envia a água do dia (só a parte ainda não enviada, sem duplicar) |
+| `No Eixo Importar` | Busca no Saúde o último peso, a cintura e os passos do dia e copia; no No Eixo, toque em **Colar dados** |
+
+Apps web não acessam o Saúde direto (regra da Apple); por isso a ponte é o app Atalhos. Os nomes dos atalhos e o separador decimal podem ser ajustados na mesma tela.
+
 **Backup:** os dados ficam só no aparelho. De vez em quando, em **Configurações → Backup**, toque em **Exportar tudo (JSON com fotos)** e salve no iCloud Drive. Para restaurar, use **Importar backup**.
 
 ---
@@ -130,7 +140,7 @@ public/exercicios/  fotos dos exercícios (offline)
 ## 7. Melhorias futuras
 
 - Sincronização opcional na nuvem (para usar em mais de um aparelho e ter backup automático).
-- Integração com o app **Saúde** da Apple (peso, treinos, água) — exige um app nativo ou atalho do iOS.
+- Integração automática com o **Saúde** (sem atalhos) e envio dos treinos — exige app nativo (Mac com Xcode + conta Apple Developer).
 - Notificações push quando o suporte do iOS a PWAs ficar confiável.
 - Leitura de código de barras e banco de alimentos maior (TACO completa).
 - Cronômetro da prancha com contagem regressiva por série.
