@@ -2329,3 +2329,11 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .gu-lista small { color: var(--muted); font-size: .76rem; }
 .gu-grupo .tb-partitura { margin-bottom: 12px; }
 .gu-credito { margin: 2px 0 0; font-size: .75rem; }
+
+/* Exercício: seções extras e crédito ao autor de referência */
+.ex-secao { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--line); }
+.ex-secao h3 { font-size: 1rem; margin: 0 0 6px; color: var(--brass-soft); }
+.ex-secao ul { margin: 0 0 6px; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; }
+.ex-secao li { font-size: .9rem; }
+.ex-secao p { margin: 4px 0 0; font-size: .88rem; }
+.ex-credito { margin: 12px 0 0; font-size: .76rem; color: var(--muted); font-style: italic; }

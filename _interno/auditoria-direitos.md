@@ -178,3 +178,9 @@ São 44 itens, entre livros e pastas do Drive, indicados em cada assunto, como a
 - **O que foi feito:** as relações entre acorde e escala (teoria musical comum) foram reescritas em português, com organização, textos e partituras próprios do Naipe. A página original não foi copiada nem digitalizada para o app.
 - **Crédito no app:** "Baseado no Scale Syllabus de Jamey Aebersold, reescrito em português pelo Naipe."
 - **Onde está:** pilar Estudos Melódicos → Escalas → exercício `mel-09`; partituras em `conteudo/partituras/escalas-*.png`.
+
+## Acréscimo de 25/11/2026: exercícios inspirados em David Liebman
+- **Origem:** "Desenvolvendo uma sonoridade pessoal no saxofone", David Liebman (Editora Souza Lima), capítulos 8 (Técnicas de expressividade) e 9 (Prática), fotos enviadas pelo Tiago.
+- **O que foi feito:** exercícios novos com texto e partituras próprios do Naipe, a partir das ideias do livro (vibrato, bend e portamento, frulato e voz, ppp–fff, pré-som e pós-som, acentos e fantasmas, organização da prática). Nenhum trecho do livro nem os exemplos em partitura dele foram copiados.
+- **Crédito no app:** "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8/9." em cada exercício.
+- **Onde está:** orn-08, orn-09, orn-10, din-06, din-07, art-09 e mel-10.

@@ -429,6 +429,18 @@ window.CMA = {
                 "Junte os pedaços e suba o metrônomo de 4 em 4 bpm só quando estiver limpo"
               ],
               partituras: [{ src: "conteudo/partituras/mel-01.png", legenda: "Aprenda cada pedaço devagar, depois junte." }]
+            },
+            {
+              id: "mel-10",
+              titulo: "Como organizar a sua prática",
+              passos: [
+                "Toque todos os dias, se possível no mesmo horário. Pouco todo dia rende mais do que muito num dia só",
+                "Em cada sessão, trabalhe um objetivo, no máximo dois. Se o foco é a língua, não pense no vibrato",
+                "Comece pelo seu ponto mais fraco. Não espere o professor apontar",
+                "Anote no Diário o que conseguiu e o que vem a seguir"
+              ],
+              secoes: [{"titulo": "Metas em vários prazos", "itens": ["Hoje", "Esta semana", "Próxima semana", "De 2 a 15 semanas", "De 1 a 5 anos", "De 5 a 10 anos"], "texto": "Escreva a sua meta para cada prazo. Ninguém pode fazer isso por você: cada saxofonista é único."}, {"titulo": "Paciência", "texto": "Quando você muda um hábito (embocadura, língua, respiração), o som pode piorar antes de melhorar. É normal. No palco, esqueça a técnica nova e toque: os ajustes chegam sozinhos com o tempo."}, {"titulo": "Hábitos que ajudam", "itens": ["Divida o tempo em blocos (3 horas? três blocos de 45 minutos) e descanse entre eles", "Técnica de manhã, a parte criativa no fim do dia", "Celular e TV longe, num lugar onde ninguém te ouve", "Uma vez por semana, alimente a arte sem tocar: um filme, um livro, uma caminhada"]}, {"titulo": "Uma rotina de 2 horas para o som", "itens": ["5 min · Respiração: lenta e depois rápida", "5 min · Só a boquilha: escalas e intervalos", "20 min · Harmônicos: ouça a nota antes e mexa a embocadura o mínimo possível", "15 min · Notas longas por intervalos, com crescendo, diminuendo e afinador", "15 min · Língua e expressão: ataques, bend, vibrato, pré-som", "20 min · Leitura à primeira vista", "40 min · Escalas, arpejos e intervalos com metrônomo (no jazz, nos tempos 2 e 4)"], "texto": "Não tem 2 horas? O Treino do dia do Naipe é uma versão de 20 minutos dessa mesma ideia."}],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 9."
             }
           ]
         },
@@ -661,6 +673,19 @@ window.CMA = {
                 "Aplique num tema de jazz que você já toca"
               ],
               partituras: [{ src: "conteudo/partituras/art-05.png", legenda: "Como no bebop: a nota grave de cada grupo quase some, a aguda leva o acento." }]
+            },
+            {
+              id: "art-09",
+              titulo: "Acentos e fantasmas em qualquer linha",
+              andamento: { inicial: 70, alvo: 140 },
+              passos: [
+                "Escolha uma escala ou um padrão em colcheias",
+                "Acentue notas em lugares diferentes a cada repetição: no tempo, no contratempo, nas notas agudas",
+                "Entre os acentos, deixe algumas notas quase sumirem (fantasmas): língua bem leve e dinâmica bem baixa",
+                "Grave e escute: o desenho dos acentos é que dá personalidade à frase"
+              ],
+              partituras: [{ src: "conteudo/partituras/art-09.png" }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
             }
           ]
         },
@@ -795,6 +820,19 @@ window.CMA = {
                 "Repita em Sol, Ré grave, Dó médio e Ré agudo, e anote no diário onde a afinação foge"
               ],
               partituras: [{ src: "conteudo/partituras/din-04.png" }]
+            },
+            {
+              id: "din-06",
+              titulo: "Do ppp ao fff com a boquilha",
+              andamento: { inicial: 60, alvo: 60 },
+              passos: [
+                "Nota longa: comece em ppp, cresça até fff e volte ao ppp, numa respiração só ou em duas",
+                "Ao crescer, leve um pouco mais de boquilha para dentro da boca. Ao diminuir, traga para fora. É isso que segura a afinação",
+                "Repare como o timbre muda conforme o lábio inferior cobre mais ou menos a palheta",
+                "Confira no afinador no ppp, no fff e no meio do caminho"
+              ],
+              partituras: [{ src: "conteudo/partituras/din-06.png" }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
             }
           ]
         },
@@ -816,6 +854,19 @@ window.CMA = {
                 "Faça a escala de Dó inteira assim"
               ],
               partituras: [{ src: "conteudo/partituras/din-02.png" }]
+            },
+            {
+              id: "din-07",
+              titulo: "Pré-som e pós-som",
+              andamento: { inicial: 60, alvo: 60 },
+              passos: [
+                "Comece só com o ar passando, ainda sem nota (pré-som), e deixe a nota nascer aos poucos de dentro do ar",
+                "Cresça até o mais forte que você consegue com som bonito",
+                "Volte diminuindo até sobrar só o ar de novo (pós-som). Não corte a nota com a língua: o ar é que vai embora",
+                "O timbre não muda do começo ao fim: só o volume"
+              ],
+              partituras: [{ src: "conteudo/partituras/din-07.png" }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
             }
           ]
         },
@@ -903,6 +954,20 @@ window.CMA = {
                 "Aplique numa balada: comece a nota reta e coloque o vibrato só no final"
               ],
               partituras: [{ src: "conteudo/partituras/orn-05.png", legenda: "Notas ligadas, sem língua: é a mandíbula que ondula o som." }]
+            },
+            {
+              id: "orn-08",
+              titulo: "As formas do vibrato",
+              andamento: { inicial: 60, alvo: 80 },
+              passos: [
+                "Toque um Sol longo e procure o vibrato de cinco jeitos: pelo diafragma (o mais largo), pela garganta, pela mandíbula, pela língua (um “iê-iê” por dentro da boca) e pelos lábios (o mais sutil)",
+                "Escolha um jeito e deixe as ondas iguais: mesma velocidade e mesma largura do começo ao fim da nota",
+                "Vibrato progressivo: nota reta no começo, ondas lentas no meio e mais largas no final",
+                "Vibrato terminal: a nota fica reta e o vibrato aparece só no fim, como nos cantores de balada",
+                "Pense no vibrato como ondas de volume, não de afinação. E não use em todas as notas: é tempero"
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-08.png", legenda: "“vib.” com a linha ondulada mostra onde entra o vibrato." }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
             }
           ]
         },
@@ -1012,6 +1077,33 @@ window.CMA = {
                 "Use com moderação: são temperos, não o prato principal"
               ],
               partituras: [{ src: "conteudo/partituras/orn-07.png", legenda: "Use com moderação: são temperos." }]
+            },
+            {
+              id: "orn-09",
+              titulo: "Bend e portamento",
+              andamento: { inicial: 60, alvo: 90 },
+              passos: [
+                "Bend: sustente um Sol e relaxe a garganta, a mandíbula e os lábios até a nota descer o máximo possível. Volte para a afinação. Veja no afinador quanto ela desceu",
+                "Faça o caminho contrário: um pouco mais de firmeza para a nota subir",
+                "Portamento com os dedos: chegue na nota passando bem rápido pelas notas vizinhas, meio tom abaixo ou acima",
+                "Agora de mais longe: de um tom, de uma terça menor e de uma terça maior, passando por todas as notas no meio, rápido e liso como um glissando curto",
+                "Por fim, junte dedos, lábios e garganta no mesmo movimento"
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-09.png", legenda: "As notas pequenas são as de passagem: rápidas, quase um deslize." }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
+            },
+            {
+              id: "orn-10",
+              titulo: "Frulato e voz no sax",
+              andamento: { inicial: 60, alvo: 80 },
+              passos: [
+                "Frulato: enquanto toca uma nota longa, role um “rrr” com a ponta da língua (ou faça como um gargarejo, no fundo da boca)",
+                "Voz: cante a mesma nota que você toca. Depois cante uma nota diferente e ouça as duas juntas",
+                "Experimente rosnar enquanto toca e compare com o growl",
+                "Relaxe e deixe o corpo experimentar. Depois use como tempero em finais de frase"
+              ],
+              partituras: [{ src: "conteudo/partituras/orn-10.png" }],
+              credito: "Inspirado em David Liebman, “Desenvolvendo uma sonoridade pessoal no saxofone” (Editora Souza Lima), cap. 8."
             }
           ]
         }

@@ -1151,7 +1151,9 @@
           <h2>${icone("nota")}Como fazer</h2>
           <ol class="passos">${ex.passos.map(p => `<li><span>${escapar(p)}</span></li>`).join("")}</ol>
           ${ex.guia ? htmlGuiaEscalas(ex.guia) : ""}
+          ${(ex.secoes || []).map(sc => `<section class="ex-secao"><h3>${escapar(sc.titulo)}</h3>${sc.itens ? `<ul>${sc.itens.map(i => `<li>${escapar(i)}</li>`).join("")}</ul>` : ""}${sc.texto ? `<p class="mudo">${escapar(sc.texto)}</p>` : ""}</section>`).join("")}
           ${(ex.partituras || []).map(pt => `<figure class="tb-partitura"><a href="${escapar(pt.src)}" target="_blank" rel="noopener" aria-label="Ampliar a partitura"><img src="${escapar(pt.src)}" alt="Exemplo em partitura: ${escapar(ex.titulo)}" loading="lazy"></a>${pt.legenda ? `<figcaption>${escapar(pt.legenda)}</figcaption>` : ""}</figure>`).join("")}
+          ${ex.credito ? `<p class="ex-credito">${escapar(ex.credito)}</p>` : ""}
         </div>` : ""}
 
         ${andamento}
