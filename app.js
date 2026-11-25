@@ -2146,6 +2146,7 @@
   function htmlGuiaEscalas(g) {
     return `<div class="guia-escalas">
       <p class="mudo gu-legenda">${escapar(g.legenda)}</p>
+      ${g.pdf ? `<a class="btn largo" href="${escapar(g.pdf)}" target="_blank" rel="noopener">${icone("livro")}Baixar em PDF para imprimir</a>` : ""}
       ${g.grupos.map((gr, i) => `<details class="gu-grupo"${i === 0 ? " open" : ""}>
         <summary><strong>${escapar(gr.titulo)}</strong><small>${gr.linhas.length} ${gr.linhas.length === 1 ? "escala" : "escalas"}</small></summary>
         <ul class="gu-lista">${gr.linhas.map(([sim, nome, cons, notas, acorde]) => `<li>
