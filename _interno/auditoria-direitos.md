@@ -172,3 +172,9 @@ São 44 itens, entre livros e pastas do Drive, indicados em cada assunto, como a
 ## O que eu sugiro conferir primeiro
 1. **Sons do RIT:** os créditos CC BY já aparecem em "Créditos dos sons", no fim do RIT. Os dois timbres do Freesound foram trocados por FluidR3_GM (21/11/2026).
 2. **Itens de terceiros entregues por link** (2.1 a 2.5): num produto pago, distribuir esses PDFs e áudios pelo app pode exigir autorização das editoras, mesmo ficando no seu Drive. Você decide se mantém, troca por indicação ("compre o livro X, página Y") ou remove.
+
+## Acréscimo de 25/11/2026: "Qual escala para cada acorde"
+- **Origem:** folha "Scale Syllabus" de Jamey Aebersold (Bb instruments), enviada pelo Tiago.
+- **O que foi feito:** as relações entre acorde e escala (teoria musical comum) foram reescritas em português, com organização, textos e partituras próprios do Naipe. A página original não foi copiada nem digitalizada para o app.
+- **Crédito no app:** "Baseado no Scale Syllabus de Jamey Aebersold, reescrito em português pelo Naipe."
+- **Onde está:** pilar Estudos Melódicos → Escalas → exercício `mel-09`; partituras em `conteudo/partituras/escalas-*.png`.

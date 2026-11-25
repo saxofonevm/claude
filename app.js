@@ -1150,6 +1150,7 @@
         ${ex.passos?.length ? `<div class="cartao">
           <h2>${icone("nota")}Como fazer</h2>
           <ol class="passos">${ex.passos.map(p => `<li><span>${escapar(p)}</span></li>`).join("")}</ol>
+          ${ex.guia ? htmlGuiaEscalas(ex.guia) : ""}
           ${(ex.partituras || []).map(pt => `<figure class="tb-partitura"><a href="${escapar(pt.src)}" target="_blank" rel="noopener" aria-label="Ampliar a partitura"><img src="${escapar(pt.src)}" alt="Exemplo em partitura: ${escapar(ex.titulo)}" loading="lazy"></a>${pt.legenda ? `<figcaption>${escapar(pt.legenda)}</figcaption>` : ""}</figure>`).join("")}
         </div>` : ""}
 
@@ -2137,6 +2138,22 @@
     if (!lista.length) return null;
     const dia = Math.floor(deISO(hojeISO()) / 864e5);
     return lista[dia % lista.length];
+  }
+
+  // Guia "qual escala para cada acorde": um grupo por família de acorde, com notas, construção e partitura
+  function htmlGuiaEscalas(g) {
+    return `<div class="guia-escalas">
+      <p class="mudo gu-legenda">${escapar(g.legenda)}</p>
+      ${g.grupos.map((gr, i) => `<details class="gu-grupo"${i === 0 ? " open" : ""}>
+        <summary><strong>${escapar(gr.titulo)}</strong><small>${gr.linhas.length} ${gr.linhas.length === 1 ? "escala" : "escalas"}</small></summary>
+        <ul class="gu-lista">${gr.linhas.map(([sim, nome, cons, notas, acorde]) => `<li>
+          <div class="gu-cab"><strong>${escapar(sim)}</strong><span>${escapar(nome)}</span></div>
+          <div class="gu-notas">${escapar(notas)}</div>
+          <small>${escapar(cons)} · Acorde: ${escapar(acorde)}</small></li>`).join("")}</ul>
+        ${gr.partitura ? `<figure class="tb-partitura"><a href="${escapar(gr.partitura)}" target="_blank" rel="noopener" aria-label="Ampliar a partitura"><img src="${escapar(gr.partitura)}" alt="${escapar(gr.titulo)} em partitura" loading="lazy"></a></figure>` : ""}
+      </details>`).join("")}
+      ${g.credito ? `<p class="vazio-mini gu-credito">${escapar(g.credito)}</p>` : ""}
+    </div>`;
   }
 
   // A Dica de estudo fica no Estudo, logo abaixo do título
