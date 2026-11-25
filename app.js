@@ -1078,11 +1078,11 @@
         ${(raiz.ramificacoes || []).map((ram, j) => {
           const exs = ram.exercicios || [];
           const fe = exs.filter(e => feito(e.id)).length;
-          const aberta = exs.some(e => e.id === proxId) || (!proxId && j === 0);
+          const aberta = false; // as dicas começam fechadas; o selo "Próximo" indica por onde começar
           const abas = [["metodos", `${icone("livro")}Métodos`, htmlNosMetodos(ram.id, true)], ["ouvir", "Ouvir", htmlReferencias(ram.referencias)], ["material", "Material", htmlAcervoRamo(ram.id)]].filter(a => a[2]);
           return `<details class="cartao ramificacao"${aberta ? " open" : ""}>
           <summary class="ram-topo">
-            <span class="ram-cab"><span class="ram-num">Dica de Naipe ${dois(j + 1)}</span><h3>${escapar(ram.titulo)}</h3></span>
+            <span class="ram-cab"><span class="ram-num">Dica de Naipe ${dois(j + 1)}${exs.some(e => e.id === proxId) ? `<span class="ram-prox">Próximo</span>` : ""}</span><h3>${escapar(ram.titulo)}</h3></span>
             <span class="ram-cont${fe === exs.length && exs.length ? " completa" : ""}">${fe}/${exs.length}</span>${icone("seta", "ram-seta")}
           </summary>
           ${ram.descricao ? `<p class="mudo">${escapar(ram.descricao)}</p>` : ""}

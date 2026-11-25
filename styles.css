@@ -2337,3 +2337,6 @@ dialog.dlg-beta::backdrop { background: var(--bg, #04170f); }
 .ex-secao li { font-size: .9rem; }
 .ex-secao p { margin: 4px 0 0; font-size: .88rem; }
 .ex-credito { margin: 12px 0 0; font-size: .76rem; color: var(--muted); font-style: italic; }
+
+/* Pilar: etiqueta "Próximo" na dica fechada */
+.ram-prox { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 99px; font-size: .62rem; letter-spacing: .06em; color: var(--on-brass); background: var(--latao); vertical-align: 1px; }
